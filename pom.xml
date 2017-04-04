@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>kr.letech</groupId>
+	<artifactId>letech</artifactId>
+	<name>letech</name>
+	<packaging>war</packaging>
+	<version>1.0.1-BUILD-SNAPSHOT</version>
+	<properties>
+		<java-version>1.6</java-version>
+		<org.springframework-version>3.2.3.RELEASE</org.springframework-version>
+		<org.aspectj-version>1.6.10</org.aspectj-version>
+		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<egovframework.rte.version>3.5.0</egovframework.rte.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+ 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	
+	<!-- </repositories> -->
+	<repositories>
+		<repository>
+			<id>egovframe</id>
+			<url>http://www.egovframe.go.kr/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+		    <id>oracle</id>
+		    <name>ORACLE JDBC Repository</name>
+		    <url>http://maven.jahia.org/maven2</url>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				 </exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<dependency>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.security</artifactId>
+            <version>${egovframework.rte.version}</version>
+        </dependency>
+<!-- 2016.03.24 Start -->		
+		<dependency>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.psl.dataaccess</artifactId>
+            <version>${egovframework.rte.version}</version>
+        </dependency>
+<!-- 2016.03.24 End -->
+				
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>	
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- START	 2017. 1. 20	작성자		김중원 -->
+		<dependency>
+		   <groupId>org.apache.logging.log4j</groupId>
+		   <artifactId>log4j-api</artifactId>
+		   <version>2.2</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.apache.logging.log4j</groupId>
+		   <artifactId>log4j-core</artifactId>
+		   <version>2.2</version>
+		</dependency>
+		<!-- END -->
+		
+		<!-- sql loging -->
+		<dependency>
+            <groupId>com.googlecode.log4jdbc</groupId>
+            <artifactId>log4jdbc</artifactId>
+            <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+		<!-- @Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+				
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		
+		<!-- mybatis -->
+		  <dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.2.4.RELEASE</version>
+		</dependency>
+		<!-- tiles -->
+		<!-- dbcp -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/commons-pool/commons-pool -->
+		<!-- START	 2017. 1. 20	작성자		김중원 -->
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<!-- END -->
+		
+		<!-- oracle -->
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc6</artifactId>
+		    <version>11.1.0.7.0</version>
+		</dependency>
+		
+		<!-- json -->
+		 <dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.4</version>
+			<classifier>jdk15</classifier>
+		</dependency> 
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib-ext-spring</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		
+		<!-- common-codec base64 추가용 -->
+		<dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.4</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+	
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>     
+		        
+        <!-- commons-fileuploads 추가  -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version> <!-- makesure correct version here  -->
+		</dependency>
+		<!-- commons-io 추가  -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>   
+		
+		<!-- GCM 관련 Start -->
+		<dependency>
+			<groupId>com.ganyo</groupId>
+			<artifactId>gcm-server</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<!-- GCM 관련 End -->
+		
+		<!-- START	 2017. 1. 31	작성자		김중원 -->
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>3.0.5.RELEASE</version>
+		</dependency>
+		<!-- END -->
+		
+	</dependencies>
+	
+    <build>
+    	<finalName>letech</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.9</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.5.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>org.test.int1.Main</mainClass>
+                </configuration>
+            </plugin>
+<!-- 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.6</version>
+				<configuration>
+					<rulesets>
+						<ruleset>${project.basedir}/src/main/resources/letech/pmd/EgovInspectionRules_kor-3.5.xml</ruleset>
+					</rulesets>
+					<sourceEncoding>UTF-8</sourceEncoding>
+					<targetJdk>1.7</targetJdk>
+				</configuration>
+			</plugin>
+-->
+<!-- 
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <rulesets>
+                    	<ruleset>${project.basedir}/src/main/resources/letech/pmd/EgovInspectionRules_kor-3.5.xml</ruleset>
+                    </rulesets>
+					<sourceEncoding>${maven.compiler.encoding}</sourceEncoding>
+					<targetJdk>${maven.compiler.source}</targetJdk>
+                </configuration>
+            </plugin>
+ -->
+        </plugins>
+        <resources>
+        	<resource>
+        		<directory>src/main/java</directory>
+        		<excludes>
+        			<exclude>**/*.java</exclude>
+        		</excludes>
+        		<filtering>false</filtering>
+        	</resource>
+        	<resource>
+        		<directory>src/main/resources</directory>
+        		<filtering>false</filtering>
+        	</resource>
+        </resources>
+    </build>
+	
+<!-- PMD 리포트 생성 플러그인 Start 
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.6</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>pmd</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+ PMD 리포트 생성 플러그인 End -->
+
+</project>

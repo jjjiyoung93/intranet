@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sampleDAO">	
+
+
+	<parameterMap type="map" id="stmbmmap">
+		<parameter property="usr_id" 		jdbcType="VARCHAR" 	javaType="java.lang.String" />
+		<parameter property="usr_nm" 		jdbcType="VARCHAR" 	javaType="java.lang.String" />
+		<parameter property="usr_sex" 		jdbcType="VARCHAR" 	javaType="java.lang.String" />
+		<parameter property="usr_birth" 		jdbcType="VARCHAR" 	javaType="java.lang.String" />
+		<parameter property="usr_height" 	 	jdbcType="DOUBLE" 	javaType="java.lang.String" />
+		<parameter property="usr_weight" 	 	jdbcType="DOUBLE" 	javaType="java.lang.String" />
+	</parameterMap>
+	
+	
+	<!-- 회원 가입  -->
+	<update id="insert" parameterType="map">
+		INSERT INTO
+			sample (
+				sample1,
+				sample2,
+				sample3
+			)
+		VALUES
+			(
+				#{sample1},
+				#{sample2},
+				#{sample3}
+			)
+	</update>
+	
+	<select id="getList" resultType="HashMap" parameterType="map" >
+		SELECT
+			  sample1,
+			  sample2,
+			  sample3
+	    FROM sample
+	</select>	
+	 
+	<!-- 멤버 조회  -->
+	 <select id="getAuthRollMap" resultType="HashMap" parameterType="map" >
+		 SELECT
+				usr_id,
+				usr_nm,
+				usr_height,
+				usr_weight,
+				usr_sex,
+				usr_birth,
+				statuss
+			FROM
+				std_memb
+				where usr_id = #{usr_id}
+				and usr_pwd = #{usr_pwd}
+	 </select>
+</mapper>

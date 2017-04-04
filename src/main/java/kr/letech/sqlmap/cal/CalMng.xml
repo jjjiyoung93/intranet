@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="calMng">	
+	<!-- 일정 조회 -->
+	<select id="getCalList" resultType="HashMap" parameterType="map" >
+		SELECT
+			cal_seq
+			, cal_nm
+			, cal_st_dt
+			, cal_ed_dt
+			, TO_CHAR(TO_DATE(cal_ed_dt)+1, 'YYYY-MM-DD') AS cal_ed_dt_plus
+			, cal_st_time
+			, cal_ed_time
+			, CASE
+		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 1, 2) || '시 '
+		      ELSE ''
+		    END cal_st_time_fri
+		  , CASE
+		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 3, 2) || '분'
+		      ELSE ''
+		    END cal_st_time_sec
+		  , CASE
+		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 1, 2) || '시 '
+		      ELSE ''
+		    END cal_ed_time_fri
+		  , CASE
+		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 3, 2) || '분'
+		      ELSE ''
+		    END cal_ed_time_sec
+		FROM std_cal_mng
+		WHERE
+		<if test="view_type == 'month'" > 
+			(cal_st_dt LIKE #{start_date}||'%'
+					OR cal_ed_dt LIKE #{end_date}||'%')
+		</if>
+		<if test="view_type != 'month'" >
+		<![CDATA[
+			( (cal_st_dt >= #{start_date} AND cal_st_dt <= #{end_date}) 
+				OR (cal_ed_dt >= #{start_date} AND cal_ed_dt <= #{end_date}) )
+		]]>
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_id)" >
+			AND uss_id = #{uss_id}		
+		</if>
+		ORDER BY cal_st_dt ASC
+	</select>
+	<!-- 일정등록 -->
+	<insert id="calInsert" parameterType="map">
+		<selectKey keyProperty="cal_seq" resultType="int" order="BEFORE">
+			SELECT 
+				NVL(MAX(cal_seq),0)+1
+			FROM std_cal_mng 
+		</selectKey>
+		INSERT INTO std_cal_mng (cal_seq, cal_nm, cal_content, cal_st_dt, cal_ed_dt, cal_st_time, cal_ed_time, uss_id, reg_dt)
+		  VALUES (#{cal_seq}, #{cal_nm}, #{cal_content, jdbcType=VARCHAR}, #{cal_st_dt}, #{cal_ed_dt}
+		  			, #{cal_st_time, jdbcType=VARCHAR}, #{cal_ed_time, jdbcType=VARCHAR}, #{uss_id, jdbcType=VARCHAR}, SYSDATE)
+	</insert>
+	<!-- 일정 상세정보 -->
+	<select id="getCalView" resultType="HashMap" parameterType="map">
+		SELECT
+		  cal_seq
+		  , cal_nm
+		  , cal_content
+		  , cal_st_dt
+		  , cal_ed_dt
+		  , cal_st_time
+		  , cal_ed_time
+		  , TO_CHAR(reg_dt, 'YYYY-MM-DD') reg_dt
+		  , CASE
+		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 1, 2)
+		      ELSE ''
+		    END cal_st_time_fri
+		  , CASE
+		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 3, 2)
+		      ELSE ''
+		    END cal_st_time_sec
+		  , CASE
+		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 1, 2)
+		      ELSE ''
+		    END cal_ed_time_fri
+		  , CASE
+		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 3, 2)
+		      ELSE ''
+		    END cal_ed_time_sec
+		FROM std_cal_mng
+		WHERE
+			cal_seq = #{cal_seq}
+	</select>
+	<!-- 일정 수정 -->
+	<update id="calUpdate" parameterType="map">
+		UPDATE std_cal_mng SET
+			cal_nm = #{cal_nm}
+			, cal_content = #{cal_content, jdbcType=VARCHAR}
+			, cal_st_dt = #{cal_st_dt}
+			, cal_ed_dt = #{cal_ed_dt}
+			, cal_st_time = #{cal_st_time, jdbcType=VARCHAR}
+			, cal_ed_time = #{cal_ed_time, jdbcType=VARCHAR}
+		WHERE cal_seq = #{cal_seq}
+	</update>
+	<!-- 일정 삭제 -->
+	<delete id="calDelete" parameterType="map">
+		DELETE FROM std_cal_mng WHERE cal_seq = #{cal_seq} 
+	</delete>
+	
+	<!-- 일정 파일 정보조회 -->
+	<select id="getCalFileList" resultType="HashMap" parameterType="map">
+		SELECT
+		    file_seq
+		    , cal_seq
+		    , file_nm
+		    , file_stre_nm
+		    , file_path
+		    , file_ext
+		    , file_size
+		FROM std_cal_file
+		WHERE cal_seq = #{cal_seq}
+		ORDER BY file_seq ASC
+	</select>
+	<!-- 일정 파일 등록 -->
+	<insert id="calFileInsert" parameterType="map">
+		<selectKey keyProperty="file_seq" resultType="int" order="BEFORE">
+			SELECT 
+				NVL(MAX(file_seq),0)+1
+			FROM std_cal_file
+		</selectKey>
+		INSERT INTO std_cal_file (file_seq, cal_seq, file_nm, file_stre_nm, file_path, file_size, file_ext, reg_dt)
+		  VALUES (#{file_seq}, #{cal_seq}, #{file_nm}, #{file_stre_nm, jdbcType=VARCHAR}, #{file_path, jdbcType=VARCHAR}
+		  		, #{file_size, jdbcType=INTEGER}, #{file_ext, jdbcType=VARCHAR}, SYSDATE)
+	</insert>
+	<!-- 일정 파일 삭제 -->
+	<delete id="calFileDelete" parameterType="map">
+		DELETE FROM std_cal_file WHERE cal_seq = #{cal_seq}
+	</delete>
+	<!-- 일정 파일 삭제(파일 시퀀스로 삭제시) -->
+	<delete id="calFileOneDelete" parameterType="map">
+		DELETE FROM std_cal_file WHERE file_seq = #{file_seq}
+	</delete>
+	
+</mapper>

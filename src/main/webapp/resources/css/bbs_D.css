@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+
+/* 갤러리 게시판 가로 4개  */
+.gallery_bd { position:relative; }
+.gallery_bd ul { padding:0; border-top:2px solid #787878; border-bottom:1px solid #dedede; }
+.gallery_bd ul li { float:left; width:25%; }
+.gallery_bd ul li dl { clear:both; width:100%; padding:0 7px; }
+.gallery_bd ul li dl dt { width:100%; height:140px; border:1px solid #e5e5e5; }
+.gallery_bd ul li dl dt img { width:209.16px; height:140px; overflow:hidden;  }
+.gallery_bd ul li dl dd { width:209.16px; margin:0; padding:10px 0 0 0; 
+	text-align:center; font-size:14px; font-weight:bold; color:#000; 
+	overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.gallery_bd ul li dl dd.img_content { display:none; }
+.gallery_bd ul li dl dd.img_dt { padding:0; font-size:12px; color:#999; font-weight:normal; }
+
+
+
+
+
+
+

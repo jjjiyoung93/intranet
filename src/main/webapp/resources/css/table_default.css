@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+
+/*기본 테이블*/
+.txt_left { text-align:left; }
+.txt_center { text-align:center; }
+table { width:100%; margin-bottom:20px;  border-top:2px solid #787878;  border-bottom:1px solid #787878; font-size:14px; text-align:center; 
+	border-collapse:collapse; 
+}
+table thead {  }
+table thead tr {  }
+table thead tr th { padding:12px 0; border-bottom:1px solid #e5e5e5;  background:url("/resources/images/layout/left_line.jpg") 0px 10px no-repeat #f2f2f2; }
+table thead tr th:first-child { background-image:none; }
+table thead tr td { }
+table tbody { }
+table tbody tr { }
+table tbody tr th {  padding:12px 0; border-bottom:1px solid #e5e5e5; }
+table tbody tr td {  padding:12px 10px; border-bottom:1px solid #e5e5e5; color:#787878; }
+table tbody tr td span.re_re { padding-left:15px; background:url("/resources/images/layout/re_bullet.png") 0px 0px no-repeat; }
+
+/*게시판 관리 > 리스트 게시판*/
+table.list_table {  }
+table.list_table thead tr th {  background:none; color:#000; border-top:2px solid #54afbd; border-bottom:1px solid #54afbd; font-weight:normal; }
+table.list_table tbody tr th {  }
+table.list_table tbody tr td {  }
+
+
+
+
+/*공통코드 관리*/
+table tbody.ag_left > tr > td { text-align:left; padding-left:20px; font-weight:bold;}
+table tbody.ag_left > tr > td.list_tow { padding:6px 10px 6px 40px; background:#fff; color: #269abc; font-weight:bold; border-top:1px solid #d4d4d4; }
+table tbody.ag_left > tr > td.list_three { padding:6px 10px 6px 60px; background:#fff; border-bottom:1px solid #fff; font-weight:normal; }
+table tbody.ag_left > tr > td.list_four { padding:6px 10px 6px 90px; background:#fff; border-bottom:1px dotted #e5e5e5; font-weight:normal; color:#787878; }
+table tbody.ag_left > tr > td.list_four:rast-chlid { border-bottom:1px solid #e5e5e5; }
+
+/*입력 테이블*/
+table.table_info { margin-bottom:0; border-top:2px solid #000; float:left; width:100%; }
+table.table_info tbody tr th { background:#f2f2f2; }
+table.table_info tbody tr td { background:none; text-align:left; }
+#file_ > img { width:100%; }
+
+
+
+
+/*reply*/
+.re { clear:both; }
+.reply {  padding:5px 0; font-size:14px; color:#5a5a5a; border-bottom:1px dotted #e5e5e5; line-height:180%; }
+.reply dl dt {  }
+.reply dl dt strong { color:#000; }
+span.re_dt { font-size:12px;  }
+.reply dl dd { margin:0; }
+li.rp_write { padding:5px 10px 5px 0; background:#f0f0f0; }
+.re_re {  padding-left:20px; margin:15px 0;  background:url("/resources/images/layout/re_bullet.png") 0px 0px no-repeat; }
+.re_re_label { padding-top:0; }
+.bd_total strong{ margin-top:2px; }
+
+
+
+
+
+
+
+
+

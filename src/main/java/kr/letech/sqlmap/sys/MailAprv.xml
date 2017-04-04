@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mailAprv">
+
+	<!-- 참조자 카운터 조회 -->
+	<select id="getRefeCount" resultType="int" parameterType="map">
+		SELECT COUNT(REFE_YN)
+		  FROM STD_APRV_LINE
+		 WHERE 1=1
+		   AND APRV_NO = #{aprv_no} 
+		   AND REFE_YN IN 'Y'
+	</select>
+	
+	<!-- MAIL_SEQ 값 -->
+	<select id="getMailSeq" resultType="int" parameterType="map">
+		SELECT LETECH.MAIL_SEND_SEQ.NEXTVAL 
+		  FROM DUAL
+	</select>
+	
+	<select id="getAprvLineInfo" resultType="HashMap" parameterType="map" >
+		SELECT A.APRV_NO
+			 , A.APRV_EMP_NO
+			 , A.APRV_ORDR
+			 , A.APRV_CONT
+			 , B.USS_NM
+		     , B.USS_EMAIL AS MAIL_TO
+		     , (SELECT C.USS_EMAIL
+			 	  FROM STD_USS_MNG C
+			 	 WHERE 1=1
+			 	   AND C.USS_ID = A.CRTN_EMP_NO) AS REPT_APRV_MAIL
+		  FROM STD_APRV_LINE A
+		     , STD_USS_MNG B
+		 WHERE 1=1
+		   AND A.APRV_NO = #{aprv_no} 
+		   AND A.APRV_EMP_NO = #{aprv_emp_no}
+		   AND A.APRV_EMP_NO = B.USS_ID
+	</select>
+	
+	<select id="getUppAprvLineInfo" resultType="HashMap" parameterType="map" >
+		SELECT A.APRV_NO
+			 , A.APRV_EMP_NO
+			 , A.APRV_ORDR
+			 , A.APRV_CONT
+			 , B.USS_NM
+		     , B.USS_EMAIL AS MAIL_TO
+		  FROM STD_APRV_LINE A
+		     , STD_USS_MNG B
+		 WHERE 1=1
+		   AND A.APRV_NO = #{aprv_no} 
+		   AND A.APRV_ORDR = #{upp_line}
+		   AND A.APRV_EMP_NO = B.USS_ID
+	</select>
+	
+	<!-- 메일 발송할 내용을 추가 -->
+	<insert id="setMailSend" parameterType="map" >
+		INSERT INTO STD_MAIL_SEND ( SEND_SEQ
+								  , SEND_PK1
+								  , SEND_PK2
+								  , SYS_DATE
+								  , MAIL_TO
+								  , MAIL_FROM
+								  , MAIL_SUBJ
+								  , MAIL_CONT
+								  , MAIL_KIND )
+        				   VALUES ( 
+							<choose>
+        				   		<when test="MAIL_SEQ > 0">
+        				   			#{MAIL_SEQ}
+        				   		</when>
+        				   		<otherwise>
+        				   			LETECH.MAIL_SEND_SEQ.NEXTVAL 
+        				   		</otherwise>
+							</choose>
+        				   		  , #{APRV_NO}
+        				   		  , #{APRV_EMP_NO}
+        				   		  , SYSDATE
+        				   		  , #{MAIL_TO}
+        				   		  , #{MAIL_FROM}
+        				   		  , #{MAIL_SUBJ}
+        				   		  , #{MAIL_CONT} 
+        				   		  , #{MAIL_KIND} )
+        <selectKey resultType="Integer" keyProperty="SEND_SEQ" order="AFTER">
+	        SELECT LETECH.MAIL_SEND_SEQ.CURRVAL FROM DUAL
+	    </selectKey>        
+	</insert>
+	
+	<!-- 결재정보 삭제 -->
+	<delete id="outMailSend" parameterType="map" >
+		DELETE FROM STD_MAIL_SEND
+		WHERE SEND_PK1 = #{aprv_no}
+	</delete>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+ 
+<!-- Author:  Crunchify.com  -->
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+		</Console>
+
+<!-- 		<RollingFile name="RollingFile" filename="log/CrunchifyTest.log"
+			filepattern="${logPath}/%d{YYYYMMddHHmmss}-fargo.log">
+			<PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+			<Policies>
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="20" />
+		</RollingFile> -->
+		
+		<!-- 최초작성일 		2017. 1. 20		 최초작성자		김중원 -->
+		 <JDBC name="databaseAppender" tableName="LETECH.STD_ERROR_LOG">
+			<ConnectionFactory class="kr.letech.cmm.util.ConnectionFactory" method="getDataBaseConnection"/>
+			<Column name="ERROR_SEQ" literal="LETECH.ERROR_LOG_SEQ.NEXTVAL"/>
+			<Column name="ERROR_LOGGER" pattern="%c" />
+			<Column name="ERROR_METHOD" pattern="%M" />
+			<Column name="ERROR_LOCATION" pattern="%l" />
+			<Column name="ERROR_DATE" isEventTimestamp="true" />
+			<Column name="ERROR_MESSAGE" pattern="%m" />
+			<Column name="ERROR_LEVEL" pattern="%p" />
+			<Column name="ERROR_THREAD" pattern="%t" />
+		</JDBC>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<!-- <AppenderRef ref="RollingFile" /> -->
+		</Root>
+		<Logger name="java.sql" level="info" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+        <Logger name="egovframework" level="info" additivity="false">
+            <AppenderRef ref="console" />
+        </Logger>
+          <!-- log SQL with timing information, post execution -->
+        <Logger name="jdbc.sqltiming" level="info" additivity="false">
+            <AppenderRef ref="console" />
+		</Logger>
+		
+		<!-- 최초작성일 		2017. 1. 20 -->
+		<Logger name="kr.letech" level="warn">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="databaseAppender" />
+		</Logger>
+		<!-- 최초작성자		김중원 -->
+		
+	</Loggers>
+</Configuration>

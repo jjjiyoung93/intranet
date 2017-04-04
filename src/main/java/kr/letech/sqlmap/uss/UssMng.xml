@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ussMng">	
+	<!-- 사용자 조회  -->
+	<select id="getUssList" resultType="hashMap" parameterType="map" >
+		 SELECT
+				A.USS_ID
+				, A.USS_NM
+				, A.USS_BIRTH
+				, A.USS_EMAIL
+				<!-- , A.USS_AUTH_CD --> <!-- 권한 매핑 테이블 미사용시 -->
+				, B.AUTHOR_CODE AS USS_AUTH_CD	<!-- 권한 매핑 테이블 사용시 --> 
+				, A.USS_AUTH_CD
+				, A.USS_TEL
+				, A.USS_EM_NO
+				, C.AUTHOR_NM AS USS_AUTH_NM	<!-- 권한 매핑 테이블 사용시 -->
+				, A.DP_CD
+				, D.CD_NM AS DP_NM
+			FROM
+				STD_USS_MNG A
+				<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
+				LEFT OUTER JOIN STD_AUT_ROLE_MAP B ON A.USS_ID = B.SCRTY_DTRMN_TRGET_ID
+				LEFT OUTER JOIN STD_AUT_INFO C ON C.AUTHOR_CODE = B.AUTHOR_CODE
+				LEFT OUTER JOIN STD_CD_MNG D ON D.CD = A.DP_CD
+		<where>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+				<choose>
+					<when test='searchGubun == "01"' >
+				A.USS_ID LIKE '%' || #{searchField} || '%'
+					</when>
+					<when test='searchGubun == "02"' >
+				A.USS_NM LIKE '%' || #{searchField} || '%'	
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY REG_DT DESC
+	</select>
+	<!-- 사용자 총건수  -->
+	<select id="getUssTotCount" resultType="int" parameterType="map" >
+		 SELECT
+				COUNT(1) AS cnt
+			FROM
+				STD_USS_MNG
+		<where>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+				<choose>
+					<when test='searchGubun == "01"' >
+				USS_ID LIKE '%' || #{searchField} || '%'
+					</when>
+					<when test='searchGubun == "02"' >
+				USS_NM LIKE '%' || #{searchField} || '%'	
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+	<!-- ID 체크 -->
+	<select id="idCheckRepetition" resultType="int" parameterType="map">
+		SELECT COUNT(1) AS ID_CHECK FROM STD_USS_MNG WHERE USS_ID = #{uss_id}
+	</select>
+	<!-- 사원번호 체크 -->
+	<select id="emNoCheckRepetition" resultType="int" parameterType="map">
+		SELECT COUNT(1) AS ID_CHECK FROM STD_USS_MNG WHERE USS_EM_NO = #{uss_em_no}
+	</select>
+	<!-- 사용자 등록 -->
+	<insert id="ussInsert" parameterType="map" >
+		INSERT INTO STD_USS_MNG(USS_ID, USS_PWD, USS_NM, USS_SEX, USS_BIRTH, USS_EMAIL, USS_TEL, USS_AUTH_CD, REG_DT, USS_EM_NO, DP_CD)
+		  VALUES(#{uss_id}, #{uss_pwd}, #{uss_nm}, #{uss_sex}, #{uss_birth, jdbcType=VARCHAR}, #{uss_email, jdbcType=VARCHAR}
+		  		, #{uss_tel, jdbcType=VARCHAR}, #{uss_auth_cd, jdbcType=VARCHAR}, SYSDATE, #{uss_em_no, jdbcType=VARCHAR}, #{dp_cd, jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 사용자 상세조회 -->
+	<select id="getUssView" resultType="HashMap" parameterType="map">
+		SELECT
+		  A.USS_ID
+		  , A.USS_NM
+		  , A.USS_BIRTH
+		  , A.USS_SEX
+		  , A.USS_TEL
+		  , A.USS_EMAIL
+		  <!-- , A.USS_AUTH_CD, --> <!-- 권한 매핑 테이블 미사용시 -->
+		  , B.AUTHOR_CODE AS USS_AUTH_CD	<!-- 권한 매핑 테이블 사용시 --> 
+		  , CASE
+		        WHEN A.USS_SEX = 'M' THEN '남자'
+		        WHEN A.USS_SEX = 'W' THEN '여자'
+		        ELSE ''
+		    END USS_SEX_VAL
+		  , A.USS_EM_NO
+		  , C.CD_NM AS USS_AUTH_NM	<!-- 권한 매핑 테이블 사용시 -->
+		  , A.DP_CD
+		  , D.DP_NM
+		FROM
+		  	STD_USS_MNG A
+			<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
+			LEFT OUTER JOIN STD_AUT_ROLE_MAP B ON A.USS_ID = B.SCRTY_DTRMN_TRGET_ID
+			LEFT OUTER JOIN STD_CD_MNG C ON C.UP_CD IN ('CD0005', 'CD0006') AND C.CD_VAL = B.AUTHOR_CODE
+			LEFT OUTER JOIN (
+				SELECT 
+					CD AS DP_CD, LTRIM (SYS_CONNECT_BY_PATH (CD_NM, ' > '), ' > ') AS DP_NM
+				FROM STD_CD_MNG
+				  START WITH UP_CD = 'CD0008'
+				  CONNECT BY PRIOR CD = UP_CD
+				ORDER SIBLINGS BY CD_ORD ASC
+			) D ON D.DP_CD = A.DP_CD
+        WHERE
+			A.USS_ID = #{uss_id}
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
+			AND A.USS_PWD = #{uss_pwd}
+		</if>
+	</select>
+	
+	<!-- 사용자 수정 -->
+	<update id="ussUpdate" parameterType="map" >
+		UPDATE std_uss_mng SET
+			uss_nm = #{uss_nm}
+			, uss_birth = #{uss_birth, jdbcType=VARCHAR}
+			, uss_sex = #{uss_sex, jdbcType=VARCHAR}
+			, uss_tel = #{uss_tel, jdbcType=VARCHAR}
+			, uss_email = #{uss_email, jdbcType=VARCHAR}
+			, uss_em_no = #{uss_em_no, jdbcType=VARCHAR}
+			, uss_auth_cd = #{uss_auth_cd, jdbcType=VARCHAR}
+			, dp_cd = #{dp_cd, jdbcType=VARCHAR}
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
+			, uss_pwd = #{uss_pwd}
+		</if>
+		WHERE uss_id = #{uss_id}
+	</update> 
+	
+	<!-- 사용자 삭제 -->
+	<delete id="ussDelete" parameterType="map" >
+		DELETE FROM std_uss_mng WHERE uss_id = #{uss_id}
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
+			AND uss_pwd = #{uss_pwd}
+		</if>
+	</delete>
+	
+	<!-- 팝업 사용자 검색 조회  -->
+	<select id="getUssListPopup" resultType="hashMap" parameterType="map" >
+		 SELECT
+				A.USS_ID
+				, A.USS_NM
+				, A.USS_BIRTH
+				, A.USS_EMAIL
+				, B.AUTHOR_CODE AS USS_AUTH_CD	<!-- 권한 매핑 테이블 사용시 --> 
+				, A.USS_AUTH_CD
+				, A.USS_TEL
+				, A.USS_EM_NO
+				, C.AUTHOR_NM AS USS_AUTH_NM	<!-- 권한 매핑 테이블 사용시 -->
+				, A.DP_CD
+				, D.CD_NM AS DP_NM
+			FROM
+				STD_USS_MNG A
+				LEFT OUTER JOIN STD_AUT_ROLE_MAP B ON A.USS_ID = B.SCRTY_DTRMN_TRGET_ID
+				LEFT OUTER JOIN STD_AUT_INFO C ON C.AUTHOR_CODE = B.AUTHOR_CODE
+				LEFT OUTER JOIN STD_CD_MNG D ON D.CD = A.DP_CD
+		<where>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+				<choose>
+					<when test='searchGubun == "01"' >
+				A.USS_ID LIKE '%' || #{searchField} || '%'
+					</when>
+					<when test='searchGubun == "02"' >
+				A.USS_NM LIKE '%' || #{searchField} || '%'	
+					</when>
+				</choose>
+			</if>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(not_uss_id)" >
+				AND A.USS_ID != #{not_uss_id}
+			</if>
+		</where>
+		ORDER BY REG_DT DESC
+	</select>
+	<!-- 팝업 사용자 검색 총건수  -->
+	<select id="getUssTotCountPopup" resultType="int" parameterType="map" >
+		 SELECT
+				COUNT(1) AS cnt
+			FROM
+				STD_USS_MNG
+		<where>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+				<choose>
+					<when test='searchGubun == "01"' >
+				USS_ID LIKE '%' || #{searchField} || '%'
+					</when>
+					<when test='searchGubun == "02"' >
+				USS_NM LIKE '%' || #{searchField} || '%'	
+					</when>
+				</choose>
+			</if>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(not_uss_id)" >
+				AND USS_ID != #{not_uss_id}
+			</if>
+		</where>
+	</select>
+	<!-- 부서목록 조회 -->
+	<select id="getUssDepartList" resultType="hashMap" parameterType="map" >
+		SELECT
+		  cd AS dp_cd
+		  , LTRIM (SYS_CONNECT_BY_PATH (cd_nm, ' > '), ' > ') AS dp_nm
+		FROM std_cd_mng
+		  START WITH up_cd = 'CD0008'
+		  CONNECT BY PRIOR cd = up_cd
+		ORDER SIBLINGS BY cd_ord ASC
+	</select>
+</mapper>

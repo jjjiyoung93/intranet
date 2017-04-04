@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* CSS Document */
+/*  * default definition   */
+@import url("http://fonts.googleapis.com/earlyaccess/nanumgothic.css");
+* { font-family:"Nanum Gothic" ;  }
+
+
+/*base*/
+article, p {font-family: Nanum Gothic, Helvetica, sans-serif;font-size: 12px;}
+html { width:100%;}
+body{ min-width:1170px; padding:0; margin:0 auto; font-family:"Nanum Gothic", Arial, Helvetica, sans-serif; font-size:14px;line-height:145%; display:block;}
+body.pop { width:100%; min-width:100%; }
+
+/*LINK*/
+a { selector-dummy: expression(this.hideFocus=true); color:#878787; }
+a:link{text-decoration:none;}
+/*a:hover, a:active {color: #666;text-decoration: none;}*/
+a:hover, a:active{text-decoration:none;}
+a, input, button{ display:inline-block; padding:0; border:0; }
+a:visited{text-decoration:none;}
+/* a:focus{outline:none;} */
+
+/*a:active, a:hover {text-decoration: underline;}*/
+img,
+input.type-image{ border:0 none;}
+
+
+/*background:  transparent;*/
+input.type-text:hover,
+input.type-text:focus,
+textarea:hover, textarea:focus { background-color:#FFF; }
+span.button, img.button, a.button{vertical-align:middle;cursor:pointer;}
+legend { display:none; }
+ul{padding:0;margin:0;list-style:none; }
+fieldset{ padding:0;margin:0;border:0 }
+img.border{border:0px}
+div.alt, dl.alt, ul.alt{height:0;padding:0;text-indent:3em;overflow:hidden;}
+select, input, textarea{ display:inline-block; padding:0; margin:0; color:#404040; }
+textarea { width:100%; }
+select { display:inline-block; }
+p{padding:10px 0;margin:0;border:0;}
+caption{display:none;}
+SPAN[hello="Cleveland"][goodbye="Columbus"] {color:blue;}
+input[type=checkbox], input[type=radio] {border:0px;}
+ul{margin:0;}
+li{list-style:none;margin:0;}
+
+form { padding:10px 0; }
+
+form input, form select,form  textarea {  
+						display:inline-block;
+						border-radius:2px;
+						padding:7px; margin:5px 0; 
+						border:1px solid #d4d4d4;
+						border-collapse : collapse; 
+						box-sizing:border-box;
+						}
+						
+input.form_control { width:100%; display:block; height:34px; padding:6px 12px;  }
+
+img,fieldset,iframe{border:0 none }
+fieldset { clear:both; }
+li{list-style:none}
+
+
+
+

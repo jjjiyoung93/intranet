@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="bbs">	
+	
+	<resultMap id="getBbsMap" type="hashMap">
+	    <result property="BBS_SEQ"	column="BBS_SEQ"	javaType="java.lang.Integer"	jdbcType="INTEGER" />
+	    <result property="BBS_ID"	column="BBS_ID"		javaType="java.lang.String"	jdbcType="VARCHAR" />
+	    <result property="TITLE"	column="TITLE"		javaType="java.lang.String"	jdbcType="VARCHAR" />
+	    <result property="CONTENT"	column="CONTENT"	javaType="java.lang.String"		jdbcType="CLOB" />
+	    <result property="P_SEQ"	column="P_SEQ"		javaType="java.lang.Integer"	jdbcType="INTEGER" />
+	    <result property="SEC_YN"	column="SEC_YN"		javaType="java.lang.String"	jdbcType="VARCHAR" />
+	    <result property="REG_DT"	column="REG_DT"		javaType="java.lang.String"		jdbcType="VARCHAR" />
+	    <result property="REG_ID"	column="REG_ID"		javaType="java.lang.String"	jdbcType="VARCHAR" />
+	    <result property="REG_NM"	column="REG_NM"		javaType="java.lang.String"		jdbcType="VARCHAR" />
+	    <result property="MOD_DT"	column="MOD_DT"		javaType="java.lang.String"		jdbcType="VARCHAR" />
+	    <result property="MOD_NM"	column="MOD_NM"		javaType="java.lang.String"		jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="bbsNoticeWhere">
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+			<if test="searchGubun eq 01">
+				AND	TITLE like '%' || #{searchField} || '%'
+			</if>
+			<if test="searchGubun eq 02">
+				AND	CONTENT like '%' || #{searchField} || '%'
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 카운터 조회 -->
+	<select id="getBbsListCnt" resultType="int" parameterType="map">
+		SELECT COUNT(1)
+		FROM STD_BBS	 
+		 WHERE BBS_ID = #{bbs_id}
+	   <include refid="bbsNoticeWhere"/>
+		  START WITH NVL(P_SEQ, 0) = 0
+		  CONNECT BY PRIOR SEQ = P_SEQ
+	</select>
+	
+	<!-- 게시판 리스트 조회  -->
+	<select id="getBbsList" resultType="HashMap" parameterType="map" >
+		SELECT SEQ AS BBS_SEQ
+		   , BBS_ID
+		   , TITLE
+		   , P_SEQ
+		   , NVL(SEC_YN, 'N') AS SEC_YN
+		   , NVL(HIT, 0) AS HIT
+		   , TO_CHAR(REG_DT, 'YYYY-MM-DD') AS REG_DT
+		   , REG_DT AS DT
+		   , REG_ID
+		   , REG_NM
+		   , TO_CHAR(MOD_DT, 'YYYY-MM-DD') AS MOD_DT
+		   , MOD_NM
+		   , LEVEL-1 AS LEVEL_CNT
+		FROM STD_BBS	 
+		 WHERE BBS_ID = #{bbs_id}
+	   <include refid="bbsNoticeWhere"/>
+		  START WITH NVL(P_SEQ, 0) = 0
+		  CONNECT BY PRIOR SEQ = P_SEQ
+		ORDER SIBLINGS BY REG_DT DESC, SEQ DESC
+	</select>
+	
+	<!-- 댓글 리스트 조회  -->
+	<select id="getRepList" resultType="HashMap" parameterType="map" >
+		  SELECT REP_SEQ
+			   , BBS_SEQ
+			   , REP_P_SEQ
+			   , REPLY
+			   , REG_ID
+			   , REG_DT
+			   , MOD_ID
+			   , MOD_DT
+			   , LEVEL-1 AS LEVEL_CNT
+			FROM STD_BBS_REPLY
+		   WHERE BBS_SEQ = #{bbs_seq}
+		   START WITH NVL(REP_P_SEQ, 0) = 0
+		  CONNECT BY PRIOR REP_SEQ = REP_P_SEQ
+		ORDER SIBLINGS BY REG_DT DESC, REP_SEQ DESC
+		   
+	</select>
+	
+	<!-- 이미지 게시판 목록 조회 -->
+	<select id="getBbsImgList" resultMap="getBbsMap" parameterType="map">
+		WITH TB_SKIN AS (
+		  SELECT
+		    BBS_SEQ
+		    , MIN(FILE_SEQ) AS FILE_SEQ
+		  FROM 
+		      STD_BBS_FILE 
+		    WHERE BBS_SEQ IN (
+		            SELECT 
+		                SEQ 
+		              FROM STD_BBS 
+		            WHERE BBS_ID = #{bbs_id}
+		            <include refid="bbsNoticeWhere"/>
+		          )
+		  GROUP BY BBS_SEQ
+		)
+		SELECT
+		  A.BBS_SEQ
+		  , A.FILE_SEQ
+		  , B.BBS_ID
+		  , B.TITLE
+		  , REGEXP_REPLACE(NVL(B.CONTENT,0), <![CDATA['<p>|</p>|style']]>, '') AS CONTENT
+		  , B.REG_DT
+		  , C.FILE_NM
+		  , C.FILE_STRE_NM
+		  , C.FILE_PATH
+		  , C.FILE_EXT
+		  , C.FILE_SIZE
+		FROM
+		  TB_SKIN A
+		  LEFT OUTER JOIN STD_BBS B ON A.BBS_SEQ = B.SEQ
+		  LEFT OUTER JOIN STD_BBS_FILE C ON A.FILE_SEQ = C.FILE_SEQ
+		ORDER BY B.REG_DT DESC
+	</select>
+	
+	<!-- 게시판 정보 상세보기  -->
+	<select id="getBbsView" resultMap="getBbsMap" parameterType="map" >
+		SELECT SEQ AS BBS_SEQ
+			 , BBS_ID
+			 , TITLE
+			 , CONTENT
+			 , P_SEQ
+			 , NVL(SEC_YN, 'N') AS SEC_YN
+			 , NVL(HIT, 0) AS HIT
+			 , TO_CHAR(REG_DT, 'YYYY-MM-DD') AS REG_DT
+			 , REG_ID
+			 , REG_NM
+			 , TO_CHAR(MOD_DT, 'YYYY-MM-DD') AS MOD_DT
+			 , MOD_NM
+		FROM STD_BBS	 
+	   WHERE SEQ = #{bbs_seq}
+	</select>
+	
+	<!-- 메뉴등록 -->
+	<insert id="insertBbs" parameterType="map">
+		<selectKey keyProperty="bbs_seq" resultType="String" order="BEFORE">
+			SELECT NVL(MAX(SEQ), 0)+1 bbs_seq FROM STD_BBS
+		</selectKey>
+		INSERT INTO STD_BBS (
+				SEQ
+				, BBS_ID
+				, TITLE
+				, CONTENT
+				, P_SEQ
+				, SEC_YN
+				, HIT
+				, REG_DT
+				, REG_ID
+				, REG_NM
+			)
+			VALUES (
+				#{bbs_seq}
+				, #{bbs_id}
+				, #{title, jdbcType=VARCHAR}
+				, #{content, jdbcType=VARCHAR}
+				, #{p_seq, jdbcType=VARCHAR}
+				, #{sec_yn, jdbcType=VARCHAR}
+				, 0
+				, SYSDATE
+				, #{reg_id, jdbcType=VARCHAR}
+				, #{reg_nm, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<!-- 댓글등록 -->
+	<insert id="insertReply" parameterType="map">
+		<selectKey keyProperty="rep_seq" resultType="String" order="BEFORE">
+			SELECT NVL(MAX(REP_SEQ), 0)+1 REP_SEQ FROM STD_BBS_REPLY
+		</selectKey>
+		INSERT INTO STD_BBS_REPLY (
+				  REP_SEQ
+				, BBS_SEQ
+				, REP_P_SEQ
+				, REPLY
+				, REG_ID
+				, REG_DT
+			)
+			VALUES (
+				  #{rep_seq}
+				, #{bbs_seq}
+				, #{rep_p_seq, jdbcType=VARCHAR}
+				, #{reply}
+				, #{reg_id, jdbcType=VARCHAR}
+				, SYSDATE
+			)
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateBbs"  parameterType="map">
+		UPDATE  STD_BBS
+		   SET  TITLE		= #{title}
+				, CONTENT	= #{content}
+				, SEC_YN	= #{sec_yn, jdbcType=VARCHAR}
+				, MOD_DT	= SYSDATE
+				, MOD_ID	= #{reg_id, jdbcType=VARCHAR}
+				, MOD_NM	= #{reg_nm, jdbcType=VARCHAR}
+		 WHERE SEQ = #{bbs_seq}
+	</update>
+	
+	<!--댓글 수정 -->
+	<update id="updateReply"  parameterType="map">
+		UPDATE  STD_BBS_REPLY
+		   SET    REPLY	    = #{reply}
+				, MOD_DT	= SYSDATE
+				, MOD_ID	= #{reg_id, jdbcType=VARCHAR}
+		 WHERE REP_SEQ = #{rep_seq}
+	</update>
+	
+	<!-- 수정 -->
+	<update id="updateHitBbs"  parameterType="map">
+		UPDATE  STD_BBS
+		   SET  HIT		= (NVL(HIT, 0) + 1)
+		 WHERE SEQ = #{bbs_seq}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteBbs" parameterType="map">
+		DELETE FROM STD_BBS WHERE SEQ = #{bbs_seq}
+	</delete>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteReply" parameterType="map">
+		DELETE FROM STD_BBS_REPLY WHERE REP_SEQ = #{rep_seq}
+	</delete>
+	
+	<!-- 게시물 파일 등록 -->
+	<insert id="insertBbsFile" parameterType="map">
+		<selectKey keyProperty="file_seq" resultType="int" order="BEFORE">
+			SELECT 
+				NVL(MAX(FILE_SEQ),0)+1
+			FROM STD_BBS_FILE
+		</selectKey>
+		INSERT INTO STD_BBS_FILE (
+				FILE_SEQ
+				, BBS_SEQ
+				, FILE_NM
+				, FILE_STRE_NM
+				, FILE_PATH
+				, FILE_SIZE
+				, FILE_EXT
+				, REG_DT
+			)
+		  VALUES (
+		  		#{file_seq}
+		  		, #{bbs_seq}
+		  		, #{file_nm}
+		  		, #{file_stre_nm, jdbcType=VARCHAR}
+		  		, #{file_path, jdbcType=VARCHAR}
+		  		, #{file_size, jdbcType=INTEGER}
+		  		, #{file_ext, jdbcType=VARCHAR}
+		  		, SYSDATE
+		  	)
+	</insert>
+	
+	<!-- 게시물 파일 정보조회 -->
+	<select id="getBbsFileList" resultType="HashMap" parameterType="map">
+		SELECT
+		    FILE_SEQ
+		    , BBS_SEQ
+		    , FILE_NM
+		    , FILE_STRE_NM
+		    , FILE_PATH
+		    , FILE_EXT
+		    , FILE_SIZE
+		FROM STD_BBS_FILE
+		WHERE BBS_SEQ = #{bbs_seq}
+		ORDER BY FILE_SEQ ASC
+	</select>
+	<!-- 게시물 파일 삭제 -->
+	<delete id="deleteBbsFile" parameterType="map">
+		DELETE FROM STD_BBS_FILE WHERE FILE_SEQ = #{file_seq}
+	</delete>
+	
+	<!-- 게시물 파일 삭제 -->
+	<delete id="deleteBbsFileAll" parameterType="map">
+		DELETE FROM STD_BBS_FILE WHERE BBS_SEQ = #{bbs_seq}
+	</delete>
+	
+	<!-- 공지사항 정보 가져오기 -->	
+	<select id="noticeList" resultMap="getBbsMap" parameterType="map">
+	<![CDATA[
+		SELECT
+		  *
+		FROM (
+		  SELECT
+		    SEQ AS BBS_SEQ
+		    , BBS_ID
+		    , TITLE
+		    , TO_CHAR(REG_DT, 'YYYY-MM-DD HH24:MI:SS') AS REG_DT
+		  FROM
+		    STD_BBS
+		  WHERE  BBS_ID = 'BB0001'
+		  ORDER BY REG_DT DESC
+		)
+		WHERE ROWNUM <= 2
+	]]>
+	</select>
+</mapper>

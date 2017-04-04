@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="loginDAO">	
+
+	
+	 <!-- 코드상세정보 가져오기  -->
+	<select id="actionLogin" resultType="kr.letech.cmm.LoginVO" parameterType="map" >
+		SELECT uss.uss_id AS id
+		     , uss.uss_nm AS name
+		     , uss.uss_pwd AS password
+		     , uss.uss_email AS email
+		     , uss.uss_pwd AS uniqId
+		     , dp.dp_cd AS orgnztId
+		     , dp.dp_nm AS orgnztNm
+		  FROM std_uss_mng uss
+		  		LEFT OUTER JOIN (
+			  		SELECT 
+						cd as dp_cd, LTRIM (SYS_CONNECT_BY_PATH (cd_nm, ' > '), ' > ') AS dp_nm
+					FROM STD_CD_MNG
+					  START WITH UP_CD = 'CD0008'
+					  CONNECT BY PRIOR CD = UP_CD
+					ORDER SIBLINGS BY CD_ORD ASC
+				) dp ON dp.dp_cd = uss.dp_cd
+		 WHERE uss.uss_id = #{id}
+		   AND uss.uss_pwd = #{password}
+	</select>	
+	<select id="actionLogin2" resultType="kr.letech.cmm.LoginVO" parameterType="map" >
+		SELECT mber_id AS id
+		     , mber_nm AS name
+		     , ihidNum AS ihidNum
+		     , password AS password
+		     , mber_email_adres AS email
+		     , 'GNR' AS userSe
+		     , '-' AS orgnztId
+		     , esntl_id AS uniqId
+		  FROM COMTNGNRLMBER
+		 WHERE mber_id = #{id}
+		   AND password = #{password}
+		   AND mber_sttus = 'P'
+	</select>	
+	
+</mapper>

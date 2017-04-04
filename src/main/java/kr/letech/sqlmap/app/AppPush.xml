@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="appPush">
+
+	<select id="getSelectAppPushList" resultType="String" parameterType="map" >
+		SELECT PHONE_TOKEN AS tokenKey FROM STD_APP_PUSH WHERE PUSH_YN = 'Y'
+	</select>
+
+	<select id="getSelectAppPushListPayment" resultType="String" parameterType="map" >
+		SELECT PHONE_TOKEN AS tokenKey FROM STD_APP_PUSH WHERE PUSH_YN = 'Y' AND USS_ID = #{aprv_emp_no}
+	</select>
+	
+	
+	
+</mapper>

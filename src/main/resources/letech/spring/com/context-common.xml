@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+	<context:component-scan base-package="kr.letech">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<context:annotation-config/>	<!--  registered for JavaConfig -->
+
+
+   <!--  <bean id="egovMessageSource" class="egovframework.com.cmm.EgovMessageSource">
+        <property name="reloadableResourceBundleMessageSource">
+            <ref bean="messageSource" />
+        </property>
+    </bean> -->
+    
+	<!-- 실행환경에서 빈 이름 참조(AbstractServiceImpl) -->
+<!-- 	<bean id="leaveaTrace" class="egovframework.rte.fdl.cmmn.trace.LeaveaTrace">
+		<property name="traceHandlerServices">
+			<list>
+				<ref bean="egov.traceHandlerService" />
+			</list>
+		</property>
+	</bean> -->
+
+	<!-- <bean id="egov.traceHandlerService" class="egovframework.rte.fdl.cmmn.trace.manager.DefaultTraceHandleManager">
+		<property name="reqExpMatcher">
+			<ref bean="egov.antPathMater" />
+		</property>
+		<property name="patterns">
+			<list>
+				<value>*</value>
+			</list>
+		</property>
+		<property name="handlers">
+			<list>
+				<ref bean="egov.defaultTraceHandler" />
+			</list>
+		</property>
+	</bean> -->
+
+<!-- 	<bean id="egov.antPathMater" class="org.springframework.util.AntPathMatcher" />
+
+	<bean id="egov.defaultTraceHandler" class="egovframework.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" /> -->
+
+
+    <!-- MULTIPART RESOLVERS -->
+    <!-- regular spring resolver -->
+    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="600000000" />
+        <property name="maxInMemorySize" value="100000000" />
+    </bean>
+
+    <!-- choose one from above and alias it to the name Spring expects -->
+    <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" />
+    
+    <!-- scheduler -->
+    <context:component-scan base-package="kr.letech.cmm.schedule" />
+	<task:scheduler id="jobScheduler" pool-size="10" />
+	<task:annotation-driven scheduler="jobScheduler" />
+	
+	<!-- Spring mail configuration --> 
+	<bean id="mailSender" class ="org.springframework.mail.javamail.JavaMailSenderImpl" >
+		<property name="host" value="localhost" />
+	    <property name="port" value="25" />
+	    <property name="username" value="root" />
+	    <property name="password" value="letech2016!" />
+	    <property name="javaMailProperties">
+	       <props>
+	           <prop key="mail.smtp.starttls.enable">true</prop>
+	           <prop key="mail.debug">true</prop>
+	       </props>
+	    </property>
+	</bean>
+</beans>

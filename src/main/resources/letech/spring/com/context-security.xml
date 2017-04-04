@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:egov-security="http://www.egovframe.go.kr/schema/egov-security"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.egovframe.go.kr/schema/egov-security http://www.egovframe.go.kr/schema/egov-security/egov-security-3.0.xsd">
+
+<!--
+수정일      			수정자				수정내용
+=========	======= 		=================================================
+2011.09.07		서준식				일반, 업무사용자의 경우 조직아이디가 없어 로그인이 안되던 문제 수정(SQL 수정)
+2011.09.25		서준식				usersByUsernameQuery 쿼리의 조직 아이디 비교 부분  오류 수정 > alias 추가
+2014.06.13		Vincent Han		표준프레임워크 3.0 적용 (간소화 설정 사용)
+-->
+
+	<security:http pattern="/css/**" security="none"/>
+	<security:http pattern="/html/**" security="none"/>
+    <security:http pattern="/images/**" security="none"/>
+ 	<security:http pattern="/js/**" security="none"/>
+ 	<security:http pattern="/resource/**" security="none"/>
+ 	<security:http pattern="\A/WEB-INF/jsp/.*\Z" request-matcher="regex" security="none"/>
+
+    <egov-security:config id="securityConfig"
+		loginUrl="/uat/uia/egovLoginUsr.do"
+		logoutSuccessUrl="/EgovContent.do"
+		loginFailureUrl="/uat/uia/egovLoginUsr.do?login_error=1"
+		accessDeniedUrl="/sec/ram/accessDenied.do"
+
+		dataSource="dataSource"
+        jdbcUsersByUsernameQuery="SELECT USS_ID AS USER_ID, USS_PWD AS PASSWORD, 1 ENABLED   , USS_NM AS USER_NM, 'dd' USER_ZIP,
+        						  'dss' USER_ADRES, 'ee@letech.kr' AS USER_EMAIL, 'GNR' USER_SE, 'sss' ORGNZT_ID, 'aaa' ESNTL_ID, 'ddd' ORGNZT_NM 
+                                  FROM STD_USS_MNG		 WHERE USS_ID = ?"
+		jdbcAuthoritiesByUsernameQuery="SELECT A.USS_ID AS USER_ID, B.AUTHOR_CODE AS AUTHORITY
+								         FROM STD_USS_MNG A LEFT OUTER JOIN
+								         STD_AUT_ROLE_MAP B
+								         ON (A.USS_ID = B.SCRTY_DTRMN_TRGET_ID)
+								         WHERE A.USS_ID = ?"
+		jdbcMapClass="kr.letech.sec.security.common.EgovSessionMapping"
+
+		requestMatcherType="regex"
+		hash="plaintext"
+		hashBase64="false"
+
+		concurrentMaxSessons="1"
+		concurrentExpiredUrl="/index.do"
+
+		defaultTargetUrl="/index.do"
+	/>
+
+	<egov-security:secured-object-config id="securedObjectConfig"
+		sqlHierarchicalRoles="
+			SELECT CHLDRN_ROLE child, PARNTS_ROLE parent
+			FROM STD_AUT_ROLE_HIC"
+		sqlRolesAndUrl="
+			SELECT a.ROLE_PTTRN url, b.AUTHOR_CODE authority
+			FROM STD_AUT_ROLE_INFO a, STD_AUT_ROLE_RELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+				AND a.ROLE_TY = 'url'  ORDER BY a.ROLE_SORT"
+		sqlRolesAndMethod="
+			SELECT a.ROLE_PTTRN method, b.AUTHOR_CODE authority
+			FROM STD_AUT_ROLE_INFO a, STD_AUT_ROLE_RELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+				AND a.ROLE_TY = 'method'  ORDER BY a.ROLE_SORT"
+		sqlRolesAndPointcut="
+			SELECT a.ROLE_PTTRN pointcut, b.AUTHOR_CODE authority
+			FROM STD_AUT_ROLE_INFO a, STD_AUT_ROLE_RELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+				AND a.ROLE_TY = 'pointcut'  ORDER BY a.ROLE_SORT"
+		sqlRegexMatchedRequestMapping="
+			SELECT a.resource_pattern uri, b.authority authority
+			FROM COMTNSECURED_RESOURCES a, COMTNSECURED_RESOURCES_ROLE b
+			WHERE a.resource_id = b.resource_id
+				AND a.resource_type = 'url'"
+	/>
+	
+	<bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+
+	<egov-security:initializer id="initializer" supportMethod="true" supportPointcut="false" />
+
+</beans>

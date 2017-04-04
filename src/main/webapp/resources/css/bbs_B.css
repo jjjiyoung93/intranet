@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+
+/* 블루라인 */
+table.list_table {  }
+table.list_table thead tr th { 
+	background:url("/resources/images/layout/left_line.jpg") 0px 10px no-repeat ; 
+	color:#000; font-weight:normal;
+	border-top:2px solid #54afbd; border-bottom:1px solid #54afbd;  
+}
+table.list_table thead tr th:first-child { background-image:none; }
+table.list_table tbody tr:nth-child(even) th { background:#f8f8f8; }
+table.list_table tbody tr td {  }
+table.list_table tbody tr:nth-child(even) td { background:#f8f8f8; }
+
+/*view*/
+table.table_info { border-top:2px solid #54afbd; border-bottom:1px solid #54afbd; float:left; width:100%; }
+table.table_info tbody tr th { background:#f2f2f2;  }
+table.table_info tbody tr td { background:none; text-align:left; bakckground:#54afbd; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#file_ > img { width:100%; }
+	
+	
+	

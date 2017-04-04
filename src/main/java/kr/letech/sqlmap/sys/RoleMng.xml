@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="roleMng">	
+	
+	<!-- 권한정보 조회  -->
+	<select id="get00List" resultType="HashMap" parameterType="map" >
+		   SELECT ROLE_CODE
+		        , ROLE_NM
+		        , ROLE_PTTRN
+		        , ROLE_DC
+		        , '-' AS AUTHOR_CODE
+		        , ROLE_TY
+		        , ROLE_SORT
+		        , ROLE_CREAT_DE
+		   FROM STD_AUT_ROLE_INFO
+		ORDER BY ROLE_SORT, ROLE_CODE, ROLE_NM DESC
+	</select>	
+	
+	<!-- 롤 계층 정보 조회 -->
+	<select id="get01List" resultType="HashMap" parameterType="map" >
+		SELECT A.PARNTS_ROLE
+		  , B.AUTHOR_NM AS PR_DC
+		  , A.CHLDRN_ROLE
+		  , C.AUTHOR_NM AS CH_DC
+		FROM STD_AUT_ROLE_HIC A
+		  LEFT OUTER JOIN STD_AUT_INFO B
+		    ON A.PARNTS_ROLE = B.AUTHOR_CODE
+		  LEFT OUTER JOIN STD_AUT_INFO C
+		    ON A.CHLDRN_ROLE = C.AUTHOR_CODE
+		WHERE A.CHLDRN_ROLE NOT IN('IS_AUTHENTICATED_ANONYMOUSLY','IS_AUTHENTICATED_REMEMBERED','IS_AUTHENTICATED_FULLY')
+		  AND A.PARNTS_ROLE NOT IN('IS_AUTHENTICATED_ANONYMOUSLY','IS_AUTHENTICATED_REMEMBERED','IS_AUTHENTICATED_FULLY')
+		ORDER BY A.PARNTS_ROLE DESC
+	</select>	
+	
+	<!-- 롤매핑을 위한 권한정보 조회  -->
+	 <select id="getAuthList" resultType="HashMap" parameterType="map" >
+		   SELECT AUTHOR_CODE
+		    	, AUTHOR_NM 
+		     FROM STD_AUT_INFO
+      		WHERE AUTHOR_CODE
+      		 NOT IN('IS_AUTHENTICATED_ANONYMOUSLY','IS_AUTHENTICATED_REMEMBERED','IS_AUTHENTICATED_FULLY')
+	 </select>
+	 
+	<!-- 권한정보 상세 조회  -->
+	 <select id="getAuthInfo" resultType="HashMap" parameterType="map" >
+		   SELECT AUTHOR_CODE
+		    	, AUTHOR_NM
+		    	, AUTHOR_DC
+		    	, AUTHOR_CREAT_DE
+		     FROM STD_AUT_INFO
+      		WHERE AUTHOR_CODE = #{author_code, jdbcType=VARCHAR}
+      		 
+	 </select>
+	 
+	 <!-- 권한정보 조회  -->
+	 <select id="get02List" resultType="HashMap" parameterType="map" >
+		SELECT 
+		  A.CD
+		  , A.CD_NM 
+		  , A.UP_CD
+		  , B.AUTHOR_CODE
+		  , B.AUTHOR_NM
+		FROM STD_CD_MNG A
+		  LEFT OUTER JOIN STD_AUT_INFO B ON B.CD_MAP = A.CD
+		WHERE A.UP_CD IN ('CD0005', 'CD0006') 
+		ORDER BY A.CD ASC
+	 </select>
+	 
+	 <!-- 롤 정보 가져오기  -->
+	<select id="getView" resultType="HashMap" parameterType="map" >
+		SELECT  ROLE_CODE
+			  , ROLE_NM
+			  , ROLE_PTTRN
+			  , ROLE_DC
+			  , ROLE_TY
+			  , ROLE_SORT
+			  , ROLE_CREAT_DE
+		FROM STD_AUT_ROLE_INFO
+		WHERE ROLE_CODE = #{role_code, javaType=String ,jdbcType=VARCHAR}
+	</select>	
+	
+	<!-- 메뉴등록 -->
+	<insert id="insert" parameterType="map">
+		<selectKey keyProperty="role_code" resultType="String" order="BEFORE">
+				SELECT 
+				'web-' ||
+				SUBSTR('0000' || TO_CHAR(NVL(MAX(TO_NUMBER(SUBSTR(ROLE_CODE,-4))),0)+1),-4)
+			FROM STD_AUT_ROLE_INFO
+		</selectKey>
+		INSERT INTO STD_AUT_ROLE_INFO (
+			    ROLE_CODE
+			  , ROLE_NM
+			  , ROLE_PTTRN
+			  , ROLE_DC
+			  , ROLE_TY
+			  , ROLE_SORT
+			  , ROLE_CREAT_DE
+			)VALUES(
+			    #{role_code}
+			  , #{role_nm}
+			  , #{role_pttrn}
+			  , #{role_dc}
+			  , #{role_ty}
+			  , #{role_sort}
+			  , SYSDATE
+			)
+	</insert>
+	
+	<!-- 롤 매핑 등록 -->
+	<insert id="roleRelateInsert" parameterType="map">
+		INSERT INTO STD_AUT_ROLE_RELATE (
+				AUTHOR_CODE
+			  , ROLE_CODE
+			  , CREAT_DT
+			)VALUES(
+			    #{author_code}
+			  , #{role_code}
+			  , SYSDATE
+			)
+	</insert>
+	
+	<!-- 권한 정보 등록 -->
+	<insert id="authInfoInsert" parameterType="map">
+		<selectKey keyProperty="author_code" resultType="String" order="BEFORE">
+			SELECT 'ROLE_USER'||TRIM(TO_CHAR(MAX(SUBSTR(AUTHOR_CODE,10))+1, '00')) FROM STD_AUT_INFO WHERE AUTHOR_CODE LIKE 'ROLE_USER__'
+		</selectKey>
+		INSERT INTO STD_AUT_INFO (
+				AUTHOR_CODE
+			  , AUTHOR_NM
+			  , AUTHOR_CREAT_DE
+			  , CD_MAP
+			)VALUES(
+			    #{author_code}
+			  , #{author_nm}
+			  , SYSDATE
+			  , #{cd_map}
+			)
+	</insert>
+	
+	<!-- 권한 계층 정보 등록 -->
+	<insert id="authRoleHicInsert" parameterType="map">
+		INSERT INTO STD_AUT_ROLE_HIC (
+				PARNTS_ROLE
+			  , CHLDRN_ROLE
+			)VALUES(
+			    #{parnts_role}
+			  , #{chldrn_role}
+			)
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateNm"  parameterType="map">
+		UPDATE  STD_AUT_ROLE_INFO
+		   SET  ROLE_CODE      = #{role_code}
+			  , ROLE_NM        = #{role_nm}
+			  , ROLE_PTTRN     = #{role_pttrn}
+			  , ROLE_DC        = #{role_dc}   
+			  , ROLE_TY        = #{role_ty}  
+			  , ROLE_SORT      = #{role_sort} 
+		 WHERE ROLE_CODE = #{role_code}
+	</update>
+	
+	<!-- 권한 정보 수정 -->
+	<update id="updateAuthInfo"  parameterType="map">
+		UPDATE  STD_AUT_INFO
+		   SET  AUTHOR_NM   = #{author_nm}
+		   <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(author_dc)" >
+			  , AUTHOR_DC   = #{author_dc}
+		   </if>
+		  WHERE AUTHOR_CODE = #{author_code}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="roleRelateDel" parameterType="map">
+		DELETE FROM STD_AUT_ROLE_RELATE WHERE ROLE_CODE = #{role_code}
+	</delete>
+
+	<!-- 롤 정보 삭제 -->
+	<delete id="roleInfoDel" parameterType="map">
+		DELETE FROM STD_AUT_ROLE_INFO WHERE ROLE_CODE = #{role_code}
+	</delete>
+	
+	
+	<!-- 권한 매핑 정보 삭제 -->
+	<delete id="relateDel" parameterType="map">
+		DELETE FROM STD_AUT_ROLE_RELATE WHERE ROLE_CODE = #{role_code}
+		AND AUTHOR_CODE = #{author_code}
+	</delete>
+	
+	<!-- 권한 정보 삭제 -->
+	<delete id="deleteAuthorInfo" parameterType="map">
+		DELETE FROM STD_AUT_INFO WHERE AUTHOR_CODE = #{author_code}
+	</delete>
+	
+	<!-- 권한 정보 삭제 -->
+	<delete id="deleteRoleHic" parameterType="map">
+		DELETE FROM STD_AUT_ROLE_HIC WHERE PARNTS_ROLE = #{parnts_role}
+		AND CHLDRN_ROLE = #{chldrn_role}
+	</delete>
+		<!-- 사용자권한 매핑정보 저장 -->
+	<insert id="roleMapInsert" parameterType="map">
+		INSERT INTO STD_AUT_ROLE_MAP (SCRTY_DTRMN_TRGET_ID, MBER_TY_CODE, AUTHOR_CODE)
+			VALUES (#{scrty_dtrmn_trget_id}, #{mber_ty_code}, #{author_code})
+	</insert>
+	
+	<!-- 사용자권한 매핑정보 수정 -->
+	<update id="roleMapUpdate" parameterType="map">
+		UPDATE STD_AUT_ROLE_MAP SET
+			AUTHOR_CODE = #{author_code}
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(mber_ty_code)" >
+			, MBER_TY_CODE = #{mber_ty_code}
+		</if>
+		WHERE SCRTY_DTRMN_TRGET_ID = #{scrty_dtrmn_trget_id}
+	</update>
+	
+	<!-- 사용자권한 매핑정보 삭제 -->
+	<delete id="roleMapDelete" parameterType="map">
+		DELETE FROM STD_AUT_ROLE_MAP 
+		WHERE SCRTY_DTRMN_TRGET_ID = #{scrty_dtrmn_trget_id}
+	</delete>
+	
+	<!-- merge사용한 사용자 권한매핑 정보 등록 및 수정 -->
+	<update id="roleMapInsertAndUpdate" parameterType="map">
+		MERGE INTO STD_AUT_ROLE_MAP
+				USING DUAL ON ( SCRTY_DTRMN_TRGET_ID = #{scrty_dtrmn_trget_id} )
+			WHEN MATCHED THEN
+				UPDATE SET AUTHOR_CODE = #{author_code}
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(mber_ty_code)" >
+					, MBER_TY_CODE = #{mber_ty_code}
+		</if>
+			WHEN NOT MATCHED THEN
+				INSERT  (SCRTY_DTRMN_TRGET_ID, MBER_TY_CODE, AUTHOR_CODE)
+				VALUES (#{scrty_dtrmn_trget_id}, #{mber_ty_code}, #{author_code})
+	</update>
+	
+	<!-- 메뉴권한 관리에 사용자권한 목록 -->
+	<select id="roleMenuUserList" resultType="HashMap" parameterType="map">
+		SELECT
+		  UP_CD
+		  , CASE
+		      WHEN INSTR(CHLDRN_ROLE, ',') > 0 THEN REPLACE(CHLDRN_ROLE, UP_CD||', ', '')
+		      ELSE REPLACE(CHLDRN_ROLE, UP_CD, '')
+		    END CHLDRN_ROLE
+		FROM (
+			SELECT 
+			  UP_CD
+			  , LTRIM (SYS_CONNECT_BY_PATH (CHLDRN_ROLE, ', '), ', ') AS CHLDRN_ROLE
+			FROM (
+			  SELECT
+			      A.UP_CD
+			      , A.CHLDRN_ROLE
+			      , ROW_NUMBER() OVER(PARTITION BY A.UP_CD ORDER BY A.UP_CD) RN
+			      , COUNT(*) OVER(PARTITION BY A.UP_CD) CNT 
+			  FROM (
+			    SELECT
+			      UP_CD
+			      , CHLDRN_ROLE
+			    FROM (
+			      SELECT 
+			        PARNTS_ROLE
+			        , CHLDRN_ROLE
+			        , CASE
+			            WHEN INSTR(DEPT_NAME, '>', 1, 1) = 0 THEN DEPT_NAME
+			            ELSE SUBSTR(DEPT_NAME, 1, INSTR(DEPT_NAME,'>',1,1)-2)
+			          END UP_CD
+			      FROM (
+			        SELECT
+			          B.PARNTS_ROLE
+			          , B.CHLDRN_ROLE
+			          , LEVEL AS LEVL
+			          , LTRIM (SYS_CONNECT_BY_PATH (PARNTS_ROLE, ' > '), ' > ') AS dept_name
+			        FROM STD_AUT_ROLE_HIC B
+			        WHERE (B.PARNTS_ROLE NOT LIKE 'IS_%'
+			          AND B.CHLDRN_ROLE NOT LIKE 'IS_%')
+			        START WITH B.PARNTS_ROLE IN ( 
+			                  SELECT 
+			                    A.AUTHOR_CODE 
+			                  FROM STD_AUT_ROLE_RELATE A 
+			                  WHERE A.ROLE_CODE = #{role_code}
+			                )
+			        CONNECT BY PRIOR NVL(B.CHLDRN_ROLE, B.PARNTS_ROLE)  = B.PARNTS_ROLE
+			        UNION
+			        SELECT 
+				          A.AUTHOR_CODE AS PARNTS_ROLE
+				          , A.AUTHOR_CODE AS CHLDRN_ROLE 
+				          , 1 AS LEVL
+				          , A.AUTHOR_CODE AS dept_name
+				        FROM STD_AUT_ROLE_RELATE A 
+				        WHERE A.ROLE_CODE = #{role_code}
+			      )
+			    )
+			    GROUP BY UP_CD, CHLDRN_ROLE
+			  ) A
+			)
+			WHERE RN = CNT 
+			  START WITH RN =1 CONNECT BY PRIOR RN = RN-1 
+			       AND PRIOR UP_CD = UP_CD 
+		)
+	</select>
+	
+	<!-- authocode 조회 -->
+	<select id="getAuthCodeList" resultType="String" parameterType="String">
+		SELECT AUTHOR_CODE
+          FROM STD_AUT_ROLE_RELATE
+        WHERE ROLE_CODE = #{role_code}
+	</select>
+	
+</mapper>

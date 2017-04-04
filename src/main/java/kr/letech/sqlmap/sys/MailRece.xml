@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mailRece">
+	<select id="getReceInfo" resultType="HashMap" parameterType="map" >
+		SELECT A.SEND_SEQ
+			 , A.SEND_PK1 AS APRV_NO
+			 , A.SEND_PK2 AS APRV_EMP_NO
+			 , A.RECE_YN
+		  FROM STD_MAIL_SEND A
+		 WHERE 1=1
+		   AND A.SEND_SEQ = #{send_id} 
+	</select>
+	
+	<!-- 메일 수신확인 -->
+	<update id="setConfRece"  parameterType="map">
+		UPDATE STD_MAIL_SEND
+		   SET RECE_YN = '1'
+		     , RECE_DATE = SYSDATE
+		 WHERE 1=1
+		   AND SEND_SEQ = #{send_id} 
+	</update>
+</mapper>

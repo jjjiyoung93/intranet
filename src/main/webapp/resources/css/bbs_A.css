@@ -1,0 +1,14 @@
+@charset "utf-8";
+
+/* 기본 */
+
+table.list_table {  }
+table.list_table thead tr th { 
+	background:url("/resources/images/layout/left_line.jpg") 0px 10px no-repeat #f2f2f2; 
+	color:#000; font-weight:normal;
+	border-top:2px solid #000; border-bottom:1px solid #000;  
+}
+table.list_table thead tr th:first-child { background-image:none; }
+table.list_table tbody tr td {  }
+
+	

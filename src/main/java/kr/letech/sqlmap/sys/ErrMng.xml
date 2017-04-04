@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="errMng">	
+	
+	<!-- 카운터 조회 -->
+	<select id="get00ErrListCnt" resultType="int" parameterType="map">
+		SELECT COUNT(1)
+    	  FROM STD_ERROR_LOG
+    	 WHERE 1=1
+    	   AND PROCESS_STATE NOT IN 0
+	</select>
+
+	<!-- 발생에러 조회  -->
+	<select id="get00List" resultType="HashMap" parameterType="map" >
+		SELECT ERROR_SEQ
+		     , ERROR_LOGGER
+		     , ERROR_LEVEL
+		     , ERROR_DATE
+		     , PROCESS_STATE
+		     , CASE WHEN PROCESS_STATE = 1 THEN '신규'
+                	WHEN PROCESS_STATE = 2 THEN '확인중'
+                	WHEN PROCESS_STATE = 3 THEN '처리중'
+              	  END AS PROCESS_STATE_NM
+		  FROM STD_ERROR_LOG
+		 WHERE 1=1 
+   		   AND PROCESS_STATE NOT IN 0
+	  ORDER BY PROCESS_STATE ASC, ERROR_DATE DESC, ERROR_SEQ DESC 
+	</select>	
+	
+	<!-- 발생에러 상세보기  -->
+	<select id="get00ErrView" resultType="HashMap" parameterType="map" >
+		SELECT ERROR_SEQ
+		     , ERROR_LOGGER
+		     , ERROR_METHOD
+		     , ERROR_LOCATION
+		     , ERROR_DATE
+		     , ERROR_MESSAGE
+		     , ERROR_LEVEL
+		     , ERROR_THREAD
+		     , PROCESS_CONTENT
+		     , PROCESS_STATE
+		     , CASE WHEN PROCESS_STATE = 1 THEN '신규'
+                	WHEN PROCESS_STATE = 2 THEN '확인중'
+                	WHEN PROCESS_STATE = 3 THEN '처리중'
+              	  END AS PROCESS_STATE_NM
+		  FROM STD_ERROR_LOG
+		 WHERE 1=1
+		   AND ERROR_SEQ = #{error_seq}
+	</select>
+	
+	<!--처리상태 업데이트 -->
+	<update id="updateProcessState"  parameterType="map">
+		UPDATE STD_ERROR_LOG
+		   SET PROCESS_STATE = #{process_state}
+		 WHERE ERROR_SEQ = #{error_seq}
+	</update>
+	
+	<!--완료처리-->
+	<update id="updateCompletion"  parameterType="map">
+		UPDATE STD_ERROR_LOG
+		   SET PROCESS_STATE = #{process_state}
+		     , PROCESS_DATE = sysdate
+		     , PROCESS_REG_NM = #{process_reg_nm}
+		     , PROCESS_CONTENT = #{process_content}
+		 WHERE ERROR_SEQ = #{error_seq}
+	</update>
+	
+	<!--저장처리 -->
+	<update id="updateSave"  parameterType="map">
+		UPDATE STD_ERROR_LOG
+		   SET PROCESS_STATE = #{process_state}
+		     , PROCESS_CONTENT = #{process_content}
+		 WHERE ERROR_SEQ = #{error_seq}
+	</update>
+	
+	<!-- 카운터 조회 -->
+	<select id="get01ErrListCnt" resultType="int" parameterType="map">
+		SELECT COUNT(1)
+    	  FROM STD_ERROR_LOG
+    	 WHERE 1=1
+    	   AND PROCESS_STATE IN 0
+	</select>
+	
+	<!-- 처리이력 조회 -->
+	<select id="get01List" resultType="HashMap" parameterType="map" >
+		SELECT ERROR_SEQ
+		     , ERROR_THREAD
+		     , ERROR_LEVEL
+         	 , ERROR_LOGGER
+		     , ERROR_DATE
+         	 , PROCESS_DATE
+         	 , PROCESS_REG_NM
+		  FROM STD_ERROR_LOG
+		 WHERE 1=1 
+   		   AND PROCESS_STATE IN 0
+	  ORDER BY PROCESS_DATE DESC, ERROR_SEQ DESC
+	</select>	
+	
+	<!-- 처리이력 상세보기  -->
+	<select id="get01ErrView" resultType="HashMap" parameterType="map" >
+		SELECT ERROR_SEQ
+		     , ERROR_LOGGER
+		     , ERROR_METHOD
+		     , ERROR_LOCATION
+		     , ERROR_DATE
+		     , ERROR_MESSAGE
+		     , ERROR_LEVEL
+		     , ERROR_THREAD
+		     , PROCESS_CONTENT
+		     , PROCESS_REG_NM
+         , PROCESS_DATE
+		  FROM STD_ERROR_LOG
+		 WHERE 1=1
+       AND PROCESS_STATE in 0
+		   AND ERROR_SEQ = #{error_seq}
+	</select>
+</mapper>

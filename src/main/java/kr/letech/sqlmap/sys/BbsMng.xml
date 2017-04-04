@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="bbsMng">	
+	
+	<!-- 게시판 리스트 조회  -->
+	<select id="get00List" resultType="HashMap" parameterType="map" >
+		SELECT A.BBS_ID
+			 , A.BBS_NM
+       		 , B.CD_NM AS BBS_TY
+       		 , C.CD_NM || '(' || A.LAYOUT_TY || ')' AS LAYOUT_TY
+			 , A.REG_DT
+			 , A.REG_ID
+			 , A.MOD_ID
+			 , A.MOD_DT
+			 , A.BBS_ORD
+		  FROM STD_BBS_MNG A
+	      LEFT OUTER JOIN
+	      STD_CD_MNG B
+	      ON(A.BBS_TY = B.CD)
+	      LEFT OUTER JOIN
+	      STD_CD_MNG C
+	      ON(A.LAYOUT_TY = C.CD_VAL)
+	      ORDER BY BBS_ORD, BBS_ID
+	</select>
+	
+	<!-- 게시판 정보 상세보기  -->
+	<select id="getView" resultType="HashMap" parameterType="map" >
+		SELECT  BBS_ID
+			  , BBS_NM
+			  , BBS_TY
+			  , SEC_YN
+			  , REP_YN
+			  , COMENT_YN
+			  , NOTICE_YN
+			  , LAYOUT_TY
+			  , REG_DT
+			  , REG_ID
+			  , BBS_ORD
+		  FROM STD_BBS_MNG
+		  where bbs_id = #{bbs_id}
+	</select>
+	
+	<!-- 메뉴등록 -->
+	<insert id="insertBbs" parameterType="map">
+		<selectKey keyProperty="bbs_id" resultType="String" order="BEFORE">
+				SELECT 
+				'BB' ||
+				SUBSTR('0000' || TO_CHAR(NVL(MAX(TO_NUMBER(SUBSTR(BBS_ID,-4))),0)+1),-4)
+			FROM STD_BBS_MNG
+		</selectKey>
+		INSERT INTO STD_BBS_MNG (
+			    BBS_ID
+			  , BBS_NM
+			  , BBS_TY
+			  , SEC_YN
+			  , REP_YN
+			  , COMENT_YN
+			  , NOTICE_YN
+			  , LAYOUT_TY
+			  , REG_DT
+			  , REG_ID
+			  , BBS_ORD
+			)VALUES(
+			    #{bbs_id}
+			  , #{bbs_nm}
+			  , #{bbs_ty}
+			  , #{sec_yn}
+			  , #{rep_yn}
+			  , #{coment_yn}
+			  , #{notice_yn}
+			  , #{layout_ty}
+			  , SYSDATE
+			  , #{reg_id}
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(bbs_ord)" >
+			  , #{bbs_ord}
+		   </if>
+		   <if test="@kr.letech.cmm.util.DBSupport@isEmpty(bbs_ord)" >
+			  ,(SELECT NVL(MAX(TO_NUMBER(BBS_ORD)),0)+1 FROM STD_BBS_MNG)
+		    </if>
+			)
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateBbs"  parameterType="map">
+		UPDATE  STD_BBS_MNG
+		   SET  BBS_NM        = #{bbs_nm}   
+			  , BBS_TY        = #{bbs_ty}   
+			  , SEC_YN        = #{sec_yn}   
+			  , REP_YN        = #{rep_yn}   
+			  , COMENT_YN     = #{coment_yn}
+			  , NOTICE_YN     = #{notice_yn}
+			  , LAYOUT_TY     = #{layout_ty}
+			  , MOD_DT        = SYSDATE     
+			  , MOD_ID        = #{reg_id} 
+			  , BBS_ORD		  = #{bbs_ord} 
+		 WHERE BBS_ID = #{bbs_id}
+	</update>
+	
+	<!-- 롤 정보 삭제 -->
+	<delete id="deleteBbs" parameterType="map">
+		DELETE FROM STD_BBS_MNG WHERE BBS_ID = #{bbs_id}
+	</delete>
+	
+</mapper>

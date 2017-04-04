@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="menuMng">	
+	
+	<!-- 상위 공통메뉴 목록 로딩시  -->
+	<select id="getOneCodeList" resultType="HashMap" parameterType="map" >
+		   SELECT mn,
+			      mn_nm,
+			      up_mn,
+			      levl,
+			      mn_val,
+			      mn_ord,
+			      mn_href,
+			      use_yn,
+			      mn_type
+			 FROM std_mn_mng
+			WHERE levl = #{levl}
+		 <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(use_yn)" >
+		  AND use_yn = #{use_yn}
+		  </if>
+		<choose>
+		    <when test="@kr.letech.cmm.util.DBSupport@isNotEmpty(order)">
+		      ORDER BY mn_ord desc, mn desc
+		    </when>
+		    <otherwise>
+		      ORDER BY mn_ord, mn
+		    </otherwise>
+		 </choose>
+	</select>	
+	
+	<!-- 상위 공통메뉴 목록 로딩시  -->
+	<select id="getMnList" resultType="HashMap" parameterType="map" >
+		    SELECT smm.mn,
+			      mn_nm,
+			      up_mn,
+			      levl,
+			      mn_val,
+			      mn_ord,
+			      mn_href,
+			      use_yn,
+			      mn_type,
+            	  vsr.auth as AUTHOR_CODE
+			 FROM std_mn_mng smm
+		       left OUTER join
+		       <if test="levl == 1">
+		       V_STD_MN_FOR_ROLE vsr		       
+		       </if>
+   	          <if test="levl == 2">
+		       V_STD_MN_FOR_ROLE2 vsr
+		       </if>
+		       on (smm.mn = vsr.mn)
+			WHERE smm.levl = #{levl}
+		<choose>
+		    <when test="@kr.letech.cmm.util.DBSupport@isNotEmpty(order)">
+		      ORDER BY mn_ord desc, mn desc
+		    </when>
+		    <otherwise>
+		      ORDER BY mn_ord, mn
+		    </otherwise>
+		 </choose>
+	</select>	
+	
+	<!-- 하위 공통메뉴 목록 로딩시  -->
+	 <select id="getCodeList" resultType="HashMap" parameterType="map" >
+		   SELECT mn
+			     ,mn_nm
+			     ,up_mn
+			     ,levl
+			     ,mn_ord
+			     ,mn_val
+			     ,mn_href
+			     ,use_yn
+			     ,mn_type
+		  FROM std_mn_mng
+		  WHERE up_mn  = #{up_mn, javaType=String ,jdbcType=VARCHAR}
+		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(mn_val)" >
+		  AND mn_VAL = #{mn_val}
+		  </if>
+		  ORDER BY  mn_ord
+	 </select>
+	 
+	 <!-- 메뉴상세정보 가져오기  -->
+	<select id="getCodeView" resultType="HashMap" parameterType="map" >
+		SELECT mn
+		     ,mn_nm
+		     ,up_mn
+		     ,levl
+		     ,mn_ord
+		     ,mn_val
+		     ,mn_href
+		     , mn_type
+		FROM std_mn_mng
+		WHERE mn = #{mn, javaType=String ,jdbcType=VARCHAR}
+	</select>	
+	
+	<!-- 메뉴등록 -->
+	<insert id="insert" parameterType="map">
+		<selectKey keyProperty="mn" resultType="String" order="BEFORE">
+			SELECT 
+				'MN' ||
+				SUBSTR('0000' || TO_CHAR(NVL(MAX(TO_NUMBER(SUBSTR(mn,-4))),0)+1),-4)
+			FROM std_mn_mng 
+		</selectKey>
+		INSERT INTO std_mn_mng (
+			   mn
+			  ,mn_nm
+			  ,up_mn
+			  ,mn_val
+			  ,mn_ord
+			  ,levl
+			  ,mn_href
+			  ,use_yn
+			  ,mn_type
+			)VALUES(
+			   #{mn}
+			  ,#{mn_nm}
+			  ,#{up_mn}
+			  ,#{mn_val}
+			  ,#{mn_ord}
+			  ,#{levl}
+			  ,#{mn_href}
+			  ,#{use_yn , javaType=String ,jdbcType=VARCHAR}
+			  ,#{mn_type ,  javaType=String ,jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<!-- 하위메뉴 정렬 최대값 가져오기  -->
+	<select id="getMaxOrdr" resultType="HashMap" parameterType="map" >
+		SELECT TO_CHAR(MAX(TO_NUMBER(mn_ord))) MAX_ORDR
+		FROM std_mn_mng    
+		WHERE up_mn = #{mn}
+	</select>	
+	
+	<!-- 수정 -->
+	<update id="updateNm"  parameterType="map">
+		UPDATE std_mn_mng
+		   SET mn_nm   = #{mn_nm},
+		       mn_val  = #{mn_val},
+			   mn_href = #{mn_href}, 
+			   mn_ord  = #{mn_ord}, 
+			   mn_type = #{mn_type}
+		 WHERE mn = #{mn}
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="delete" parameterType="map">
+		DELETE FROM std_mn_mng WHERE mn = #{mn}
+	</delete>
+
+	<!-- 전체삭제 -->
+	<delete id="deleteAll" parameterType="map">
+		DELETE FROM std_mn_mng WHERE up_mn = #{mn}
+	</delete>
+	
+	<!-- 상위 메뉴와 메뉴값으로 메뉴명 조회 -->
+	<select id="getCodeCdNm" resultType="String">
+		 SELECT	mn_nm 
+		   FROM	std_mn_mng 
+		  WHERE up_mn = #{up_mn}
+		    AND mn_val = #{mn_val}
+	</select>
+	
+	<!-- 메뉴 Tree 구조 리스트 정보 -->	
+	<select id="getMenuTreeList" resultType="HashMap" parameterType="map">
+		SELECT
+		  MN
+		  , MN_NM
+		  , LEVL
+		  , LEVEL
+		  , USE_YN
+		FROM STD_MN_MNG
+		  START WITH UP_MN = #{up_mn}
+		  CONNECT BY PRIOR MN = UP_MN
+		ORDER SIBLINGS BY MN_ORD ASC
+	</select>
+	
+	<!-- 해당 메뉴의 하위 메뉴까지 삭제 -->
+	<delete id="mnAllDelete" parameterType="map">
+		DELETE FROM STD_MN_MNG 
+			WHERE MN IN (
+					SELECT MN FROM STD_MN_MNG
+					  START WITH MN = #{mn}
+					  CONNECT BY PRIOR MN = UP_MN
+				)
+	</delete>
+	
+	<!-- 메뉴타이틀 및 네비게이션 정보 조회 -->
+	<select id="getTitleAndNaviInfo" resultType="HashMap" parameterType="map">
+		SELECT
+		  MN
+		  , MN_NM
+		  , LTRIM (SYS_CONNECT_BY_PATH (MN_NM, ' > '), ' > ') AS NAVI_NM
+		FROM
+		  STD_MN_MNG
+		WHERE MN = #{menu_id}
+		START WITH UP_MN = 'MN0000'
+		CONNECT BY PRIOR MN  = UP_MN
+	</select>
+</mapper>

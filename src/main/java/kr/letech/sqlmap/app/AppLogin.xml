@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="appLogin">
+
+	<select id="getSelectAppLogin" resultType="HashMap" parameterType="map" >
+		SELECT
+		    USS_ID
+		    , USS_NM
+		    , USS_AUTH_CD
+		    , DP_CD
+		FROM
+		    STD_USS_MNG
+		WHERE
+		    LOWER(USS_ID) = LOWER(#{ussId})
+		    AND USS_PWD = #{ussPwd}
+	</select>	
+	
+	<select id="getSelectAppLoginCret" resultType="HashMap" parameterType="map">
+		WITH TB_USS_ID AS (
+		    SELECT
+		        USS_ID
+		    FROM
+		        STD_APP_PUSH
+		    WHERE
+		        CERT_NO = #{certNo}
+		    GROUP BY USS_ID
+		)
+		SELECT
+		    B.USS_ID
+		    , B.USS_NM
+		    , B.USS_AUTH_CD
+		    , B.DP_CD
+		FROM
+		    STD_USS_MNG B, TB_USS_ID A
+		WHERE
+		    B.USS_ID = A.USS_ID
+	</select>
+	
+	<insert id="insertAppMng" parameterType="map" >
+		MERGE INTO STD_APP_PUSH
+		    USING DUAL
+		    ON ((USS_ID = #{ussId} OR CERT_NO = #{certNo}) AND PHONE_TOKEN = #{tokenKey})
+		WHEN NOT MATCHED THEN
+		    INSERT (SEQ, CERT_NO, PHONE_TOKEN, PUSH_YN, USS_ID, REG_DATE)
+		        VALUES((SELECT NVL(MAX(SEQ), 0) +1 SEQ FROM STD_APP_PUSH), #{certNo}, #{tokenKey}, 'Y', #{ussId}, SYSDATE)
+		WHEN MATCHED THEN
+		    UPDATE SET 
+		      PUSH_YN = DECODE(#{pushYn}, null, PUSH_YN, '', PUSH_YN, #{pushYn})
+	</insert>
+	
+	
+	
+		
+	<!-- 푸시셋팅정보 -->
+	<resultMap id="getPushInfo" type="egovframework.rte.psl.dataaccess.util.EgovMap">
+	    <result property="seq"			column="SEQ"			javaType="java.lang.Integer"	jdbcType="INTEGER" />
+	    <result property="certNo"		column="CERT_NO"		javaType="java.lang.String"		jdbcType="VARCHAR" />
+	    <result property="phoneToken"	column="PHONE_TOKEN"	javaType="java.lang.String"		jdbcType="VARCHAR" />
+	    <result property="pushYn"		column="PUSH_YN"		javaType="java.lang.String"		jdbcType="VARCHAR" />
+	    <result property="ussId"		column="USS_ID"			javaType="java.lang.String"		jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="getSelectSettingInfo" resultMap="getPushInfo" parameterType="map" >
+		SELECT 
+			  SEQ	
+			, CERT_NO
+			, PHONE_TOKEN
+			, PUSH_YN			
+			, USS_ID		
+		FROM STD_APP_PUSH 
+		WHERE PHONE_TOKEN = #{tokenKey}
+	</select>	
+</mapper>

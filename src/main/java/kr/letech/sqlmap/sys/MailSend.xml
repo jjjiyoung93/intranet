@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mailSend">
+	<!-- 메일보낼 정보 조회  -->
+	<select id="selectMailSendList" resultType="HashMap" parameterType="map" >
+		SELECT SEND_SEQ	
+		     , MAIL_TO			/*받을 사람*/
+		     , MAIL_FROM		/*보낸 사람*/
+		     , MAIL_SUBJ		/*메일 제목*/
+		     , MAIL_CONT		/*메일 내용*/
+		  FROM STD_MAIL_SEND
+		 WHERE 1=1
+		   AND MAIL_SEND NOT IN 0
+	  ORDER BY SEND_SEQ ASC
+	</select>	
+	
+	<!--메일발송여부 업데이트 -->
+	<update id="updateSendResult"  parameterType="map">
+		UPDATE STD_MAIL_SEND
+		   SET MAIL_SEND = #{MAIL_SEND}
+		     , SEND_DATE = SYSDATE
+		 WHERE SEND_SEQ = #{SEND_SEQ}
+	</update>
+</mapper>

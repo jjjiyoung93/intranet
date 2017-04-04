@@ -1,0 +1,80 @@
+@charset "utf-8";
+/* CSS Document */
+/*  * default definition   */
+@font-face {
+  font-family: 'Nanum Gothic';
+  font-style: normal;
+  font-weight: 700;
+  src: url(NanumGothic-Bold.eot);
+  src: url(NanumGothic-Bold.eot?#iefix) format('embedded-opentype'),
+       url(NanumGothic-Bold.woff2) format('x-woff2'),
+       url(NanumGothic-Bold.woff) format('woff'),
+       url(NanumGothic-Bold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nanum Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url(NanumGothic-Regular.eot);
+  src: url(NanumGothic-Regular.eot?#iefix) format('embedded-opentype'),
+       url(NanumGothic-Regular.woff2) format('x-woff2'),
+       url(NanumGothic-Regular.woff) format('woff'),
+       url(NanumGothic-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Nanum Gothic';
+  font-style: normal;
+  font-weight: 800;
+  src: url(NanumGothic-ExtraBold.eot);
+  src: url(NanumGothic-ExtraBold.eot?#iefix) format('embedded-opentype'),
+       url(NanumGothic-ExtraBold.woff2) format('x-woff2'),
+       url(NanumGothic-ExtraBold.woff) format('woff'),
+       url(NanumGothic-ExtraBold.ttf) format('truetype');
+}
+
+/** for IE setting*/
+article, aside, hgroup, header, footer, figure, figcaption, nav, section {display:block;}
+article, p {font-family: 굴림, Helvetica, sans-serif;font-size: 12px;}
+
+html, body {height:100%;}
+html {
+   behavior: url(PIE.htc);
+}
+
+body{padding:0;margin:0 auto;font-family:Gulim, Nanum Gothic, Arial, Helvetica, sans-serif;font-size:13px;line-height:145%;_text-align:center; display:block;}
+h1, h2, h3, h4{padding:0;margin:0;line-height:105%;}
+form{padding:0;margin:0;}
+hr{display:none;}
+li img{vertical-align:middle;	/* for IE imge margin */}
+/*LINK*/
+a{selector-dummy: expression(this.hideFocus=true);}
+a:link{text-decoration:none;}
+/*a:hover, a:active {color: #666;text-decoration: none;}*/
+a:hover, a:active{text-decoration:none;}
+a, input, button{padding:0;border:0;}
+a:visited{text-decoration:none;}
+/* a:focus{outline:none;} */
+
+/*a:active, a:hover {text-decoration: underline;}*/
+img,
+input.type-image{border:0 none;}
+input.type-text,
+/*background:  transparent;*/
+input.type-text:hover,
+input.type-text:focus,
+textarea:hover, textarea:focus{background-color:#FFF;}
+input, select, textarea{background:#fff;margin:0;color:#b4b4b4;vertical-align:middle;font-size:1em;}
+span.button, img.button, a.button{vertical-align:middle;cursor:pointer;}
+legend{width:0;height:0;text-indent: -5000px;overflow:hidden;}
+ul{padding:0;margin:0;list-style:none; }
+fieldset{padding:0;margin:0;border:0}
+input{padding:0;margin:0;background:#fff;border:1px solid #d6d6d6;color:#746F6A;font-size:12px;}
+img.border{border:0px}
+div.alt, dl.alt, ul.alt{height:0;padding:0;text-indent:3em;overflow:hidden;}
+select, input, textarea{padding:0;margin:0;color:#404040;font-family:"돋움", AppleGothic, sans-serif;font-size:11px;border:1px solid #999999;}
+p{padding:0;margin:0;border:0;}
+caption{display:none;}
+SPAN[hello="Cleveland"][goodbye="Columbus"] {color:blue;}
+input[type=checkbox], input[type=radio] {border:0px;}
+ul{margin:0;}
+li{list-style:none;margin:0;}
