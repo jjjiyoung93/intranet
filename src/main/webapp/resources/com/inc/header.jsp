@@ -20,39 +20,67 @@ if(Sessinfo != null){
 
 <header>
 <!-- 헤더_로고,메뉴 -->
-	<div class="container">
+		<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<h1 class="logo">
+					<a class="navbar-brand" href="index.html">
+						<img src="http://intra.letech.kr/letech/resources/images/layout/nav_logo.png" width="150"alt="" />
+					</a>
+				</h1>
+			</div>
 		<div class="top_menu">
-			<%if(Sessinfo != null){%>
-			<%=SES_NM %> 님 환영합니다. &nbsp;
-			<a href="/letech/index.do">HOME</a><span class="line">|</span><a href="<%=request.getContextPath() %>/usr/myPage00L.do">마이페이지</a>
-			<span class="line">|</span>
-			<a href="<%=request.getContextPath() %>/LogOut.do" title="logout">로그아웃</a>
-			<%if( "9".equals(SES_GB)){ %><span class="line">|</span><a href="<%=request.getContextPath() %>/mng/myPage00L.do">관리페이지</a><%} %>
-			<%}else{%>
-				<!-- 
-					<a href="/letech/index.do">HOME</a><span class="line">|</span>
-					<a href="/letech/Login.do">로그인</a>
-					<a href="<%=request.getContextPath()%>/usr/join.do">회원가입</a>
-				 <span class="log_info">
-						홍길동<strong class="st_white">(사원)</strong>님 환영합니다.
-				 		<a href="" class="btn btn_xs btn_classic" role="button">Logout</a>
-				</span>
-				 -->
-			<% }%>
-			 <c:if test="${loginVO != null}">
-			 <span class="log_info">
-				${loginVO.name }님 환영합니다.
-				<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-					관리자
-				</sec:authorize> 
-				<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
-					<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="btn btn_xs btn_classic" role="button">정보수정</a>
-				</sec:authorize>
-				<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="btn btn_xs btn_classic" role="button">로그아웃</a>
-			</span>
-			</c:if>
+			<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown hidden-xs">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="glyphicon glyphicon-user"></i><%=SES_NM %>
+							<i class="glyphicon glyphicon-triangle-bottom"></i> 
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<a href="/letech/index.do">HOME</a><span class="line">|</span><a href="<%=request.getContextPath() %>/usr/myPage00L.do">마이페이지</a>
+							</li>
+							<li>
+								<a href="<%=request.getContextPath() %>/LogOut.do" title="logout">로그아웃</a>
+							</li>
+							<li>
+									<!-- 
+										<a href="/letech/index.do">HOME</a><span class="line">|</span>
+										<a href="/letech/Login.do">로그인</a>
+										<a href="<%=request.getContextPath()%>/usr/join.do">회원가입</a>
+									 <span class="log_info">
+											홍길동<strong class="st_white">(사원)</strong>님 환영합니다.
+									 		<a href="" class="btn btn_xs btn_classic" role="button">Logout</a>
+									</span>
+									 -->
+								</li>
+						</ul>
+					</li>
+					<c:if test="${loginVO != null}">
+					<li class="dropdown hidden-xs">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="glyphicon glyphicon-user"></i>${loginVO.name }
+							<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+								<span class="text-muted small">(관리자)</span>
+							</sec:authorize>
+							<i class="glyphicon glyphicon-triangle-bottom"></i> 
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li>
+								<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
+								<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="btn btn_xs btn_classic" role="button">정보수정</a>
+								</sec:authorize>
+								<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="btn btn_xs btn_classic" role="button">로그아웃</a>
+							</li>
+						</ul>
+					</li>
+					</c:if>
+			</ul>
 		</div>
-	</div>
 </header>
 <%
 String pageInfo=request.getRequestURI();

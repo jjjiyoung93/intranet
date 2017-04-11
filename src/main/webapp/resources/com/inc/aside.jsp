@@ -3,8 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<aside>
-	    		<div class="tab_box">
+			<aside>
+	    	<%-- 	<div class="tab_box">
 					<ul class="tab">
 						<li class="col_md_4"><a href="#tab1" class="selected ">결제(<font id="aside_aprvCnt0"></font>)</a></li>
 						<li class="col_md_4"><a href="#tab2" >반려(<font id="aside_aprvCnt3"></font>)</a></li>
@@ -52,14 +52,19 @@
 									</div>
 							</fieldset>
     					</form>
-	    			</div>
-	    			<div class="new">
-	    				<h3>사내 공지사항</h3>
-	    				<ul id="noties_type">
-	    					
-	    				</ul>
-	    			</div>
-	    		</div>
+	    			</div> --%>
+    				<div class="col-lg-2 visible-lg">
+							<div class="panel panel-brown">
+								<div class="panel-heading">공지사항</div>
+								<div class="panel-body">
+									<div class="notic_box">
+										<ul id="noties_type">
+											
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 <form id="aside_frm1" name="aside_frm1" method="post" action="${pageContext.request.contextPath}/bbs/bbs00View.do" >
 	<input type="hidden" id="aside_menu_id1" name="menu_id1" value="MN0019" />
 	<input type="hidden" id="aside_menu_id2" name="menu_id2" value="MN0020" />
@@ -98,7 +103,7 @@ $(document).ready(function(){
 					$("#noties_type").append("<li><strong class=\"sky\">공지사항 정보가 없습니다</strong></li>");
 				}
 				for(var i=0; i<data.length; i++){
-					$("#noties_type").append("<li><a href=\"#\" onclick=\"goBbsPage('"+data[i]['BBS_SEQ']+"')\"><strong class=\"sky\">"+data[i]['TITLE']+"</strong><br /><strong>"+data[i]['REG_DT']+"</strong></a></li>");
+					$("#noties_type").append("<li><a href=\"#\" onclick=\"goBbsPage('"+data[i]['BBS_SEQ']+"')\"><strong class=\"sky\">"+data[i]['TITLE']+"</strong><br /><span>"+data[i]['REG_DT']+"</span></a></li>");
 				}
 			}
 	});
