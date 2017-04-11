@@ -6,17 +6,18 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
 
 	<div class="navbar-default sidebar " role="navigation">
+	<div class="sidebar-nav navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
 <%-- 		<a href="${pageContext.request.contextPath}/index.do" class="nav_logo">
 			<img src="<%=request.getContextPath()%>/resources/images/layout/nav_logo.png" alt="엘이테크 로고"  >
 		</a> --%>
 		
-		<ul class="gnb">
+		<ul class="nav in" id="side-menu">
 			<c:forEach var="list" items="${mnList}" varStatus="status">
 				<c:choose>
 					<c:when test="${empty list.AUTHOR_CODE }">
-						<li>
+						<li class="visible-md visible-lg">
 							<a href="#" <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> >
-							${list.MN_NM}
+								${list.MN_NM}
 							</a>
 							<c:if test="${mnList2 ne null}">
 								<ul class="sub">
@@ -82,8 +83,9 @@
 			</c:forEach>
 		</ul>
 	</div>
+</div>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
-<script>
+<!-- <script>
 $(function(){
 
     $("ul.sub").hide();
@@ -102,7 +104,7 @@ $(function(){
 
  });	
 </script>
-
+ -->
 
 <!-- 
 <a href="/letech/usr/memb00L.do">회원가입</a>

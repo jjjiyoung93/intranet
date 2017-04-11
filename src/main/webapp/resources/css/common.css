@@ -6,6 +6,8 @@
 @import url("dataTables.responsive.css");	/* Design Layout css */
 @import url("layout.css");	/* Design Layout css */
 @import url("component.css");	/* Component Style CSS */		
-@import url("table_default.css");	/* Table Style CSS */		
 @import url("filpout_cards.css");	/* FilpOut Style CSS */		
+
+
 /* @import url("content.css"); */
+/* @import url("table_default.css");	Table Style CSS */		
