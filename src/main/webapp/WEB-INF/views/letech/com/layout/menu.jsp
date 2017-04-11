@@ -7,10 +7,6 @@
 
 	<div class="navbar-default sidebar " role="navigation">
 	<div class="sidebar-nav navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
-<%-- 		<a href="${pageContext.request.contextPath}/index.do" class="nav_logo">
-			<img src="<%=request.getContextPath()%>/resources/images/layout/nav_logo.png" alt="엘이테크 로고"  >
-		</a> --%>
-		
 		<ul class="nav in" id="side-menu">
 			<c:forEach var="list" items="${mnList}" varStatus="status">
 				<c:choose>

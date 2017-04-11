@@ -12,13 +12,19 @@
 </head>
 
 <body>
+<!-- 전체 감싸는 id -->
 <div id="wrapper">
+<!-- top, left 메뉴  -->
 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 		<jsp:include page="/resources/com/inc/header.jsp" />
 		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 	</nav>
+	
+	<!-- 컨텐츠-->
     <div class="" id="page-wrapper">
 			<section class="row">
+
+				<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10">
 					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/cal00List.do" >
 						<input type="hidden" name="cal_seq" id="cal_seq" value=""/>
@@ -27,52 +33,20 @@
 						<input type="hidden" name="CAL_ST_DT" id="CAL_ST_DT" value=""/>
 						<input type="hidden" name="CAL_ED_DT" id="CAL_ED_DT" value=""/>
 						<input type="hidden" name="flag" id="flag" value="1"/>
-							
-							
-							<!-- <div class="flipout">
-									<div id="clickSch" class="foc-main">
-										<a href="javascript:void(0);" class="memo-popup"></a>
-									</div>
-									<div class="overLayer" id="overLayer"></div>
-								<div id="sch_txt" >
-									<div class="sch_view foc-bottom" id="bd-top">
-										<dl class="fp_box bd_top">
-											<dt class="">시작일</dt>
-											<dd id="ev_start"></dd>
-										</dl>
-									</div>
-									<div class="sch_view foc-bottom">
-										<dl class="fp_box row">
-											<dt>종료일</dt>
-											<dd id="ev_end"></dd>
-										</dl>
-									</div>
-									<div class="sch_view foc-bottom">
-										<dl class="fp_box">
-											<dt>제목</dt>
-											<dd id="ev_title"></dd>
-										</dl>
-									</div>				
-									<div class="sch_view foc-bottom">
-										<div class="fp_box txt-right">
-											<div id="btn_id" ></div>
-										</div>
-									</div>
-								</div>
-							</div> -->
-						
-							
-							
-							
 							<h4 id="b_tlt"><span></span></h4> 
 							<!-- 달력 start -->
 								<div id='calendar'></div>
 							<!-- 달력 end -->
 					</form>
-					</div>
-						<jsp:include page="/resources/com/inc/aside.jsp" />
+				</div>
+
+				<!-- aside(공지사항) -->
+				<jsp:include page="/resources/com/inc/aside.jsp" />
+
 			</section>
 		</div>
+		
+		<!-- footer부분 -->
 	 <jsp:include page="/resources/com/inc/footer.jsp" />
 </div>
 
