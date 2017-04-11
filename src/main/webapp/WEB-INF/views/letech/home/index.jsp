@@ -12,66 +12,67 @@
 </head>
 
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-	<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-    <div class="container">
-    
-   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-		<section class="contents">
-	
-<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/cal00List.do" >
-	<input type="hidden" name="cal_seq" id="cal_seq" value=""/>
-	<input type="hidden" name="now_date" id="now_date" value=""/>
-	<input type="hidden" name="view_type" id="view_type" value="${view_type}"/>
-	<input type="hidden" name="CAL_ST_DT" id="CAL_ST_DT" value=""/>
-	<input type="hidden" name="CAL_ED_DT" id="CAL_ED_DT" value=""/>
-	<input type="hidden" name="flag" id="flag" value="1"/>
-		
-		
-		<div class="flipout">
-				<div id="clickSch" class="foc-main">
-					<a href="javascript:void(0);" class="memo-popup"></a>
-				</div>
-				<div class="overLayer" id="overLayer"></div>
-			<div id="sch_txt" >
-				<div class="sch_view foc-bottom" id="bd-top">
-					<dl class="fp_box bd_top">
-						<dt class="">시작일</dt>
-						<dd id="ev_start"></dd>
-					</dl>
-				</div>
-				<div class="sch_view foc-bottom">
-					<dl class="fp_box row">
-						<dt>종료일</dt>
-						<dd id="ev_end"></dd>
-					</dl>
-				</div>
-				<div class="sch_view foc-bottom">
-					<dl class="fp_box">
-						<dt>제목</dt>
-						<dd id="ev_title"></dd>
-					</dl>
-				</div>				
-				<div class="sch_view foc-bottom">
-					<div class="fp_box txt-right">
-						<div id="btn_id" ></div>
+<div id="wrapper">
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+		<jsp:include page="/resources/com/inc/header.jsp" />
+		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+	</nav>
+    <div class="" id="page-wrapper">
+			<section class="row">
+				<div class="col-lg-10">
+					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/cal00List.do" >
+						<input type="hidden" name="cal_seq" id="cal_seq" value=""/>
+						<input type="hidden" name="now_date" id="now_date" value=""/>
+						<input type="hidden" name="view_type" id="view_type" value="${view_type}"/>
+						<input type="hidden" name="CAL_ST_DT" id="CAL_ST_DT" value=""/>
+						<input type="hidden" name="CAL_ED_DT" id="CAL_ED_DT" value=""/>
+						<input type="hidden" name="flag" id="flag" value="1"/>
+							
+							
+							<!-- <div class="flipout">
+									<div id="clickSch" class="foc-main">
+										<a href="javascript:void(0);" class="memo-popup"></a>
+									</div>
+									<div class="overLayer" id="overLayer"></div>
+								<div id="sch_txt" >
+									<div class="sch_view foc-bottom" id="bd-top">
+										<dl class="fp_box bd_top">
+											<dt class="">시작일</dt>
+											<dd id="ev_start"></dd>
+										</dl>
+									</div>
+									<div class="sch_view foc-bottom">
+										<dl class="fp_box row">
+											<dt>종료일</dt>
+											<dd id="ev_end"></dd>
+										</dl>
+									</div>
+									<div class="sch_view foc-bottom">
+										<dl class="fp_box">
+											<dt>제목</dt>
+											<dd id="ev_title"></dd>
+										</dl>
+									</div>				
+									<div class="sch_view foc-bottom">
+										<div class="fp_box txt-right">
+											<div id="btn_id" ></div>
+										</div>
+									</div>
+								</div>
+							</div> -->
+						
+							
+							
+							
+							<h4 id="b_tlt"><span></span></h4> 
+							<!-- 달력 start -->
+								<div id='calendar'></div>
+							<!-- 달력 end -->
+					</form>
 					</div>
-				</div>
-			</div>
+						<jsp:include page="/resources/com/inc/aside.jsp" />
+			</section>
 		</div>
-	
-		
-		
-		
-		<h4 id="b_tlt"><span></span></h4> 
-		<!-- 달력 start -->
-			<div id='calendar'></div>
-		<!-- 달력 end -->
-</form>
-		</section>
-
-	</div>
 	 <jsp:include page="/resources/com/inc/footer.jsp" />
 </div>
 
@@ -80,6 +81,7 @@
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lib/moment.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lang-all.js'></script>
+<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/flipout_cards.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/modernizr.js'></script>
 <script type="text/javascript">
