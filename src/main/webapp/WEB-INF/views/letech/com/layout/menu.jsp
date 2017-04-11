@@ -5,13 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
 
-<nav>
-	<div class="container">
-		<a href="${pageContext.request.contextPath}/index.do" class="nav_logo">
+	<div class="navbar-default sidebar " role="navigation">
+<%-- 		<a href="${pageContext.request.contextPath}/index.do" class="nav_logo">
 			<img src="<%=request.getContextPath()%>/resources/images/layout/nav_logo.png" alt="엘이테크 로고"  >
-		</a>
+		</a> --%>
 		
-		<ul class="gnb full-right">
+		<ul class="gnb">
 			<c:forEach var="list" items="${mnList}" varStatus="status">
 				<c:choose>
 					<c:when test="${empty list.AUTHOR_CODE }">
@@ -83,7 +82,6 @@
 			</c:forEach>
 		</ul>
 	</div>
-</nav>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
 <script>
 $(function(){
