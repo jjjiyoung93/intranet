@@ -12,104 +12,127 @@
 </head>
 
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-	<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-    <div class="container">
-   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-		<section class="contents">
-		<!-- Content Start -->	
-		<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/uss/umt/list.do" >
-			<input type="hidden" id="menu_id1" name="menu_id1" value="${param.menu_id1}"/>
-			<input type="hidden" id="menu_id2" name="menu_id2" value="${param.menu_id2}"/>
-			<input type="hidden" name="cal_seq" id="cal_seq" value="${params.cal_seq }" />
-			<input type="hidden" id="mode" name="mode" value="${params.mode }" />
-			<input type="hidden" id="view_type" name="view_type" value="${params.view_type }" />
-			<input type="hidden" id="uss_id" name="uss_id" value="${loginVO.id }" />
-			<input type="hidden" id="now_date" name="now_date" value="${params.now_date }" />
- 			
-			<h2 class="sub_title">
-				${titleNaviMap.MN_NM }
-				<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-			</h2>
-			
-			<table cellpadding="0" cellspacing="0" class="table_info">
-				<caption>일정관리</caption>
-				<colgroup>
-					<col width="20%" />
-					<col width="*" />
-				</colgroup>
-		     	<tbody>
-		      		<tr>
-			          	<th>시작일자(시간)</th>
-			          	<td style="text-align: left;height: 20px;">
-							<input name="cal_st_dt" id="cal_st_dt" type="text" value="${resultView.CAL_ST_DT}"/>
-							<select name="cal_st_time1" id="cal_st_time1">
-								<option value="">--</option>
-								<c:forEach var="hour" items="${hourList }" varStatus="status">
-									<option value="${hour }" <c:if test="${params.cal_st_time1 eq hour }">selected="selected"</c:if> >${hour }</option>
-								</c:forEach>
-							</select>시
-							<select name="cal_st_time2" id="cal_st_time2">
-								<option value="">--</option>
-<c:forEach var="minute" items="${minuteList }" varStatus="status">
-								<option value="${minute }" <c:if test="${params.cal_ed_time2 eq minute }">selected="selected"</c:if> >${minute }</option>
-</c:forEach>
-							</select>분
-						</td>
-		            </tr>
-		      		<tr>
-			          	<th>종료일자(시간)</th>
-			          	<td>
-							<input name="cal_ed_dt" id="cal_ed_dt" type="text" value="${resultView.CAL_ED_DT }"  />
-							<select name="cal_ed_time1" id="cal_ed_time1">
-								<option value="">--</option>
-<c:forEach var="hour" items="${hourList }" varStatus="status">
-								<option value="${hour }" <c:if test="${params.cal_ed_time2 eq hour }">selected="selected"</c:if> >${hour }</option>
-</c:forEach>
-							</select>시
-							<select name="cal_ed_time2" id="cal_ed_time2">
-								<option value="">--</option>
-<c:forEach var="minute" items="${minuteList }" varStatus="status">
-								<option value="${minute }" <c:if test="${params.cal_ed_time2 eq minute }">selected="selected"</c:if> >${minute }</option>
-</c:forEach>
-							</select>분
-						</td>
-		            </tr>
-		            <tr>
-			          	<th>제목</th>
-			          	<td>
-							<input class="col_md_12" name="cal_nm" id="cal_nm" type="text" value="${resultView.CAL_NM }" maxlength="50" />
-			            </td>
-		            </tr>
-		            <tr>
-			          	<th>내용</th>
-			          	<td >
-			          		<textarea class="col_md_12" name="cal_content" id="cal_content" maxlength="1200">${resultView.CAL_CONTENT }</textarea>
-			            </td>
-		            </tr>
-		            <tr>
-			          	<th>첨부파일</th>
-			          	<td>
-<c:forEach var="file" items="${fileList }" varStatus="status">
-							<div id="file_${file.FILE_SEQ }"><a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> <input type="button" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" /></div>
-</c:forEach>
-							<div id="my-file">
-								<div id="div_file"><input name="file" id="file1" type="file" value="" />
-									<input class="btn btn_primary " type="button" value="추가" id="button-add-file"/></div>  
-							</div>
-			            </td>
-		            </tr>
-		      	</tbody>
-		    </table>
-</form>
-	
-			<p class="full-right" >
-			    <a href="#submit" class="btn-ok btn btn_info" ><span>저장</span></a>
-			    <a href="#cancel" class="btn-cancel btn btn_default" ><span>취소</span></a>
+<div id="wrapper">
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+		<jsp:include page="/resources/com/inc/header.jsp" />
+		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+	</nav>
+	<div class="" id="page-wrapper">
+		<section class="row">
+		<div class="col-lg-10">
+			<!-- Content Start -->	
+			<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/uss/umt/list.do" >
+				<input type="hidden" id="menu_id1" name="menu_id1" value="${param.menu_id1}"/>
+				<input type="hidden" id="menu_id2" name="menu_id2" value="${param.menu_id2}"/>
+				<input type="hidden" name="cal_seq" id="cal_seq" value="${params.cal_seq }" />
+				<input type="hidden" id="mode" name="mode" value="${params.mode }" />
+				<input type="hidden" id="view_type" name="view_type" value="${params.view_type }" />
+				<input type="hidden" id="uss_id" name="uss_id" value="${loginVO.id }" />
+				<input type="hidden" id="now_date" name="now_date" value="${params.now_date }" />
+	 			
+	 			<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+
+				<div class="board-view">
+					<ul>
+						<li>
+							<dl class="row first-line ">
+								<dt class="col-md-2 col-xs-3">시작일자(시간)</dt>
+								<dd class="col-md-10 col-xs-9">
+									<div class="form-inline">
+										<input name="cal_st_dt" id="cal_st_dt" type="text" class="form-control" value="${resultView.CAL_ST_DT}"/>
+										<div class="input-inline">
+										<select name="cal_st_time1" id="cal_st_time1"  class="form-control col-xs-2">
+											<option value="">--</option>
+											<c:forEach var="hour" items="${hourList }" varStatus="status">
+												<option value="${hour }" <c:if test="${params.cal_st_time1 eq hour }">selected="selected"</c:if> >${hour }</option>
+											</c:forEach>
+										</select>
+										<label class="col-xs-1">시</label>
+										<select name="cal_st_time2" id="cal_st_time2" class="form-control col-xs-2">
+											<option value="">--</option>
+											<c:forEach var="minute" items="${minuteList }" varStatus="status">
+											<option value="${minute }" <c:if test="${params.cal_ed_time2 eq minute }">selected="selected"</c:if> >${minute }</option>
+											</c:forEach>
+										</select>
+										<label class="">분</label>
+									</div>
+									</div>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl class="row">
+								<dt class="col-md-2 col-xs-3">종료일자(시간)</dt>
+								<dd class="col-md-10 col-xs-9">
+									<div class="form-inline">
+										<input name="cal_ed_dt" id="cal_ed_dt" type="text" class="form-control" value="${resultView.CAL_ED_DT }"  />
+										<select name="cal_ed_time1" id="cal_ed_time1" class="form-control">
+											<option value="">--</option>
+											<c:forEach var="hour" items="${hourList }" varStatus="status">
+											<option value="${hour }" <c:if test="${params.cal_ed_time2 eq hour }">selected="selected"</c:if> >${hour }</option>
+											</c:forEach>
+										</select>
+										<label>시</label>
+										<select name="cal_ed_time2" id="cal_ed_time2" class="form-control">
+											<option value="">--</option>
+											<c:forEach var="minute" items="${minuteList }" varStatus="status">
+											<option value="${minute }" <c:if test="${params.cal_ed_time2 eq minute }">selected="selected"</c:if> >${minute }</option>
+											</c:forEach>
+										</select>
+										<label>분</label>
+									</div>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl class="row">
+								<dt class="col-md-2 col-xs-3">제목</dt>
+								<dd class="col-md-10 col-xs-9">
+										<input class="form-control" name="cal_nm" id="cal_nm" type="text" value="${resultView.CAL_NM }" maxlength="50" />
+				        </dd>
+							</dl>
+						</li>
+						<li>
+							<dl class="row">
+								<dt class="col-md-2 col-xs-3">내용</dt>
+								<dd class="col-md-10 col-xs-9">
+									<textarea class="form-control" name="cal_content" id="cal_content" maxlength="1200">${resultView.CAL_CONTENT }</textarea>
+								</dd>
+							</dl>
+						</li>
+						<li>
+							<dl class="row">
+								<dt class="col-md-2 col-xs-3">첨부파일</dt>
+								<dd class="col-md-10 col-xs-9">
+									<div  class="form-inline">
+										<c:forEach var="file" items="${fileList }" varStatus="status">
+										<div id="file_${file.FILE_SEQ }">
+											<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
+											<input type="button" class="input-group" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" />
+										</div>
+										</c:forEach>
+										<div id="my-file">
+											<div id="div_file">
+												<input name="file" id="file1" type="file" value="" />
+												<input class="btn btn-default" type="button" value="추가" id="button-add-file"/>
+											</div>  
+										</div>
+									</div>
+								</dd>
+							</dl>
+						</li>
+					</ul>
+			</div>
+		</form>
+			<p class="clearfix" >
+				<span class="pull-right">
+					<a href="#submit" class="btn-ok btn btn-warning" ><span>저장</span></a>
+					<a href="#cancel" class="btn-cancel btn btn-default" ><span>취소</span></a>
+				</span>
 			</p>
 <!-- Content Start -->
-
+</div>
+<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 	</div>
 	<jsp:include page="/resources/com/inc/footer.jsp" />

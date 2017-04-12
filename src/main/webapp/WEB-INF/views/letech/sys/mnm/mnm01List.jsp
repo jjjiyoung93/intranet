@@ -8,182 +8,167 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 <body>
-<div id="wrap">
+<div id="warpper">
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-<%-- 	    <jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
 		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
-
-			<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/mnm/mnm01List.do" >
-				<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
-				<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
-				<input type="hidden" id="mode" name="mode" value="<%=VarConsts.MODE_I%>" />
-				<input type="hidden" name="mn" id="mn" value=""  /> 
-				<input type="hidden" id="levl" name="levl" value="" />
-				<input type="hidden" id="up_mn" name="up_mn" value="" />
-				<input type="hidden" id="flag" name="flag" value="1" />
-		<!-- 타이틀 및 페이지 네비 -->
-			<h2 class="sub_title">
-				${titleNaviMap.MN_NM }
-				<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-			</h2>
-		<!-- page -->
-		<article>
-				
-				<div class="col_md_12">
-					<!-- tree 테스트 -->
-					<div class="col_md_4 tree_menu_box">
-					<h3 class="tree_title">메뉴구조
-						<span class="page_navi full-right">
-							<a href="#" class="btn btn_basic"  onclick="fnInsert('1');">메뉴추가</a>
-						</span>
-					</h3>
-						<ul id="tree1">
-<c:choose>
-	<c:when test="${fn:length(resultList) > 0 }">
-			                <li> <a href="#"> HOME</a>
-								<ul>
-		<c:set var="levelVar" value="1" />
-		<c:forEach var="result" items="${resultList }" varStatus="status">
-			<c:choose>
-				<c:when test="${status.count == 1 }">	
-									<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-				</c:when>
-				<c:when test="${status.last }" >
-					<c:if test="${levelVar == result.LEVEL }">
-									</li>
-									<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-					</c:if>
-					<c:if test="${levelVar < result.LEVEL }">
-										<ul>
-											<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-					</c:if>
-					<c:if test="${levelVar > result.LEVEL }">
-						<c:forEach begin="${result.LEVEL }" end="${levelVar-1 }" step="1">
-											</li>
-										</ul>
-						</c:forEach>
-									</li>
-									<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-					</c:if>
-					<c:forEach begin="${result.LEVEL }" end="${levelVar }" step="1">
-											</li>
-										</ul>
-					</c:forEach>
-					<c:forEach begin="${levelVar}" end="${result.LEVEL }" step="1">
-											</li>
-										</ul>
-					</c:forEach>
-				</c:when>
-				<c:when test="${levelVar == result.LEVEL }">
-									</li>
-									<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-				</c:when>
-				<c:when test="${levelVar < result.LEVEL }">
-										<ul>
-											<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-				</c:when>
-				<c:when test="${levelVar > result.LEVEL }">
-					<c:forEach begin="${result.LEVEL }" end="${levelVar-1 }" step="1">
-											</li>
-										</ul>
-					</c:forEach>
-									</li>
-									<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
-				</c:when>
-			</c:choose>
-			<c:set var="levelVar" value="${result.LEVEL }" />
-		</c:forEach>
-	</c:when>
-	<c:otherwise>
-							<li>
-								등록된 메뉴가 없습니다.
-							</li>
-	</c:otherwise>
-</c:choose>
-<!--
- 			                <li><a href="#">MN0001 1단계</a><span class="tree_btn"> <a href="#" class="btn_s btn_default" >삭제</a></span>
-			                    <ul>
-			                       <li>MN004 2단계
-			                            <ul>
-			                                <li>MN0017 3단계
-			                                    <ul>
-			                                        <li class="off">MN0017 4단계</li>
-			                                        <li>MN0017 4단계</li>
-			                                        <li>MN0017 4단계</li>
-			                                        <li>MN0017 4단계</li>
-			                                    </ul>
-			                                </li>
-			                            </ul>
-			                        </li>
-			                        <li>MN0017 3단계</li>
-			                        <li>MN0017 3단계</li>
-			                        <li>MN0017 3단계</li>
-			                    </ul>
-			                </li> 
--->
-			             </ul>
-					</div>
-					<!-- 상세, 등록, 수정 폼 Start -->
-					<div class="col_md_7 full-right tree_menu_box">
-						<h3 class="tree_title" id="tree_titme_form">메뉴 추가</h3>
-						<div class="tree_w">
-							<div class="form_group">
-								<div class="col_md_6">
-									<label class="">메뉴명</label>
-									<input class="input_st" name="mn_nm" id="mn_nm" type="text" value="" />	
-								</div>
-								<div class="col_md_6">
-									<label class="">메뉴타입<br/></label>
-									<select id="mn_type" class="col_md_12" name="mn_type">
-										<option value="" >--선택--</option>
-							<c:forEach var="codeList" items="${codeList}">
-										<option value="${codeList.CD}" >${codeList.CD_NM}</option>
-							</c:forEach>
-									</select>
-								</div>
-							</div>
-							<div class="form_group">
-								<label class="">메뉴 선택값(***Mng)<br/></label>
-								<input class="search" name="mn_val" id="mn_val" type="text" value="" />	
-							</div>
-							<div class="form_group">
-								<label class="">정렬순서<br/></label>
-								<input class="search" name="mn_ord" id="mn_ord" type="text"  />	
-							</div>
-							<div class="form_group">
-								<label class="">메뉴 URL(1레멜의 경우 필요없음)<br/></label>
-								<input class="search" name="mn_href" id="mn_href" type="text"  />	
-							</div>
-							<p class="full-right">
-								<a href="#submit" class="btn_ok btn btn_info" ><span>저장</span></a>
-								<a href="#delete" class="btn_del btn btn_info" ><span>삭제</span></a>
-<!-- 								<a href="#cancel" class="btn btn_default"><span>닫기</span></a> -->
-							</p>
-						</div>		
-					</div>
-					<!-- 상세, 등록, 수정 폼 End -->
-				</div>
-			<!-- tree 테스트 -->
-
-		</article>
-		
-	</form>
+	</nav>
+	<div class="" id="page-wrapper">
+		<section class="row">
+			<div class="col-lg-10">
+				<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/mnm/mnm01List.do" >
+					<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
+					<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
+					<input type="hidden" id="mode" name="mode" value="<%=VarConsts.MODE_I%>" />
+					<input type="hidden" name="mn" id="mn" value=""  /> 
+					<input type="hidden" id="levl" name="levl" value="" />
+					<input type="hidden" id="up_mn" name="up_mn" value="" />
+					<input type="hidden" id="flag" name="flag" value="1" />
+					<!-- 타이틀 및 페이지 네비 -->
+					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
 	
+					<!-- page -->
+					<div class="row">
+						<div class="col-md-5">
+						<div class=" panel panel-default">
+								<h5 class="panel-heading clearfix">메뉴구조
+								<span class="page_navi pull-right">
+									<a href="#" class="btn btn-xs btn-default" onclick="fnInsert('1');">메뉴추가</a>
+								</span>
+							</h5>
+							<div class="panel-body">
+							<ul id="tree1">
+							<c:choose>
+								<c:when test="${fn:length(resultList) > 0 }">
+								<li><a href="#"> HOME</a>
+									<ul>
+									<c:set var="levelVar" value="1" />
+										<c:forEach var="result" items="${resultList }" varStatus="status">
+											<c:choose>
+										<c:when test="${status.count == 1 }">	
+										<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > 
+											<a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+										</c:when>
+										<c:when test="${status.last }" >
+										<c:if test="${levelVar == result.LEVEL }">
+										</li>
+										<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > 
+											<a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+										</c:if>
+										<c:if test="${levelVar < result.LEVEL }">
+											<ul>
+												<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > 
+													<a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+										</c:if>
+										<c:if test="${levelVar > result.LEVEL }">
+												<c:forEach begin="${result.LEVEL }" end="${levelVar-1 }" step="1">
+												</li>
+											</ul>
+										</c:forEach>
+										</li>
+										<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > 
+											<a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+									</c:if>
+									<c:forEach begin="${result.LEVEL }" end="${levelVar }" step="1">
+										</li>
+											</ul>
+									</c:forEach>
+									<c:forEach begin="${levelVar}" end="${result.LEVEL }" step="1">
+												</li>
+											</ul>
+									</c:forEach>
+					</c:when>
+					<c:when test="${levelVar == result.LEVEL }">
+										</li>
+										<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+					</c:when>
+					<c:when test="${levelVar < result.LEVEL }">
+											<ul>
+												<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+					</c:when>
+					<c:when test="${levelVar > result.LEVEL }">
+						<c:forEach begin="${result.LEVEL }" end="${levelVar-1 }" step="1">
+												</li>
+											</ul>
+						</c:forEach>
+										</li>
+										<li <c:if test="${result.USE_YN eq 'N' }">class="off"</c:if> > <a href="#" onclick="fnFrom('${result.MN}')">${result.MN_NM }</a>
+					</c:when>
+				</c:choose>
+				<c:set var="levelVar" value="${result.LEVEL }" />
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+								<li>
+									등록된 메뉴가 없습니다.
+								</li>
+		</c:otherwise>
+	</c:choose>
+	</div>
+	</div>
+	</div>
+						<div class="col-md-7 tree_menu_box">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+										<h5 class="tree_title clearfix" id="tree_titme_form">메뉴 추가</h5>
+								</div>
+									<div class="tree_w panel-body">
+										<div class="form_group">
+											<div class="">
+												<label class="">메뉴명</label>
+												<input class="input_st " name="mn_nm" id="mn_nm" type="text" value="" />	
+											</div>
+											<div class="col_md_6">
+												<label class="">메뉴타입<br/></label>
+												<select id="mn_type" class="col_md_12" name="mn_type">
+													<option value="" >--선택--</option>
+										<c:forEach var="codeList" items="${codeList}">
+													<option value="${codeList.CD}" >${codeList.CD_NM}</option>
+										</c:forEach>
+												</select>
+											</div>
+										</div>
+										<div class="form_group">
+											<label class="">메뉴 선택값(***Mng)<br/></label>
+											<input class="search" name="mn_val" id="mn_val" type="text" value="" />	
+										</div>
+										<div class="form_group">
+											<label class="">정렬순서<br/></label>
+											<input class="search" name="mn_ord" id="mn_ord" type="text"  />	
+										</div>
+										<div class="form_group">
+											<label class="">메뉴 URL(1레멜의 경우 필요없음)<br/></label>
+											<input class="search" name="mn_href" id="mn_href" type="text"  />	
+										</div>
+										<p class="clearfix">
+											<span class="pull-right">
+												<a href="#submit" class="btn_ok btn btn-warning" ><span>저장</span></a>
+												<a href="#delete" class="btn_del btn btn-default" ><span>삭제</span></a>
+			<!-- 								<a href="#cancel" class="btn btn_default"><span>닫기</span></a> -->
+											</span>
+										</p>
+									</div>		
+								</div>
+								</div>
+						<!-- 상세, 등록, 수정 폼 End -->
+					</div>
+				<!-- tree 테스트 -->
+	
+			
+		</form>
 	<div class="pop_bg">
 		<div class="popup">
 			<a href="#" class="close" title="창닫기"></a>
 	 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 		</div>
 	</div>
-					
+				
+</div>
+<jsp:include page="/resources/com/inc/aside.jsp" />
 </section>
 </div>
 	 <jsp:include page="/resources/com/inc/footer.jsp" />
-	</div>
+</div>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
@@ -202,7 +187,7 @@ function fnFrom(mn){
 			$("#mn_href").val(result.getCodeView.MN_HREF);
 			$("#mode").val("<%=VarConsts.MODE_U%>");
 			$("#tree_titme_form").text(result.getCodeView.MN_NM+" 메뉴 수정 ");
-			$("#tree_titme_form").append("<span class=\"page_navi full-right\" ><a href=\"#\" class=\"btn btn_basic\"  onclick=\"fnInsert('2');\">하위 메뉴추가</a></span>");
+			$("#tree_titme_form").append("<span class=\"page_navi pull-right\" ><a href=\"#\" class=\"btn btn-xs btn-default\"  onclick=\"fnInsert('2');\">하위 메뉴추가</a></span>");
 		},error: function (request, status, error) {
 			alert(request.responseText);
 		} 

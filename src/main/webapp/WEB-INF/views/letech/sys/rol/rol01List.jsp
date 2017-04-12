@@ -8,14 +8,13 @@
 
 </head>
 <body>
-<div id="wrap">
-		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%--<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-warpper">
+			<section class="row">
 				<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/rol/rol01List.do" >
 					<input type="hidden" id="mode" name="mode" />
 					<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -25,15 +24,11 @@
 					<input type="hidden" id="chldrn_role" name="chldrn_role"  value=""  /> 
 					<input type="hidden" name="flag" id="flag" value="" /> 
 					
-			<!-- 타이틀 및 페이지 네비 -->		
-			<h2 class="sub_title">
-				${titleNaviMap.MN_NM }
-				<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-			</h2>
-						
-					<c:if test="${mnList3 ne null}">
-						<article>
-							<ul class="tab_gnb">
+					<div class="col-lg-10">
+						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+						<c:if test="${mnList3 ne null}">
+						<div class="tab_gnb">
+							<ul class="nav nav-tabs">
 									<c:forEach var="list3" items="${mnList3}" varStatus="status">
 										<c:if test="${params.menu_id2 eq list3.UP_MN}">
 											<li class="<c:if test="${params.menu_id3 eq list3.MN}">on </c:if>col_md_3">
@@ -42,10 +37,9 @@
 										</c:if>
 								</c:forEach>
 							</ul>
-				   		</article>
-					</c:if>
-					<!-- page -->
-					<article>
+				   		</div>
+						</c:if>
+						<!-- page -->
 						
 						<p class="full-right" >
 							<a href="#" class="btn btn_info" onclick="fnInsert();">권한상속관계추가</a>
@@ -109,19 +103,20 @@
 							</tbody>
 						</table>
 						<!-- page nav -->
-					</article>
 
 	
-	<div class="pop_bg">
-		<div class="popup">
-			<a href="#" class="close" title="창닫기"></a>
-	 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
+					<div class="pop_bg">
+						<div class="popup">
+							<a href="#" class="close" title="창닫기"></a>
+					 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
+						</div>
+					</div>
+				</div>
+			</form>
+			<jsp:include page="/resources/com/inc/aside.jsp" />
+			</section>
 		</div>
-	</div>
-</form>
-</section>
-</div>
-	 <jsp:include page="/resources/com/inc/footer.jsp" />
+		<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>

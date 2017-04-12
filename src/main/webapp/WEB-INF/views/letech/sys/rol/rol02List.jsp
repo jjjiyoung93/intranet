@@ -7,14 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 <body>
-<div id="wrap">
-		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%--<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
 				<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/rol/rol02List.do" >
 					<input type="hidden" id="mode" name="mode" />
 					<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -23,31 +22,25 @@
 					<input type="hidden" id="author_code"name="author_code" value="" /> 
 					<input type="hidden" name="flag" id="flag" value="" /> 
 					<!-- 타이틀 및 페이지 네비 -->
-					<h2 class="sub_title">
-						${titleNaviMap.MN_NM }
-						<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-					</h2>
-					<c:if test="${mnList3 ne null}">
-						<article>
-							<ul class="tab_gnb">
-								<c:forEach var="list3" items="${mnList3}" varStatus="status">
-									<c:if test="${params.menu_id2 eq list3.UP_MN}">
-										<li class="<c:if test="${params.menu_id3 eq list3.MN}">on </c:if>col_md_3">
-											<a href="javascript:fnTabMove('${list3.MN_HREF}','${list3.MN}')">${list3.MN_NM}</a>
-										</li>
-									</c:if>
-								</c:forEach>
-							</ul>
-				   		</article>
-					</c:if>
+					<div class="col-lg-10">
+						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+							<c:if test="${mnList3 ne null}">
+							<div class="tab_gnb">
+								<ul class="nav nav-tabs">
+									<c:forEach var="list3" items="${mnList3}" varStatus="status">
+										<c:if test="${params.menu_id2 eq list3.UP_MN}">
+											<li class="<c:if test="${params.menu_id3 eq list3.MN}">active</c:if>" role="presentaion">
+												<a class="" href="javascript:fnTabMove('${list3.MN_HREF}','${list3.MN}')">${list3.MN_NM}</a>
+											</li>
+										</c:if>
+									</c:forEach>
+								</ul>
+							</div>
+							</c:if>
 					<!-- page -->
-					<article>
-						<p class="full-right">
-							<!-- <a href="#" class="btn btn_info" onclick="fnInsert();">권한추가</a> -->
-						</p>
-			
+					<div class="table-responsive ">
 						<!-- 테이블 -->
-						<table cellpadding="0" cellspacing="0" class="">
+						<table class="table table-bordered">
 							<caption>메뉴관리</caption>
 							<colgroup>
 								<col width="25%"  />
@@ -94,7 +87,7 @@
 													<a href="#" class="btn_s btn_basic" onclick="fnInsert('${authResult.CD}', '${authResult.CD_NM }')">권한생성</a>
 												</c:when>
 												<c:otherwise>
-													<a href="#" class="btn_s btn_basic" onclick="fnDelete('${authResult.AUTHOR_CODE}')">권한삭제</a>
+													<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('${authResult.AUTHOR_CODE}')">권한삭제</a>
 												</c:otherwise>
 											</c:choose>
 												</td>
@@ -107,7 +100,7 @@
 							</tbody>
 						</table>
 						<!-- page nav -->
-					</article>
+					</div>
 			
 				
 				<div class="pop_bg">
@@ -116,9 +109,11 @@
 				 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 					</div>
 				</div>
+				</div>
 			</form>
+			<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
-</div>
+		</div>
 	 <jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
 

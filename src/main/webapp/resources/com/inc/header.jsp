@@ -86,3 +86,4 @@ if(Sessinfo != null){
 String pageInfo=request.getRequestURI();
 
 %>
+<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>

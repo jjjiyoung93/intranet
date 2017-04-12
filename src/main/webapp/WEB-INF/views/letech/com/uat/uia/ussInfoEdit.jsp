@@ -11,105 +11,121 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-	    <jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
-		<%-- <%@ include file="../com/layout/menu.jsp" %> --%>
-	    <div class="container">
-	   		 <jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
-			
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
 				<!-- 타이틀 및 페이지 네비 -->
-				<article>
-					<h2 class="sub_title">
+				<div class="col-lg-10">
+					<h4 class="title">
 						${titleNaviMap.MN_NM }
-						<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-					</h2>
-					
-				</article>
-				<br/>
-				<!-- page -->
-				<article>
-	<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/index.do" >
-		<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
-		<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
-		<input type="hidden" name="id_check" id="id_check" value="" />
-		<input type="hidden" id="mode" name="mode" value="${params.mode }" />
-		<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
-		<input type="hidden" id="uss_auth_cd" name="uss_auth_cd" value="${resultView.USS_AUTH_CD}"/>
-							<table cellpadding="0" cellspacing="0" class="table_info">
-								<colgroup>
-									<col width="20%" />
-									<col width="*" />
-								</colgroup>
-						     	<tbody>
-						     		<tr>
-							          	<th>부서</th>
-							          	<td>
-							          		<input name="dp_cd" id="dp_cd" type="hidden" value="${resultView.DP_CD }" class="col_md_6" />
-											<c:forEach var="departList" items="${departList}">
-												<c:if test="${departList.DP_CD eq resultView.DP_CD }">${departList.DP_NM}</c:if>
-											</c:forEach>
-							            </td>
-						            </tr>
-						      		<tr>
-							          	<th>사용자 ID</th>
-							          	<td>
-											${resultView.USS_ID }
-											<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
-											<input name="uss_sex" id="uss_sex" type="hidden" value="${resultView.USS_SEX }"/>
-							            </td>
-						            </tr>
-						            <tr>
-							          	<th>성명</th>
-							          	<td>
-							          		<input name="uss_nm" id="uss_nm" type="hidden" value="${resultView.USS_NM }" class="col_md_6" />
-											${resultView.USS_NM }
-							            </td>
-						            </tr>
-						            <tr>
-							          	<th>비밀번호</th>
-							          	<td>
-											<input name="uss_pwd" id="uss_pwd" type="password" value="" class="col_md_6" />
-							            </td>
-						            </tr>
-						            <tr>
-							          	<th>비밀번호 확인</th>
-							          	<td>
-											<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="col_md_6" />
-							            </td>
-						            </tr>
-						            <tr>
-							         <th>생년월일</th>
-							          	<td>
-											<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="col_md_6" />
-							            </td>
-						            </tr>
-						            <tr>
-							          	<th>전화번호</th>
-							          	<td>
-											<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="i_text" maxlength="4" />
-											-
-											<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="i_text" maxlength="4" />
-											-
-											<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="i_text" maxlength="4" />
-							            </td>
-						            </tr>
-						            <tr>
-							          	<th>이메일</th>
-							          	<td>
-											<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="col_md_6" />
-							            </td>
-						            </tr>
-						      	</tbody>
-						  	</table>
-</form>
-						<p class=" full-right" >
-							<a class="btn-ok btn btn_info" href="#submit" role="button">저장</a>
-						    <a href="#cancel" class="btn-cancel btn btn_default " ><span>취소</span></a>
+						<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span>
+					</h4>
+					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/index.do" >
+						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
+						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
+						<input type="hidden" name="id_check" id="id_check" value="" />
+						<input type="hidden" id="mode" name="mode" value="${params.mode }" />
+						<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
+						<input type="hidden" id="uss_auth_cd" name="uss_auth_cd" value="${resultView.USS_AUTH_CD}"/>
+							<div class="board-view">
+								<ul>
+									<li>
+										<dl class="row first-line">
+											<dt class="col-md-2 col-xs-3">부서</dt>
+											<dd class="col-md-10 col-9">
+												<input name="dp_cd" id="dp_cd" type="hidden" value="${resultView.DP_CD }" />
+												<c:forEach var="departList" items="${departList}">
+													<c:if test="${departList.DP_CD eq resultView.DP_CD }">${departList.DP_NM}</c:if>
+												</c:forEach>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row first-line">
+											<dt class="col-md-2 col-xs-3">사용자 ID</dt>
+											<dd class="col-md-10 col-9">
+												${resultView.USS_ID }
+												<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
+												<input name="uss_sex" id="uss_sex" type="hidden" value="${resultView.USS_SEX }"/>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-2 col-xs-3">성명</dt>
+											<dd class="col-md-10 col-9">
+												<input name="uss_nm" id="uss_nm" type="hidden" value="${resultView.USS_NM }"/>
+												${resultView.USS_NM }
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-2 col-xs-3">비밀번호</dt>
+											<dd class="col-md-10 col-9">
+												<div class="form-inline">
+													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-2 col-xs-3">비밀번호 확인</dt>
+											<dd class="col-md-10 col-9">
+												<div class="form-inline">
+													<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control" />
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-2 col-xs-3">생년월일</dt>
+											<dd class="col-md-10 col-9">
+												<div class="form-inline">
+													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control" />
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-2 col-xs-3">전화번호</dt>
+											<dd class="col-md-10 col-9">
+												<div class="form-inline">
+													<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="i_text form-control"/>
+														-
+														<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="i_text form-control"/>
+														-
+													<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="i_text form-control"/>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-2 col-xs-3">이메일</dt>
+											<dd class="col-md-10 col-9">
+												<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }" class="form-control" />
+											</dd>
+										</dl>
+									</li>
+								</ul>
+							</div>
+						</form>
+						<p class="clearfix" >
+							<span class="pull-right">
+							<a class="btn-ok btn btn-warning" href="#submit" role="button">저장</a>
+						  <a href="#cancel" class="btn-cancel btn btn-default " ><span>취소</span></a>
+							</span>
 						</p>
-					</article>
+					</div>
+					<jsp:include page="/resources/com/inc/aside.jsp" />
 				</section>
 			</div>
 			<jsp:include page="/resources/com/inc/footer.jsp" />

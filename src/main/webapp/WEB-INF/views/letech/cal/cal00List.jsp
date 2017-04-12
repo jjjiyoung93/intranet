@@ -12,36 +12,36 @@
 </head>
 
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-	<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-    <div class="container">
-   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-		<section class="contents">
-			<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/cal00List.do" >
-				<input type="hidden" id="menu_id1" name="menu_id1" value="${param.menu_id1}"/>
-				<input type="hidden" id="menu_id2" name="menu_id2" value="${param.menu_id2}"/>
-				<input type="hidden" name="cal_seq" id="cal_seq" value=""/>
-				<input type="hidden" name="now_date" id="now_date" value=""/>
-				<input type="hidden" name="view_type" id="view_type" value="${view_type}"/>
-				<input type="hidden" name="CAL_ST_DT" id="CAL_ST_DT" value=""/>
-				<input type="hidden" name="CAL_ED_DT" id="CAL_ED_DT" value=""/>
-											
+<div id="wrapper">
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+		<jsp:include page="/resources/com/inc/header.jsp" />
+		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+	</nav>
+	<div class="" id="page-wrapper">
+		<section class="row">
+			<div class="col-lg-10">
 				
-				<h2 class="sub_title">
-					${titleNaviMap.MN_NM }
-					<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-				</h2>
-			
-				<!-- 달력 start -->
-				<div id='calendar'></div>
-				<!-- 달력 end -->
-				<p class="full-right">
-					<input class="fnJoin btn btn_info" type="button" value="일정등록" />
-				</p>
-			</form>
+				<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/cal00List.do" >
+					<input type="hidden" id="menu_id1" name="menu_id1" value="${param.menu_id1}"/>
+					<input type="hidden" id="menu_id2" name="menu_id2" value="${param.menu_id2}"/>
+					<input type="hidden" name="cal_seq" id="cal_seq" value=""/>
+					<input type="hidden" name="now_date" id="now_date" value=""/>
+					<input type="hidden" name="view_type" id="view_type" value="${view_type}"/>
+					<input type="hidden" name="CAL_ST_DT" id="CAL_ST_DT" value=""/>
+					<input type="hidden" name="CAL_ED_DT" id="CAL_ED_DT" value=""/>
+												
+					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+				
+					<!-- 달력 start -->
+					<div id='calendar'></div>
+					<!-- 달력 end -->
+					<p class="Clearfix">
+						<span class="pull-right"><input class="fnJoin btn btn-warning" type="button" value="일정등록" /></span>
+					</p>
+				</form>
+			</div>
+			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
-
 	</div>
 	 <jsp:include page="/resources/com/inc/footer.jsp" />
 </div>
@@ -49,6 +49,7 @@
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script> --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/fullcalendar/lib/jquery.min.js"></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lib/moment.min.js'></script>
+<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lang-all.js'></script>
 <script type="text/javascript">
