@@ -13,7 +13,7 @@
 			<jsp:include page="/resources/com/inc/header.jsp" />
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>
-		<div id="page-warpper">
+		<div id="page-wrapper">
 			<section class="row">
 				<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/rol/rol01List.do" >
 					<input type="hidden" id="mode" name="mode" />
@@ -39,14 +39,9 @@
 							</ul>
 				   		</div>
 						</c:if>
-						<!-- page -->
-						
-						<p class="full-right" >
-							<a href="#" class="btn btn_info" onclick="fnInsert();">권한상속관계추가</a>
-						</p>
-			
+					<div class="table-responsive ">
 						<!-- 테이블 -->
-						<table cellpadding="0" cellspacing="0" class="">
+						<table class="table table-bordered">
 							<caption>메뉴관리</caption>
 							<colgroup>
 								<col width="14%"  />
@@ -89,7 +84,7 @@
 													</c:when>
 													<c:otherwise>
 													<td>
-														<a href="#" class="btn_s btn_basic" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.PARNTS_ROLE}','${highList.CHLDRN_ROLE}');">롤삭제</a>
+														<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.PARNTS_ROLE}','${highList.CHLDRN_ROLE}');">롤삭제</a>
 													</td>
 													</c:otherwise>
 												</c:choose>
@@ -98,12 +93,15 @@
 										</c:forEach>					
 									</c:otherwise>
 								</c:choose>
-								
-								
 							</tbody>
 						</table>
+						</div>
 						<!-- page nav -->
-
+						<p class="clearfix" >
+							<span class="pull-right">
+								<input class="btn btn-warning" onclick="fnInsert();" value="권한상속관계추가" type="button"/>
+							</span>
+						</p>
 	
 					<div class="pop_bg">
 						<div class="popup">

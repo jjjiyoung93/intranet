@@ -8,12 +8,12 @@
 </head>
 
 <body>
-<div id="wrap">
-		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%-- <jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
 	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
 			<section class="contents">
 			<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/rol/rol00List.do" >
