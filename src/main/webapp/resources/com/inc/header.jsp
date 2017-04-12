@@ -28,7 +28,7 @@ if(Sessinfo != null){
 					<span class="icon-bar"></span>
 				</button>
 				<h1 class="logo">
-					<a class="navbar-brand" href="index.html">
+					<a class="navbar-brand" href="<%=request.getContextPath() %>/index.do">
 						<img src="http://intra.letech.kr/letech/resources/images/layout/nav_logo.png" width="150"alt="" />
 					</a>
 				</h1>
@@ -86,4 +86,4 @@ if(Sessinfo != null){
 String pageInfo=request.getRequestURI();
 
 %>
-<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
+

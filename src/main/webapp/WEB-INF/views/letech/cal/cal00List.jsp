@@ -49,7 +49,7 @@
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script> --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/fullcalendar/lib/jquery.min.js"></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lib/moment.min.js'></script>
-<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
+
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lang-all.js'></script>
 <script type="text/javascript">
