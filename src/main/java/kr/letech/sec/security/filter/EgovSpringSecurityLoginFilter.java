@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import kr.letech.cmm.LoginVO;
+import kr.letech.sys.bbs.service.BbsMngService;
 import kr.letech.sys.mnm.service.MenuMngService;
 import kr.letech.uat.uia.service.EgovLoginService;
 
@@ -71,6 +73,8 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 		ApplicationContext act = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
 		EgovLoginService loginService = (EgovLoginService) act.getBean("loginService");
 		MenuMngService menuMngService = (MenuMngService) act.getBean("menuMngService");
+		//TODO 게시판 필요정보
+		BbsMngService bbsMngService = (BbsMngService) act.getBean("bbsMngService");
 //		EgovMessageSource egovMessageSource = (EgovMessageSource) act.getBean("egovMessageSource");
 
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -163,6 +167,48 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 							params.put("levl","2");
 //							List mnList2 = menuMngService.getOneCodeList(params);
 							List mnList2 = menuMngService.getMnList(params);
+							//TODO 게시판 정보 불러오기
+							List bbsTabList = bbsMngService.get00List(params);
+							int iMnList2Size = mnList2.size();
+							int iBbsTabListSize = bbsTabList.size();
+							int iRemoveInd = 0;
+							for(int i=0; i < iMnList2Size; i++){
+								Map mnMap2 = (Map) mnList2.get(i);
+								String sMn = String.valueOf(mnMap2.get("MN"));
+								if("MN0020".equals(sMn)){
+										
+									String sMnHref = String.valueOf(mnMap2.get("MN_HREF"));
+									String sUseYn = String.valueOf(mnMap2.get("USE_YN"));
+									String sMnVal = String.valueOf(mnMap2.get("MN_VAL"));
+									String sMnType = String.valueOf(mnMap2.get("MN_TYPE"));
+									String sUpMn = String.valueOf(mnMap2.get("UP_MN"));
+									String sLevl = String.valueOf(mnMap2.get("LEVL"));
+									
+									for(int j=0; j < iBbsTabListSize; j++){
+										Map iBbsTabMap = (Map) bbsTabList.get(j);
+										
+										Map resultMap = new HashMap();
+										
+										resultMap.put("MN_HREF", sMnHref+"?bbs_id="+iBbsTabMap.get("BBS_ID"));
+										resultMap.put("MN_ORD", iBbsTabMap.get("BBS_ORD"));
+										resultMap.put("USE_YN", sUseYn);
+										resultMap.put("MN_VAL", sMnVal);
+										resultMap.put("MN_TYPE", sMnType);
+										resultMap.put("UP_MN", sUpMn);
+										resultMap.put("MN_NM", iBbsTabMap.get("BBS_NM"));
+										resultMap.put("MN", sMn);
+										resultMap.put("LEVL", sLevl);
+										
+										System.out.println("test");
+										
+										mnList2.add(resultMap);
+									}
+									iRemoveInd = i;
+								}
+							}
+							
+							mnList2.remove(iRemoveInd);
+							
 							session.setAttribute("mnList2", mnList2);
 							
 							params.put("levl","3");

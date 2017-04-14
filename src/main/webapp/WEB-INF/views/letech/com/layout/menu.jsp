@@ -26,7 +26,12 @@
 															<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}</a>
 														</c:if>
 														<c:if test="${list2.MN_TYPE ne 'CD0003001'}">
-															<a href="${pageContext.request.contextPath}/${list2.MN_HREF}?menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}</a>
+															<c:if test="${list2.UP_MN eq 'MN0019'}">
+																<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}</a>
+															</c:if>
+															<c:if test="${list2.UP_MN ne 'MN0019'}">
+																<a href="${pageContext.request.contextPath}/${list2.MN_HREF}?menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}</a>
+															</c:if>
 														</c:if>
 													</li>
 												</c:when>
@@ -60,9 +65,39 @@
 										<c:forEach var="list2" items="${mnList2}" varStatus="status">
 											<c:if test="${list.MN eq list2.UP_MN}">
 												<li>
+													<!-- 하위 메뉴가 있는지 판단 -->
 													<c:if test="${list2.MN_TYPE eq 'CD0003001'}">
-														<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}</a>
+													
+														<!-- 하위메뉴 추가 김중원 START -->
+														<a href="#" <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> >
+															${list2.MN_NM}
+														</a>
+														<c:if test="${mnList3 ne null}">
+															<ul class="sub">
+																<c:forEach var="list3" items="${mnList3}" varStatus="status">
+																	<c:if test="${list2.MN eq list3.UP_MN}">
+																		<li>
+																			<!-- 하위 메뉴가 있는지 판단 -->
+																			<c:if test="${list3.MN_TYPE eq 'CD0003001'}">
+																				<a href="#" <c:if test="${params.menu_id2 eq list.MN}">class="act_on" </c:if> >
+																					${list3.MN_NM}
+																				</a>
+																				<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list3.MN_NM}1</a>
+																			</c:if>
+																			<!-- 하위 메뉴가 없음 -->
+																			<c:if test="${list3.MN_TYPE ne 'CD0003001'}">
+																				<a href="${pageContext.request.contextPath}/${list3.MN_HREF}?menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list3.MN_NM}</a>
+																			</c:if>
+																		</li>
+																	</c:if>
+																</c:forEach>
+															</ul>
+														</c:if>
+														<!-- 하위메뉴 추가 김중원 END -->
+														
+														<%-- <a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}1</a> --%>
 													</c:if>
+													<!-- 하위 메뉴가 없음 -->
 													<c:if test="${list2.MN_TYPE ne 'CD0003001'}">
 														<a href="${pageContext.request.contextPath}/${list2.MN_HREF}?menu_id1=${list.MN}&menu_id2=${list2.MN}" >${list2.MN_NM}</a>
 													</c:if>
@@ -75,7 +110,6 @@
 						</sec:authorize> 
 					</c:otherwise>
 				</c:choose>
-			
 			</c:forEach>
 		</ul>
 	</div>

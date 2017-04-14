@@ -13,7 +13,7 @@
 
 <body>
 	<!-- 전체 감싸는 id -->
-	<div id="wrapper">	
+	<div id="wrapper">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<jsp:include page="/resources/com/inc/header.jsp" />
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
@@ -36,7 +36,8 @@
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" name="bbs_id" id="bbs_id" value="${params.bbs_id }" />
 						<input type="hidden" name="bbs_seq" id="bbs_seq" value="" />
-						<!--<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />-->					
+						<!--<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />-->	
+										
 						<!-- 타이틀 및 페이지 네비 -->
 						<h4 class="title">
 							${params.bbs_nm}
@@ -47,7 +48,6 @@
 						
 						<!--tab -->
 						<!-- 탭부분 제거 예정 -->
-						<%-- 
 						<c:if test="${bbsTabList ne null}">
 							<article>
 								<ul class="tab_gnb">
@@ -55,14 +55,13 @@
 										<c:if test="${params.bbs_id eq list3.BBS_ID}">
 											<c:set var="bbsNm" value="${list3.BBS_NM}" />
 										</c:if>
-										<li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
+										<%-- <li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
 											<a href="#" onclick="fnTabMove('bbs/bbs00List.do','${list3.BBS_ID}')">${list3.BBS_NM}</a>
-										</li>
+										</li> --%>
 									</c:forEach>
 								</ul>
 					   		</article>
 						</c:if>
-						--%>
 						
 						<div class="row">
 							<div class="col-lg-6">

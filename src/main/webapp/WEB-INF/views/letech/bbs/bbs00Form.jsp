@@ -5,12 +5,12 @@
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>Letech Intranet</title>
-<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
-<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Letech Intranet</title>
+	<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
+	<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 
 <body>
@@ -22,14 +22,14 @@
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>	
 		<%-- <jsp:include page="/resources/com/inc/header.jsp" />
-	    <jsp:include page="/resources/com/inc/menu.jsp" />
+		   <jsp:include page="/resources/com/inc/menu.jsp" />
 		<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
 		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %> --%>
-		
-	    <!-- 컨텐츠-->
-   		<div class="" id="page-wrapper">
-	   	 	<section class="row">
-	   	 		<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
+	
+		<!-- 컨텐츠-->
+		<div class="" id="page-wrapper">
+		 	<section class="row">
+		 		<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10">
 					<c:if test="${bbsTabList ne null}">
 						<article>
@@ -43,18 +43,18 @@
 									</li> --%>
 								</c:forEach>
 							</ul>
-				   		</article>
+						</article>
 					</c:if>
-					
+				
 					<!-- 타이틀 및 페이지 네비 -->
 					<h4 class="title">
 						${bbsNm }
-						<span class="pull-right text-muted small">
-							HOME > 게시판 > <strong>${bbsNm }</strong>
+					<span class="pull-right text-muted small">
+						HOME > 게시판 > <strong>${bbsNm }</strong>
 						</span>
 					</h4>
 					<br/>
-					
+				
 					<div class="board-view">
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
@@ -63,7 +63,7 @@
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="p_seq" name="p_seq" value="${params.p_seq }" />
 							<input type="hidden" name="bbs_seq" id="bbs_seq" value="${resultView.BBS_SEQ }" />
-							
+				
 							<ul>
 								<li>
 									<dl class="row first-line ">
@@ -99,7 +99,7 @@
 											</div>
 										</dd>
 									</dl>
-									
+				
 									<c:set var="modeVal" value="<%=VarConsts.MODE_R%>" />
 									<c:if test="${params.mode ne modeVal }">
 										<c:if test="${bbsInfo.SEC_YN eq 'Y' }">
@@ -127,164 +127,164 @@
 				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
 		</div>
-	<jsp:include page="/resources/com/inc/footer.jsp" />
-</div>
+		<jsp:include page="/resources/com/inc/footer.jsp" />
+	</div>
 
-<form id="ussFrm" name="ussFrm" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00Popup.do" >
-</form>
-<!-- 파일 다운로드 form Start -->
-<form id="downFrm" name="downFrm" method="post" action="${pageContext.request.contextPath}/cmm/FileDown.do">
-	<input type="hidden" name="file_path" id="file_path" value="" /><!-- 파일위치 -->
-	<input type="hidden" name="file_stre_nm" id="file_stre_nm" value="" /><!-- 저장된파일명 -->
-	<input type="hidden" name="file_nm" id="file_nm" value="" /><!-- 원문파일명 -->
-</form>
-<!-- 파일 다운로드 form End -->
+	<form id="ussFrm" name="ussFrm" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00Popup.do" >
+	</form>
+	<!-- 파일 다운로드 form Start -->
+	<form id="downFrm" name="downFrm" method="post" action="${pageContext.request.contextPath}/cmm/FileDown.do">
+		<input type="hidden" name="file_path" id="file_path" value="" /><!-- 파일위치 -->
+		<input type="hidden" name="file_stre_nm" id="file_stre_nm" value="" /><!-- 저장된파일명 -->
+		<input type="hidden" name="file_nm" id="file_nm" value="" /><!-- 원문파일명 -->
+	</form>
+	<!-- 파일 다운로드 form End -->
 
-<!-- js파일 및 공통스크립트사용 -->
-<jsp:include page="/resources/com/inc/javascript.jsp" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
-<script type="text/javascript">
-
-$(document).ready(function() {
-	/* 저장 */	
-	$( ".btn-ok" ).click(function() {
-		if(getValidation()){
-			if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
-			}else{
-				$("#mode").val("<%=VarConsts.MODE_I%>");	
+	<!-- js파일 및 공통스크립트사용 -->
+	<jsp:include page="/resources/com/inc/javascript.jsp" />
+	<script type="text/javascript" src="${pageContext.request.contextPath}/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+	<script type="text/javascript">
+	
+	$(document).ready(function() {
+		/* 저장 */	
+		$( ".btn-ok" ).click(function() {
+			if(getValidation()){
+				if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
+				}else{
+					$("#mode").val("<%=VarConsts.MODE_I%>");	
+				}
+				
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Tran.do");
+				$("#frm1").submit();
 			}
-			
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Tran.do");
-			$("#frm1").submit();
-		}
-	});
-	/* 취소 */
-	$( ".btn-cancel" ).click(function() {
-		if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
-			/* 수정 폼일경우 상세화면으로 이동 */
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
-			$("#frm1").submit();
-			
-		}else if($("#mode").val() == "<%=VarConsts.MODE_R%>"){
-			var p_seq = $("#p_seq").val();
-			$("#bbs_seq").val(p_seq);
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
-			$("#frm1").submit();
-		}else{
-			/* 입력 폼일경우 목록화면으로 이동 */
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");
-			$("#frm1").submit();	
-		}
-	});
-	
-	/* 첨부파일 추가 삭제 기능 */
-	var count = 0;
-	$('#button-add-file').click(function(){
-		var html = "<div id='file_"+count+"'>";
-		html += "<input class='input-group' type='file' name='file"+count+"' id='file"+count+"' />";
-		html += "&nbsp;<input type='button' value='삭제' class='button-delete-file btn btn-default'/></div>";
-		count++;
-		$("#my-file").append(html);
-	});
-	$(document).on('click', '.button-delete-file', function(event) {
-		$(this).parent().remove();
-	});
-});
-
-/* 파일 삭제 */
-function fn_delFile(file_path, file_stre_nm, file_seq){
-	if(confirm("해당 파일을 삭제하시겠습니까?")){			
-		$.ajax({
-			url: "${pageContext.request.contextPath}/bbs/bbs02Tran.do",
-			type: "post",
-			dataType : "json", 
-			data : {"file_path":file_path, "file_stre_nm":file_stre_nm, "file_seq":file_seq},
-			success: function(result){
-				$("#file_"+file_seq).remove();
-				alert("삭제되었습니다.");
-			},error: function (request, status, error) {
-				alert("삭제에 실패 했습니다.");
-//					alert(request.responseText);
-			} 
 		});
-	}
-}
-
-function getValidation(){
-	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
-	
-	if($("#title").val() == ""){
-		alert("제목을 입력해 주세요.");
-		$("#title").focus();
-		return false;
-	}
-	
-	if($("#content").val() == ""){
-		alert("내용을 선택해 주세요.");
-		$("#contents").focus();
-		return false;
-	}
-	
-	return true;
-}
-
-/* 파일 다운로드 */
-function fn_downFile(file_path, file_stre_nm, file_nm){
-	$("#file_path").val(file_path);
-	$("#file_stre_nm").val(file_stre_nm);
-	$("#file_nm").val(file_nm);
-	$("#downFrm").submit();
-}
-
-
-/*********************************************************************************
-* function명   : fnTabMove
-* function기능 : 탭이동
-**********************************************************************************/
-function fnTabMove(href,pm1){
-	$("#bbs_id").val(pm1);
-	$("#frm1").attr("action", "${pageContext.request.contextPath}/"+href);
-	$("#frm1").submit();
-}
-
-/*sub_menu 탭*/
-$(function(){
-	$("article.sub_contents:not("+$("ul.tab_gnb li a.sub_nav_on").attr("href")+")").hide();
-	$("ul.tab_gnb li a").click(function(){
-		$("ul.tab_gnb li a").removeClass("sub_nav_on");
-		$(this).addClass("sub_nav_on");
-		$("article.sub_contents").hide();
-		$($(this).attr("href")).show();
-		return false;
+		/* 취소 */
+		$( ".btn-cancel" ).click(function() {
+			if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
+				/* 수정 폼일경우 상세화면으로 이동 */
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
+				$("#frm1").submit();
+				
+			}else if($("#mode").val() == "<%=VarConsts.MODE_R%>"){
+				var p_seq = $("#p_seq").val();
+				$("#bbs_seq").val(p_seq);
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
+				$("#frm1").submit();
+			}else{
+				/* 입력 폼일경우 목록화면으로 이동 */
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");
+				$("#frm1").submit();	
+			}
+		});
+		
+		/* 첨부파일 추가 삭제 기능 */
+		var count = 0;
+		$('#button-add-file').click(function(){
+			var html = "<div id='file_"+count+"'>";
+			html += "<input class='input-group' type='file' name='file"+count+"' id='file"+count+"' />";
+			html += "&nbsp;<input type='button' value='삭제' class='button-delete-file btn btn-default'/></div>";
+			count++;
+			$("#my-file").append(html);
+		});
+		$(document).on('click', '.button-delete-file', function(event) {
+			$(this).parent().remove();
+		});
 	});
-});
-
-/* 에디터 Start */
-var oEditors = [];
-
-//추가 글꼴 목록
-//var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];
-nhn.husky.EZCreator.createInIFrame({
-	oAppRef: oEditors,
-	elPlaceHolder: "content",
-	sSkinURI: "/letech/se2/SmartEditor2Skin.html",	
-	htParams : {
-		bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-		bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-		bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-		//aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
-		fOnBeforeUnload : function(){
-			//alert("완료!");
+	
+	/* 파일 삭제 */
+	function fn_delFile(file_path, file_stre_nm, file_seq){
+		if(confirm("해당 파일을 삭제하시겠습니까?")){			
+			$.ajax({
+				url: "${pageContext.request.contextPath}/bbs/bbs02Tran.do",
+				type: "post",
+				dataType : "json", 
+				data : {"file_path":file_path, "file_stre_nm":file_stre_nm, "file_seq":file_seq},
+				success: function(result){
+					$("#file_"+file_seq).remove();
+					alert("삭제되었습니다.");
+				},error: function (request, status, error) {
+					alert("삭제에 실패 했습니다.");
+	//					alert(request.responseText);
+				} 
+			});
 		}
-	}, //boolean
-	fOnAppLoad : function(){
-		//예제 코드
-		oEditors.getById["content"].exec("PASTE_HTML", ["${resultView.CONTENT }"]);
-	},
-	fCreator: "createSEditor2"
-});
-/* 에디터 End */
-
-</script>
+	}
+	
+	function getValidation(){
+		oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
+		
+		if($("#title").val() == ""){
+			alert("제목을 입력해 주세요.");
+			$("#title").focus();
+			return false;
+		}
+		
+		if($("#content").val() == ""){
+			alert("내용을 선택해 주세요.");
+			$("#contents").focus();
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/* 파일 다운로드 */
+	function fn_downFile(file_path, file_stre_nm, file_nm){
+		$("#file_path").val(file_path);
+		$("#file_stre_nm").val(file_stre_nm);
+		$("#file_nm").val(file_nm);
+		$("#downFrm").submit();
+	}
+	
+	
+	/*********************************************************************************
+	* function명   : fnTabMove
+	* function기능 : 탭이동
+	**********************************************************************************/
+	function fnTabMove(href,pm1){
+		$("#bbs_id").val(pm1);
+		$("#frm1").attr("action", "${pageContext.request.contextPath}/"+href);
+		$("#frm1").submit();
+	}
+	
+	/*sub_menu 탭*/
+	$(function(){
+		$("article.sub_contents:not("+$("ul.tab_gnb li a.sub_nav_on").attr("href")+")").hide();
+		$("ul.tab_gnb li a").click(function(){
+			$("ul.tab_gnb li a").removeClass("sub_nav_on");
+			$(this).addClass("sub_nav_on");
+			$("article.sub_contents").hide();
+			$($(this).attr("href")).show();
+			return false;
+		});
+	});
+	
+	/* 에디터 Start */
+	var oEditors = [];
+	
+	//추가 글꼴 목록
+	//var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];
+	nhn.husky.EZCreator.createInIFrame({
+		oAppRef: oEditors,
+		elPlaceHolder: "content",
+		sSkinURI: "/letech/se2/SmartEditor2Skin.html",	
+		htParams : {
+			bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+			bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+			bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+			//aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+			fOnBeforeUnload : function(){
+				//alert("완료!");
+			}
+		}, //boolean
+		fOnAppLoad : function(){
+			//예제 코드
+			oEditors.getById["content"].exec("PASTE_HTML", ["${resultView.CONTENT }"]);
+		},
+		fCreator: "createSEditor2"
+	});
+	/* 에디터 End */
+	
+	</script>
 </body>
 </html>
