@@ -7,14 +7,14 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 <body>
-<div id="wrap">
-		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%-- <jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
+				<div class="col-lg-10">
 			<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/bbs/bbs00List.do" >
 				<input type="hidden" id="mode" name="mode" />
 				<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -22,22 +22,18 @@
 				<input type="hidden" id="bbs_id" name="bbs_id" value=""  /> 
 				<input type="hidden" id="flag" name="flag" value="" /> 
 
-		<!-- 타이틀 및 페이지 네비 -->
-		<h2 class="sub_title">
-			${titleNaviMap.MN_NM }
-			<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-		</h2>
+				<!-- 타이틀 및 페이지 네비 -->
+					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
 		<!-- page -->
-		<article>
 			
-			<article>
-				<p class="col_md_12">
-					<a href="#" class="btn btn_info full-right" onclick="fnInsert();">게시판추가</a>
+				<p class="clearfix">
+					<span class="pull-right">
+						<a href="#" class="btn btn-warning" onclick="fnInsert();">게시판추가</a>
+					</span>
 				</p>
-			</article>
-
+			<div class="table-responsive">
 			<!-- 테이블 -->
-			<table cellpadding="0" cellspacing="0" class="">
+			<table class="table table-bordered">
 				<caption>메뉴관리</caption>
 				<colgroup>
 					<col width="8%"  />
@@ -105,8 +101,8 @@
 										${highList.MOD_ID }
 									</td>								
 									<td >
-											<a href="#" class="btn_s btn_basic" onclick="fnModify('${highList.BBS_ID}');">수정</a>
-											<a href="#" class="btn_s btn_basic" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.BBS_ID}');">삭제</a>
+											<a href="#" class="btn btn-xs btn-default" onclick="fnModify('${highList.BBS_ID}');">수정</a>
+											<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.BBS_ID}');">삭제</a>
 									</td>
 								</tr>
 							</c:forEach>					
@@ -115,7 +111,7 @@
 				</tbody>
 			</table>
 			<!-- page nav -->
-		</article>
+		</div>
 			<div class="pop_bg">
 				<div class="popup">
 					<a href="#" class="close" title="창닫기"></a>
@@ -123,6 +119,8 @@
 				</div>
 			</div>
 		</form>
+			</div>
+		<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 		</div>
 			<jsp:include page="/resources/com/inc/footer.jsp" />

@@ -14,14 +14,13 @@
 </head>
 
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-	<%--<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-	<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-    <div class="container">
-   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-		<section class="contents">
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
 			<form name="frm1" id="frm1" method="post" action="<%=request.getContextPath()%>/sys/err/err00List.do" >
 				<input type="hidden" id="mode" name="mode" value="${params.mode }"/>
 				<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -29,12 +28,9 @@
 				<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}"/>
 				<input type="hidden" name="cPage" id="cPage" value="" />
 				<input type="hidden" name="error_seq" id="error_seq" value="${resultView.ERROR_SEQ }" />
-				
+				<div class="col-lg-10">
 				<!-- 타이틀 및 페이지 네비 -->		
-				<h2 class="sub_title">
-					${titleNaviMap.MN_NM }
-					<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-				</h2>
+				<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
 					
 				<c:if test="${mnList3 ne null}">
 					<article>
@@ -103,7 +99,7 @@
 					            <c:choose>
 					            	<c:when test="${params.mode eq 'edit'}">
 					            		<td colspan="5">
-											<textarea rows="3" cols="50" id="process_content" name="process_content">${resultView.PROCESS_CONTENT }</textarea>
+													<textarea rows="3" cols="50" id="process_content" class="form-control" name="process_content">${resultView.PROCESS_CONTENT }</textarea>
 							            </td>
 					            	</c:when>
 					            	<c:otherwise>
@@ -119,19 +115,23 @@
 		    					
 				</article>
 			
-				<div class="full-right">
+				<p class="clearfix">
+					<span class="pull-right">
 					<c:choose>
 		            	<c:when test="${params.mode eq 'edit'}">
-		            		<input class="btn btn_info btn-completion" type="button" value="완료" />
-							<input class="btn btn_info btn-save" type="button" value="저장" />
+		            		<input class="btn btn-warning btn-completion" type="button" value="완료" />
+							<input class="btn btn-warning btn-save" type="button" value="저장" />
 		            	</c:when>
 		            	<c:otherwise>
-		            		<input class="btn btn_info btn-process" type="button" value="처리" />
+		            		<input class="btn btn-warning btn-process" type="button" value="처리" />
 		            	</c:otherwise>
 		            </c:choose>
-				    <input class="btn btn_default btn-list"  type="button" value="목록" />
+					</span>
+				    <input class="btn btn-default btn-list"  type="button" value="목록" />
+				</p>
 				</div>
 			</form>
+			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 	</div>
 	

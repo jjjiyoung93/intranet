@@ -7,14 +7,13 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 <body>
-	<div id="wrap">
-		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%--<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
 				<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/err/err00List.do" >
 					<input type="hidden" id="mode" name="mode" />
 					<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -23,12 +22,9 @@
 					<input type="hidden" name="cPage" id="cPage" value="" />
 					<input type="hidden" name="error_seq" id="error_seq" value="" />
 					<input type="hidden" name="process_state" id="process_state" value="" />
-					
+					<div class="col-lg-10">
 					<!-- 타이틀 및 페이지 네비 -->		
-					<h2 class="sub_title">
-						${titleNaviMap.MN_NM }
-						<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-					</h2>
+					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
 						
 					<c:if test="${mnList3 ne null}">
 						<article>
@@ -44,12 +40,10 @@
 				   		</article>
 					</c:if>
 					<!-- page -->
-					<article>
-						<p class=" ">
-							<strong class="list_count" >Total : ${totalCnt} 건</strong>
-						</p>
+					<strong class="list_count" >Total :</strong> ${totalCnt} 건
+					<div class="table-responsive">
 						<!-- 테이블 -->
-						<table cellpadding="0" cellspacing="0" class="">
+						<table class="table table-bordered">
 							<caption>메뉴관리</caption>
 							<colgroup>
 								<col width="10%"  />
@@ -96,8 +90,10 @@
 							<p class="page_nav">
 							<strong>${pageNavigator }</strong>
 						</p>
-					</article>
+					</div>
+					</div>
 				</form>
+				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
 		</div>
 		<jsp:include page="/resources/com/inc/footer.jsp" />

@@ -14,7 +14,6 @@
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>
 		<div id="page-wrapper">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
 			<section class="contents">
 			<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/rol/rol00List.do" >
 				<input type="hidden" id="mode" name="mode" />
@@ -24,33 +23,17 @@
 				<input type="hidden" id="role_code" name="role_code" value=""  /> 
 				<input type="hidden" id="author_code" name="author_code" value=""  /> 
 				<input type="hidden" id="flag" name="flag" value="" /> 
-			<h2 class="sub_title">
-				${titleNaviMap.MN_NM }
-				<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-			</h2>
-<%-- 
-				<c:if test="${mnList3 ne null}">
-					<article>
-						<ul class="tab_gnb">
-							<c:forEach var="list3" items="${mnList3}" varStatus="status">
-								<c:if test="${params.menu_id2 eq list3.UP_MN}">
-									<li class="<c:if test="${params.menu_id3 eq list3.MN}">on </c:if>">
-										<a href="javascript:fnTabMove('${list3.MN_HREF}','${list3.MN}')">${list3.MN_NM}</a>
-									</li>
-								</c:if>
-							</c:forEach>
-						</ul>
-			   		</article>
-				</c:if>
- --%>
-		<!-- page -->
-		<article>
-			
-			<p class="full-right">
-				<a href="#" class="btn btn_info" onclick="fnInsert();">패턴추가</a>
-			</p>
+				<div class="col-lg-10">
+						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+			<p class="clearfix">
+					<span class="pull-right">
+						<a href="#" class="btn btn-warning" onclick="fnInsert();">패턴추가</a>
+					</span>
+				</p>
+		
 			<!-- 테이블 -->
-			<table cellpadding="0" cellspacing="0" class="">
+			<div class="table-responsive">
+			<table class="table table-bordered">
 				<caption>메뉴관리</caption>
 				<colgroup>
 					<col width="10%"  />
@@ -69,7 +52,7 @@
 						<th>접속패턴</th>
 						<th>메뉴권한설명</th>
 						<th>타입</th>
-						<th>접근<br />순서</th>
+						<th>접근순서</th>
 						<th>생성일</th>
 						<th>수정</th>
 					</tr>
@@ -109,8 +92,8 @@
 									</td>								
 									<td>
 <%-- 											<a href="#" class="btn_s btn_basic" onclick="fnRoleInsert('${highList.ROLE_CODE}');">접근롤추가</a> --%>
-											<a href="#" class="btn_s btn_basic" onclick="fnModify('${highList.ROLE_CODE}');">수정</a>
-											<a href="#" class="btn_s btn_basic" onclick="fnDelete('<%=VarConsts.MODE_DA%>','${highList.ROLE_CODE}','1','');">삭제</a>
+											<a href="#" class="btn btn-xs btn-default" onclick="fnModify('${highList.ROLE_CODE}');">수정</a>
+											<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_DA%>','${highList.ROLE_CODE}','1','');">삭제</a>
 									</td>
 								</tr>
 							</c:forEach>					
@@ -120,20 +103,20 @@
 					
 				</tbody>
 			</table>
+		</div>
 			<!-- page nav -->
-		</article>
-		<article>
 			
-			<p class="full-left">
-				권한 정보
-			</p>
-<c:if test="${not empty resultList }">
-			<p class="full-right">
-				<a href="#" class="btn btn_info" onclick="fnRoleInsert('${params.role_code }');">권한추가</a>
-			</p>
-</c:if>
+			<h6>권한 정보</h6>
+			<c:if test="${not empty resultList }">
+				<p class="clearfix">
+					<span class="pull-right">
+						<a href="#" class="btn btn-warning" onclick="fnRoleInsert('${params.role_code }');">권한추가</a>
+					</span>
+				</p>
+			</c:if>
+		<div class="tavle-responsive">
 			<!-- 테이블 -->
-			<table cellpadding="0" cellspacing="0" class="">
+			<table class="table table-bordered">
 				<caption>메뉴관리</caption>
 				<colgroup>
 					<col width="15%"  />
@@ -171,7 +154,7 @@
 										${result.CHLDRN_ROLE }
 									</th>								
 									<td >
-										<a href="#" class="btn_s btn_basic" onclick="fnDelete('<%=VarConsts.MODE_D%>','${params.role_code }','2','${result.UP_CD }');">권한삭제</a>
+										<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_D%>','${params.role_code }','2','${result.UP_CD }');">권한삭제</a>
 									</td>
 								</tr>
 							</c:forEach>					
@@ -181,8 +164,8 @@
 					
 				</tbody>
 			</table>
+		</div>
 			<!-- page nav -->
-		</article>
 
 	
 	<div class="pop_bg">
@@ -191,7 +174,9 @@
 	 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 		</div>
 	</div>
+	</div>
 </form>
+<jsp:include page="/resources/com/inc/aside.jsp" />
 </section>
 </div>
 	 <jsp:include page="/resources/com/inc/footer.jsp" />
