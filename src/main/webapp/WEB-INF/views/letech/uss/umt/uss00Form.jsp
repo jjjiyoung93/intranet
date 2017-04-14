@@ -11,17 +11,16 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-	    <jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
-		<%-- <%@ include file="../com/layout/menu.jsp" %> --%>
-	    <div class="container">
-	   		 <jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
+<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
+				<div class="col-lg-10">
 			
 				<!-- 타이틀 및 페이지 네비 -->
-				<article>
 					<h2 class="sub_title">
 						${titleNaviMap.MN_NM }
 						<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
@@ -128,7 +127,8 @@
 						            </tr>
 										<c:if test="${joinType ne 'Y' }">
 						      		<tr>
-							          	<th>사원번호</th>
+							          	<th>사원번호
+							          	</th>
 							          	<td>
 											<input name="uss_em_no" id="uss_em_no" type="text" value="" class="col_md_4" />
 											<input type="button" class="btn_emnoChk btn btn_default " value="중복체크" title="중복체크" />
@@ -154,7 +154,8 @@
 							<a class="btn-ok btn btn_info" href="#submit" role="button">저장</a>
 						    <a href="#cancel" class="btn-cancel btn btn_default " ><span>취소</span></a>
 						</p>
-					</article>
+					</div>
+						<jsp:include page="/resources/com/inc/aside.jsp" />
 				</section>
 			</div>
 			<jsp:include page="/resources/com/inc/footer.jsp" />

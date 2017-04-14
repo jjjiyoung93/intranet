@@ -9,42 +9,39 @@
 </head>
 
 <body>
-	<div id="wrap">
-		<jsp:include page="/resources/com/inc/header.jsp" />
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%--<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-	   	 	<section class="contents">
-	
+	<div id="warpper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<jsp:include page="/resources/com/inc/header.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
+		</nav>
+		<div id="page-wrapper">
+			<section class="row">
+				<div class="col-lg-10">
 				<!-- page -->
 					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00List.do" >
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" id="cPage" name="cPage" value="${cPage }" />
 						<!-- 타이틀 및 페이지 네비 -->
-							<h2 class="sub_title">
-								${titleNaviMap.MN_NM }
-								<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-							</h2>
+							<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
 						<fieldset>
 							<input type="hidden" name="uss_id" id="uss_id" value=""/>
-							<p class=" ">
+							<p class="clearfix ">
 								<strong class="list_count" >Total : ${totalCnt} 건</strong>
-							</p>
-							<div class="full-right">
-								<div class="">
-										<select name="searchGubun" id="searchGubun" class="" title="search" >
-											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-										</select>
-										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="" title="검색어 입력" />
-										<input type="button" class="fnSearch btn_default" value="검색" title="검색" />
-									</div>
-								</div>
+									<span class="pull-right">
+											<span class="form-inline">
+											<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+											</select>
+											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+											<input type="button" class="fnSearch btn-warning btn" value="검색" title="검색" />
+										</span>							
+									</span>
+								</p>
 						</fieldset>
-						<table  width="100%" cellspacing="0" cellpadding="0"  summary="사용자관리 목록">
+						<div class="table-responsive">
+						<table class="table table-bordered" summary="사용자관리 목록">
 							<colgroup>
 								<col width="10%" />
 								<col width="15%" />
@@ -69,7 +66,7 @@
 								<c:choose>
 									<c:when test="${totalCnt < 1 }">
 										<tr>
-											<td colspan="5">검색된 내용이 없습니다.</td>
+											<td colspan="7">검색된 내용이 없습니다.</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
@@ -90,18 +87,21 @@
 							</c:choose>
 						</tbody>
 					</table>
+					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
-						<p class="page_nav">
-							<strong>${pageNavigator }</strong>
-							<button class="fnJoin full-right btn btn_info" >등 록</button>
+						<p class="clearfix">
+							<span class=""></span>
+								<strong>${pageNavigator }</strong>
+								<button class="fnJoin full-right btn btn_info" >등 록</button>
 						</p>
 					</div>
 					<div>
 						
 					</div>
 </form>
-			</article>
+</div>
+			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 	</div>
 	 	<jsp:include page="/resources/com/inc/footer.jsp" />
