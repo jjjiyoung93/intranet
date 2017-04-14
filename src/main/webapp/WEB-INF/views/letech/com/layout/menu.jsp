@@ -11,7 +11,7 @@
 			<c:forEach var="list" items="${mnList}" varStatus="status">
 				<c:choose>
 					<c:when test="${empty list.AUTHOR_CODE }">
-						<li class="visible-md visible-lg">
+						<li>
 							<a href="#" <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> >
 								${list.MN_NM}
 							</a>
@@ -56,7 +56,7 @@
 					</c:when>
 					<c:otherwise>
 						<sec:authorize access="hasAnyRole('${list.AUTHOR_CODE}')">
-							<li>
+							<li class="visible-md visible-lg">
 								<a href="#" <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> >
 								${list.MN_NM}
 								</a>
