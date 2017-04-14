@@ -8,257 +8,281 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title>Letech Intranet</title>
+<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="<%=request.getContextPath()%>/resources/css/dataTables.responsive.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
-<link href="${pageContext.request.contextPath}/resources/js/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" >
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-<div id="wrap">
-	<jsp:include page="/resources/com/inc/header.jsp" />
-    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-	<%--<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-	<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
-	    <div class="container">
-	   	 	<jsp:include page="/resources/com/inc/aside.jsp" />
-			<section class="contents">
-				<!-- 타이틀 및 페이지 네비 -->
-				<article>
-					<h2 class="sub_title">
-						${titleNaviMap.MN_NM }
-						<span class="page_navi full-right">HOME > ${titleNaviMap.NAVI_NM }</span>
-					</h2>
-					
-				</article>
-				<br/>
-				<!-- page -->
-				<article>
-	
-				<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
-					<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
-					<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
-					<input type="hidden" id="mode" name="mode" value="${params.mode }" />
-					<input type="hidden" id="aprv_no" name="aprv_no" value="${viewMap.APRV_NO }" />
-					<input type="hidden" id="line_chk" name="line_chk" value="${params.line_chk }" />
-					<input type="hidden" id="aprv_line_cd" name="aprv_line_cd" value="${viewMap.APRV_LINE_CD }" />
-					<!-- 검색 정보 Start -->
-					<input type="hidden" name="cPage" id="cPage" value="${param.cPage }" />
-					<input type="hidden" id="searchCdList1" name="searchCdList1" value="${param.searchCdList1}" />
-					<input type="hidden" id="searchCdList2" name="searchCdList2" value="${param.searchCdList2}" />
-					<input type="hidden" id="searchCdList3" name="searchCdList3" value="${param.searchCdList3}" />
-					<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
-					<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
-					<!-- 검색 정보 End -->
-				
-				<table width="100%" cellpadding="0" cellspacing="0" class="table_info">
-					<colgroup>
-						<col width="20%" />
-						<col width="*" />
-					</colgroup>
-			     	<tbody>
-			      		<tr>
-				          	<th>보고자</th>
-				          	<td>
-								<c:set var="rept_aprv_no" value=""/>
-								<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
-								<c:choose>
-									<c:when test="${params.mode eq mode_u }">
-										${viewMap.REPT_APRV_NM }
-										<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
-									</c:when>
-									<c:otherwise>
-										${loginVO.name }
-										<c:set var="rept_aprv_no" value="${loginVO.id }"/>
-									</c:otherwise>
-								</c:choose>
-								<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
-							</td>
-			            </tr>
-			      		<tr>
-				          	<th>소속</th>
-				          	<td>
-								${loginVO.orgnztNm }
-							</td>
-			            </tr>
-			            <tr>
-				          	<th>프로젝트</th>
-				          	<td>
-								<select id="proj_cd" name="proj_cd" class="select_size200">
-									<option value="">선택</option>
-<c:forEach var="proj" items="${projList }" varStatus="status">
-									<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
-</c:forEach>
-								</select>
-				            </td>
-			            </tr>
-			      		<tr>
-				          	<th>결제구분</th>
-				          	<td>
-								결제구분코드 :
-								<select id="cdList1" name="cdList1" class="select_size200">
-										<option value="" >--선택--</option>
-									<c:forEach var="codeList" items="${codeList}">
-										<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
-									</c:forEach>
-								</select>
-								상세구분코드 :
-								<select id="cdList2" name="cdList2" class="select_size200">
-										<option value="" >--선택--</option>
-									<c:forEach var="codeList2" items="${codeList2}">
-										<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
-									</c:forEach>
-								</select>
-								<!--  반차여부 -->
-								<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
-							</td>
-			            </tr>
-			            <tr>
-				          	<th>제목</th>
-				          	<td>
-								<input class="col_md_12" name="title" id="title" type="text" value="${viewMap.TITLE }"  />
-				            </td>
-			            </tr>
-			            <tr>
-				          	<th>기간</th>
-				          	<td>
-							    <input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" readonly="readonly" /> ~ 
-							    <input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" readonly="readonly" />
-				            </td>
-			            </tr>
-			            <tr>
-				          	<th>행선지</th>
-				          	<td>
-								<input class="col_md_12" name="place" id="place" type="text" value="${viewMap.PLACE }" />
-				            </td>
-			            </tr>
-			            <tr>
-				          	<th>보고내용</th>
-				          	<td>
-				          		<textarea class="col_md_12" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea>
-				            </td>
-			            </tr>
-			            <tr>
-				          	<th>첨부파일</th>
-				          	<td>
-								<c:forEach var="file" items="${fileList }" varStatus="status">
-									<div id="file_${file.FILE_NO }">
-										<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-										<input type="button" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" />
-									</div>
-								</c:forEach>
-								<div id="my-file">
-									<div id="div_file">
-										<input name="file" id="file1" type="file" value="" />
-										<input class="btn btn_warning"  type="button" value="추가" id="button-add-file"/>
-									</div>  
-								</div>
-				            </td>
-			            </tr>
-			            <tr>
-				          	<th>결재라인</th>
-				          	<td>
-				          		<c:set var="lineVar" value="1" />
-				          		<c:if test="${fn:length(lineList) > 0 }">
-				          			<c:set var="lineVar" value="${fn:length(lineList) }" />
-				          		</c:if>
-				    			<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
-				    			<table id="aprv_line" name="aprv_line"  cellpadding="0" cellspacing="0" >
-				    				<colgroup>
-				    					<col width="45%" />
-				    					<col width="20%" />
-				    					<col width="*" />
-				    					<col width="10%" />
-				    				</colgroup>
-				    				<thead class="table_s">
-					    				<tr class="">
-					    					<th>결재담당</th>
-					    					<th>결재순서</th>
-					    					<th>결재상태</th>
-											<th>
-											<!-- 반려일경우 결재자 추가 삭제 막음 -->
-											<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-												<input class="btn btn_warning" type="button" value="추가" onClick="addRow();">
-											</c:if>
-											</th>
-					    				</tr>
-				    				</thead>
-				    				<tbody class="table_s">
-										<c:choose>
-											<c:when test="${params.mode eq mode_u && fn:length(lineList) > 0 }">
-												<!-- 수정 폼일경우 -->
-												<c:forEach var="line" items="${lineList }" varStatus="status">
-								    				<tr onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
-								    					<td>
-								    						<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" class="i_text" />
-								    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text input_size100" readonly="readonly" />
-													<!-- 반려일경우 결재자 추가 삭제 막음 -->
-													<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-								    						<input type="button" value="찾기" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
-								    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
-													</c:if>
-													<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
-															<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
-													</c:if>
-								    					</td>
-								    					<td style="text-align:center"><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text input_size50"  readonly /></td>
-								    					<td style="text-align:center">${line.APRV_YN_NM }
-								    						<input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" />
-								    					</td>
-								    					<td>
-													<!-- 반려일경우 결재자 추가 삭제 막음 -->
-													<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-														<c:if test="${status.count > 1 }">	<!-- 첫번재 결재자는 삭제 안됨. -->
-												    		<input type="button" value="삭제" onClick="delRow()" />
-												    	</c:if>
-													</c:if>
-								    					</td>
-								    				</tr>
-												</c:forEach>
-											</c:when>
-											<c:otherwise>
-												<!-- 등록폼일경우 -->
-						    				<tr onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
-						    					<td>
-						    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" class="i_text" />
-						    						<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" type="text" value="" class="i_text input_size100" />
-						    						<input type="button" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
-						    						<div style="display:none">
-						    						<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
-						    						</div>
-						    					</td>
-						    					<td style="text-align:center;"><input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="i_text input_size50"  readonly /></td>
-						    					<td style="text-align:center;"><!-- 대기 -->
-						    						<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" />
-						    					</td>
-						    					<td></td>
-						    				</tr>
-										</c:otherwise>
-									</c:choose>
-									</tbody>
-				    			</table>
-				            </td>
-			            </tr>
-			      	</tbody>
-			    </table>
-				</form>
-				
-				<div class="full-right">
-<c:set var="btnVal" value="저장" />
-<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
-	<c:set var="btnVal" value="재결재" />
-</c:if>
-				    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
-				    
-				    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
-				</div>
-				</article>
-			</section>
-		</div>
-	
-	<jsp:include page="/resources/com/inc/footer.jsp" />
-</div>
+		<div id="wrapper">
+		 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+				<jsp:include page="/resources/com/inc/header.jsp" />
+				<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
+			</nav>
+			<div id="page-wrapper">
+				<div class="row">
+					<div class="col-lg-10">
+						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
+							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
+							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
+							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
+							<input type="hidden" id="aprv_no" name="aprv_no" value="${viewMap.APRV_NO }" />
+							<input type="hidden" id="line_chk" name="line_chk" value="${params.line_chk }" />
+							<input type="hidden" id="aprv_line_cd" name="aprv_line_cd" value="${viewMap.APRV_LINE_CD }" />
+							<!-- 검색 정보 Start -->
+							<input type="hidden" name="cPage" id="cPage" value="${param.cPage }" />
+							<input type="hidden" id="searchCdList1" name="searchCdList1" value="${param.searchCdList1}" />
+							<input type="hidden" id="searchCdList2" name="searchCdList2" value="${param.searchCdList2}" />
+							<input type="hidden" id="searchCdList3" name="searchCdList3" value="${param.searchCdList3}" />
+							<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
+							<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
+							<!-- 검색 정보 End -->
+						
+						<div class="board-view">
+							<ul>
+								<li>
+									<dl class="row first-line ">
+										<dt class="col-md-2 col-xs-3">보고자</dt>
+										<dd class="col-md-10 col-xs-9">
+											<c:set var="rept_aprv_no" value=""/>
+											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
+											<c:choose>
+												<c:when test="${params.mode eq mode_u }">
+													${viewMap.REPT_APRV_NM }
+													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
+												</c:when>
+												<c:otherwise>
+													${loginVO.name }
+													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
+												</c:otherwise>
+											</c:choose>
+											<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
+										</dd>
+									</dl>
 
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">소속</dt>
+										<dd class="col-md-10 col-xs-9">${loginVO.orgnztNm }</dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">프로젝트</dt>
+										<dd class="col-md-10 col-xs-9">
+											<div class="form-inline">
+												<select id="proj_cd" name="proj_cd" class="form-control">
+													<option value="">선택</option>
+													<c:forEach var="proj" items="${projList }" varStatus="status">
+													<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
+													</c:forEach>
+												</select>
+											</div>
+										</dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">결제구분</dt>
+										<dd class="col-md-10 col-xs-9">
+											<div class="form-inline">
+												<label for="">결제구분코드 : </label>
+												<select id="cdList1" name="cdList1" class="form-control">
+														<option value="" >--선택--</option>
+													<c:forEach var="codeList" items="${codeList}">
+														<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
+													</c:forEach>
+												</select>
+												<label for="">구분코드 : </label>
+												<select id="cdList2" name="cdList2" class="form-control">
+														<option value="" >--선택--</option>
+													<c:forEach var="codeList2" items="${codeList2}">
+														<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
+													</c:forEach>
+												</select>
+												<!--  반차여부 -->
+												<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
+											</div>
+										</dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">제목</dt>
+										<dd class="col-md-10 col-xs-9"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">기간</dt>
+										<dd class="col-md-10 col-xs-9">
+											<div class="form-inline">
+												<label for="">시작일 : </label>
+												<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" readonly="readonly" class="form-control"/>
+												<label for="">종료일 : </label>
+												<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" readonly="readonly" class="form-control"/>
+											</div>
+										</dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">행선지</dt>
+										<dd class="col-md-10 col-xs-9"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">보고내용</dt>
+										<dd class="col-md-10 col-xs-9"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
+									</dl>
+								</li>
+								<li>
+									<dl class="row">
+										<dt class="col-md-2 col-xs-3">첨부파일</dt>
+										<dd class="col-md-10 col-xs-9">
+											<c:forEach var="file" items="${fileList }" varStatus="status">
+												<div id="file_${file.FILE_NO }">
+													<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
+													<input type="button" value="파일삭제" class="btn btn-default" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" />
+												</div>
+											</c:forEach>
+											<div  class="form-inline">
+												<div class="">
+													<input type="file" name="file" id="file1" class="input-group">
+													<input type="button" id="button-add-file" class="btn btn-default" value="추가"/>
+												</div>
+											</div>
+										</dd>
+									</dl>
+								</li>
+							</ul>
+							<div class="row">
+								<dl class="panel panel-default">
+									<dt class="panel-heading">결제라인</dt>
+									<dd class="panel-body">
+						          		<c:set var="lineVar" value="1" />
+						          		<c:if test="${fn:length(lineList) > 0 }">
+						          			<c:set var="lineVar" value="${fn:length(lineList) }" />
+						          		</c:if>
+						    			<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
+						    			
+										<table id="aprv_line" name="aprv_line" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
+										<colgroup>
+											<col width="10%"/>
+											<col width="10%"/>
+											<col width="10%"/>
+											<col width="10%"/>
+											<col width="*"/>
+											<col width="15%"/>
+										</colgroup>
+										<thead>
+											<tr role="row">
+												<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">결재담당</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재순서</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재상태</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >
+													<span class=""><i class="glyphicon glyphicon-plus-sign" ></i>
+														<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
+															<span onClick="addRow();">추가</span>
+														</c:if>
+													</span>
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:choose>
+												<c:when test="${params.mode eq mode_u && fn:length(lineList) > 0 }">
+													<!-- 수정 폼일경우 -->
+													<c:forEach var="line" items="${lineList }" varStatus="status">
+														<tr class="gradeA odd" role="row" onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
+															<td class="sorting_1">
+									    						<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" />
+									    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text input_size100" readonly="readonly" />
+																<!-- 반려일경우 결재자 추가 삭제 막음 -->
+																<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
+											    						<input type="button" value="찾기" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
+											    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
+																</c:if>
+																<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
+																		<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
+																</c:if>
+															</td>
+															<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text input_size50"  readonly /></td>
+															<td><input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" /></td>
+															<td><i class="glyphicon glyphicon-minus-sign"></i>
+																<!-- 반려일경우 결재자 추가 삭제 막음 -->
+																<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
+																	<c:if test="${status.count > 1 }">	<!-- 첫번재 결재자는 삭제 안됨. -->
+															    		<input type="button" value="삭제" onClick="delRow()" />
+															    	</c:if>
+																</c:if>
+															</td>
+														</tr>
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
+													<!-- 등록폼일경우 -->
+													<tr class="gradeA odd" role="row">
+														<td class="sorting_1">
+								    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
+								    						<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" type="text" value="" />
+								    						<input type="button" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
+								    						<div style="display:none">
+								    						<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
+								    						</div>
+														</td>
+														<td>
+															<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="i_text input_size50"  readonly />														
+														</td>
+														<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
+														<td></td>
+													</tr>
+												</c:otherwise>
+											</c:choose>
+										</tbody>
+									</table>
+								</dd>
+							</dl>
+						</div>
+						<p class="row">
+							<span class="pull-right">
+								<c:set var="btnVal" value="저장" />
+								<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
+									<c:set var="btnVal" value="재결재" />
+								</c:if>
+								<input type="button" id="btn-ok" name="btn-ok" class="btn btn-warning" value="${btnVal }"/>
+								<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
+<%--
+ 							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
+							    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
+ --%>
+							</span>
+						</p>
+					</div>
+					</form>
+				</div>
+				<jsp:include page="/resources/com/inc/aside.jsp" />
+			</div>
+		</div>
+		<jsp:include page="/resources/com/inc/footer.jsp" />
+		<script>
+			$(document).ready(function() {
+				$('#dataTables-example').DataTable({
+					responsive: true
+				});
+			});
+		</script>
 <form id="ussFrm" name="ussFrm" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00Popup.do" >
 	<input type="hidden" id="not_uss_id" name="not_uss_id" value="" />
 </form>
@@ -325,7 +349,7 @@ $("#cdList1").change(function(){
 
 $(document).ready(function() {
 	/* 저장 */	
-	$( ".btn-ok" ).click(function() {
+	$( "#btn-ok" ).click(function() {
 		document.frm1.aprv_line_cnt.value = aprv_line.rows.length-1; 
 		if(getValidation()){
 			if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
@@ -338,7 +362,7 @@ $(document).ready(function() {
 		}
 	});
 	/* 취소 */
-	$( ".btn-cancel" ).click(function() {
+	$( "#btn-cancel" ).click(function() {
 		if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
 			/* 수정 폼일경우 상세화면으로 이동 */
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00View.do");
