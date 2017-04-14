@@ -167,6 +167,7 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 							params.put("levl","2");
 //							List mnList2 = menuMngService.getOneCodeList(params);
 							List mnList2 = menuMngService.getMnList(params);
+							
 							//TODO 게시판 정보 불러오기
 							List bbsTabList = bbsMngService.get00List(params);
 							int iMnList2Size = mnList2.size();
@@ -198,9 +199,7 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 										resultMap.put("MN_NM", iBbsTabMap.get("BBS_NM"));
 										resultMap.put("MN", sMn);
 										resultMap.put("LEVL", sLevl);
-										
-										System.out.println("test");
-										
+
 										mnList2.add(resultMap);
 									}
 									iRemoveInd = i;
