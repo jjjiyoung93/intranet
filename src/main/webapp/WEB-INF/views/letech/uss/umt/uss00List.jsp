@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-	<meta charset="UTF-8">
+	<jsp:include page="/resources/com/inc/meta.jsp" />
 	<title>Letech Intranet</title>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>

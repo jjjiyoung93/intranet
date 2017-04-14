@@ -5,12 +5,11 @@
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>Letech Intranet</title>
-<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
-<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
+	<jsp:include page="/resources/com/inc/meta.jsp" />
+	<title>Letech Intranet</title>
+	<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
+	<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
 
 <body>

@@ -4,6 +4,7 @@
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
 <head>
+	<jsp:include page="/resources/com/inc/meta.jsp" />
 	<title>Letech Intranet</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
