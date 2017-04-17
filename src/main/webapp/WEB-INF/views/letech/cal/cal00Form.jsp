@@ -34,20 +34,19 @@
 				<div class="board-view">
 					<ul>
 						<li>
-							<dl class="row first-line ">
-								<dt class="col-md-2 col-xs-3">시작일자(시간)</dt>
-								<dd class="col-md-10 col-xs-9">
+							<dl class="clearfix first-line ">
+								<dt class="col-md-2 col-sm-3">시작일자(시간)</dt>
+								<dd class="col-md-10 col-sm-9">
 									<div class="form-inline">
-										<input name="cal_st_dt" id="cal_st_dt" type="text" class="form-control" value="${resultView.CAL_ST_DT}"/>
-										<div class="input-inline">
-										<select name="cal_st_time1" id="cal_st_time1"  class="form-control col-xs-2">
+										<input name="cal_st_dt" id="cal_st_dt" type="text" class="form-control table-cell" value="${resultView.CAL_ST_DT}"/>
+										<select name="cal_st_time1" id="cal_st_time1"  class="form-control table-cell">
 											<option value="">--</option>
 											<c:forEach var="hour" items="${hourList }" varStatus="status">
 												<option value="${hour }" <c:if test="${params.cal_st_time1 eq hour }">selected="selected"</c:if> >${hour }</option>
 											</c:forEach>
 										</select>
-										<label class="col-xs-1">시</label>
-										<select name="cal_st_time2" id="cal_st_time2" class="form-control col-xs-2">
+										<label class="">시</label>
+										<select name="cal_st_time2" id="cal_st_time2" class="form-control table-cell">
 											<option value="">--</option>
 											<c:forEach var="minute" items="${minuteList }" varStatus="status">
 											<option value="${minute }" <c:if test="${params.cal_ed_time2 eq minute }">selected="selected"</c:if> >${minute }</option>
@@ -55,24 +54,23 @@
 										</select>
 										<label class="">분</label>
 									</div>
-									</div>
 								</dd>
 							</dl>
 						</li>
 						<li>
-							<dl class="row">
-								<dt class="col-md-2 col-xs-3">종료일자(시간)</dt>
-								<dd class="col-md-10 col-xs-9">
+							<dl class="clearfix">
+								<dt class="col-md-2 col-sm-3">종료일자(시간)</dt>
+								<dd class="col-md-10 col-sm-9">
 									<div class="form-inline">
-										<input name="cal_ed_dt" id="cal_ed_dt" type="text" class="form-control" value="${resultView.CAL_ED_DT }"  />
-										<select name="cal_ed_time1" id="cal_ed_time1" class="form-control">
+										<input name="cal_ed_dt" id="cal_ed_dt" type="text" class="form-control table-cell" value="${resultView.CAL_ED_DT }"  />
+										<select name="cal_ed_time1" id="cal_ed_time1" class="form-control table-cell">
 											<option value="">--</option>
 											<c:forEach var="hour" items="${hourList }" varStatus="status">
 											<option value="${hour }" <c:if test="${params.cal_ed_time2 eq hour }">selected="selected"</c:if> >${hour }</option>
 											</c:forEach>
 										</select>
 										<label>시</label>
-										<select name="cal_ed_time2" id="cal_ed_time2" class="form-control">
+										<select name="cal_ed_time2" id="cal_ed_time2" class="form-control table-cell">
 											<option value="">--</option>
 											<c:forEach var="minute" items="${minuteList }" varStatus="status">
 											<option value="${minute }" <c:if test="${params.cal_ed_time2 eq minute }">selected="selected"</c:if> >${minute }</option>
@@ -84,36 +82,40 @@
 							</dl>
 						</li>
 						<li>
-							<dl class="row">
-								<dt class="col-md-2 col-xs-3">제목</dt>
-								<dd class="col-md-10 col-xs-9">
+							<dl class="clearfix">
+								<dt class="col-md-2 col-sm-3">제목</dt>
+								<dd class="col-md-10 col-sm-9">
 										<input class="form-control" name="cal_nm" id="cal_nm" type="text" value="${resultView.CAL_NM }" maxlength="50" />
 				        </dd>
 							</dl>
 						</li>
 						<li>
-							<dl class="row">
-								<dt class="col-md-2 col-xs-3">내용</dt>
-								<dd class="col-md-10 col-xs-9">
+							<dl class="clearfix">
+								<dt class="col-md-2 col-sm-3">내용</dt>
+								<dd class="col-md-10 col-sm-9">
 									<textarea class="form-control" name="cal_content" id="cal_content" maxlength="1200">${resultView.CAL_CONTENT }</textarea>
 								</dd>
 							</dl>
 						</li>
 						<li>
-							<dl class="row">
-								<dt class="col-md-2 col-xs-3">첨부파일</dt>
-								<dd class="col-md-10 col-xs-9">
+							<dl class="clearfix">
+								<dt class="col-md-2 col-sm-3">첨부파일</dt>
+								<dd class="col-md-10 col-sm-9">
 									<div  class="form-inline">
 										<c:forEach var="file" items="${fileList }" varStatus="status">
-										<div id="file_${file.FILE_SEQ }">
+										<div id="file_${file.FILE_SEQ }" class="form-group">
 											<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-											<input type="button" class="input-group" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" />
+											<span class="pull-right">
+												<input type="button" class="input-group" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" />
+											</span>
 										</div>
 										</c:forEach>
 										<div id="my-file">
-											<div id="div_file">
+											<div id="div_file" class="clearfix">
 												<input name="file" id="file1" type="file" value="" />
-												<input class="btn btn-default" type="button" value="추가" id="button-add-file"/>
+												<span class="pull-right">
+													<input class="btn btn-xs btn-default" type="button" value="추가" id="button-add-file"/>
+												</span>
 											</div>  
 										</div>
 									</div>
