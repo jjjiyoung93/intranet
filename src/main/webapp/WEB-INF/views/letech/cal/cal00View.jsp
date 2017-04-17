@@ -33,47 +33,69 @@
 						<div class="board-view">
 							<ul>
 								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-3">시작일자(시간)</dt>
-										<dd class="col-md-10 col-xs-9">
-													${resultView.CAL_ST_DT }
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">시작일자(시간)</dt>
+										<dd class="col-md-10 col-sm-9">
+											<div class="form-inline">
+													<input type="text" class="form-control table-cell" value="${resultView.CAL_ST_DT }" readonly/>
 													(
 														<c:if test="${not empty resultView.CAL_ST_TIME }">
-																${resultView.CAL_ST_TIME_FRI }시 ${resultView.CAL_ST_TIME_SEC }분
+																<select class="form-control table-cell" disabled="disabled">
+																	<option selected="selected">${resultView.CAL_ST_TIME_FRI }</option>
+																</select>
+																시 
+																<select class="form-control table-cell" disabled="disabled">
+																	<option selected="selected">${resultView.CAL_ST_TIME_SEC }</option>
+																</select>
+																	분
 														</c:if>
 													)
+													</div>
 										</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">종료일자(시간)</dt>
-										<dd class="col-md-10 col-xs-9">
-											${resultView.CAL_ED_DT }
-											(
-												<c:if test="${not empty resultView.CAL_ED_TIME }">
-													${resultView.CAL_ED_TIME_FRI }시 ${resultView.CAL_ED_TIME_SEC }분
-												</c:if>
-											)
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">종료일자(시간)</dt>
+										<dd class="col-md-10 col-sm-9">
+											<div class="form-inline">
+												<input type="text" class="form-control table-cell" value="${resultView.CAL_ED_DT }" readonly/>
+												(
+														<c:if test="${not empty resultView.CAL_ED_TIME }">
+																<select class="form-control table-cell" disabled="disabled">
+																	<option selected="selected">${resultView.CAL_ED_TIME_FRI }</option>
+																</select>
+																시 
+																<select class="form-control table-cell" disabled="disabled">
+																	<option selected="selected">${resultView.CAL_ED_TIME_SEC }</option>
+																</select>
+																	분
+														</c:if>
+													)
+											</div>
 										</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">제목</dt>
-										<dd class="col-md-10 col-xs-9">${resultView.CAL_NM }</dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">제목</dt>
+										<dd class="col-md-10 col-sm-9">
+											<input class="form-control" type="text" value="${resultView.CAL_NM }" readonly/>
+										</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">내용</dt>
-										<dd class="col-md-10 col-xs-9">${resultView.CAL_CONTENT }</dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">내용</dt>
+										<dd class="col-md-10 col-sm-9">
+											<input class="form-control" value="${resultView.CAL_CONTENT }" type="text" readonly/>
+										</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">첨부파일</dt>
-										<dd class="col-md-10 col-xs-9">
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">첨부파일</dt>
+										<dd class="col-md-10 col-sm-9">
 											<c:forEach var="file" items="${fileList }" varStatus="status">
 											<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a>
 											</c:forEach>
