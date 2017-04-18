@@ -14,6 +14,7 @@ span.red-color{color:#fff;}
 p{margin:10px 0 20px;}
 caption{display:none;}
 .nav-tabs>li>a{color:#23527c;}
+.table-cell{max-width:100px;display:table-cell! important;width:auto;}
 
 /*top*/
 h1.logo a.navbar-brand{padding:5px 15px;}
@@ -67,16 +68,17 @@ p.text{padding:10px 0 20px;text-align:left;color:#936a34;}
 /*table*/
 .dataTables_length,.dataTables_filter,.dataTables_info,.paging_simple_numbers,.dataTables_paginate{display:none;}
 .tab_gnb{margin-bottom:20px;}
+.table{margin:10px 0;}
 
 
 
-.board-view{padding:0 15px;}
-.board-view ul{margin-bottom:15px;}
+.board-view{}
+.board-view ul{padding:15px 0; background:#fff; margin-bottom:15px;}
 .board-view ul li{}
-.board-view ul li dl.first-line{border-top:1px solid #ddd;}
-.board-view ul li dl{background:#f5f5f5;border-bottom:1px solid #ddd;}
-.board-view ul li dl dd{padding:10px 15px;background:#fff;}
-.board-view ul li dl dt{padding:10px 15px;}
+.board-view ul li dl.first-line{}
+.board-view ul li dl{padding:5px 0;}
+.board-view ul li dl dd{}
+.board-view ul li dl dt{padding-left:15px;}
 
 
 /* 달력 */
