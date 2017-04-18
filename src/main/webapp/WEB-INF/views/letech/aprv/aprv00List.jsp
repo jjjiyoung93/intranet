@@ -44,164 +44,146 @@
 						${titleNaviMap.MN_NM }
 						<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span>
 					</h4>
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="form-inline">
-								<div class="form-group">
-									<div class="input-group">
-										<div class="input-group-addon">결제구분코드</div>
-										<select id="searchCdList1" name="searchCdList1" class="form-control">
-												<option value="" >--전체--</option>
-											<c:forEach var="codeList" items="${codeList}">
-												<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
-											</c:forEach>
-										</select>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<div class="input-group-addon">학인여부</div>
-										<select id="searchCdList2" name="searchCdList2" class="form-control">
-												<option value="" >--전쳬--</option>
-												<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
-												<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
-										</select>
-									</div>
-								</div>
+					<div class="form-inline">
+						<div class="clearfix">
+							<span class="visible-lg-inline visible-md-inline">
+								<label>결제구분코드</label>
+								<select id="searchCdList1" name="searchCdList1" class="form-control table-cell">
+										<option value="" >--전체--</option>
+									<c:forEach var="codeList" items="${codeList}">
+										<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
+									</c:forEach>
+								</select>
+								<label>학인여부</label>
+								<select id="searchCdList2" name="searchCdList2" class="form-control table-cell">
+										<option value="" >--전쳬--</option>
+										<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
+										<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
+								</select>
+							</span>
+							<div class="pull-right">
+							<select name="searchGubun" id="searchGubun" class="form-control table-cell" title="search" >
+								<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
+								제목
+								</option>
+								<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
+								내용
+								</option>
+							</select>
+								<input class="form-control table-cell" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
+										<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i>검색</button>
 							</div>
 						</div>
-						<div class="col-lg-6">
-							<div class="form-inline pull-right">
-										<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-											제목
-											</option>
-											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
-											내용
-											</option>
-										</select>
-
-									<div class="input-group">
-										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i>
-											</button>
-										</span>
-									</div>
-								</div>
-								
-						</div>
 					</div>
-					<table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-						<colgroup>
-							<col width="5%"/>
-							<col width="10%"/>
-							<col width="10%"/>
-							<col width="10%"/>
-							<col width="20%"/>
-							<col width="*"/>
-							<col width="15%"/>
-							<col width="10%"/>
-						</colgroup>
-						<thead>
-							<tr role="row">
-								<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">NO</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example" >보고자</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결제구분</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example" >확인여부</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example">제 목</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example">기간</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example">보고일자</th>
-								<th class="sorting" tabindex="0" aria-controls="dataTables-example">결제형태</th>
-							</tr>
-						</thead>
-						<tbody>
-				        	<c:choose>
-								<c:when test="${totalCnt < 1 }">
-									<tr>
-										<td colspan="8">
-											검색된 내용이 없습니다.
-										</td>
-									</tr>
-								</c:when>
-								<c:otherwise>
-									<c:forEach var="list" items="${resultList}" varStatus="status">
-										<tr class="gradeA odd" role="row">
-											<td class="sorting_1">
-												${totalCnt - status.index - ((cPage-1) * (intListCnt))}
-											</td>
-											<td>
-												${list.REPT_APRV_NM}
-											</td>
-											<td>
-												${list.APRV_TYPE_NM}
-											</td>
-											<td class="center">
-										<c:choose>
-											<c:when test="${list.CONF_YN eq 'Y' }">
-												확인
-											</c:when>
-											<c:otherwise>
-												미확인
-											</c:otherwise>
-										</c:choose>
-											</td>
-											<td class="center">
-												<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
-												${list.TITLE}
-												</a>
-											</td>
-											<td class="center">
-												${list.TERM_ST_YM} - ${list.TERM_ED_YM}
-											</td>
-											<td class="center">
-												${list.CRTN_DT}
-											</td>
-											<td class="center">
-												<c:choose>
-													<c:when test="${list.LINE_CHK eq 'N' && list.APRV_YN_TP eq '1' && list.CONF_Y_CNT > 0 && list.CONF_Y_CNT > list.CONF_REFE_CNT }">
-														진행중
-													</c:when>
-													<c:otherwise>
-														${list.APRV_YN_NM}
-													</c:otherwise>
-												</c:choose>
-												<c:if test="${list.LINE_CHK eq 'Y' }">
-													<c:choose>
-														<c:when test="${list.REFE_YN eq 'Y' }">
-														(참조)
-														</c:when>
-														<c:otherwise>
-														<c:if test="${list.LINE_CHK eq 'Y' }">
-															<c:choose>
-																<c:when test="${list.APRV_ID eq params.uss_id }">
-																	<span style="color:red;">(결재)</span>
-																</c:when>
-																<c:otherwise>
-																	(결재)
-																</c:otherwise>
-															</c:choose>
-														</c:if>
-														</c:otherwise>
-													</c:choose>
-												</c:if>
+					<div class="table-responsive">
+						<table class="table table-bordered" >
+							<colgroup>
+								<col width="5%"/>
+								<col width="10%"/>
+								<col width="10%"/>
+								<col width="10%"/>
+								<col width="20%"/>
+								<col width="*"/>
+								<col width="15%"/>
+								<col width="10%"/>
+							</colgroup>
+							<thead>
+								<tr role="row">
+									<th class="hidden-xs">NO</th>
+									<th class="">보고자</th>
+									<th class="hidden-xs">결제구분</th>
+									<th class="">확인여부</th>
+									<th class="">제 목</th>
+									<th class="hidden-xs">기간</th>
+									<th class="hidden-xs">보고일</th>
+									<th class="">결제형태</th>
+								</tr>
+							</thead>
+							<tbody>
+					        	<c:choose>
+									<c:when test="${totalCnt < 1 }">
+										<tr>
+											<td colspan="8">
+												검색된 내용이 없습니다.
 											</td>
 										</tr>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>			
-						</tbody>
-					</table>
-					<p><span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-warning" value="글쓰기"/></span></p>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="list" items="${resultList}" varStatus="status">
+											<tr class="">
+												<td class="hidden-xs">
+													${totalCnt - status.index - ((cPage-1) * (intListCnt))}
+												</td>
+												<td>
+													${list.REPT_APRV_NM}
+												</td>
+												<td class="hidden-xs">
+													${list.APRV_TYPE_NM}
+												</td>
+												<td class="">
+											<c:choose>
+												<c:when test="${list.CONF_YN eq 'Y' }">
+													확인
+												</c:when>
+												<c:otherwise>
+													미확인
+												</c:otherwise>
+											</c:choose>
+												</td>
+												<td class="center">
+													<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
+													${list.TITLE}
+													</a>
+												</td>
+												<td class="hidden-xs">
+													${list.TERM_ST_YM} - ${list.TERM_ED_YM}
+												</td>
+												<td class="hidden-xs">
+													${list.CRTN_DT}
+												</td>
+												<td class="center">
+													<c:choose>
+														<c:when test="${list.LINE_CHK eq 'N' && list.APRV_YN_TP eq '1' && list.CONF_Y_CNT > 0 && list.CONF_Y_CNT > list.CONF_REFE_CNT }">
+															진행중
+														</c:when>
+														<c:otherwise>
+															${list.APRV_YN_NM}
+														</c:otherwise>
+													</c:choose>
+													<c:if test="${list.LINE_CHK eq 'Y' }">
+														<c:choose>
+															<c:when test="${list.REFE_YN eq 'Y' }">
+															(참조)
+															</c:when>
+															<c:otherwise>
+															<c:if test="${list.LINE_CHK eq 'Y' }">
+																<c:choose>
+																	<c:when test="${list.APRV_ID eq params.uss_id }">
+																		<span style="color:red;">(결재)</span>
+																	</c:when>
+																	<c:otherwise>
+																		(결재)
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+															</c:otherwise>
+														</c:choose>
+													</c:if>
+												</td>
+											</tr>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>			
+							</tbody>
+						</table>
+					</div>
+					<p class="page_nav" style="text-align: center;">
+						<strong>${pageNavigator}</strong> 
+						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-warning" value="글쓰기"/></span>
+					</p>
 				</form>
 			</div>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
-			<div class="table_foot2">
-				<!-- pase nav-->
-				<p class="page_nav" style="text-align: center;">
-					<strong>${pageNavigator}</strong>
-				</p>
-			</div>
 		</div>
 	</div>
 </div>

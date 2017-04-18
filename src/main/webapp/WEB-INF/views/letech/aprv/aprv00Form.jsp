@@ -49,36 +49,38 @@
 						<div class="board-view">
 							<ul>
 								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-3">보고자</dt>
-										<dd class="col-md-10 col-xs-9">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">보고자</dt>
+										<dd class="col-md-10 col-sm-9">
+										<span class="form-inline">
 											<c:set var="rept_aprv_no" value=""/>
 											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
 											<c:choose>
 												<c:when test="${params.mode eq mode_u }">
-													${viewMap.REPT_APRV_NM }
+													<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
 													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
 												</c:when>
 												<c:otherwise>
-													${loginVO.name }
+													<input type="text" class="form-control" value="${loginVO.name }" readonly/>
 													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
 												</c:otherwise>
 											</c:choose>
 											<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
+											</span>
 										</dd>
 									</dl>
 
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">소속</dt>
-										<dd class="col-md-10 col-xs-9">${loginVO.orgnztNm }</dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">소속</dt>
+										<dd class="col-md-10 col-sm-9"><span class="form-inline"><input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/></span></dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">프로젝트</dt>
-										<dd class="col-md-10 col-xs-9">
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">프로젝트</dt>
+										<dd class="col-md-10 col-sm-9">
 											<div class="form-inline">
 												<select id="proj_cd" name="proj_cd" class="form-control">
 													<option value="">선택</option>
@@ -91,20 +93,18 @@
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">결제구분</dt>
-										<dd class="col-md-10 col-xs-9">
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">결제구분</dt>
+										<dd class="col-md-10 col-sm-9">
 											<div class="form-inline">
-												<label for="">결제구분코드 : </label>
-												<select id="cdList1" name="cdList1" class="form-control">
-														<option value="" >--선택--</option>
+												<select id="cdList1" name="cdList1" class="form-control form-group">
+														<option value="" >--1차 구분 선택--</option>
 													<c:forEach var="codeList" items="${codeList}">
 														<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
 													</c:forEach>
 												</select>
-												<label for="">구분코드 : </label>
-												<select id="cdList2" name="cdList2" class="form-control">
-														<option value="" >--선택--</option>
+												<select id="cdList2" name="cdList2" class="form-control ">
+														<option value="" >--2차 구분 선택--</option>
 													<c:forEach var="codeList2" items="${codeList2}">
 														<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
 													</c:forEach>
@@ -116,38 +116,37 @@
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">제목</dt>
-										<dd class="col-md-10 col-xs-9"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">제목</dt>
+										<dd class="col-md-10 col-sm-9"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">기간</dt>
-										<dd class="col-md-10 col-xs-9">
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">기간</dt>
+										<dd class="col-md-10 col-sm-9">
 											<div class="form-inline">
-												<label for="">시작일 : </label>
-												<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" readonly="readonly" class="form-control"/>
-												<label for="">종료일 : </label>
-												<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" readonly="readonly" class="form-control"/>
+												<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
+													~
+												<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
 											</div>
 										</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">행선지</dt>
-										<dd class="col-md-10 col-xs-9"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">행선지</dt>
+										<dd class="col-md-10 col-sm-9"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-3">보고내용</dt>
-										<dd class="col-md-10 col-xs-9"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">보고내용</dt>
+										<dd class="col-md-10 col-sm-9"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
+									<dl class="clearfix">
 										<dt class="col-md-2 col-xs-3">첨부파일</dt>
 										<dd class="col-md-10 col-xs-9">
 											<c:forEach var="file" items="${fileList }" varStatus="status">
@@ -166,7 +165,7 @@
 									</dl>
 								</li>
 							</ul>
-							<div class="row">
+							<div class="clearfix">
 								<dl class="panel panel-default">
 									<dt class="panel-heading">결제라인</dt>
 									<dd class="panel-body">
@@ -176,24 +175,17 @@
 						          		</c:if>
 						    			<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
 						    			
-										<table id="aprv_line" name="aprv_line" class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-										<colgroup>
-											<col width="10%"/>
-											<col width="10%"/>
-											<col width="10%"/>
-											<col width="10%"/>
-											<col width="*"/>
-											<col width="15%"/>
-										</colgroup>
+										<div class="table-responsive">
+										<table id="aprv_line" class="table table-bordered">
 										<thead>
 											<tr role="row">
-												<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">결재담당</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재순서</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재상태</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >
-													<span class=""><i class="glyphicon glyphicon-plus-sign" ></i>
+												<th>결재담당</th>
+												<th>결재순서</th>
+												<th>결재상태</th>
+												<th >
+													<span class="">
 														<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-															<span onClick="addRow();">추가</span>
+															<span class="btn btn-xs btn-default" onClick="addRow();"><i class="glyphicon glyphicon-plus-sign" ></i> 추가</span>
 														</c:if>
 													</span>
 												</th>
@@ -217,7 +209,7 @@
 																		<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
 																</c:if>
 															</td>
-															<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text input_size50"  readonly /></td>
+															<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text input_size50 form-inline"  readonly /></td>
 															<td><input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" /></td>
 															<td><i class="glyphicon glyphicon-minus-sign"></i>
 																<!-- 반려일경우 결재자 추가 삭제 막음 -->
@@ -234,15 +226,23 @@
 													<!-- 등록폼일경우 -->
 													<tr class="gradeA odd" role="row">
 														<td class="sorting_1">
+															<div class="from-inline">
 								    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
-								    						<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" type="text" value="" />
-								    						<input type="button" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
-								    						<div style="display:none">
-								    						<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
+								    						<div class="input-group">
+								    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control" type="text" value="" />
+								    							<span class="input-group-btn">
+									    							<input type="button" class="btn btn-default" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
+								    							</span>
+									    						<span style="display:none">
+									    							<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
+									    						</span>
 								    						</div>
+								    					</div>
 														</td>
 														<td>
-															<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="i_text input_size50"  readonly />														
+															<span class="form-inline">
+																<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="i_text input_size50 form-control" readonly />														
+															</span>
 														</td>
 														<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
 														<td></td>
@@ -251,6 +251,7 @@
 											</c:choose>
 										</tbody>
 									</table>
+									</div>
 								</dd>
 							</dl>
 						</div>
