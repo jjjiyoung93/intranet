@@ -199,10 +199,10 @@
 														<tr class="gradeA odd" role="row" onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
 															<td class="sorting_1">
 									    						<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" />
-									    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text input_size100" readonly="readonly" />
+									    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text form-control table-cell" readonly="readonly" />
 																<!-- 반려일경우 결재자 추가 삭제 막음 -->
 																<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-											    						<input type="button" value="찾기" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
+											    						<input type="button" value="찾기" class="btn btn-default" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
 											    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
 																</c:if>
 																<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
@@ -215,7 +215,7 @@
 																<!-- 반려일경우 결재자 추가 삭제 막음 -->
 																<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
 																	<c:if test="${status.count > 1 }">	<!-- 첫번재 결재자는 삭제 안됨. -->
-															    		<input type="button" value="삭제" onClick="delRow()" />
+															    		<input type="button" class="btn bnt-xs btn-default" value="삭제" onClick="delRow()" />
 															    	</c:if>
 																</c:if>
 															</td>
@@ -228,20 +228,16 @@
 														<td class="sorting_1">
 															<div class="from-inline">
 								    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
-								    						<div class="input-group">
-								    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control" type="text" value="" />
-								    							<span class="input-group-btn">
+								    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell" type="text" value="" />
 									    							<input type="button" class="btn btn-default" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
-								    							</span>
 									    						<span style="display:none">
 									    							<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
 									    						</span>
-								    						</div>
 								    					</div>
 														</td>
 														<td>
 															<span class="form-inline">
-																<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="i_text input_size50 form-control" readonly />														
+																<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control" readonly />														
 															</span>
 														</td>
 														<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
@@ -509,17 +505,17 @@ function addRow() {
 	oCell2.style.cssText = "text-align:center;";
 	oCell3.style.cssText = "text-align:center;";
 	
-	oCell1.innerHTML = "<input name='aprv_emp_no"+ nextRows +"' id='aprv_emp_no"+ nextRows +"' type='hidden' /><input name='aprv_emp_no"+ nextRows +"_nm' id='aprv_emp_no"+ nextRows +"_nm' type='text' class='i_text input_size100' />&nbsp;<input type='button' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />"
+	oCell1.innerHTML = "<input name='aprv_emp_no"+ nextRows +"' id='aprv_emp_no"+ nextRows +"' type='hidden' /><input name='aprv_emp_no"+ nextRows +"_nm' id='aprv_emp_no"+ nextRows +"_nm' type='text' class='form-control table-cell' />&nbsp;<input type='button' class='btn btn-default' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />"
 					+ "&nbsp;&nbsp;<input type='checkbox' id='refe_yn"+ nextRows +"' name='refe_yn"+ nextRows +"' value='Y' onclick='fn_order(this)' /><label for='refe_yn"+ nextRows +"'>참조인</label>";
-	oCell2.innerHTML = "<input name='aprv_ordr"+ nextRows +"' id='aprv_ordr"+ nextRows +"' value='"+ nextRows +"' type='text' class='i_text input_size50' readonly />";
+	oCell2.innerHTML = "<input name='aprv_ordr"+ nextRows +"' id='aprv_ordr"+ nextRows +"' value='"+ nextRows +"' type='text' class='form-control' readonly />";
 	oCell3.innerHTML = "대기<input name='aprv_yn_cd"+ nextRows +"' id='aprv_yn_cd"+ nextRows +"' type='hidden' value='0' />";
-	oCell4.innerHTML = "<input type=button value='삭제' onClick='delRow()' />";
+	oCell4.innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
 	
 	var cnt = 1;
 	for(var i = 1; i <= aprv_line.rows.length; i++) {
 		if($("#refe_yn"+i).is(":checked")){
 		}else{
-			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='i_text input_size50' readonly />";
+			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
 			cnt++;
 		}
 	}

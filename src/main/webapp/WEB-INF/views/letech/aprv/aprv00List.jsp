@@ -71,7 +71,7 @@
 								</option>
 							</select>
 								<input class="form-control table-cell" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-										<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i>검색</button>
+										<button class="btn btn-default" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i>검색</button>
 							</div>
 						</div>
 					</div>

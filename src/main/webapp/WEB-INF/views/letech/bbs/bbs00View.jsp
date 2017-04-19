@@ -27,7 +27,7 @@
 	
 		<!-- 컨텐츠-->
 		<div class="" id="page-wrapper">
-		 	<section class="row">
+		 	<section class="clearfix">
 				<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10">
 					<c:if test="${bbsTabList ne null}">
@@ -69,31 +69,31 @@
 					
 							<ul>
 								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">제목</dt>
-										<dd class="col-md-10 col-xs-10">${resultView.TITLE }</dd>
+									<dl class="clearfix first-line ">
+										<dt class="col-md-2 col-sm-3">제목</dt>
+										<dd class="col-md-10 col-sm-9">${resultView.TITLE }</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-2">등록자</dt>
-										<dd class="col-md-2 col-xs-2">${resultView.REG_NM }</dd>
-										<dt class="col-md-2 col-xs-2">등록일</dt>
-										<dd class="col-md-2 col-xs-2">${resultView.REG_DT }</dd>
-										<dt class="col-md-2 col-xs-2">조회수</dt>
-										<dd class="col-md-2 col-xs-2">${resultView.HIT }</dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">등록자</dt>
+										<dd class="col-md-2 col-sm-3">${resultView.REG_NM }</dd>
+										<dt class="col-md-2 col-sm-3">등록일</dt>
+										<dd class="col-md-2 col-sm-3">${resultView.REG_DT }</dd>
+										<dt class="col-md-2 col-sm-3">조회수</dt>
+										<dd class="col-md-2 col-sm-3">${resultView.HIT }</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-2">내용</dt>
-										<dd class="col-md-10 col-xs-10">${resultView.CONTENT }</dd>
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">내용</dt>
+										<dd class="col-md-10 col-sm-10">${resultView.CONTENT }</dd>
 									</dl>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-2">첨부파일</dt>
-										<dd class="col-md-10 col-xs-10">
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">첨부파일</dt>
+										<dd class="col-md-10 col-sm-10">
 											<c:forEach var="file" items="${fileList }" varStatus="status">
 												<div id="file_${file.FILE_NO }">
 													<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a>
@@ -104,9 +104,9 @@
 								</li>
 								<c:if test="${bbsInfo.SEC_YN eq 'Y' }">
 									<li>
-										<dl class="row">
-											<dt class="col-md-2 col-xs-2">비밀글 여부</dt>
-											<dd class="col-md-10 col-xs-10">
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">비밀글 여부</dt>
+											<dd class="col-md-10 col-sm-10">
 												<c:choose>
 													<c:when test="${resultView.SEC_YN eq 'Y' }">
 													Y
@@ -121,61 +121,60 @@
 								</c:if>
 							</ul>
 					
-							<div class="board-view">
-								<ul>
-									<c:forEach var="list" items="${repList}" varStatus="status">
-										<input type="hidden" id="re_org_${list.REP_SEQ}" value="${list.REPLY}" />
-										<li class="reply rp_write row">
-											<dl class="row first-line ">
-												<dd class="col-md-* col-xs-*">
-													<strong>
-										    			<c:forEach begin="1" end="${list.LEVEL_CNT }" step="1">
-										    				<span class="re_re"></span>
-										    			</c:forEach>
-										    			${list.REG_ID}
-									    			</strong>
-									    			<span class="re_dt">${list.REG_DT}</span>
-									    			<span class="pull-right">
-									    				<c:if test="${list.REG_ID eq loginVO.id }">
-														   <a href="javascript:fnModEditOpen('${list.REP_SEQ}');">수정</a>
-														   <a href="javascript:fnReRepReg(3,'${list.REP_SEQ}');">삭제</a>
-														</c:if>
-														<a href="javascript:fnEditOpen('${list.REP_SEQ}');" >답글</a>
-									    			</span>
-												</dd>
-												<dd class="col-md-* col-xs-*" id="re_con_${list.REP_SEQ}">
-									    			<c:forEach begin="1" end="${list.LEVEL_CNT }" step="1">
-										    			&nbsp;
-										    			&nbsp;
-									    			</c:forEach>
-									    			${list.REPLY}
-												</dd>
-												<div id="re_${list.REP_SEQ }" style="display: none;">
-													<dd class="col-md-2 col-xs-2">답글쓰기</dd>
-													<dd class="col-md-9 col-xs-9 ">
-														<textarea class="form-control" rows="3" cols="50" id="reply_${list.REP_SEQ}" name="reply_${list.REP_SEQ}"></textarea>
-													</dd>
-													<dd class="col-md-1 col-xs-1">
-														<input class="btn btn-warning" type="button" value="등록" onclick="javascript:fnReRepReg(1,'${list.REP_SEQ}');"/>
-													</dd>
-												</div>
-											</dl>
-										</li>	
-									</c:forEach>
-						
-									<li class="reply rp_write row">
-										<dl class="row ">
-											<dt class="col-md-2 col-xs-2">댓글쓰기</dt>
-											<dd class="col-md-9 col-xs-9 ">
-												<textarea class="form-control" rows="3" cols="50" id="reply" name="reply"></textarea>
-											</dd>
-											<dd class="col-md-1 col-xs-1">
-												<input class="btn btn-warning" type="button" value="등록" onclick="javascript:fnRepReg();"/>
-											</dd>
-						    			</dl>
-								    </li>
-								</ul>
-							</div>	
+							<ul class="re">
+						   		<c:forEach var="list" items="${repList}" varStatus="status">
+						   		<input type="hidden" id="re_org_${list.REP_SEQ}" value="${list.REPLY}" />
+						    	<li class="reply rp_view">
+							    	<dl>
+							    		<dt>
+							    			<strong>
+							    			<c:forEach begin="1" end="${list.LEVEL_CNT }" step="1">
+							    			<span class="re_re"></span>
+							    			</c:forEach>
+							    			${list.REG_ID}
+							    			</strong>
+							    			<span class="re_dt">${list.REG_DT}</span>
+							    			<span class="full-right">
+							    				<c:if test="${list.REG_ID eq loginVO.id }">
+												   <a href="javascript:fnModEditOpen('${list.REP_SEQ}');">수정</a>
+												   <a href="javascript:fnReRepReg(3,'${list.REP_SEQ}');">삭제</a>
+												</c:if>
+												<a href="javascript:fnEditOpen('${list.REP_SEQ}');" >답글</a>
+							    			</span>
+							    		</dt>
+							    		<dd id="re_con_${list.REP_SEQ}">
+							    			<c:forEach begin="1" end="${list.LEVEL_CNT }" step="1">
+							    			&nbsp;
+							    			&nbsp;
+							    			</c:forEach>
+							    		${list.REPLY}
+							    		</dd>
+							    	</dl>
+							    	<div class="clearfix" id="re_${list.REP_SEQ }" style="display: none;">
+								     	<label class="col_md_1 re_re_label">답글쓰기</label>
+								     	<div class="col_md_10 pdd_ten" >
+								     		<textarea rows="3" cols="50" id="reply_${list.REP_SEQ}" name="reply_${list.REP_SEQ}"></textarea>
+								     	</div>
+						    			<span class="">
+						    				<input class="btn btn_default col_md_1" type="button" value="등록" onclick="javascript:fnReRepReg(1,'${list.REP_SEQ}');"/>
+						    			</span>
+					    			</div>
+							    </li>
+							    </c:forEach>
+							    <!-- 댓글의 댓글 쓰기 시작 -->
+							    <li class="clearfix">
+							    </li>
+							    <!-- 댓글의 댓글 쓰기 시작 -->
+							    <li class="reply rp_write clearfix">
+							     	<label class="col_md_1">댓글쓰기</label>
+							     	<div class="col_md_10 pdd_ten" >
+							     		<textarea rows="3" cols="50" id="reply" name="reply"></textarea>
+							     	</div>
+					    			<span class="">
+					    				<input class="btn btn_default col_md_1" type="button" value="등록" onclick="javascript:fnRepReg();"/>
+					    			</span>
+							    </li>
+						    </ul>
 						</form>
 					
 						<div class="pull-right">

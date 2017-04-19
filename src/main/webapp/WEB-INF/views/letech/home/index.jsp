@@ -54,10 +54,8 @@
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lib/moment.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lang-all.js'></script>
-<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/flipout_cards.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/modernizr.js'></script>
-<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
 <script type="text/javascript">
 $(document).ready(function() {	
 

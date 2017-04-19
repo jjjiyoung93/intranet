@@ -51,237 +51,254 @@
 					<div class="board-view">
 						<ul>
 							<li>
-								<dl class="row first-line ">
-									<dt class="col-md-2 col-xs-3">보고자</dt>
-									<dd class="col-md-10 col-xs-9">${viewMap.REPT_APRV_NM }</dd>
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">보고자</dt>
+									<dd class="col-md-10 col-sm-9">
+										<input type="text" value="${viewMap.REPT_APRV_NM }" class="form-control" readonly />
+									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">소속</dt>
-									<dd class="col-md-10 col-xs-9">${viewMap.DPNM }</dd>
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">소속</dt>
+									<dd class="col-md-10 col-sm-9">
+										<input type="text" value="${viewMap.DPNM }" class="form-control" readonly />
+									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">프로젝트</dt>
-									<dd class="col-md-10 col-xs-9">
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">프로젝트</dt>
+									<dd class="col-md-10 col-sm-9">
 										<c:forEach var="proj" items="${projList }" varStatus="status">
 											<c:if test="${proj.CD eq viewMap.PROJ_CD }">
-																		${proj.CD_NM }
+												<input type="text" value="${proj.CD_NM }" class="form-control" readonly />
 											</c:if>
 										</c:forEach>
 									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">결제구분</dt>
-									<dd class="col-md-10 col-xs-9">
-										결제구분:
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">결제구분</dt>
+									<dd class="col-md-10 col-sm-9">
+										1차 구분
 										<c:forEach var="code" items="${codeList}">
 											<c:if test="${viewMap.APRV_TYPE_CD eq code.CD }">
-																		<font style="color:red">${code.CD_NM}</font>
+													<input type="text" value="${code.CD_NM}" class="form-control table-cell" readonly />
 											</c:if>
 										</c:forEach>
 																		&nbsp;&nbsp;&nbsp;
-																		상세구분:
+																		2차구분:
 										<c:forEach var="code2" items="${codeList2}">
 											<c:if test="${viewMap.APRV_TYPE_DTIL_CD eq code2.CD }">
-																		<font style="color:red">${code2.CD_NM}</font>
+													<input type="text" value="${code2.CD_NM}" class="form-control table-cell" readonly />
 											</c:if>
 										</c:forEach>
 									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">제목</dt>
-									<dd class="col-md-10 col-xs-9">${viewMap.TITLE }</dd>
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">제목</dt>
+									<dd class="col-md-10 col-sm-9">
+										<input type="text" value="${viewMap.TITLE }" class="form-control" readonly /> 
+									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">기간</dt>
-									<dd class="col-md-10 col-xs-9">${viewMap.TERM_ST_YM } ~ ${viewMap.TERM_ED_YM }</dd>
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">기간</dt>
+									<dd class="col-md-10 col-sm-9">
+										<input type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell" readonly />~ 
+										<input type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell" readonly />
+									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">행선지</dt>
-									<dd class="col-md-10 col-xs-9">${viewMap.PLACE }</dd>
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">행선지</dt>
+									<dd class="col-md-10 col-sm-9">
+										<input type="text" value="${viewMap.PLACE }" class="form-control" readonly />
+									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">보고내용</dt>
-									<dd class="col-md-10 col-xs-9">${viewMap.REPT_CONT }</dd>
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">보고내용</dt>
+									<dd class="col-md-10 col-sm-9">
+										<input type="text" value="${viewMap.REPT_CONT }" class="form-control" readonly />
+									</dd>
 								</dl>
 							</li>
 							<li>
-								<dl class="row">
-									<dt class="col-md-2 col-xs-3">첨부파일</dt>
-									<dd class="col-md-10 col-xs-9">
+								<dl class="clearfix">
+									<dt class="col-md-2 col-sm-3">첨부파일</dt>
+									<dd class="col-md-10 col-sm-9">
 										<c:forEach var="file" items="${fileList }" varStatus="status">
-											<div id="file_${file.FILE_NO }"><a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a></div>
+											<div id="file_${file.FILE_NO }">
+												<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a>
+											</div>
 										</c:forEach>
 									</dd>
 								</dl>
 							</li>
 						</ul>
-						<div class="row">
+						<div class="clearfix">
 							<dl class="panel panel-default">
 								<dt class="panel-heading">결제라인</dt>
 								<dd class="panel-body">
-									<table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-									<colgroup>
-										<col width="10%"/>
-				    					<c:if test="${params.line_chk eq 'N' }">
-					    					<col width="15%"/>
-				    					</c:if>
-										<col width="10%"/>
-										<col width="10%"/>
-										<col width="10%"/>
-										<col width="*"/>
-										<c:if test="${params.line_chk eq 'Y' }">
-											<col width="15%"/>
-										</c:if>
-									</colgroup>
-									<thead>
-										<tr role="row">
-											<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">결재담당</th>
+									<div class="table-responsive">
+										<table class="table table-bordered">
+										<colgroup>
+											<col width="10%"/>
 					    					<c:if test="${params.line_chk eq 'N' }">
-					    						<th class="sorting" tabindex="0" aria-controls="dataTables-example" >메일수신</th>
+						    					<col width="15%"/>
 					    					</c:if>
-											<th class="sorting" tabindex="0" aria-controls="dataTables-example" >확인여부</th>
-											<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재순서</th>
-											<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재상태</th>
-											<th class="sorting" tabindex="0" aria-controls="dataTables-example">내용</th>
+											<col width="10%"/>
+											<col width="10%"/>
+											<col width="10%"/>
+											<col width="*"/>
 											<c:if test="${params.line_chk eq 'Y' }">
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example">비고</th>
+												<col width="15%"/>
 											</c:if>
-										</tr>
-									</thead>
-									<tbody>
-										<c:choose>
-											<c:when test="${params.line_chk eq 'N' }">
-												<!-- 결재 권한이 없는 경우 -->
-												<!-- 결재 신청한 경우 -->
-												<c:forEach var="line" items="${lineList }" varStatus="status">
-													<tr class="gradeA odd" role="row">
-														<td class="sorting_1">
-								    						${line.USS_NM }
-									    					<c:if test="${line.REFE_YN eq 'Y' }">
-									    						(참조인)
-									    					</c:if>
-														</td>
-														<td>
-									    					<c:choose>
-									    						<c:when test="${ line.RECE_YN eq '1' }">
-									    							확인
-									    						</c:when>
-									    						<c:otherwise>
-									    							미확인
-									    						</c:otherwise>
-									    					</c:choose>
-														</td>
-
-														<td>
-											    			<c:if test="${line.CONF_YN eq 'Y' }" >
-									    						확인
-											    			</c:if>
-											    			<c:if test="${line.CONF_YN eq 'N' }" >
-									    						미확인
-											    			</c:if>
-														</td>
-														<td>${line.APRV_ORDR }</td>
-														<td class="center">
-									    					<c:if test="${line.REFE_YN ne 'Y' }">
-										    						${line.APRV_YN_NM }
-										    				</c:if>
-														</td>
-														<td class="center">${line.APRV_CONT }</td>
-													</tr>
-												</c:forEach>
-											</c:when>
-											<c:otherwise>
-												<!-- 결재 권한이 있는 경우 -->
-												<!-- 결재 일경우 -->
-												<!-- 수정 폼일경우 -->
-												<c:set var="old_aprv" value="1" /> <!-- 진행관련 정보 이전 결재자가 결재를 했는지에 대한 구분정보 -->
-												<c:forEach var="line" items="${lineList }" varStatus="status">
-													<c:choose>
-														<c:when test="${line.APRV_EMP_NO eq loginVO.id && (line.APRV_YN_CD eq '0' || line.APRV_YN_CD eq '2') && old_aprv eq '1' && line.REFE_YN ne 'Y'}">
-															<tr class="gradeA odd" role="row">
-																<td class="sorting_1">
-										    						${line.USS_NM }
-											    					<c:if test="${line.REFE_YN eq 'Y' }">
-											    						(참조인)
-											    					</c:if>
-																</td>
-																<td>
-											    					<c:choose>
-											    						<c:when test="${ line.RECE_YN eq '1' }">
-											    							확인
-											    						</c:when>
-											    						<c:otherwise>
-											    							미확인
-											    						</c:otherwise>
-											    					</c:choose>
-																</td>
-																<td>
-													    			<c:if test="${line.CONF_YN eq 'Y' }" >
-											    						확인
-													    			</c:if>
-													    			<c:if test="${line.CONF_YN eq 'N' }" >
-											    						미확인
-													    			</c:if>
-																</td>
-																<td>
-											    					<c:if test="${line.REFE_YN ne 'Y' }">
-												    						${line.APRV_YN_NM }
-												    				</c:if>
-																</td>
-																<td class="center">${line.APRV_CONT }</td>
-															</tr>	
-														</c:when>
-														<c:otherwise>
-															<tr class="gradeA odd" role="row">
-																<td class="sorting_1">
-											    					${line.USS_NM }
-											    					<c:if test="${line.REFE_YN eq 'Y' }">
-											    						(참조인)
-											    					</c:if>
-																</td>
-																<td>
-													    			<c:if test="${line.CONF_YN eq 'Y' }" >
+										</colgroup>
+										<thead>
+											<tr role="row">
+												<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">결재담당</th>
+						    					<c:if test="${params.line_chk eq 'N' }">
+						    						<th class="sorting" tabindex="0" aria-controls="dataTables-example" >메일수신</th>
+						    					</c:if>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >확인여부</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재순서</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재상태</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example">내용</th>
+												<c:if test="${params.line_chk eq 'Y' }">
+													<th class="sorting" tabindex="0" aria-controls="dataTables-example">비고</th>
+												</c:if>
+											</tr>
+										</thead>
+										<tbody>
+											<c:choose>
+												<c:when test="${params.line_chk eq 'N' }">
+													<!-- 결재 권한이 없는 경우 -->
+													<!-- 결재 신청한 경우 -->
+													<c:forEach var="line" items="${lineList }" varStatus="status">
+														<tr class="gradeA odd" role="row">
+															<td class="sorting_1">
+									    						${line.USS_NM }
+										    					<c:if test="${line.REFE_YN eq 'Y' }">
+										    						(참조인)
+										    					</c:if>
+															</td>
+															<td>
+										    					<c:choose>
+										    						<c:when test="${ line.RECE_YN eq '1' }">
+										    							확인
+										    						</c:when>
+										    						<c:otherwise>
+										    							미확인
+										    						</c:otherwise>
+										    					</c:choose>
+															</td>
+	
+															<td>
+												    			<c:if test="${line.CONF_YN eq 'Y' }" >
+										    						확인
+												    			</c:if>
+												    			<c:if test="${line.CONF_YN eq 'N' }" >
+										    						미확인
+												    			</c:if>
+															</td>
+															<td>${line.APRV_ORDR }</td>
+															<td class="center">
+										    					<c:if test="${line.REFE_YN ne 'Y' }">
+											    						${line.APRV_YN_NM }
+											    				</c:if>
+															</td>
+															<td class="center">${line.APRV_CONT }</td>
+														</tr>
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
+													<!-- 결재 권한이 있는 경우 -->
+													<!-- 결재 일경우 -->
+													<!-- 수정 폼일경우 -->
+													<c:set var="old_aprv" value="1" /> <!-- 진행관련 정보 이전 결재자가 결재를 했는지에 대한 구분정보 -->
+													<c:forEach var="line" items="${lineList }" varStatus="status">
+														<c:choose>
+															<c:when test="${line.APRV_EMP_NO eq loginVO.id && (line.APRV_YN_CD eq '0' || line.APRV_YN_CD eq '2') && old_aprv eq '1' && line.REFE_YN ne 'Y'}">
+																<tr class="gradeA odd" role="row">
+																	<td class="sorting_1">
+											    						${line.USS_NM }
+												    					<c:if test="${line.REFE_YN eq 'Y' }">
+												    						(참조인)
+												    					</c:if>
+																	</td>
+																	<td>
+												    					<c:choose>
+												    						<c:when test="${ line.RECE_YN eq '1' }">
+												    							확인
+												    						</c:when>
+												    						<c:otherwise>
+												    							미확인
+												    						</c:otherwise>
+												    					</c:choose>
+																	</td>
+																	<td>
+														    			<c:if test="${line.CONF_YN eq 'Y' }" >
 												    						확인
-													    			</c:if>
-													    			<c:if test="${line.CONF_YN eq 'N' }" >
+														    			</c:if>
+														    			<c:if test="${line.CONF_YN eq 'N' }" >
 												    						미확인
-													    			</c:if>
-																</td>
-																<td>${line.APRV_ORDR }</td>
-																<td>
-												    				<c:if test="${line.REFE_YN ne 'Y' }">
-												    						${line.APRV_YN_NM }
-												    				</c:if>
-																</td>
-																<td class="center">${line.APRV_CONT }</td>
-																<td class="center"></td>
-															</tr>
-														</c:otherwise>
-													</c:choose>
-													<c:set var="old_aprv" value="${line.APRV_YN_CD }" />
-												</c:forEach>
-											</c:otherwise>
-										</c:choose>								
-									</tbody>
-								</table>
+														    			</c:if>
+																	</td>
+																	<td>
+												    					<c:if test="${line.REFE_YN ne 'Y' }">
+													    						${line.APRV_YN_NM }
+													    				</c:if>
+																	</td>
+																	<td class="center">${line.APRV_CONT }</td>
+																</tr>	
+															</c:when>
+															<c:otherwise>
+																<tr class="gradeA odd" role="row">
+																	<td class="sorting_1">
+												    					${line.USS_NM }
+												    					<c:if test="${line.REFE_YN eq 'Y' }">
+												    						(참조인)
+												    					</c:if>
+																	</td>
+																	<td>
+														    			<c:if test="${line.CONF_YN eq 'Y' }" >
+													    						확인
+														    			</c:if>
+														    			<c:if test="${line.CONF_YN eq 'N' }" >
+													    						미확인
+														    			</c:if>
+																	</td>
+																	<td>${line.APRV_ORDR }</td>
+																	<td>
+													    				<c:if test="${line.REFE_YN ne 'Y' }">
+													    						${line.APRV_YN_NM }
+													    				</c:if>
+																	</td>
+																	<td class="center">${line.APRV_CONT }</td>
+																	<td class="center"></td>
+																</tr>
+															</c:otherwise>
+														</c:choose>
+														<c:set var="old_aprv" value="${line.APRV_YN_CD }" />
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>								
+										</tbody>
+									</table>
+								</div>
 							</dd>
 						</dl>
 					</div>
-					<p class="row">
+					<p class="clearfix">
 					<span class="pull-right">
 						<c:if test="${viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' }">
 							<input type="button" id="btn-ok" class="btn btn-warning" value="수정"/>

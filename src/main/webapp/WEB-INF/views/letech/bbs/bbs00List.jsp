@@ -74,63 +74,55 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="form-inline pull-right">
-									<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
+									<select class="form-control table-cell" name="searchGubun" id="searchGubun" class="" title="search" >
 										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
 										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
 									</select>
-									<div class="input-group">
-										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-										<span class="input-group-btn">
-											<button class="fnSearch btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i>
-											</button>
+										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
+										<span class="">
+											<button class="fnSearch btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i> 검색</button>
 										</span>
-									</div>
 								</div>
 							</div>
 						</div>
-						
-						<table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-							<colgroup>
-								<col width="10%" />
-								<col width="50%" />
-								<col width="10%" />
-								<col width="20%" />
-								<col width="10%" />
-							</colgroup>
-							<thead>
-								<tr role="row">
-									<th class="sorting_desc" tabindex="0" aria-controls="dataTables-example" aria-sort="descending">번호</th>
-									<th class="sorting" tabindex="0" aria-controls="dataTables-example">제목</th>
-									<th class="sorting" tabindex="0" aria-controls="dataTables-example">작성자</th>
-									<th class="sorting" tabindex="0" aria-controls="dataTables-example">작성일</th>
-									<th class="sorting" tabindex="0" aria-controls="dataTables-example">조회수</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:choose>
-									<c:when test="${totalCnt < 1 }">
-										<tr>
-											<td colspan="5">검색된 내용이 없습니다.</td>
-										</tr>
-									</c:when>
-									<c:otherwise>
-										<c:forEach var="list" items="${resultList}" varStatus="status">
-											<tr class="gradeA odd" role="row">
-												<td class="sorting_1">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</td>
-												<td class="center"><c:forEach begin="1"
-														end="${list.LEVEL_CNT }" step="1">
-														<span class="re_re"></span>
-													</c:forEach> <a href="#" onclick="fnView('${list.BBS_SEQ}');">${list.TITLE}</a>
-												</td>
-												<td class="center">${list.REG_NM}</td>
-												<td class="center">${list.REG_DT}</td>
-												<td class="center">${list.HIT}</td>
+						<div class="">
+							<table class="table table-bordered">
+								<thead>
+									<tr role="row">
+										<th class="hidden-xs hidden-sm">번호</th>
+										<th class="">제목</th>
+										<th class="">작성자</th>
+										<th class="">작성일</th>
+										<th class="hidden-xs hidden-sm">조회수</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${totalCnt < 1 }">
+											<tr>
+												<td colspan="5">검색된 내용이 없습니다.</td>
 											</tr>
-										</c:forEach>
-									</c:otherwise>
-								</c:choose>
-							</tbody>
-						</table>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="list" items="${resultList}" varStatus="status">
+												<tr class="gradeA odd" role="row">
+													<td class="hidden-xs hidden-sm">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</td>
+													<td class=""><c:forEach begin="1"
+															end="${list.LEVEL_CNT }" step="1">
+															<span class="re_re"></span>
+														</c:forEach> 
+															<a class="" href="#" onclick="fnView('${list.BBS_SEQ}');"><span class="ellip ellip-line">${list.TITLE}</span></a>
+													</td>
+													<td class="">${list.REG_NM}</td>
+													<td class="">${list.REG_DT}</td>
+													<td class="hidden-xs hidden-sm">${list.HIT}</td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
+								</tbody>
+							</table>
+						</div>
 						
 						<div class="row">
 							<div class="col-md-11 col-xs-10">
