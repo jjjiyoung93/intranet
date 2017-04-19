@@ -15,6 +15,8 @@ p{margin:10px 0 20px;}
 caption{display:none;}
 .nav-tabs>li>a{color:#23527c;}
 .table-cell{max-width:100px;display:table-cell! important;width:auto;}
+.ellip-line{display:inline-block;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;max-width:100%;}
+.ellip, .ellip-line{position:relative;overflow:hidden;padding-top:1px;vertical-align:top;}
 
 /*top*/
 h1.logo a.navbar-brand{padding:5px 15px;}
@@ -27,6 +29,9 @@ h1.logo a.navbar-brand{padding:5px 15px;}
 .navbar-top-links .dropdown-menu li{display:block;border-bottom:1px solid #e5e5e5;}
 .navbar-top-links .dropdown-menu li:last-child{margin-right:0;border-bottom:none;}
 .navbar-default .navbar-toggle .icon-bar{background-color:#fff;}
+
+.top_menu ul li a {position:relative;}
+.depth-one{position:absolute;top:100px;}
 
 /*nav*/
 .sidebar{position:relative;background:#cfc4b0;}
