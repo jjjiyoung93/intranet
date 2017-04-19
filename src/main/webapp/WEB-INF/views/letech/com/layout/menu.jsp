@@ -55,15 +55,16 @@
 							</c:if>
 						</li>
 					</c:when>
+		
 					<c:otherwise>
 						<sec:authorize access="hasAnyRole('${list.AUTHOR_CODE}')">
-							<li class="visible-md visible-lg">
-								<a <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse${status.index}" aria-expanded="false" aria-controls="collapse${status.index}">
+							<li>
+								<a <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> data-toggle="collapse" data-parent="#selector" href="#collapse${status.index}" aria-expanded="true" aria-controls="collapse${status.index}">
 								<!-- 관리자 1depth 메뉴 -->
 								<i class="glyphicon glyphicon-cog"></i> ${list.MN_NM}<span class="pull-right glyphicon glyphicon-menu-left"></span>
 								</a>
 								<c:if test="${mnList2 ne null}">
-									<ul class="sub" id="collapse${status.index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse${status.index}">
+									<ul class="sub panel-collapse collapse"  role="tabpanel" aria-labelledby="collapse${status.index}" id="collapse${status.index}">
 										<c:forEach var="list2" items="${mnList2}" varStatus="status">
 											<c:if test="${list.MN eq list2.UP_MN}">
 												<li>
