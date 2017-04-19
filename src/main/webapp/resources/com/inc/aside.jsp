@@ -107,45 +107,6 @@ $(document).ready(function(){
 				}
 			}
 	});
-	
-	$.ajax({
-		type:'post',
-		url:'${pageContext.request.contextPath}/aprv/aprv02Ajax.do',
-		dataType:'json',
-		success: function(json){
-			/* 결재 정보 목록 START */
-			var aprvList0 = json.aprvList0;		// 결재중
-			var aprvList2 = json.aprvList2;		// 보류
-			var aprvList3 = json.aprvList3;		// 반려
-			
-			var aprvListCnt0 = aprvList0.length;
-			var aprvListCnt2 = aprvList2.length;
-			var aprvListCnt3 = aprvList3.length;
-			
-			for(var i=0; i<aprvListCnt0; i++){
-				$("#aside_aprv0").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList0[i]['CD']+"\">"+aprvList0[i]['CD_NM']+"("+aprvList0[i]['TYPE_CNT']+")</a></li>");
-			}
-
-			for(var i=0; i<aprvListCnt2; i++){
-				$("#aside_aprv2").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList2[i]['CD']+"\">"+aprvList2[i]['CD_NM']+"("+aprvList2[i]['TYPE_CNT']+")</a></li>");
-			}
-
-			for(var i=0; i<aprvListCnt3; i++){
-				$("#aside_aprv3").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList3[i]['CD']+"\">"+aprvList3[i]['CD_NM']+"("+aprvList3[i]['TYPE_CNT']+")</a></li>");
-			}
-			/* 결재 정보 목록 END */
-			
-			/* 결재 관련 건수 START */
-			var aprvCount0 = json.aprvCount0;		// 결재중
-			var aprvCount2 = json.aprvCount2;		// 보류
-			var aprvCount3 = json.aprvCount3;		// 반려
-			
-			$("#aside_aprvCnt0").text(aprvCount0);
-			$("#aside_aprvCnt2").text(aprvCount2);
-			$("#aside_aprvCnt3").text(aprvCount3);
-			/* 결재 관련 건수 END */
-		}
-	});
 });
 
 function leftFnSearch(){
