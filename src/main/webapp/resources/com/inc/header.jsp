@@ -17,7 +17,6 @@ if(Sessinfo != null){
 
 }
 %>
-
 <header>
 <!-- 헤더_로고,메뉴 -->
 		<div class="navbar-header">
@@ -34,15 +33,32 @@ if(Sessinfo != null){
 				</h1>
 			</div>
 		<div class="top_menu">
-			<ul class="nav navbar-top-links navbar-right">
-					<li class="dropdown hidden-xs">
-						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			<ul class="nav navbar-top-links navbar-right" >
+					<li>
+						<a data-toggle="collapse" data-parent="#accordion" href="#alarmOne" aria-expanded="false">
+							<i class="glyphicon glyphicon-bell"></i>
+							<span class="text-muted small">(0)</span>
+							<i class="glyphicon glyphicon-triangle-bottom"></i> 
+						</a>
+						<ul id="alarmOne" class="panel navber-right dropdown-menu collapse">
+							<li>
+								<a data-toggle="collapse" data-parent="#accordion" href="#alarmTwo" aria-expanded="false">depth01
+									<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
+								</a>
+								<ul id="alarmTwo" class="collapse">
+									<li><a href="">depth02</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li class="hidden-xs">
+						<a data-toggle="collapse" data-parent="#accordion" href="#userOne" aria-expanded="false">
 							<i class="glyphicon glyphicon-user"></i><%=SES_NM %>
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 
 						</a>
-						<ul class="dropdown-menu dropdown-user">
+						<ul id="userOne" class="panel navber-right dropdown-menu collapse">
 							<li>
-								<a href="/letech/index.do">HOME</a><span class="line">|</span><a href="<%=request.getContextPath() %>/usr/myPage00L.do">마이페이지</a>
+								<a href="/letech/index.do">HOME</a><a href="<%=request.getContextPath() %>/usr/myPage00L.do">마이페이지</a>
 							</li>
 							<li>
 								<a href="<%=request.getContextPath() %>/LogOut.do" title="logout">로그아웃</a>
