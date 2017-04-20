@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
+
 <html>
 <head>
 <jsp:include page="/resources/com/inc/meta.jsp" />
@@ -106,8 +107,7 @@
 						</div>
 				</form>
 				<p class="clearfix" >
-					<!-- 메인화면인이 일정관리화면인지 구분 (1:메인화면) -->
-					<c:if test="${params.flag ne '1' }" >
+					<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >
 						<a href="#submit" class="btn-ok btn btn-warning" ><span>수정</span></a>
 						<a href="#submit" class="btn-del btn btn-default" ><span>삭제</span></a>
 					</c:if>

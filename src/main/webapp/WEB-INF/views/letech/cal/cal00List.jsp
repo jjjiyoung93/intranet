@@ -106,13 +106,19 @@ $(document).ready(function() {
 	                var events = [];
 	                var arrayCnt = array.length;
 	                for(var i=0; i<arrayCnt; i++){
-	                	events.push({
-	                        title: array[i].title,
-	                        start: array[i].start,
-	                        end: array[i].end,
-	                        url: array[i].url
-	                    });
-	                }
+	                //	alert(uss_id);
+		                	events.push({
+		                        title: array[i].title,
+		                        uss_id: array[i].uss_id,
+		                        start: array[i].start,
+		                        end: array[i].end,
+		                        url: array[i].url,
+		                        dateStart: array[i].startDate,
+		                        dateEnd: array[i].endDate,
+		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+		                        timeEnd: array[i].endTimeFri + array[i].endTimeSec
+		                    });
+	                	}
 	                callback(events);
 	            }
 	        });
