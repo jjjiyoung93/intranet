@@ -5,6 +5,7 @@
 	<select id="getCalList" resultType="HashMap" parameterType="map" >
 		SELECT
 			cal_seq
+			, uss_id
 			, cal_nm
 			, cal_st_dt
 			, cal_ed_dt
@@ -40,7 +41,7 @@
 		]]>
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_id)" >
-			AND uss_id = #{uss_id}		
+			<!-- AND uss_id = #{uss_id}	 -->	
 		</if>
 		ORDER BY cal_st_dt ASC
 	</select>
@@ -59,6 +60,7 @@
 	<select id="getCalView" resultType="HashMap" parameterType="map">
 		SELECT
 		  cal_seq
+		  , uss_id
 		  , cal_nm
 		  , cal_content
 		  , cal_st_dt

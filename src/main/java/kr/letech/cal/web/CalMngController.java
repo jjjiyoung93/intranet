@@ -45,9 +45,14 @@ public class CalMngController {
 	@IncludedInfo(name = "일정관리", order = 470, gid = 50)
 	@RequestMapping(value = "/cal/cal00List.do")
 	public String getCalList(HttpServletRequest request, ModelMap model) throws Exception {
-
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		
 		Map params = ReqUtils.getParameterMap(request);
 		model.addAttribute("params", params);
+		
+		//Map resultView = calMngService.getCalView(params);
+		//resultView.put("session_uss_id", loginVO.getId());
 		
 		// 현재 날짜 구하기
 		DateUtil dt = new DateUtil();
@@ -81,7 +86,7 @@ public class CalMngController {
 		
 		String flag = (String)params.get("flag");
 
-		/* 일정관리 화면일경우 (flag이 값이 1일경우는 메인화면일경우) */
+/*		 일정관리 화면일경우 (flag이 값이 1일경우는 메인화면일경우) */		
 		if(flag==null || flag.equals("")){
 			// 로그인 세션 정보
 			HttpSession session = request.getSession();
@@ -211,11 +216,15 @@ public class CalMngController {
 	 */
 	@RequestMapping(value = "/cal/cal00View.do")
 	public String getCalView(HttpServletRequest request, ModelMap model) throws Exception {
+		// 사용자 정보 넣기
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		
 		Map params = ReqUtils.getParameterMap(request);
 		model.addAttribute("params", params);
 		
 		Map resultView = calMngService.getCalView(params);
+		resultView.put("session_uss_id", loginVO.getId());
 		
 		List fileList = calMngService.getCalFileList(params);
 		

@@ -64,6 +64,7 @@ public class CalMngServiceImpl implements CalMngService {
 			putMp.put("startTimeSec", map.get("CAL_ST_TIME_SEC"));
 			putMp.put("endTimeFri", map.get("CAL_ED_TIME_FRI"));
 			putMp.put("endTimeSec", map.get("CAL_ED_TIME_SEC"));
+			putMp.put("ussId", map.get("USS_ID"));
 			list.add(putMp);
 		}	
 		
