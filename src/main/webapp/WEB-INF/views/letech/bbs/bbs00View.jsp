@@ -189,8 +189,8 @@
 						</div>
 					</div>
 				</div>
-			<!-- aside(공지사항) -->
-			<jsp:include page="/resources/com/inc/aside.jsp" />
+				<!-- aside(공지사항) -->
+				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
 		</div>
 		<jsp:include page="/resources/com/inc/footer.jsp" />
