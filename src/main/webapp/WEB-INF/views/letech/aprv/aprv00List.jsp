@@ -17,7 +17,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<%-- <script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script> --%>
+<script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -39,11 +39,13 @@
 					<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
 					<input type="hidden" name="conf_yn" id="conf_yn" value="" />
 					<input type="hidden" name="conf_y_cnt" id="conf_y_cnt" value="" />
-			
-					<h4 class="title">
+					<h2 class="page-title clearfix">
 						${titleNaviMap.MN_NM }
-						<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span>
-					</h4>
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
+					<div class="form-container">
 					<div class="form-inline">
 						<div class="clearfix">
 							<span class="visible-lg-inline visible-md-inline">
@@ -177,10 +179,11 @@
 							</tbody>
 						</table>
 					</div>
-					<p class="page_nav" style="text-align: center;">
-						<strong>${pageNavigator}</strong> 
+					<ul class="pagination" >
+						${pageNavigator}
+					</ul>
 						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-warning" value="글쓰기"/></span>
-					</p>
+					</div>
 				</form>
 			</div>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
