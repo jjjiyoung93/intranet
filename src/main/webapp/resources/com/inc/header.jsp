@@ -65,7 +65,7 @@ if(Sessinfo != null){
 						</ul>
 					</li>
 					
-					<li class="hidden-xs">
+					<%-- <li class="hidden-xs">
 						<a data-toggle="collapse" data-parent="#accordion" href="#userOne" aria-expanded="false">
 							<i class="glyphicon glyphicon-user"></i><%=SES_NM %>
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 
@@ -89,11 +89,15 @@ if(Sessinfo != null){
 									 -->
 								</li>
 						</ul>
-					</li>
+					</li> --%>
+					
 					<c:if test="${loginVO != null}">
 					<li class="dropdown hidden-xs">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-							<i class="glyphicon glyphicon-user"></i>${loginVO.name }
+							<i class="glyphicon glyphicon-user"></i>
+							<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
+								<span class="text-muted small">(${loginVO.name })</span>
+							</sec:authorize>
 							<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 								<span class="text-muted small">(관리자)</span>
 							</sec:authorize>
