@@ -17,7 +17,7 @@
 								<i class="glyphicon glyphicon-cog"></i> ${list.MN_NM}<span class="pull-right glyphicon glyphicon-menu-left"></span>
 							</a>
 							<c:if test="${mnList2 ne null}">
-								<ul class="sub" id="collapse${status.index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse${status.index}">
+								<ul class="sub panel-collapse collapse" id="collapse${status.index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse${status.index}">
 									<c:forEach var="list2" items="${mnList2}" varStatus="status">
 										<c:if test="${list.MN eq list2.UP_MN}">
 											<c:choose>

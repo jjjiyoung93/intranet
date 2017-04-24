@@ -49,10 +49,8 @@ public class CalMngController {
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		
 		Map params = ReqUtils.getParameterMap(request);
+		params.put("session_uss_id", loginVO.getId());
 		model.addAttribute("params", params);
-		
-		//Map resultView = calMngService.getCalView(params);
-		//resultView.put("session_uss_id", loginVO.getId());
 		
 		// 현재 날짜 구하기
 		DateUtil dt = new DateUtil();
