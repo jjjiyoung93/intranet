@@ -41,6 +41,7 @@ h1.logo a.navbar-brand{padding:5px 15px;}
 .sidebar ul li ul{margin:0;padding:0;list-style:none;}
 .sidebar ul li ul li{padding:0 15px 10px 25px;border-bottom:none;}
 
+
 /*공지사항*/
 .panel-brown{border:1px solid #a99c85;}
 .panel-brown .panel-heading{background:#cfc4b0;}
@@ -52,8 +53,10 @@ h1.logo a.navbar-brand{padding:5px 15px;}
 .notic_box ul li span{width:100%;display:block;margin-top:5px;}
 
 /*container*/
-#page-wrapper{padding:15px;border-left:1px solid #e7e7e7;background:#faf8ef;}
-h4.title{font-weight:bold;padding:10px 0 20px;}
+#page-wrapper{padding:15px;border-left:1px solid #e7e7e7;background:#f3f3f4;}
+.page-title{font-weight:bold;padding:25px 15px 30px;margin:0;color:#442c02;border-bottom:2px solid #e6e9ed;}
+.site-map{margin-top:10px;font-size:14px;font-weight:normal;}
+.un-style{padding:0;margin:0;}
 
 
 /*footer*/
@@ -73,17 +76,32 @@ p.text{padding:10px 0 20px;text-align:left;color:#936a34;}
 /*table*/
 .dataTables_length,.dataTables_filter,.dataTables_info,.paging_simple_numbers,.dataTables_paginate{display:none;}
 .tab_gnb{margin-bottom:20px;}
-.table{margin:10px 0;}
+.table-responsive{margin:10px 0 0;}
 
 
 
-.board-view{}
-.board-view ul{padding:15px 0; background:#fff; margin-bottom:15px;}
-.board-view ul li{}
-.board-view ul li dl.first-line{}
-.board-view ul li dl{padding:5px 0;}
-.board-view ul li dl dd{}
-.board-view ul li dl dt{padding-left:15px;}
+.form-container{padding:50px 15px;background:#fff;}
+.board_title{padding:15px;font-weight:bold;border-top:2px solid #442c02;border-bottom:1px solid #ddd;background:#fafafa;} 
+.form-container ul.form-view{margin-bottom:15px;}
+.form-container ul.form-view li{padding:7px 15px;border-bottom:1px solid #ddd;}
+.form-container h5{padding:15px;font-weight:bold;font-size:18px;}
+ul.form-view{} 
+ul.re li{padding:7px 15px;border-bottom:1px dotted #ddd;}
+.rp_view{}
+.re_write{padding:10px;background:#fafafa;}
+
+ul.form-write li{border-bottom:none;}
+
+ul.payment-form{}
+ul.payment-form li {}
+ul.payment-form li dl{padding:10px 0;border-bottom:1px solid #ddd;}
+ul.payment-form li dl dt{}
+ul.payment-form li dl dd{border-left:1px dotted #ddd;color:#787878;}
+
+
+
+
+.pagination{margin:0;}
 
 
 /* 달력 */
