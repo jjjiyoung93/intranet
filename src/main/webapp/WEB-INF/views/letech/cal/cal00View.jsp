@@ -107,9 +107,12 @@
 					</div>
 				</form>
 				<p class="clearfix" >
-					<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >
-						<a href="#submit" class="btn-ok btn btn-warning" ><span>수정</span></a>
-						<a href="#submit" class="btn-del btn btn-default" ><span>삭제</span></a>
+					<!-- 메인화면인이 일정관리화면인지 구분 (1:메인화면) -->
+					<c:if test="${params.flag ne '1' }" >
+						<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >
+							<a href="#submit" class="btn-ok btn btn-warning" ><span>수정</span></a>
+							<a href="#submit" class="btn-del btn btn-default" ><span>삭제</span></a>
+						</c:if>
 					</c:if>
 					<a href="#cancel" class="btn-cancel  btn btn-default pull-right" ><span>목록</span></a>
 				</p>
