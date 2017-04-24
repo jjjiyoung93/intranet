@@ -17,7 +17,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<%-- <script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script> --%>
+<script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -32,7 +32,12 @@
 			<div id="page-wrapper">
 				<div class="row">
 				<div class="col-lg-10">
-					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+					<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
 					<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
@@ -47,14 +52,14 @@
 						<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
 						<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
 						<!-- 검색 정보 End -->
-
+					<div class="form-container">
 					<div class="board-view">
-						<ul>
-							<li>
+						<ul class="payment-form">
+							<li class="">
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">보고자</dt>
 									<dd class="col-md-10 col-sm-9">
-										<input type="text" value="${viewMap.REPT_APRV_NM }" class="form-control" readonly />
+										${viewMap.REPT_APRV_NM }
 									</dd>
 								</dl>
 							</li>
@@ -62,7 +67,7 @@
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">소속</dt>
 									<dd class="col-md-10 col-sm-9">
-										<input type="text" value="${viewMap.DPNM }" class="form-control" readonly />
+										${viewMap.DPNM }
 									</dd>
 								</dl>
 							</li>
@@ -72,7 +77,7 @@
 									<dd class="col-md-10 col-sm-9">
 										<c:forEach var="proj" items="${projList }" varStatus="status">
 											<c:if test="${proj.CD eq viewMap.PROJ_CD }">
-												<input type="text" value="${proj.CD_NM }" class="form-control" readonly />
+												${proj.CD_NM }
 											</c:if>
 										</c:forEach>
 									</dd>
@@ -82,17 +87,17 @@
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">결제구분</dt>
 									<dd class="col-md-10 col-sm-9">
-										1차 구분
+										1차 구분:
 										<c:forEach var="code" items="${codeList}">
 											<c:if test="${viewMap.APRV_TYPE_CD eq code.CD }">
-													<input type="text" value="${code.CD_NM}" class="form-control table-cell" readonly />
+												<strong>${code.CD_NM}</strong>
 											</c:if>
 										</c:forEach>
 																		&nbsp;&nbsp;&nbsp;
 																		2차구분:
 										<c:forEach var="code2" items="${codeList2}">
 											<c:if test="${viewMap.APRV_TYPE_DTIL_CD eq code2.CD }">
-													<input type="text" value="${code2.CD_NM}" class="form-control table-cell" readonly />
+													<strong>${code2.CD_NM}</strong>
 											</c:if>
 										</c:forEach>
 									</dd>
@@ -102,7 +107,7 @@
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">제목</dt>
 									<dd class="col-md-10 col-sm-9">
-										<input type="text" value="${viewMap.TITLE }" class="form-control" readonly /> 
+										${viewMap.TITLE }
 									</dd>
 								</dl>
 							</li>
@@ -110,8 +115,8 @@
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">기간</dt>
 									<dd class="col-md-10 col-sm-9">
-										<input type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell" readonly />~ 
-										<input type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell" readonly />
+									${viewMap.TERM_ST_YM } ~ 
+										 ${viewMap.TERM_ED_YM }
 									</dd>
 								</dl>
 							</li>
@@ -119,7 +124,7 @@
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">행선지</dt>
 									<dd class="col-md-10 col-sm-9">
-										<input type="text" value="${viewMap.PLACE }" class="form-control" readonly />
+										${viewMap.PLACE }
 									</dd>
 								</dl>
 							</li>
@@ -127,7 +132,7 @@
 								<dl class="clearfix">
 									<dt class="col-md-2 col-sm-3">보고내용</dt>
 									<dd class="col-md-10 col-sm-9">
-										<input type="text" value="${viewMap.REPT_CONT }" class="form-control" readonly />
+										${viewMap.REPT_CONT }
 									</dd>
 								</dl>
 							</li>
@@ -311,11 +316,13 @@
 					</span>
 				</p>
 				</div>
+				</div>
 				</form>
 			</div>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 			</div>
 		</div>
+</div>
 		<jsp:include page="/resources/com/inc/footer.jsp" />
 <form id="ussFrm" name="ussFrm" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00Popup.do" >
 </form>
