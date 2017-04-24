@@ -194,6 +194,7 @@
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/err/err00Tran.do");
 			$("#frm1").submit();
 		}
+		
 		/*********************************************************************************
 		* function명   : fnTabMove
 		* function기능 : 탭이동
@@ -204,7 +205,6 @@
 			document.frm1.submit();
 			
 		}
-	
 	</script>
 </body>
 </html>
