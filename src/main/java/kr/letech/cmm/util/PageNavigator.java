@@ -101,16 +101,16 @@ public class PageNavigator {
 		StringBuffer sb = new StringBuffer();
 		
 		if(currentPage > 1){
-			sb.append("<a href='").append(goUrl);
+			sb.append("<li><a href='").append(goUrl);
 //			sb.append("?cPage=1").append(parameter).append("' ").append(imgFirstClss).append(" >").append(imgFirst).append("</a>&nbsp;&nbsp;&nbsp;");
-			sb.append("?cPage=1").append(parameter).append("' ").append(imgFirstClss).append(" class='glyphicon-frist' >").append("</a>&nbsp;&nbsp;&nbsp;");
+			sb.append("?cPage=1").append(parameter).append("' ").append(imgFirstClss).append(" class='glyphicon-frist' >").append("</a></li>");
 		}
 		
 		if (isPrev) {
 			int goPrevPage = startPage - pagePerBlock;			
-			sb.append("<a href='").append(goUrl);
+			sb.append("<li><a href='").append(goUrl);
 //			sb.append("?cPage=").append(goPrevPage).append(parameter).append("' ").append(imgBackClss).append(" >").append(imgBack).append("</a>");
-			sb.append("?cPage=").append(goPrevPage).append(parameter).append("' ").append(imgBackClss).append(" class='glyphicon-prev' >").append("</a>");
+			sb.append("?cPage=").append(goPrevPage).append(parameter).append("' ").append(imgBackClss).append(" class='glyphicon-prev' >").append("</a></li>");
 		} else {
 			
 		}
@@ -118,11 +118,11 @@ public class PageNavigator {
 		for (int i = startPage; i <= endPage; i++) {
 			sb.append("&nbsp;");
 			if (i == currentPage) {
-				sb.append("<font color='orange' size='5'>").append(i).append("</font>");
+				sb.append("<li class='active'><a href='#'>").append(i).append("</a></li>");
 			} else {
-				sb.append("<a href='").append(goUrl);
+				sb.append("<li><a href='").append(goUrl);
 				sb.append("?cPage=").append(i).append(parameter).append("'>").append(i).append(
-						"</a>");
+						"</a></li>");
 			}
 		}
 	//	sb.append("&nbsp;<FONT style='font-size: 12px' COLOR=D0D0D0>|</FONT> ");
@@ -131,17 +131,17 @@ public class PageNavigator {
 		if (isNext) {
 			int goNextPage = startPage + pagePerBlock;
 
-			sb.append("<a href='").append(goUrl);
+			sb.append("<li><a href='").append(goUrl);
 //			sb.append("?cPage=").append(goNextPage).append(parameter).append("' ").append(imgNextClss).append(" >").append(imgNext).append("</a>");
-			sb.append("?cPage=").append(goNextPage).append(parameter).append("' ").append(imgNextClss).append(" class='glyphicon-next' >").append("</a>");
+			sb.append("?cPage=").append(goNextPage).append(parameter).append("' ").append(imgNextClss).append(" class='glyphicon-next' >").append("</a></li>");
 		} else {
 			
 		}
 		
 		if(totalNumOfPage > currentPage){
-			sb.append("<a href='").append(goUrl);
+			sb.append("<li><a href='").append(goUrl);
 //			sb.append("?cPage=").append(totalNumOfPage).append(parameter).append("' ").append(imgEndClss).append(" >").append(imgEnd).append("</a>");
-			sb.append("?cPage=").append(totalNumOfPage).append(parameter).append("' ").append(imgEndClss).append(" class='glyphicon-end' >").append("</a>");
+			sb.append("?cPage=").append(totalNumOfPage).append(parameter).append("' ").append(imgEndClss).append(" class='glyphicon-end' >").append("</a></li>");
 		}
 
 		return sb.toString();
@@ -186,13 +186,13 @@ public class PageNavigator {
 		
 		if(currentPage > 1){
 //			sb.append("<a href='#' onclick='goPage(\"1\");' ").append(imgFirstClss).append(" >").append(imgFirst).append("</a>&nbsp;&nbsp;&nbsp;");
-			sb.append("<a href='#' onclick='goPage(\"1\");' ").append(imgFirstClss).append(" class=''glyphicon glyphicon-chevron-right paging' >").append("</a>");
+			sb.append("<li><a href='#' onclick='goPage(\"1\");' ").append(imgFirstClss).append(" class='glyphicon glyphicon-backward' >").append("</a></li>");
 		}
 		
 		if (isPrev) {
 			int goPrevPage = startPage - pagePerBlock;			
 //			sb.append("<a href='#' onclick='goPage(\"").append(goPrevPage).append("\");' ").append(imgBackClss).append(" >").append(imgBack).append("</a>");
-			sb.append("<a href='#' onclick='goPage(\"").append(goPrevPage).append("\");' ").append(imgBackClss).append(" class='glyphicon glyphicon-backward paging' >").append("</a>");
+			sb.append("<li><a href='#' onclick='goPage(\"").append(goPrevPage).append("\");' ").append(imgBackClss).append(" class='glyphicon glyphicon-backward paging' >").append("</a></li>");
 		} else {
 			
 		}
@@ -200,10 +200,10 @@ public class PageNavigator {
 		for (int i = startPage; i <= endPage; i++) {
 			sb.append("");
 			if (i == currentPage) {
-				sb.append("<font color='orange' size='5'>").append(i).append("</font>");
+				sb.append("<li class='active'><a href='#'>").append(i).append("</a></li>");
 			} else {
-				sb.append("<a href='#' onclick='goPage(\"").append(i).append("\");' >").append(i).append(
-						"</a>");
+				sb.append("<li><a href='#' onclick='goPage(\"").append(i).append("\");' >").append(i).append(
+						"</a></li>");
 			}
 		}
 	//	sb.append("&nbsp;<FONT style='font-size: 12px' COLOR=D0D0D0>|</FONT> ");
@@ -213,14 +213,14 @@ public class PageNavigator {
 			int goNextPage = startPage + pagePerBlock;
 
 //			sb.append("<a href='#' onclick='goPage(\"").append(goNextPage).append("\");' ").append(imgNextClss).append(" >").append(imgNext).append("</a>");
-			sb.append("<a href='#' onclick='goPage(\"").append(goNextPage).append("\");' ").append(imgNextClss).append(" class='glyphicon glyphicon-play paging' >").append("</a>");
+			sb.append("<li><a href='#' onclick='goPage(\"").append(goNextPage).append("\");' ").append(imgNextClss).append(" class='glyphicon glyphicon-play paging' >").append("</a></li>");
 		} else {
 			
 		}
 		
 		if(totalNumOfPage > currentPage){
 //			sb.append("<a href='#' onclick='goPage(\"").append(totalNumOfPage).append("\");' ").append(imgEndClss).append(" >").append(imgEnd).append("</a>");
-			sb.append("<a href='#' onclick='goPage(\"").append(totalNumOfPage).append("\");' ").append(imgEndClss).append(" class='glyphicon glyphicon-forward paging' >").append("</a>");
+			sb.append("<li><a href='#' onclick='goPage(\"").append(totalNumOfPage).append("\");' ").append(imgEndClss).append(" class='glyphicon glyphicon-forward paging' >").append("</a></li>");
 		}
 
 		return sb.toString();
