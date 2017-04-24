@@ -179,10 +179,12 @@
 							</tbody>
 						</table>
 					</div>
-					<ul class="pagination" >
-						${pageNavigator}
-					</ul>
-						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-warning" value="글쓰기"/></span>
+						<div class="clearfix">
+							<ul class="pagination" >
+								${pageNavigator}
+							</ul>
+							<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-warning" value="글쓰기"/></span>
+						</div>
 					</div>
 				</form>
 			</div>

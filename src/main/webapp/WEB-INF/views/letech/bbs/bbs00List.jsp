@@ -38,14 +38,13 @@
 						<!--<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />-->	
 										
 						<!-- 타이틀 및 페이지 네비 -->
-						<h4 class="title">
-							${params.bbs_nm}
-							<span class="pull-right text-muted small">
-								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
-							</span>
-						</h4>
-						
-						<!--tab -->
+						<h2 class="page-title clearfix">
+						${params.bbs_nm}
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
+						</span>
+					</h2>
+<%-- 						<!--tab -->
 						<!-- 탭부분 제거 예정 -->
 						<c:if test="${bbsTabList ne null}">
 							<article>
@@ -54,14 +53,14 @@
 										<c:if test="${params.bbs_id eq list3.BBS_ID}">
 											<c:set var="bbsNm" value="${list3.BBS_NM}" />
 										</c:if>
-										<%-- <li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
+										<li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
 											<a href="#" onclick="fnTabMove('bbs/bbs00List.do','${list3.BBS_ID}')">${list3.BBS_NM}</a>
-										</li> --%>
+										</li>
 									</c:forEach>
 								</ul>
 					   		</article>
-						</c:if>
-						
+						</c:if> --%>
+						<div class="form-container">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-inline">
@@ -85,7 +84,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="">
+						<div class="table-responsive">
 							<table class="table table-bordered">
 								<thead>
 									<tr role="row">
@@ -124,19 +123,15 @@
 							</table>
 						</div>
 						
-						<div class="row">
-							<div class="col-md-11 col-xs-10">
-								<div class="form-inline">
-									<p class="row text-center">
-										<strong>${pageNavigator }</strong>
-									</p>
-								</div>
-							</div>
-							<div class="col-md-1 col-xs-2">
-								<div class="form-inline pull-right">
-									<input type="button" class="fnJoin btn btn-warning" value="등록"/>
-								</div>
-							</div>
+						<div class="clearfix">
+							<ul class="pagination">
+										${pageNavigator }
+							</ul>
+										<span class="form-inline pull-right">
+											<input type="button" class="fnJoin btn btn-warning" value="등록"/>
+										</span>
+							
+						</div>
 						</div>
 					</form>
 				</div>
@@ -199,16 +194,6 @@
 			});
 		});
 
-		/* 
-		* 테이블 정렬
-		* "order": [[ 칼럼 번호 , 정렬방법('asc' , 'desc') ]]
-		*/
-		$(function() {
-			$('#dataTables-example').DataTable( {
-				"order": [[ 0, "desc" ]] , 
-				responsive: true
-		    } );
-		});
 	</script>
 </body>
 </html>

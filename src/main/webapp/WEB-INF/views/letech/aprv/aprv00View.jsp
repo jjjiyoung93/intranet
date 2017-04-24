@@ -154,7 +154,7 @@
 								<dt class="panel-heading">결제라인</dt>
 								<dd class="panel-body">
 									<div class="table-responsive">
-										<table class="table table-bordered">
+										<table class="table table-bordered table-condensed">
 										<colgroup>
 											<col width="10%"/>
 					    					<c:if test="${params.line_chk eq 'N' }">
@@ -170,13 +170,13 @@
 										</colgroup>
 										<thead>
 											<tr role="row">
-												<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">결재담당</th>
+												<th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"  aria-sort="ascending">결재자</th>
 						    					<c:if test="${params.line_chk eq 'N' }">
 						    						<th class="sorting" tabindex="0" aria-controls="dataTables-example" >메일수신</th>
 						    					</c:if>
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >확인여부</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재순서</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >결재상태</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >확인</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >순서</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTables-example" >상태</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTables-example">내용</th>
 												<c:if test="${params.line_chk eq 'Y' }">
 													<th class="sorting" tabindex="0" aria-controls="dataTables-example">비고</th>

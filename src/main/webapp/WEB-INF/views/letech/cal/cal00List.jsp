@@ -29,14 +29,21 @@
 					<input type="hidden" name="CAL_ST_DT" id="CAL_ST_DT" value=""/>
 					<input type="hidden" name="CAL_ED_DT" id="CAL_ED_DT" value=""/>
 												
-					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+					<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
 				
 					<!-- 달력 start -->
-					<div id='calendar'></div>
-					<!-- 달력 end -->
-					<p class="Clearfix">
-						<span class="pull-right"><input class="fnJoin btn btn-warning" type="button" value="일정등록" /></span>
-					</p>
+					<div class="form-container">
+						<div id='calendar'></div>
+						<!-- 달력 end -->
+						<p class="Clearfix">
+							<span class="pull-right"><input class="fnJoin btn btn-warning" type="button" value="일정등록" /></span>
+						</p>
+					</div>
 				</form>
 			</div>
 			<jsp:include page="/resources/com/inc/aside.jsp" />

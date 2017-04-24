@@ -29,14 +29,19 @@
 				<input type="hidden" id="uss_id" name="uss_id" value="${loginVO.id }" />
 				<input type="hidden" id="now_date" name="now_date" value="${params.now_date }" />
 	 			
-	 			<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
-
+				<h2 class="page-title clearfix">
+					${titleNaviMap.MN_NM }
+					<span class="pull-right site-map">
+						HOME > ${titleNaviMap.NAVI_NM }
+					</span>
+				</h2>
+				<div class="form-container">
 				<div class="board-view">
 					<ul>
 						<li>
 							<dl class="clearfix first-line ">
 								<dt class="col-md-2 col-sm-3">시작일자(시간)</dt>
-								<dd class="col-md-10 col-sm-9">
+								<dd class="col-md-10 col-sm-9 form-group">
 									<div class="form-inline">
 										<input name="cal_st_dt" id="cal_st_dt" type="text" class="form-control table-cell" value="${resultView.CAL_ST_DT}"/>
 										<select name="cal_st_time1" id="cal_st_time1"  class="form-control table-cell">
@@ -60,7 +65,7 @@
 						<li>
 							<dl class="clearfix">
 								<dt class="col-md-2 col-sm-3">종료일자(시간)</dt>
-								<dd class="col-md-10 col-sm-9">
+								<dd class="col-md-10 col-sm-9 form-group">
 									<div class="form-inline">
 										<input name="cal_ed_dt" id="cal_ed_dt" type="text" class="form-control table-cell" value="${resultView.CAL_ED_DT }"  />
 										<select name="cal_ed_time1" id="cal_ed_time1" class="form-control table-cell">
@@ -82,9 +87,9 @@
 							</dl>
 						</li>
 						<li>
-							<dl class="clearfix">
+							<dl class="clearfix ">
 								<dt class="col-md-2 col-sm-3">제목</dt>
-								<dd class="col-md-10 col-sm-9">
+								<dd class="col-md-10 col-sm-9 form-group">
 										<input class="form-control" name="cal_nm" id="cal_nm" type="text" value="${resultView.CAL_NM }" maxlength="50" />
 				        </dd>
 							</dl>
@@ -92,7 +97,7 @@
 						<li>
 							<dl class="clearfix">
 								<dt class="col-md-2 col-sm-3">내용</dt>
-								<dd class="col-md-10 col-sm-9">
+								<dd class="col-md-10 col-sm-9 form-group">
 									<textarea class="form-control" name="cal_content" id="cal_content" maxlength="1200">${resultView.CAL_CONTENT }</textarea>
 								</dd>
 							</dl>
@@ -100,7 +105,7 @@
 						<li>
 							<dl class="clearfix">
 								<dt class="col-md-2 col-sm-3">첨부파일</dt>
-								<dd class="col-md-10 col-sm-9">
+								<dd class="col-md-10 col-sm-9 form-group">
 									<div  class="form-inline">
 										<c:forEach var="file" items="${fileList }" varStatus="status">
 										<div id="file_${file.FILE_SEQ }" class="form-group">
@@ -124,13 +129,14 @@
 						</li>
 					</ul>
 			</div>
-		</form>
 			<p class="clearfix" >
 				<span class="pull-right">
 					<a href="#submit" class="btn-ok btn btn-warning" ><span>저장</span></a>
 					<a href="#cancel" class="btn-cancel btn btn-default" ><span>취소</span></a>
 				</span>
 			</p>
+			</div>
+		</form>
 <!-- Content Start -->
 </div>
 <jsp:include page="/resources/com/inc/aside.jsp" />

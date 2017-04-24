@@ -30,24 +30,27 @@
 					<input type="hidden" id="view_type" name="view_type" value="${params.view_type }" />
 					<input type="hidden" id="flag" name="flag" value="${params.flag }" />
 					<input type="hidden" id="now_date" name="now_date" value="${params.now_date }" />
-					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+					<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
+					<div class="form-container">
 						<div class="board-view">
-							<ul>
+							<ul class="payment-form">
 								<li>
 									<dl class="clearfix">
 										<dt class="col-md-2 col-sm-3">시작일자(시간)</dt>
 										<dd class="col-md-10 col-sm-9">
 											<div class="form-inline">
-													<input type="text" class="form-control table-cell" value="${resultView.CAL_ST_DT }" readonly/>
+													${resultView.CAL_ST_DT }
 													(
 														<c:if test="${not empty resultView.CAL_ST_TIME }">
-																<select class="form-control table-cell" disabled="disabled">
-																	<option selected="selected">${resultView.CAL_ST_TIME_FRI }</option>
-																</select>
+																
+																	${resultView.CAL_ST_TIME_FRI }
 																시 
-																<select class="form-control table-cell" disabled="disabled">
-																	<option selected="selected">${resultView.CAL_ST_TIME_SEC }</option>
-																</select>
+																${resultView.CAL_ST_TIME_SEC }
 																	분
 														</c:if>
 													)
@@ -60,16 +63,12 @@
 										<dt class="col-md-2 col-sm-3">종료일자(시간)</dt>
 										<dd class="col-md-10 col-sm-9">
 											<div class="form-inline">
-												<input type="text" class="form-control table-cell" value="${resultView.CAL_ED_DT }" readonly/>
+												${resultView.CAL_ED_DT }
 												(
 														<c:if test="${not empty resultView.CAL_ED_TIME }">
-																<select class="form-control table-cell" disabled="disabled">
-																	<option selected="selected">${resultView.CAL_ED_TIME_FRI }</option>
-																</select>
+																${resultView.CAL_ED_TIME_FRI }
 																시 
-																<select class="form-control table-cell" disabled="disabled">
-																	<option selected="selected">${resultView.CAL_ED_TIME_SEC }</option>
-																</select>
+																${resultView.CAL_ED_TIME_SEC }
 																	분
 														</c:if>
 													)
@@ -81,7 +80,7 @@
 									<dl class="clearfix">
 										<dt class="col-md-2 col-sm-3">제목</dt>
 										<dd class="col-md-10 col-sm-9">
-											<input class="form-control" type="text" value="${resultView.CAL_NM }" readonly/>
+											${resultView.CAL_NM }
 										</dd>
 									</dl>
 								</li>
@@ -89,7 +88,7 @@
 									<dl class="clearfix">
 										<dt class="col-md-2 col-sm-3">내용</dt>
 										<dd class="col-md-10 col-sm-9">
-											<input class="form-control" value="${resultView.CAL_CONTENT }" type="text" readonly/>
+											${resultView.CAL_CONTENT }
 										</dd>
 									</dl>
 								</li>
@@ -105,6 +104,7 @@
 								</li>
 							</ul>
 						</div>
+					</div>
 				</form>
 				<p class="clearfix" >
 					<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >

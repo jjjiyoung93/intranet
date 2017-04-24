@@ -31,7 +31,6 @@
 		 		<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10">
 					<c:if test="${bbsTabList ne null}">
-						<article>
 							<ul class="tab_gnb">
 								<c:forEach var="list3" items="${bbsTabList}" varStatus="status">
 									<c:if test="${params.bbs_id eq list3.BBS_ID}">
@@ -42,19 +41,16 @@
 									</li> --%>
 								</c:forEach>
 							</ul>
-						</article>
 					</c:if>
 				
 					<!-- 타이틀 및 페이지 네비 -->
-					<h4 class="title">
-						${bbsNm }
-					<span class="pull-right text-muted small">
-						HOME > 게시판 > <strong>${bbsNm }</strong>
+					<h2 class="page-title clearfix">
+						${bbsNm}
+						<span class="pull-right site-map">
+							HOME > 게시판 > <strong>${bbsNm}</strong>
 						</span>
-					</h4>
-					<br/>
-				
-					<div class="board-view">
+					</h2>
+					<div class="form-container">
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
@@ -62,36 +58,40 @@
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="p_seq" name="p_seq" value="${params.p_seq }" />
 							<input type="hidden" name="bbs_seq" id="bbs_seq" value="${resultView.BBS_SEQ }" />
-				
-							<ul>
+							
+							<ul class="form-write">
 								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">제목</dt>
-										<dd class="col-md-10 col-xs-10">
+									<dl class="clearfix form-group form-horizontal">
+										<dt class="col-md-2 col-sm-3 control-label">제목</dt>
+										<dd class="col-md-10 col-sm-9">
 											<input class="form-control" name="title" id="title" type="text" value="${resultView.TITLE }"  />
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">내용</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li>
+									<dl class="clearfix form-group form-horizontal">
+										<dt class="col-md-2 col-sm-3 control-label">내용</dt>
+										<dd class="col-md-10 col-sm-9">
 											<textarea class="form-control" name="content" id="content" rows="10" cols="99" style="width:90%; height:312px;"></textarea>
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-3">첨부파일</dt>
-										<dd class="col-md-10 col-xs-9">
-											<div  class="form-inline">
+								</li>
+								<li>
+									<dl class="clearfix form-horizontal">
+										<dt class="col-md-2 col-sm-3 control-label">첨부파일</dt>
+										<dd class="col-md-10 col-sm-9">
+											<div  class="form-horizontal">
 												<div class="">
 													<c:forEach var="file" items="${fileList }" varStatus="status">
 														<div id="file_${file.FILE_SEQ }">
 															<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-															<input class="btn btn-default" type="button" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" />
+															<input class="btn btn-xs btn-default" type="button" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" />
 														</div>
 													</c:forEach>
 													<div id="my-file" class="form-inline">
 														<div id="div_file">
 															<input class="input-group" name="file" id="file1" type="file" value="" />
-															<input class="btn btn-default"  type="button" value="추가" id="button-add-file"/>
+															<input class="btn btn-xs btn-default"  type="button" value="추가" id="button-add-file"/>
 														</div>
 													</div>
 												</div>
@@ -116,10 +116,12 @@
 								</li>
 							</ul>
 						</form>
-					</div>
-					<div class="pull-right">
+					<div class="clearfix">
+						<span class="pull-right">
 					    <input  class="btn-ok btn btn_info btn btn-warning" type="button" value="저장" />
-					    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
+					    <input class="btn-cancel btn btn-default"  type="button" value="취소" />
+						</span>
+					</div>
 					</div>
 				</div>
 				<!-- aside(공지사항) -->
@@ -181,7 +183,7 @@
 		$('#button-add-file').click(function(){
 			var html = "<div id='file_"+count+"'>";
 			html += "<input class='input-group' type='file' name='file"+count+"' id='file"+count+"' />";
-			html += "&nbsp;<input type='button' value='삭제' class='button-delete-file btn btn-default'/></div>";
+			html += "&nbsp;<input type='button' value='삭제' class='button-delete-file btn btn-default btn-xs'/></div>";
 			count++;
 			$("#my-file").append(html);
 		});

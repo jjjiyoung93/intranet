@@ -21,6 +21,8 @@
 				<div class="col-lg-10">
 					<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/err/err01List.do" >
 						<input type="hidden" id="mode" name="mode" />
+						
+						
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
 						<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}"/>
@@ -29,13 +31,13 @@
 						<input type="hidden" name="process_state" id="process_state" value="" />
 						
 						<!-- 타이틀 및 페이지 네비 -->
-						<h4 class="title">
-							${titleNaviMap.MN_NM }
-							<span class="pull-right text-muted small">
-								HOME > ${titleNaviMap.NAVI_NM }
-							</span>
-						</h4>
-						
+						<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
+					<div class="form-container">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-inline">
@@ -95,6 +97,7 @@
 								</div>
 							</div>
 						</div>
+					</div>
 					</form>
 				</div>
 				<!-- aside(공지사항) -->

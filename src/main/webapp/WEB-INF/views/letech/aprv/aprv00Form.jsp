@@ -29,7 +29,12 @@
 			<div id="page-wrapper">
 				<div class="row">
 					<div class="col-lg-10">
-						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+					<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
@@ -46,125 +51,127 @@
 							<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
 							<!-- 검색 정보 End -->
 						
-						<div class="board-view">
-							<ul>
-								<li>
-									<dl class="clearfix ">
-										<dt class="col-md-2 col-sm-3">보고자</dt>
-										<dd class="col-md-10 col-sm-9">
-										<span class="form-inline">
-											<c:set var="rept_aprv_no" value=""/>
-											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
-											<c:choose>
-												<c:when test="${params.mode eq mode_u }">
-													<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
-													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
-												</c:when>
-												<c:otherwise>
-													<input type="text" class="form-control" value="${loginVO.name }" readonly/>
-													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
-												</c:otherwise>
-											</c:choose>
-											<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
-											</span>
-										</dd>
-									</dl>
-
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">소속</dt>
-										<dd class="col-md-10 col-sm-9"><span class="form-inline"><input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/></span></dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">프로젝트</dt>
-										<dd class="col-md-10 col-sm-9">
-											<div class="form-inline">
-												<select id="proj_cd" name="proj_cd" class="form-control">
-													<option value="">선택</option>
-													<c:forEach var="proj" items="${projList }" varStatus="status">
-													<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
-													</c:forEach>
-												</select>
-											</div>
-										</dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">결제구분</dt>
-										<dd class="col-md-10 col-sm-9">
-											<div class="form-inline">
-												<select id="cdList1" name="cdList1" class="form-control form-group">
-														<option value="" >--1차 구분 선택--</option>
-													<c:forEach var="codeList" items="${codeList}">
-														<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
-													</c:forEach>
-												</select>
-												<select id="cdList2" name="cdList2" class="form-control ">
-														<option value="" >--2차 구분 선택--</option>
-													<c:forEach var="codeList2" items="${codeList2}">
-														<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
-													</c:forEach>
-												</select>
-												<!--  반차여부 -->
-												<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
-											</div>
-										</dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">제목</dt>
-										<dd class="col-md-10 col-sm-9"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">기간</dt>
-										<dd class="col-md-10 col-sm-9">
-											<div class="form-inline">
-												<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
-													~
-												<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
-											</div>
-										</dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">행선지</dt>
-										<dd class="col-md-10 col-sm-9"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">보고내용</dt>
-										<dd class="col-md-10 col-sm-9"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="clearfix">
-										<dt class="col-md-2 col-xs-3">첨부파일</dt>
-										<dd class="col-md-10 col-xs-9">
-											<c:forEach var="file" items="${fileList }" varStatus="status">
-												<div id="file_${file.FILE_NO }">
-													<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-													<input type="button" value="파일삭제" class="btn btn-default" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" />
+						<div class="form-container">
+							<div class="board-write">
+								<ul>
+									<li>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">보고자</dt>
+											<dd class="col-md-10 col-sm-9 form-group">
+											<span class="form-inline">
+												<c:set var="rept_aprv_no" value=""/>
+												<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
+												<c:choose>
+													<c:when test="${params.mode eq mode_u }">
+														<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
+														<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
+													</c:when>
+													<c:otherwise>
+														<input type="text" class="form-control" value="${loginVO.name }" readonly/>
+														<c:set var="rept_aprv_no" value="${loginVO.id }"/>
+													</c:otherwise>
+												</c:choose>
+												<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
+												</span>
+											</dd>
+										</dl>
+	
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">소속</dt>
+											<dd class="col-md-10 col-sm-9 form-group"><span class="form-inline"><input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/></span></dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">프로젝트</dt>
+											<dd class="col-md-10 col-sm-9 form-group">
+												<div class="form-inline">
+													<select id="proj_cd" name="proj_cd" class="form-control">
+														<option value="">선택</option>
+														<c:forEach var="proj" items="${projList }" varStatus="status">
+														<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
+														</c:forEach>
+													</select>
 												</div>
-											</c:forEach>
-											<div  class="form-inline">
-												<div class="">
-													<input type="file" name="file" id="file1" class="input-group">
-													<input type="button" id="button-add-file" class="btn btn-default" value="추가"/>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">결제구분</dt>
+											<dd class="col-md-10 col-sm-9 form-group">
+												<div class="form-inline">
+													<select id="cdList1" name="cdList1" class="form-control form-group">
+															<option value="" >--1차 구분 선택--</option>
+														<c:forEach var="codeList" items="${codeList}">
+															<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
+														</c:forEach>
+													</select>
+													<select id="cdList2" name="cdList2" class="form-control ">
+															<option value="" >--2차 구분 선택--</option>
+														<c:forEach var="codeList2" items="${codeList2}">
+															<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
+														</c:forEach>
+													</select>
+													<!--  반차여부 -->
+													<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
 												</div>
-											</div>
-										</dd>
-									</dl>
-								</li>
-							</ul>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">제목</dt>
+											<dd class="col-md-10 col-sm-9 form-group"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">기간</dt>
+											<dd class="col-md-10 col-sm-9 form-group">
+												<div class="form-inline">
+													<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
+														~
+													<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">행선지</dt>
+											<dd class="col-md-10 col-sm-9 form-group"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-sm-3">보고내용</dt>
+											<dd class="col-md-10 col-sm-9 form-group"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-2 col-xs-3">첨부파일</dt>
+											<dd class="col-md-10 col-xs-9 form-group">
+												<c:forEach var="file" items="${fileList }" varStatus="status">
+													<div id="file_${file.FILE_NO }">
+														<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
+														<input type="button" value="파일삭제" class="btn btn-default" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" />
+													</div>
+												</c:forEach>
+												<div  class="form-inline">
+													<div class="">
+														<input type="file" name="file" id="file1" class="input-group">
+														<input type="button" id="button-add-file" class="btn btn-default" value="추가"/>
+													</div>
+												</div>
+											</dd>
+										</dl>
+									</li>
+								</ul>
+							</div>
 							<div class="clearfix">
 								<dl class="panel panel-default">
 									<dt class="panel-heading">결제라인</dt>
@@ -179,9 +186,9 @@
 										<table id="aprv_line" class="table table-bordered">
 										<thead>
 											<tr role="row">
-												<th>결재담당</th>
-												<th>결재순서</th>
-												<th>결재상태</th>
+												<th>결재자</th>
+												<th>순서</th>
+												<th>상태</th>
 												<th >
 													<span class="">
 														<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
@@ -209,7 +216,7 @@
 																		<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
 																</c:if>
 															</td>
-															<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text input_size50 form-inline"  readonly /></td>
+															<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text form-inline"  readonly /></td>
 															<td><input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" /></td>
 															<td><i class="glyphicon glyphicon-minus-sign"></i>
 																<!-- 반려일경우 결재자 추가 삭제 막음 -->
@@ -251,7 +258,7 @@
 								</dd>
 							</dl>
 						</div>
-						<p class="row">
+						<p class="clearfix">
 							<span class="pull-right">
 								<c:set var="btnVal" value="저장" />
 								<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
@@ -272,13 +279,7 @@
 			</div>
 		</div>
 		<jsp:include page="/resources/com/inc/footer.jsp" />
-		<script>
-			$(document).ready(function() {
-				$('#dataTables-example').DataTable({
-					responsive: true
-				});
-			});
-		</script>
+	</div>
 <form id="ussFrm" name="ussFrm" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00Popup.do" >
 	<input type="hidden" id="not_uss_id" name="not_uss_id" value="" />
 </form>
