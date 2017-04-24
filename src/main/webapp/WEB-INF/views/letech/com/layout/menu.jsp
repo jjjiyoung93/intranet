@@ -114,6 +114,23 @@
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
+			
+			<!-- 사용자 메뉴 추가(모바일에서반 보여질 부분) -->
+			<li>
+				<a class="act_on" class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse99" aria-expanded="false" aria-controls="collapse99">
+					<i class="glyphicon glyphicon-user"></i> 사용자메뉴<span class="pull-right glyphicon glyphicon-menu-left"></span>
+				</a>
+				<ul class="sub panel-collapse collapse"  role="tabpanel" aria-labelledby="collapse99" id="collapse99">
+					<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
+						<li>
+							<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="btn btn_xs btn_classic" role="button">정보수정</a>
+						</li>
+					</sec:authorize>
+					<li>
+						<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="btn btn_xs btn_classic" role="button">로그아웃</a>
+					</li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </div>
