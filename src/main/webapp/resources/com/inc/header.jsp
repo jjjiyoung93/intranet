@@ -106,7 +106,7 @@ if(Sessinfo != null){
 						<ul class="dropdown-menu dropdown-user">
 							<li>
 								<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
-								<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="btn btn_xs btn_classic" role="button">정보수정</a>
+									<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="btn btn_xs btn_classic" role="button">정보수정</a>
 								</sec:authorize>
 								<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="btn btn_xs btn_classic" role="button">로그아웃</a>
 							</li>

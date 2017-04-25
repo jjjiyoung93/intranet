@@ -30,12 +30,15 @@
 					<input type="hidden" id="view_type" name="view_type" value="${params.view_type }" />
 					<input type="hidden" id="flag" name="flag" value="${params.flag }" />
 					<input type="hidden" id="now_date" name="now_date" value="${params.now_date }" />
-					<h2 class="page-title clearfix">
-						${titleNaviMap.MN_NM }
-						<span class="pull-right site-map">
-							HOME > ${titleNaviMap.NAVI_NM }
-						</span>
-					</h2>
+					<!-- 메인화면인이 일정관리화면인지 구분 (1:메인화면) -->
+					<c:if test="${params.flag ne '1' }" >
+						<h2 class="page-title clearfix">
+							${titleNaviMap.MN_NM }
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.NAVI_NM }
+							</span>
+						</h2>
+					</c:if>
 					<div class="form-container">
 						<div class="board-view">
 							<ul class="payment-form">
