@@ -23,12 +23,12 @@
 				<div class="col-lg-10">
 				
 					<!-- 타이틀 및 페이지 네비 -->		
-					<h4 class="title">
-						${titleNaviMap.MN_NM }
-						<span class="pull-right text-muted small">
-							HOME > ${titleNaviMap.NAVI_NM }
-						</span>
-					</h4>
+					<h2 class="page-title clearfix">
+							${titleNaviMap.MN_NM }
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.NAVI_NM }
+							</span>
+						</h2>
 					
 					<%-- <c:if test="${mnList3 ne null}">
 						<article>
@@ -43,90 +43,90 @@
 							</ul>
 				   		</article>
 					</c:if> --%>
-					
-					<!-- 수정본 -->
-					<div class="board-view">
-						<form name="frm1" id="frm1" method="post" action="<%=request.getContextPath()%>/sys/err/err00List.do" >
-							<input type="hidden" id="mode" name="mode" value="${params.mode }"/>
-							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
-							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
-							<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}"/>
-							<input type="hidden" name="cPage" id="cPage" value="" />
-							<input type="hidden" name="error_seq" id="error_seq" value="${resultView.ERROR_SEQ }" />
-							
-							<ul>
-								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">로거</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_LOGGER }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">메소드</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_METHOD }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">레벨</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_LEVEL }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">발생일</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_DATE }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">처리상태</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.PROCESS_STATE_NM }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">메세지</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_MESSAGE }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">내용</dt>
-										<c:choose>
-							            	<c:when test="${params.mode eq 'edit'}">
-							            		<dd class="col-md-10 col-xs-10">
-													<textarea rows="3" cols="50" id="process_content" class="form-control" name="process_content">${resultView.PROCESS_CONTENT }</textarea>
-									            </dd>
-							            	</c:when>
-							            	<c:otherwise>
-							            		<dd class="col-md-10 col-xs-10">
-							            			<pre>${resultView.PROCESS_CONTENT }</pre>
-							            		</dd>
-							            	</c:otherwise>
-							            </c:choose>
-									</dl>
-								</li>
-							</ul>
-						</form>
-					</div>
-					
-					<div class="clearfix">
-						<c:choose>
+					<div class="form-container">
+						<!-- 수정본 -->
+						<div class="board-view">
+							<form name="frm1" id="frm1" method="post" action="<%=request.getContextPath()%>/sys/err/err00List.do" >
+								<input type="hidden" id="mode" name="mode" value="${params.mode }"/>
+								<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
+								<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
+								<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}"/>
+								<input type="hidden" name="cPage" id="cPage" value="" />
+								<input type="hidden" name="error_seq" id="error_seq" value="${resultView.ERROR_SEQ }" />
+								
+								<ul class="payment-form">
+									<li>
+										<dl class="clearfix first-line ">
+											<dt class="col-md-2 col-xs-2">로거</dt>
+											<dd class="col-md-10 col-xs-10">
+												${resultView.ERROR_LOGGER }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">메소드</dt>
+											<dd class="col-md-10 col-xs-10">
+												${resultView.ERROR_METHOD }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">레벨</dt>
+											<dd class="col-md-10 col-xs-10">
+												${resultView.ERROR_LEVEL }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">발생일</dt>
+											<dd class="col-md-10 col-xs-10">
+												${resultView.ERROR_DATE }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">처리상태</dt>
+											<dd class="col-md-10 col-xs-10">
+												${resultView.PROCESS_STATE_NM }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">메세지</dt>
+											<dd class="col-md-10 col-xs-10">
+												${resultView.ERROR_MESSAGE }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">내용</dt>
+											<c:choose>
+								            	<c:when test="${params.mode eq 'edit'}">
+								            		<dd class="col-md-10 col-xs-10">
+														<textarea rows="3" cols="50" id="process_content" class="form-control" name="process_content">${resultView.PROCESS_CONTENT }</textarea>
+										            </dd>
+								            	</c:when>
+								            	<c:otherwise>
+								            		<dd class="col-md-10 col-xs-10">
+								            			<pre>${resultView.PROCESS_CONTENT }</pre>
+								            		</dd>
+								            	</c:otherwise>
+								            </c:choose>
+										</dl>
+									</li>
+								</ul>
+								<p class="clearfix">
+									<c:choose>
 			            	<c:when test="${params.mode eq 'edit'}">
 			            		<input class="btn btn-warning btn-completion" type="button" value="완료" />
-								<input class="btn btn-warning btn-save" type="button" value="저장" />
+											<input class="btn btn-warning btn-save" type="button" value="저장" />
 			            	</c:when>
 			            	<c:otherwise>
 			            		<input class="btn btn-warning btn-process" type="button" value="처리" />
 			            	</c:otherwise>
 			            </c:choose>
-						<div class="pull-right">
-							<input class="btn btn-default btn-list"  type="button" value="목록" />
-						</div>
+									<span class="pull-right">
+										<input class="btn btn-default btn-list"  type="button" value="목록" />
+									</span>
+								</p>
+						</form>
 					</div>
-				</div>
+				</div>					
+			</div>
 				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
 		</div>

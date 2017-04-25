@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
+x<%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
@@ -24,9 +24,14 @@
 				<input type="hidden" id="flag" name="flag" value="" /> 
 
 				<!-- 타이틀 및 페이지 네비 -->
-					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+					<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
 		<!-- page -->
-			
+				<div class="form-container">
 				<p class="clearfix">
 					<span class="pull-right">
 						<a href="#" class="btn btn-warning" onclick="fnInsert();">게시판추가</a>
@@ -118,6 +123,7 @@
 					<a href="#" class="close" title="창닫기"></a>
 			 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 				</div>
+			</div>
 			</div>
 		</form>
 			</div>

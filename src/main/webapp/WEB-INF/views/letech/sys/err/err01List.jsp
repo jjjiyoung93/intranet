@@ -52,19 +52,29 @@
 						
 						<div class="">
 							<table class="table table-bordered">
+								<colgroup>
+									<col width="5%"/>
+									<col width="40%"/>
+									<col width="7%"/>
+									<col width="10%"/>
+									<col width="10%"/>
+									<col width="*"/>
+								</colgroup>
 								<thead>
-									<th class="hidden-xs hidden-sm">번호</th>
-									<th class="">로거</th>
-									<th class="">레벨</th>
-									<th class="">발생일자</th>
-									<th class="hidden-xs hidden-sm">처리일자</th>
-									<th class="">처리자</th>
+									<tr>
+										<th class="hidden-xs hidden-sm">NO</th>
+										<th class="">로거</th>
+										<th class="">레벨</th>
+										<th class="">발생일</th>
+										<th class="hidden-xs hidden-sm">처리일</th>
+										<th class="hidden-xs hidden-sm">처리자</th>
+									</tr>
 								</thead>
 								<tbody>
 									<c:choose>
 										<c:when test="${pageInfo eq null }">
 											<tr>
-												<th colspan="7">
+												<th colspan="6">
 													등록된 에러가 없습니다.
 												</th>
 											</tr>
@@ -72,14 +82,16 @@
 										<c:otherwise>
 											<c:forEach var="highList" items="${pageInfo.highList }" varStatus="status">
 												<tr>
-													<th>${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+													<th class="hidden-xs hidden-sm">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
 													<td>
-														<a href="#" onclick="fnView('${highList.ERROR_SEQ}', '${highList.PROCESS_STATE}');">${highList.ERROR_LOGGER }</a> 
+														<a href="#" onclick="fnView('${highList.ERROR_SEQ}', '${highList.PROCESS_STATE}');">
+															<span class="ellip ellip-line">${highList.ERROR_LOGGER }</span> 
+														</a>
 													</td>
 													<td>${highList.ERROR_LEVEL }</td>
 													<td>${highList.ERROR_DATE }</td>
-													<td>${highList.PROCESS_DATE }</td>
-													<td>${highList.PROCESS_REG_NM }</td>
+													<td class="hidden-xs hidden-sm">${highList.PROCESS_DATE }</td>
+													<td class="hidden-xs hidden-sm">${highList.PROCESS_REG_NM }</td>
 												</tr>
 											</c:forEach>
 										</c:otherwise>
@@ -88,14 +100,8 @@
 							</table>
 						</div>
 						
-						<div class="row">
-							<div class="col-md-12 col-xs-12">
-								<div class="form-inline">
-									<p class="row text-center">
-										<strong>${pageNavigator }</strong>
-									</p>
-								</div>
-							</div>
+						<div class="clearfix">
+							<ul class="pagination">${pageNavigator }</ul>
 						</div>
 					</div>
 					</form>

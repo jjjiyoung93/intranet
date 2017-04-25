@@ -20,15 +20,15 @@
 		</nav>
 		
     	<div id="page-wrapper">
-			<section class="clearfix">
+			<section class="row">
 				<div class="col-lg-10">
 					<!-- 타이틀 및 페이지 네비 -->		
-					<h4 class="title">
+					<h2 class="page-title clearfix">
 						${titleNaviMap.MN_NM }
-						<span class="pull-right text-muted small">
+						<span class="pull-right site-map">
 							HOME > ${titleNaviMap.NAVI_NM }
 						</span>
-					</h4>
+					</h2>
 						
 					<%-- <c:if test="${mnList3 ne null}">
 						<article>
@@ -43,7 +43,7 @@
 							</ul>
 				   		</article>
 					</c:if> --%>
-					<div class="board-view">
+					
 						<form name="frm1" id="frm1" method="post" action="<%=request.getContextPath()%>/sys/err/err01List.do" >
 							<input type="hidden" id="mode" name="mode" value="${params.mode }"/>
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -51,77 +51,81 @@
 							<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}"/>
 							<input type="hidden" name="cPage" id="cPage" value="" />
 							<input type="hidden" name="error_seq" id="error_seq" value="${resultView.ERROR_SEQ }" />
-							
-							<ul>
-								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">로거</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_LOGGER }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">메소드</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_METHOD }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">스레드</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_THREAD }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">레벨</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_LEVEL }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">발생일</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_DATE }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">처리일</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.PROCESS_DATE }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">처리자</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.PROCESS_REG_NM }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">발생위치</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_LOCATION }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">메세지</dt>
-										<dd class="col-md-10 col-xs-10">
-											${resultView.ERROR_MESSAGE }
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">내용</dt>
-										<dd class="col-md-10 col-xs-10">
-											<pre>${resultView.PROCESS_CONTENT }</pre>
-										</dd>
-									</dl>
-								</li>
-							</ul>
+							<div class="form-container">
+							<div class="border-view">
+								<ul class="payment-form">
+									<li>
+										<dl class="clearfix first-line ">
+											<dt class="col-md-2 col-sm-3">로거</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_LOGGER }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">메소드</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_METHOD }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">스레드</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_THREAD }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">레벨</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_LEVEL }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">발생일</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_DATE }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">처리일</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.PROCESS_DATE }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">처리자</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.PROCESS_REG_NM }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">발생위치</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_LOCATION }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">메세지</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.ERROR_MESSAGE }
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">내용</dt>
+											<dd class="col-md-10 col-sm-9">
+												<pre>${resultView.PROCESS_CONTENT }</pre>
+											</dd>
+										</dl>
+									</li>
+								</ul>
+									<p class="clearfix">
+					  			  <span class="pull-right"><input class="btn btn-default btn-list"  type="button" value="목록" /></span>
+									</p>
+							</div>
+							</div>
 						</form>
-					</div>
+					
 
-					<div class="pull-right">
-					    <input class="btn btn_default btn-list"  type="button" value="목록" />
-					</div>
+				
 				</div>
 				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
