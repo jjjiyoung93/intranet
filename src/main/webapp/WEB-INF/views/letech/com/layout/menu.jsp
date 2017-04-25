@@ -135,7 +135,7 @@
 	</div>
 </div>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
-<script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
+<%-- <script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script> --%>
 <!-- <script>
 $(function(){
 
