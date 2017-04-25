@@ -37,9 +37,9 @@
 						<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />
 					
 						<!-- 타이틀 및 페이지 네비 -->
-						<h4 class="title">
+						<h4 class="page-title clearfix">
 							${params.bbs_nm}
-							<span class="pull-right text-muted small">
+							<span class="pull-right site-map">
 								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
 							</span>
 						</h4>
@@ -58,7 +58,7 @@
 								</ul>
 					   		</article>
 						</c:if>
-				
+						<div class="form-container">
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="form-inline">
@@ -71,7 +71,7 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="form-inline pull-right">
-									<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
+									<select class="form-control table-cell" name="searchGubun" id="searchGubun" class="" title="search" >
 										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
 										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
 									</select>
@@ -85,46 +85,42 @@
 								</div>
 							</div>
 						</div>
-						<br/>
-						<div class="gallery_bd">
-							<c:choose>
-								<c:when test="${fn:length(resultList) < 1 }">
-									<ul class="none_result">
-										<li>검색된 내용이 없습니다.</li>
-									</ul>
-								</c:when>
-								<c:otherwise>
-									<ul class="row">
-										<c:forEach var="list" items="${resultList}" varStatus="status">
-											<li>
-												<a href="#" onclick="fnView('${list.BBS_SEQ}');">
-													<dl>
-														<dt><img src="${pageContext.request.contextPath}/cmm/FileDown.do?file_path=${list.FILE_PATH }&file_stre_nm=${list.FILE_STRE_NM }&file_nm=${list.FILE_STRE_NM }.${list.FILE_EXT}" alt="${list.FILE_NM }"  /></dt>
-														<dd>${list.TITLE }</dd>
-														<dd class="img_content">${list.CONTENT }</dd>
-														<dd class="img_dt">${list.REG_DT }</dd>
-													</dl>
-												</a>
-											</li>
-										</c:forEach>
-									</ul>
-								</c:otherwise>
-							</c:choose>
+						<div class="table-responsive">
+							<div class="gallery_bd">
+								<c:choose>
+									<c:when test="${fn:length(resultList) < 1 }">
+										<ul class="none_result">
+											<li>검색된 내용이 없습니다.</li>
+										</ul>
+									</c:when>
+									<c:otherwise>
+										<ul class="row">
+											<c:forEach var="list" items="${resultList}" varStatus="status">
+												<li>
+													<a href="#" onclick="fnView('${list.BBS_SEQ}');">
+														<dl>
+															<dt><img src="${pageContext.request.contextPath}/cmm/FileDown.do?file_path=${list.FILE_PATH }&file_stre_nm=${list.FILE_STRE_NM }&file_nm=${list.FILE_STRE_NM }.${list.FILE_EXT}" alt="${list.FILE_NM }"  /></dt>
+															<dd>${list.TITLE }</dd>
+															<dd class="img_content">${list.CONTENT }</dd>
+															<dd class="img_dt">${list.REG_DT }</dd>
+														</dl>
+													</a>
+												</li>
+											</c:forEach>
+										</ul>
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
-						<br/>
-						<div class="row">
-							<div class="col-md-11 col-xs-10">
-								<div class="form-inline">
-									<p class="row text-center">
-										<strong>${pageNavigator }</strong>
-									</p>
-								</div>
-							</div>
-							<div class="col-md-1 col-xs-2">
-								<div class="form-inline pull-right">
-									<input type="button" class="fnJoin btn btn-warning" value="등록"/>
-								</div>
-							</div>
+						
+						<div class="clearfix">
+							<ul class="pagination">
+								${pageNavigator }
+							</ul>
+							<span class="form-inline pull-right">
+								<input type="button" class="fnJoin btn btn-warning" value="등록"/>
+							</span>
+						</div>
 						</div>			 
 					</form>
 				</div>

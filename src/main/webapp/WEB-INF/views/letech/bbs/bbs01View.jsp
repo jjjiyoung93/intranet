@@ -22,9 +22,9 @@
 		
 		<!-- 컨텐츠-->
 		<div class="" id="page-wrapper">
-			<section class="row">
+			<section class="clearfix">
 			<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
-				<div class="col-lg-10">
+				<div class="col-lg-10 conts-container un-style">
 					<c:if test="${bbsTabList ne null}">
 						<article>
 							<ul class="tab_gnb">
@@ -41,14 +41,14 @@
 					</c:if>
 					
 					<!-- 타이틀 및 페이지 네비 -->
-					<h4 class="title">
+					<h4 class="page-title clearfix">
 						${bbsNm }
-						<span class="pull-right text-muted small">
+						<span class="pull-right site-map">
 							HOME > 게시판 > <strong>${bbsNm }</strong>
 						</span>
 					</h4>
 					
-					<div class="board-view">
+					<div class="form-container">
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
@@ -57,35 +57,28 @@
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="p_seq" name="p_seq" value="" />
 							
-							<ul>
+							<h4 class="board_title">
+								${resultView.TITLE }
+								<span class="pull-right site-map">
+									${resultView.REG_DT }
+								</span>
+							</h4>
+							
+							<ul class="form-view">
 								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">제목</dt>
-										<dd class="col-md-10 col-xs-10">${resultView.TITLE }</dd>
-									</dl>
+									<label>등록자:</label>
+									<span>${resultView.REG_NM }</span>
+
+									<label>조회수</label>
+									<span>${resultView.HIT }</span>
 								</li>
 								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-2">등록자</dt>
-										<dd class="col-md-2 col-xs-2">${resultView.REG_NM }</dd>
-										<dt class="col-md-2 col-xs-2">등록일</dt>
-										<dd class="col-md-2 col-xs-2">${resultView.REG_DT }</dd>
-										<dt class="col-md-2 col-xs-2">조회수</dt>
-										<dd class="col-md-2 col-xs-2">${resultView.HIT }</dd>
-									</dl>
-								</li>
-								<li>
-									<dl class="row">
-										<dt class="col-md-2 col-xs-2">내용</dt>
-										<dd class="col-md-10 col-xs-10">
-											<c:forEach var="file" items="${fileList }" varStatus="status">
-												<div id="file_${file.FILE_NO }">
-													<img src="${pageContext.request.contextPath}/cmm/FileDown.do?file_path=${file.FILE_PATH }&file_stre_nm=${file.FILE_STRE_NM }&file_nm=${file.FILE_STRE_NM }.${file.FILE_EXT}" alt="${file.FILE_NM }" style="max-width: 100%; height: auto;" />
-												</div>
-											</c:forEach>
-											<p>${resultView.CONTENT }</p>
-										</dd>
-									</dl>
+									<c:forEach var="file" items="${fileList }" varStatus="status">
+										<div id="file_${file.FILE_NO }">
+											<img src="${pageContext.request.contextPath}/cmm/FileDown.do?file_path=${file.FILE_PATH }&file_stre_nm=${file.FILE_STRE_NM }&file_nm=${file.FILE_STRE_NM }.${file.FILE_EXT}" alt="${file.FILE_NM }" style="max-width: 100%; height: auto;" />
+										</div>
+									</c:forEach>
+									<p>${resultView.CONTENT }</p>
 								</li>
 							</ul>
 						</form>

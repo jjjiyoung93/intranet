@@ -30,15 +30,15 @@
 		 	<section class="clearfix">
 				<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10 conts-container un-style">
-						<c:if test="${bbsTabList ne null}">
-								<ul class="tab_gnb" style="display:none;">
-									<c:forEach var="list3" items="${bbsTabList}" varStatus="status">
-										<c:if test="${params.bbs_id eq list3.BBS_ID}">
-											<c:set var="bbsNm" value="${list3.BBS_NM}" />
-										</c:if>
-									</c:forEach>
-								</ul>
-						</c:if>
+					<c:if test="${bbsTabList ne null}">
+							<ul class="tab_gnb" style="display:none;">
+								<c:forEach var="list3" items="${bbsTabList}" varStatus="status">
+									<c:if test="${params.bbs_id eq list3.BBS_ID}">
+										<c:set var="bbsNm" value="${list3.BBS_NM}" />
+									</c:if>
+								</c:forEach>
+							</ul>
+					</c:if>
 					<!-- 타이틀 및 페이지 네비 -->
 					<h2 class="page-title clearfix">
 						${bbsNm }

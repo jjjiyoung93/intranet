@@ -39,13 +39,12 @@
 										
 						<!-- 타이틀 및 페이지 네비 -->
 						<h2 class="page-title clearfix">
-						${params.bbs_nm}
-						<span class="pull-right site-map">
-							HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
-						</span>
-					</h2>
-<%-- 						<!--tab -->
-						<!-- 탭부분 제거 예정 -->
+							${params.bbs_nm}
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
+							</span>
+						</h2>
+
 						<c:if test="${bbsTabList ne null}">
 							<article>
 								<ul class="tab_gnb">
@@ -53,13 +52,13 @@
 										<c:if test="${params.bbs_id eq list3.BBS_ID}">
 											<c:set var="bbsNm" value="${list3.BBS_NM}" />
 										</c:if>
-										<li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
+										<%-- <li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
 											<a href="#" onclick="fnTabMove('bbs/bbs00List.do','${list3.BBS_ID}')">${list3.BBS_NM}</a>
-										</li>
+										</li> --%>
 									</c:forEach>
 								</ul>
 					   		</article>
-						</c:if> --%>
+						</c:if>
 						<div class="form-container">
 						<div class="row">
 							<div class="col-lg-6">
@@ -77,10 +76,12 @@
 										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
 										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
 									</select>
+									<div class="input-group">
 										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
 										<span class="">
 											<button class="fnSearch btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i> 검색</button>
 										</span>
+									</div>
 								</div>
 							</div>
 						</div>

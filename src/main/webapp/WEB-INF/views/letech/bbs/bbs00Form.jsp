@@ -116,12 +116,12 @@
 								</li>
 							</ul>
 						</form>
-					<div class="clearfix">
-						<span class="pull-right">
-					    <input  class="btn-ok btn btn_info btn btn-warning" type="button" value="저장" />
-					    <input class="btn-cancel btn btn-default"  type="button" value="취소" />
-						</span>
-					</div>
+						<div class="clearfix">
+							<span class="pull-right">
+							    <input  class="btn-ok btn btn_info btn btn-warning" type="button" value="저장" />
+							    <input class="btn-cancel btn btn-default"  type="button" value="취소" />
+							</span>
+						</div>
 					</div>
 				</div>
 				<!-- aside(공지사항) -->
