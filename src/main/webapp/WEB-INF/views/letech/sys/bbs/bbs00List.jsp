@@ -112,13 +112,13 @@
 					</c:choose>
 				</tbody>
 			</table>
+			<!-- page nav -->
+		</div>
 			<p class="clearfix">
 					<span class="pull-right">
 						<a href="#" class="btn btn-warning" onclick="fnInsert();">게시판추가</a>
 					</span>
 				</p>
-			<!-- page nav -->
-		</div>
 			<div class="pop_bg">
 				<div class="popup" style="height:1px;">
 					<a href="#" class="close" title="창닫기"></a>

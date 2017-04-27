@@ -60,31 +60,17 @@
 					   		</article>
 						</c:if>
 						<div class="form-container">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="form-inline">
-									<div class="form-group">
-										<div class="input-group">
-											<strong class="list_count" >Total : ${totalCnt} 건</strong>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-inline pull-right">
-									<select class="form-control table-cell" name="searchGubun" id="searchGubun" class="" title="search" >
-										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
-										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
-									</select>
-									<div class="input-group">
-										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
-										<span class="">
+							<div class="clearfix">
+										<strong class="list_count" >Total : ${totalCnt} 건</strong>
+										<span class="pull-right form-inline">
+											<select class="form-control table-cell" name="searchGubun" id="searchGubun" class="" title="search" >
+												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
+												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
+											</select>
+											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
 											<button class="fnSearch btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i> 검색</button>
-										</span>
-									</div>
-								</div>
+									</span>
 							</div>
-						</div>
 						<div class="table-responsive">
 							<table class="table table-bordered">
 								<thead>
@@ -124,7 +110,7 @@
 							</table>
 						</div>
 						
-						<div class="clearfix">
+						<p class="clearfix">
 							<ul class="pagination">
 										${pageNavigator }
 							</ul>
@@ -132,7 +118,7 @@
 											<input type="button" class="fnJoin btn btn-warning" value="등록"/>
 										</span>
 							
-						</div>
+						</p>
 						</div>
 					</form>
 				</div>
