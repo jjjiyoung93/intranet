@@ -12,7 +12,7 @@
 				<c:choose>
 					<c:when test="${empty list.AUTHOR_CODE }">
 						<li>
-							<a <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse${status.index}" aria-expanded="false" aria-controls="collapse${status.index}">
+							<a class="<c:if test="${params.menu_id1 eq list.MN}">act_on </c:if>collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse${status.index}" aria-expanded="false" aria-controls="collapse${status.index}">
 							<!-- 사용자 1depth 메뉴 -->
 								<i class="glyphicon glyphicon-cog"></i> ${list.MN_NM}<span class="pull-right glyphicon glyphicon-menu-left"></span>
 							</a>
@@ -59,7 +59,7 @@
 					<c:otherwise>
 						<sec:authorize access="hasAnyRole('${list.AUTHOR_CODE}')">
 							<li>
-								<a <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> data-toggle="collapse" data-parent="#selector" href="#collapse${status.index}" aria-expanded="true" aria-controls="collapse${status.index}">
+								<a class="<c:if test="${params.menu_id1 eq list.MN}">act_on </c:if>collapsed " data-toggle="collapse" data-parent="#selector" href="#collapse${status.index}" aria-expanded="false" aria-controls="collapse${status.index}">
 								<!-- 관리자 1depth 메뉴 -->
 								<i class="glyphicon glyphicon-cog"></i> ${list.MN_NM}<span class="pull-right glyphicon glyphicon-menu-left"></span>
 								</a>
@@ -72,7 +72,7 @@
 													<c:if test="${list2.MN_TYPE eq 'CD0003001'}">
 													
 														<!-- 하위메뉴 추가 김중원 START -->
-														<a href="#" <c:if test="${params.menu_id1 eq list.MN}">class="act_on" </c:if> >
+														<a href="#" class="<c:if test="${params.menu_id1 eq list.MN}">act_on </c:if>" >
 															${list2.MN_NM}
 														</a>
 														<c:if test="${mnList3 ne null}">
@@ -82,7 +82,7 @@
 																		<li>
 																			<!-- 하위 메뉴가 있는지 판단 -->
 																			<c:if test="${list3.MN_TYPE eq 'CD0003001'}">
-																				<a href="#" <c:if test="${params.menu_id2 eq list.MN}">class="act_on" </c:if> >
+																				<a href="#" class="<c:if test="${params.menu_id2 eq list.MN}">act_on</c:if>" >
 																					${list3.MN_NM}
 																				</a>
 																				<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >&#45; ${list3.MN_NM}</a>
@@ -117,7 +117,7 @@
 			
 			<!-- 사용자 메뉴 추가(모바일에서반 보여질 부분) -->
 			<li>
-				<a class="act_on" class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse99" aria-expanded="false" aria-controls="collapse99">
+				<a class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse99" aria-expanded="false" aria-controls="collapse99">
 					<i class="glyphicon glyphicon-user"></i> 사용자메뉴<span class="pull-right glyphicon glyphicon-menu-left"></span>
 				</a>
 				<ul class="sub panel-collapse collapse"  role="tabpanel" aria-labelledby="collapse99" id="collapse99">
@@ -136,6 +136,23 @@
 </div>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
 <script src='${pageContext.request.contextPath}/resources/js/bootstrap.min.js'></script>
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		$(".collapsed").click(function() {
+			if($(this).attr("aria-expanded") == 'true'){
+				$(this).find("span").removeClass("glyphicon-menu-down");
+				$(this).find("span").addClass("glyphicon-menu-left");
+			}else{
+				$(this).find("span").removeClass("glyphicon-menu-left");
+				$(this).find("span").addClass("glyphicon-menu-down");
+			}
+		});
+		
+		
+	});
+//-->
+</script>
 <!-- <script>
 $(function(){
 
