@@ -37,7 +37,7 @@ if(Sessinfo != null){
 					<li>
 						<a data-toggle="collapse" data-parent="#accordion" href="#alarmOne" aria-expanded="false">
 							<i class="glyphicon glyphicon-bell"></i>
-							<span class="text-muted small">(<font id="aside_aprvTotCnt"></font>)</span>
+							<span class="badge active"><font id="aside_aprvTotCnt"></font></span>
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 
 						</a>
 						<ul id="alarmOne" class="panel navber-right dropdown-menu collapse">
@@ -99,7 +99,7 @@ if(Sessinfo != null){
 								<span class="text-muted small">(${loginVO.name })</span>
 							</sec:authorize>
 							<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-								<span class="text-muted small">(관리자)</span>
+								<span class="text-muted small top-rol">(관리자)</span>
 							</sec:authorize>
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 
 						</a>
