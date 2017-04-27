@@ -20,6 +20,7 @@ caption{display:none;}
 h6{font-size:16px;font-weight:bold;}
 .badge{background:#fd8a78;}
 .top-rol{color:#fd8a78;}
+table thead tr th{text-align:center;}
 
 /*top*/
 h1.logo a.navbar-brand{padding:5px 15px;}
@@ -168,12 +169,15 @@ body.pop .pop-btn{margin:0;padding-top:15px;border-top:1px solid #ddd;}
 
 @media(max-width:767px){
 	.navbar-top-links{position:absolute;display:inline-block;top:0px;right:60px;}
+	.site-map{display:none;}
+	.page-title{font-weight:bold;padding:15px 0;font-size:1.5em;}
 	.login-cont{height:auto;border-radius:0;background:none;}
 	.login-cont .login-back{height:auto;border-radius:0;}
 	.login-logo{padding:0;}
 	.login-intra{display:none;}
 	.login-back p{display:none;}
 }
+
 
 
 @media(min-height:720px){
@@ -186,4 +190,7 @@ body.pop .pop-btn{margin:0;padding-top:15px;border-top:1px solid #ddd;}
 
 @media(min-height:1080px){
 	#page-wrapper{min-height:980px;}
+}
+@media(max-height:719px){
+	#page-wrapper{min-height:500px;}
 }

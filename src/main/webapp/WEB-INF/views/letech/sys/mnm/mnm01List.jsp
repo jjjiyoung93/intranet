@@ -37,10 +37,10 @@
 					<div class="form-container">
 					<div class="row">
 						<div class="col-md-5">
-						<div class=" panel panel-warning">
+						<div class=" panel panel-default">
 								<h3 class="panel-title panel-heading clearfix">메뉴구조
 								<span class="page_navi pull-right">
-									<a href="#" class="btn btn-xs btn-warning" onclick="fnInsert('1');">메뉴추가</a>
+									<a href="#" class="btn btn-xs btn-info" onclick="fnInsert('1');">메뉴추가</a>
 								</span>
 							</h3>
 							<div class="panel-body">
@@ -115,7 +115,7 @@
 	</div>
 	</div>
 						<div class="col-md-7 tree_menu_box">
-							<div class="panel panel-warning">
+							<div class="panel panel-default">
 							<h3 class="panel-heading panel-title clearfix" id="tree_titme_form">메뉴 추가</h3>
 									<div class="tree_w panel-body">
 										<div class="form_group">
@@ -147,8 +147,8 @@
 										</div>
 										<p class="clearfix">
 											<span class="pull-right">
-												<a href="#submit" class="btn_ok btn btn-warning" ><span>저장</span></a>
 												<a href="#delete" class="btn_del btn btn-default" ><span>삭제</span></a>
+												<a href="#submit" class="btn_ok btn btn-warning" ><span>저장</span></a>
 			<!-- 								<a href="#cancel" class="btn btn_default"><span>닫기</span></a> -->
 											</span>
 										</p>
@@ -162,7 +162,7 @@
 			</div>
 		</form>
 	<div class="pop_bg">
-		<div class="popup">
+		<div class="popup" style="height:1px;">
 			<a href="#" class="close" title="창닫기"></a>
 	 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 		</div>
@@ -192,7 +192,7 @@ function fnFrom(mn){
 			$("#mn_href").val(result.getCodeView.MN_HREF);
 			$("#mode").val("<%=VarConsts.MODE_U%>");
 			$("#tree_titme_form").text(result.getCodeView.MN_NM+" 메뉴 수정 ");
-			$("#tree_titme_form").append("<span class=\"page_navi pull-right\" ><a href=\"#\" class=\"btn btn-xs btn-warning\"  onclick=\"fnInsert('2');\">하위 메뉴추가</a></span>");
+			$("#tree_titme_form").append("<span class=\"page_navi pull-right\" ><a href=\"#\" class=\"btn btn-xs btn-info\"  onclick=\"fnInsert('2');\">하위 메뉴추가</a></span>");
 		},error: function (request, status, error) {
 			alert(request.responseText);
 		} 

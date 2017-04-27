@@ -40,7 +40,7 @@
 					<div class="form-container">
 						<div id='calendar'></div>
 						<!-- 달력 end -->
-						<p class="Clearfix">
+						<p class="clearfix">
 							<span class="pull-right"><input class="fnJoin btn btn-warning" type="button" value="일정등록" /></span>
 						</p>
 					</div>

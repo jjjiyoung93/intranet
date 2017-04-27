@@ -9,11 +9,12 @@
 </head>
 
 
-<body>
+<body class="pop">
+	<div class="container">
  	 <form class="pp_form" id="form2" name="form2" method="post" action="bbs00tran.do" onsubmit="return false;">
- 	 <h2 class="page-title">게시판 추가/ 수정</h2>
+ 	 <h1 class="">게시판 추가/ 수정</h1>
+ 	 	<div class="pop-contents">
  	 <fieldset>
- 	 	<div class="form-container">
  	 		<input type="hidden" id="mode" name="mode" />
 			<input type="hidden" id="flag" name="flag" value="${params.flag }" />
 			<input type="hidden" id="bbs_id" name="bbs_id" value="${params.bbs_id }" />
@@ -39,17 +40,15 @@
 							</c:forEach>
 						</select>
 					</li>
-					<li class="form-group ">
-						<span class=" form-inline">
+					<li class="form-group row">
+						<span class=" col-xs-6">
 							<label class="" for="sec_yn">비밀글여부</label>
 				      <select  class="form-control " id="sec_yn" name="sec_yn">
 								<option value="Y" <c:if test="${getView.SEC_YN eq 'Y'}" >selected="selected"</c:if> >Y</option>
 								<option value="N" <c:if test="${getView.SEC_YN eq 'N'}" >selected="selected"</c:if> >N</option>
 						  </select>
 					  </span>
-					  </li>
-					  <li class="form-group">
-					  <span class=" form-inline">
+					  <span class=" col-xs-6">
 					  <label class="" for="rep_yn" >답글여부</label>
 				      <select  class="form-control"  id="rep_yn" name="rep_yn">
 								<option value="Y" <c:if test="${getView.REP_YN eq 'Y'}" >selected="selected"</c:if> >Y</option>
@@ -57,18 +56,21 @@
 					 		</select>
 					  </span>
 					</li>
-					<li>
-						
-					 		<label  class=" col_md_3" for="coment_yn" >댓글여부</label>
-							<select  class=" col_md_3" id="coment_yn" name="coment_yn">
+					<li class="form-group row">
+						<span class="col-xs-6">
+					 		<label  class="" for="coment_yn" >댓글여부</label>
+							<select  class="form-control" id="coment_yn" name="coment_yn">
 								<option value="Y" <c:if test="${getView.COMENT_YN eq 'Y'}" >selected="selected"</c:if> >Y</option>
 								<option value="N" <c:if test="${getView.COMENT_YN eq 'N'}" >selected="selected"</c:if> >N</option>
 							</select>
-							<label  class=" col_md_3" for="notice_yn" >공지여부</label>
-					      <select  class=" col_md_3" id="notice_yn" name="notice_yn">
+						</span>
+						<span class="col-xs-6">
+							<label  class="" for="notice_yn" >공지여부</label>
+					      <select  class="form-control" id="notice_yn" name="notice_yn">
 								<option value="Y" <c:if test="${getView.NOTICE_YN eq 'Y'}" >selected="selected"</c:if> >Y</option>
 								<option value="N" <c:if test="${getView.NOTICE_YN eq 'N'}" >selected="selected"</c:if> >N</option>
 						  </select>
+						</span>
 					</li>
 						
 					<li>
@@ -78,15 +80,15 @@
 		     </ul>
 				<p class="clearfix">
 					<span class="pull-right">
-           <a href="#submit" class="btn btn-warning" onclick="fnSubmit('${params.flag}');"><span>저장</span></a>
            <a href="#cancel" class="btn btn-default" onclick="window.self.close();"><span>닫기</span></a>
+           <a href="#submit" class="btn btn-info" onclick="fnSubmit('${params.flag}');"><span>저장</span></a>
       		</span>
       	</p>
-       </div>
 			
 		    </fieldset>
+			</div>
 		  </form>
-
+			</div>
        
        
        
