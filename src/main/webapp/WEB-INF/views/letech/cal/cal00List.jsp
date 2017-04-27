@@ -124,7 +124,7 @@ $(document).ready(function() {
 		                        dateEnd: array[i].endDate,
 		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
 		                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
-		                        color: '#257e4a'
+		                        color: '#f0ad4e'
 		                    });
 	                	}else{
 	                		events.push({
