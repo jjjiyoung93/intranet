@@ -7,14 +7,14 @@
 	<title>Letech Intranet</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <body class="pop">
-				
+	<div class="container">
  	 <form class="pp_form" id="form2" name="form2" method="post" action="rol00tran.do" onsubmit="return false;" >
 			<input type="hidden" id="mn" name="mn" value="${params.mn}" />
 			<input type="hidden" id="mode" name="mode" />
 			<input type="hidden" id="role_code" name="role_code" value="${getView.ROLE_CODE}" />
 			<input type="hidden" id="flag" name="flag" value="${params.flag }" />
 		    <fieldset>
-		    	<h2 class="sub_title">패턴추가</h2>
+		    	<h1 class="">패턴추가</h1>
 		    	<div class="col_md_12">
 			     	<label class="col_md_3" for="role_nm" >권한패턴명</label>
 			     	<input class="col_md_9" type="text" name="role_nm" id="role_nm" value="${getView.ROLE_NM}" class="input input-small" >
@@ -44,11 +44,9 @@
 		      <!-- Allow form submission with keyboard without duplicating the dialog button -->
 		      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
 		    </fieldset>
+		    
 		  </form>
-     <br/>
-
-       
-       
+		  </div>
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
 

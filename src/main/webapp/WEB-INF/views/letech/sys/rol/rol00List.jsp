@@ -15,7 +15,7 @@
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>
 		<div id="page-wrapper">
-			<section class="contents">
+			<section class="row">
 			<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/rol/rol00List.do" >
 				<input type="hidden" id="mode" name="mode" />
 				<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -25,8 +25,15 @@
 				<input type="hidden" id="author_code" name="author_code" value=""  /> 
 				<input type="hidden" id="flag" name="flag" value="" /> 
 				<div class="col-lg-10">
-						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
-			<p class="clearfix">
+				<h2 class="page-title clearfix">
+							${titleNaviMap.MN_NM }
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.NAVI_NM }
+							</span>
+						</h2>
+						
+			<div class="form-container">						
+						<p class="clearfix">
 					<span class="pull-right">
 						<a href="#" class="btn btn-warning" onclick="fnInsert();">패턴추가</a>
 					</span>
@@ -40,20 +47,20 @@
 					<col width="10%"  />
 					<col width="10%"  />
 					<col width="20%"  />
-					<col width="30%"  />
-					<col width="5%"  />
-					<col width="5%"  />
+					<col width="*"  />
+					<col width="7%"  />
+					<col width="7%"  />
 					<col width="10%"  />
 					<col width="10%"  />
 				</colgroup>
 				<thead>
 					<tr>
-						<th>메뉴권한코드</th>
-						<th>메뉴권한명</th>
+						<th>권한코드</th>
+						<th>권한명</th>
 						<th>접속패턴</th>
-						<th>메뉴권한설명</th>
+						<th>권한설명</th>
 						<th>타입</th>
-						<th>접근순서</th>
+						<th>순서</th>
 						<th>생성일</th>
 						<th>수정</th>
 					</tr>
@@ -62,9 +69,9 @@
 					<c:choose>
 						<c:when test="${highList eq null }">
 							<tr>
-								<th colspan="8">
+								<td colspan="8" class="text-center">
 									등록된 롤이 없습니다.
-								</th>
+								</td>
 							</tr>
 						</c:when>
 						<c:otherwise>
@@ -137,9 +144,9 @@
 					<c:choose>
 						<c:when test="${resultList eq null }">
 							<tr>
-								<th colspan="4">
+								<td colspan="4" class="text-center">
 									등록된 롤이 없습니다.
-								</th>
+								</td>
 							</tr>
 						</c:when>
 						<c:otherwise>
@@ -170,10 +177,11 @@
 
 	
 	<div class="pop_bg">
-		<div class="popup">
+		<div class="popup"style="height:1px;">
 			<a href="#" class="close" title="창닫기"></a>
 	 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 		</div>
+	</div>
 	</div>
 	</div>
 </form>

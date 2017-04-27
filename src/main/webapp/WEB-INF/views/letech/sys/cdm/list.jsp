@@ -29,7 +29,13 @@
 						<input type="hidden" name="up_cd2" id="up_cd2" value=""  /> 
 						<input type="hidden" name="up_cd3" id="up_cd3" value=""  /> 
 						<!-- 타이틀 및 페이지 네비 -->
-						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+						<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
+					<div class="form-container">
 						<!-- page -->
 						<p class="clearfix">
 							<span class="pull-right">
@@ -92,7 +98,8 @@
 																<td class="list_tow" onclick="selectCode2('${lowList.UP_CD}','${lowList.CD}')" >	
 															<c:choose>
 																<c:when test="${lowList.CD eq fn:substring(params.up_cd, 0, 9) }" >
-																	<img src="<%=request.getContextPath()%>/resources/images/layout/tree_tow.png" alt="검색"  ><span class="re_re"></span> <label class="glyphicon glyphicon-minus-sign"></label> ${lowList.CD }
+																	<span class="code-two"> <img src="<%=request.getContextPath()%>/resources/images/layout/tree_tow.png" alt="검색"  ></span>
+																	<label class="glyphicon glyphicon-minus-sign"></label> ${lowList.CD }
 																</c:when>
 																<c:otherwise>
 																	<span class="re_re"></span> <label class="glyphicon glyphicon-plus-sign"></label> ${lowList.CD }
@@ -117,10 +124,11 @@
 																			<td class="list_three" onclick="selectCode3('${lowList.CD}','${lowList2.CD}','${highList.CD }')" >
 																		<c:choose>
 																			<c:when test="${lowList2.CD eq fn:substring(params.up_cd, 0, 12) }" >
-																				<span class="re_re"></span> <label class="glyphicon glyphicon-minus-sign"></label> ${lowList2.CD }
+																				 <label class="glyphicon glyphicon-minus-sign"></label> ${lowList2.CD }
 																			</c:when>
 																			<c:otherwise>
-																				<span class="re_re"></span> <label class="glyphicon glyphicon-plus-sign"></label> ${lowList2.CD }
+																				<span class="code-three"> <img src="<%=request.getContextPath()%>/resources/images/layout/tree_tow.png" alt="검색"  ></span>
+																				<label class="glyphicon glyphicon-plus-sign"></label> ${lowList2.CD }
 																			</c:otherwise>
 																		</c:choose>
 																			</td>
@@ -177,10 +185,11 @@
 			<!-- page nav -->
 							
 						<div class="pop_bg">
-							<div class="popup">
+							<div class="popup"  style="height:1px;">
 								<a href="#" class="close" title="창닫기"></a>
 						 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 							</div>
+						</div>
 						</div>
 					</form>
 				</div>

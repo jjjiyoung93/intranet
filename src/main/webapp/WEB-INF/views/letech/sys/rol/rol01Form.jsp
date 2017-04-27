@@ -7,38 +7,46 @@
 	<title>Letech Intranet</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <body class="pop">
-				
+	<div class="container">			
  	 <form class="pp_form" id="form2" name="form2" method="post" action="rol01tran.do" onsubmit="return false;" >
 			<input type="hidden" id="mode" name="mode" />
 			<input type="hidden" id="role_code" name="role_code" value="${params.role_code}" />
 			<input type="hidden" id="flag" name="flag" value="${params.flag }" />
-			 <fieldset style="width: 100%">
-			 <h2 class="sub_title">권한상속관계추가</h2>
-			 <div class="col_md_12">
-			 	<label class="col_md_3" for="parnts_role" >부모코드</label>
-				<select class="col_md_9" id="parnts_role" name="parnts_role">
-			<c:forEach var="authList" items="${authList}">
-				<c:if test="${authList.AUTHOR_CODE ne 'ROLE_ANONYMOUS' }">
-					<option value="${authList.AUTHOR_CODE}" >${authList.AUTHOR_NM}</option>
-				</c:if>
-			</c:forEach>
-				</select>
-				<label class="col_md_3" for="chldrn_role" >자식코드</label>
-				<select class="col_md_9" id="chldrn_role" name="chldrn_role">
-			<c:forEach var="authList" items="${authList}">
-				<c:if test="${authList.AUTHOR_CODE ne 'ROLE_ANONYMOUS' }">
-					<option value="${authList.AUTHOR_CODE}" >${authList.AUTHOR_NM}</option>
-				</c:if>
-			</c:forEach>
-				</select>
-			 </div>
-				<p class="full-right">
-		           <a href="#submit" class="btn btn_info" onclick="fnSubmit('${params.flag}');"><span>저장</span></a>
-		           <a href="#cancel" class="btn btn_default" onclick="window.self.close();"><span>닫기</span></a>
-		       </div>
+				 <fieldset style="width: 100%">
+					 <h1 class="sub_title">권한상속관계추가</h1>
+					 <div class="pop-contents">
+					 	<ul>
+					 		<li>
+					 			<label class="" for="parnts_role" >부모코드</label>
+								<select class="form-control" id="parnts_role" name="parnts_role">
+									<c:forEach var="authList" items="${authList}">
+										<c:if test="${authList.AUTHOR_CODE ne 'ROLE_ANONYMOUS' }">
+											<option value="${authList.AUTHOR_CODE}" >${authList.AUTHOR_NM}</option>
+										</c:if>
+									</c:forEach>
+								</select>
+					 		</li>
+					 		<li>
+					 			<label class="" for="chldrn_role" >자식코드</label>
+								<select class="form-control" id="chldrn_role" name="chldrn_role">
+									<c:forEach var="authList" items="${authList}">
+										<c:if test="${authList.AUTHOR_CODE ne 'ROLE_ANONYMOUS' }">
+											<option value="${authList.AUTHOR_CODE}" >${authList.AUTHOR_NM}</option>
+										</c:if>
+									</c:forEach>
+								</select>
+					 		</li>
+						</ul>
+					</div>
+					<p class="clearfix pop-btn">
+						<span class="pull-right">
+	           <a href="#cancel" class="btn btn-default" onclick="window.self.close();">닫기</a>
+	           <a href="#submit" class="btn btn-info" onclick="fnSubmit('${params.flag}');">저장</a>
+	         </span>
+	       </p>
 		    </fieldset>
 		  </form>
-     <br/>
+		</div>
        
        
        

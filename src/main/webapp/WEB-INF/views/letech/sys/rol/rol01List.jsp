@@ -26,8 +26,13 @@
 					<input type="hidden" name="flag" id="flag" value="" /> 
 					
 					<div class="col-lg-10">
-						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
-						<c:if test="${mnList3 ne null}">
+						<h2 class="page-title clearfix">
+							${titleNaviMap.MN_NM }
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.NAVI_NM }
+							</span>
+						</h2>
+						<%-- <c:if test="${mnList3 ne null}">
 						<div class="tab_gnb">
 							<ul class="nav nav-tabs">
 									<c:forEach var="list3" items="${mnList3}" varStatus="status">
@@ -39,7 +44,8 @@
 								</c:forEach>
 							</ul>
 				   		</div>
-						</c:if>
+						</c:if> --%>
+					<div class="form-container">
 					<div class="table-responsive ">
 						<!-- 테이블 -->
 						<table class="table table-bordered">
@@ -105,11 +111,12 @@
 						</p>
 	
 					<div class="pop_bg">
-						<div class="popup">
+						<div class="popup" style="height:1px;">
 							<a href="#" class="close" title="창닫기"></a>
 					 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 						</div>
 					</div>
+				</div>
 				</div>
 			</form>
 			<jsp:include page="/resources/com/inc/aside.jsp" />

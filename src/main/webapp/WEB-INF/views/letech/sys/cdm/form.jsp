@@ -21,25 +21,33 @@
 		</script>
 </head>
 <body class="pop">
-<div id="wrap">
+<div id="wrap" class="container">
 
 <form class="pp_form" id="form2" name="form2" method="post" action="">
 	<input type="hidden" id="mode" name="mode" value="" />
 	<input type="hidden" id="cd" name="cd" value="${getCodeView.CD }" />
 	<input type="hidden" id="flag" name="flag" value="${params.flag }" />
 	<fieldset>
-	<h2 class="sub_title">코드수정</h2>
-	<div class="col_md_12">
-		<label class="col_md_2 ">코드명</label> 
-		<input class="col_md_10" name="cd_nm" id="cd_nm" type="text" value="<c:if test="${params.flag eq '3' }">${getCodeView.CD_NM}</c:if>" >
-		<label class="col_md_2">코드값</label>
-		<input class="col_md_10" name="cd_val" id="cd_val" type="text" value="<c:if test="${params.flag eq '3' }">${getCodeView.CD_VAL}</c:if>">
-		<p class="full-right">
-			<a href="#submit" class="btn btn_info" onclick="fnSubmit('${params.flag}');"><span>저장</span></a>
-		<!--            <a href="#cancel" class="btn-cancel" onclick="window.parent.closeModal();"><span>닫기</span></a> -->
-		           <a href="#cancel" class="btn btn_default" onclick="window.self.close();"><span>닫기</span></a>
-		</p>
+	<h1 class="">코드수정</h1>
+	<div class="clearfix pop-contents">
+		<ul>
+			<li class="form-group">
+				<label class=" ">코드명</label> 
+				<input class="form-control" name="cd_nm" id="cd_nm" type="text" value="<c:if test="${params.flag eq '3' }">${getCodeView.CD_NM}</c:if>" >
+			</li>
+			<li class="form-group">
+				<label class="">코드값</label>
+				<input class="form-control" name="cd_val" id="cd_val" type="text" value="<c:if test="${params.flag eq '3' }">${getCodeView.CD_VAL}</c:if>">
+			</li>
+		</ul>
 	</div>
+		<p class="clearfix pop-btn">
+				<!--<a href="#cancel" class="btn-cancel" onclick="window.parent.closeModal();"><span>닫기</span></a> -->
+			<span class="pull-right">
+				<a href="#cancel" class="btn btn-default" onclick="window.self.close();">닫기</a>
+				<a href="#submit" class="btn btn-info" onclick="fnSubmit('${params.flag}');">저장</a>
+			</span>
+		</p>
 	</fieldset>
 </form>
 </div>

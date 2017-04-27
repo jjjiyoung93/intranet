@@ -19,7 +19,7 @@
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>
 		<div id="page-wrapper">
-			<section class="clearfix">
+			<section class="row">
 				<div class="col-lg-10">
 				
 					<!-- 타이틀 및 페이지 네비 -->		
@@ -110,7 +110,9 @@
 									</li>
 								</ul>
 								<p class="clearfix">
-									<c:choose>
+									<input class="btn btn-default btn-list"  type="button" value="목록" />
+									<span class="pull-right">
+										<c:choose>
 			            	<c:when test="${params.mode eq 'edit'}">
 			            		<input class="btn btn-warning btn-completion" type="button" value="완료" />
 											<input class="btn btn-warning btn-save" type="button" value="저장" />
@@ -119,8 +121,6 @@
 			            		<input class="btn btn-warning btn-process" type="button" value="처리" />
 			            	</c:otherwise>
 			            </c:choose>
-									<span class="pull-right">
-										<input class="btn btn-default btn-list"  type="button" value="목록" />
 									</span>
 								</p>
 						</form>

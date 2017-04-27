@@ -24,8 +24,13 @@
 					<input type="hidden" name="flag" id="flag" value="" /> 
 					<!-- 타이틀 및 페이지 네비 -->
 					<div class="col-lg-10">
-						<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
-							<c:if test="${mnList3 ne null}">
+						<h2 class="page-title clearfix">
+							${titleNaviMap.MN_NM }
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.NAVI_NM }
+							</span>
+						</h2>
+						<%-- 	<c:if test="${mnList3 ne null}">
 							<div class="tab_gnb">
 								<ul class="nav nav-tabs">
 									<c:forEach var="list3" items="${mnList3}" varStatus="status">
@@ -37,8 +42,9 @@
 									</c:forEach>
 								</ul>
 							</div>
-							</c:if>
+							</c:if> --%>
 					<!-- page -->
+					<div class="form-container">
 					<div class="table-responsive ">
 						<!-- 테이블 -->
 						<table class="table table-bordered">
@@ -85,7 +91,7 @@
 													-변경 불가-
 												</c:when>
 												<c:when test="${empty authResult.AUTHOR_CODE}">
-													<a href="#" class="btn_s btn_basic" onclick="fnInsert('${authResult.CD}', '${authResult.CD_NM }')">권한생성</a>
+													<a href="#" class="btn btn-xs btn-default" onclick="fnInsert('${authResult.CD}', '${authResult.CD_NM }')">권한생성</a>
 												</c:when>
 												<c:otherwise>
 													<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('${authResult.AUTHOR_CODE}')">권한삭제</a>
@@ -105,10 +111,11 @@
 			
 				
 				<div class="pop_bg">
-					<div class="popup">
+					<div class="popup" style="height:1px;">
 						<a href="#" class="close" title="창닫기"></a>
 				 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 					</div>
+				</div>
 				</div>
 				</div>
 			</form>

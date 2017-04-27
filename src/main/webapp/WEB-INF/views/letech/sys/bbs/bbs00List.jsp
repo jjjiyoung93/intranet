@@ -1,4 +1,4 @@
-x<%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
+<%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
@@ -32,11 +32,7 @@ x<%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 					</h2>
 		<!-- page -->
 				<div class="form-container">
-				<p class="clearfix">
-					<span class="pull-right">
-						<a href="#" class="btn btn-warning" onclick="fnInsert();">게시판추가</a>
-					</span>
-				</p>
+				
 			<div class="table-responsive">
 			<!-- 테이블 -->
 			<table class="table table-bordered">
@@ -116,10 +112,15 @@ x<%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 					</c:choose>
 				</tbody>
 			</table>
+			<p class="clearfix">
+					<span class="pull-right">
+						<a href="#" class="btn btn-warning" onclick="fnInsert();">게시판추가</a>
+					</span>
+				</p>
 			<!-- page nav -->
 		</div>
 			<div class="pop_bg">
-				<div class="popup">
+				<div class="popup" style="height:1px;">
 					<a href="#" class="close" title="창닫기"></a>
 			 		<iframe id="iframe" name="iframe" src="" frameborder="0" scrolling="no"></iframe>
 				</div>

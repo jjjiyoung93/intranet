@@ -26,17 +26,23 @@
 					<input type="hidden" id="up_mn" name="up_mn" value="" />
 					<input type="hidden" id="flag" name="flag" value="1" />
 					<!-- 타이틀 및 페이지 네비 -->
-					<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
+					<h2 class="page-title clearfix">
+						${titleNaviMap.MN_NM }
+						<span class="pull-right site-map">
+							HOME > ${titleNaviMap.NAVI_NM }
+						</span>
+					</h2>
 	
 					<!-- page -->
+					<div class="form-container">
 					<div class="row">
 						<div class="col-md-5">
-						<div class=" panel panel-default">
-								<h5 class="panel-heading clearfix">메뉴구조
+						<div class=" panel panel-warning">
+								<h3 class="panel-title panel-heading clearfix">메뉴구조
 								<span class="page_navi pull-right">
-									<a href="#" class="btn btn-xs btn-default" onclick="fnInsert('1');">메뉴추가</a>
+									<a href="#" class="btn btn-xs btn-warning" onclick="fnInsert('1');">메뉴추가</a>
 								</span>
-							</h5>
+							</h3>
 							<div class="panel-body">
 							<ul id="tree1">
 							<c:choose>
@@ -109,19 +115,17 @@
 	</div>
 	</div>
 						<div class="col-md-7 tree_menu_box">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-										<h5 class="tree_title clearfix" id="tree_titme_form">메뉴 추가</h5>
-								</div>
+							<div class="panel panel-warning">
+							<h3 class="panel-heading panel-title clearfix" id="tree_titme_form">메뉴 추가</h3>
 									<div class="tree_w panel-body">
 										<div class="form_group">
-											<div class="">
+											<div class="form-group">
 												<label class="">메뉴명</label>
-												<input class="input_st " name="mn_nm" id="mn_nm" type="text" value="" />	
+												<input class="form-control " name="mn_nm" id="mn_nm" type="text" value="" />	
 											</div>
-											<div class="col_md_6">
+											<div class="form-group">
 												<label class="">메뉴타입<br/></label>
-												<select id="mn_type" class="col_md_12" name="mn_type">
+												<select id="mn_type" class="form-control" name="mn_type">
 													<option value="" >--선택--</option>
 										<c:forEach var="codeList" items="${codeList}">
 													<option value="${codeList.CD}" >${codeList.CD_NM}</option>
@@ -129,17 +133,17 @@
 												</select>
 											</div>
 										</div>
-										<div class="form_group">
+										<div class="form-group">
 											<label class="">메뉴 선택값(***Mng)<br/></label>
-											<input class="search" name="mn_val" id="mn_val" type="text" value="" />	
+											<input class="form-control" name="mn_val" id="mn_val" type="text" value="" />	
 										</div>
-										<div class="form_group">
+										<div class="form-group">
 											<label class="">정렬순서<br/></label>
-											<input class="search" name="mn_ord" id="mn_ord" type="text"  />	
+											<input class="form-control" name="mn_ord" id="mn_ord" type="text"  />	
 										</div>
-										<div class="form_group">
+										<div class="form-group">
 											<label class="">메뉴 URL(1레멜의 경우 필요없음)<br/></label>
-											<input class="search" name="mn_href" id="mn_href" type="text"  />	
+											<input class="form-control" name="mn_href" id="mn_href" type="text"  />	
 										</div>
 										<p class="clearfix">
 											<span class="pull-right">
@@ -155,7 +159,7 @@
 					</div>
 				<!-- tree 테스트 -->
 	
-			
+			</div>
 		</form>
 	<div class="pop_bg">
 		<div class="popup">
@@ -188,7 +192,7 @@ function fnFrom(mn){
 			$("#mn_href").val(result.getCodeView.MN_HREF);
 			$("#mode").val("<%=VarConsts.MODE_U%>");
 			$("#tree_titme_form").text(result.getCodeView.MN_NM+" 메뉴 수정 ");
-			$("#tree_titme_form").append("<span class=\"page_navi pull-right\" ><a href=\"#\" class=\"btn btn-xs btn-default\"  onclick=\"fnInsert('2');\">하위 메뉴추가</a></span>");
+			$("#tree_titme_form").append("<span class=\"page_navi pull-right\" ><a href=\"#\" class=\"btn btn-xs btn-warning\"  onclick=\"fnInsert('2');\">하위 메뉴추가</a></span>");
 		},error: function (request, status, error) {
 			alert(request.responseText);
 		} 
