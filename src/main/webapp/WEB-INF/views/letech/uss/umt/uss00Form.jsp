@@ -16,16 +16,16 @@
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>
 		<div id="page-wrapper">
-			<section class="row">
+			<section class="clearfix">
 				<div class="col-lg-10">
 					<!-- 타이틀 및 페이지 네비 -->
-					<h4 class="title">
-						${titleNaviMap.MN_NM }
-						<span class="pull-right text-muted small">
-							HOME > ${titleNaviMap.NAVI_NM }
-						</span>
-					</h4>
-					
+						<h2 class="page-title clearfix">
+								${titleNaviMap.MN_NM }
+								<span class="pull-right site-map">
+									HOME > ${titleNaviMap.NAVI_NM }
+								</span>
+							</h2>
+					<div class="form-container">
 					<div class="board-view">
 						<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/list.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -33,120 +33,104 @@
 							<input type="hidden" name="id_check" id="id_check" value="" />
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
-							
-							<ul>
-								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">사용자 ID</dt>
-										<dd class="col-md-10 col-xs-10">
-											<c:set var="modeType" value="<%=VarConsts.MODE_U%>"/>
-											<c:choose>
-												<c:when test="${params.mode eq modeType }">
-													${resultView.USS_ID }
-													<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
-												</c:when>
-												<c:otherwise>
-													<input name="uss_id" id="uss_id" type="text" value="" class="col_md_4" />
-													<input type="button" class="btn_usrChk btn btn_default " value="중복체크" title="중복체크" />
-													<span id="id_check_text"></span>
-												</c:otherwise>
-											</c:choose>
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">비밀번호</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_pwd" id="uss_pwd" type="password" value="" class="col_md_6" />
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">비밀번호 확인</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="col_md_6" />
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">부서</dt>
-										<dd class="col-md-10 col-xs-10">
-											<select id="dp_cd" name="dp_cd" class="select_size200">
-												<option value="" >--선택--</option>
-												<c:forEach var="departList" items="${departList}">
-													<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
-												</c:forEach>
-											</select>
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">성명</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_nm" id="uss_nm" type="text" value="${resultView.USS_NM }" class="col_md_6" />
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">생년월일</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="col_md_6" />
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">성별</dt>
-										<dd class="col-md-10 col-xs-10">
-											<div class="col_md_4">
-								          		<label class="radio-inline col_md_5" for="radios-0">
-												    <input class="col_md_2" name="uss_sex" id="uss_sex_m" type="radio" value="M" <c:if test="${empty resultView.USS_SEX || resultView.USS_SEX eq 'M' }">checked="checked"</c:if>>
-												     남자
-											    </label>
-											    <label class="radio-inline col_md_5" for="radios-0">
-												    <input class="col_md_2"  name="uss_sex" id="uss_sex_w" type="radio" value="W" <c:if test="${resultView.USS_SEX eq 'W' }">checked="checked"</c:if> >
-												    여자
-											    </label>
-								          	</div>
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">전화번호</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="i_text" maxlength="4" />
-											-
-											<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="i_text" maxlength="4" />
-											-
-											<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="i_text" maxlength="4" />
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">이메일</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="col_md_6" />
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">사원번호</dt>
-										<dd class="col-md-10 col-xs-10">
-											<input name="uss_em_no" id="uss_em_no" type="text" value="" class="col_md_4" />
-											<input type="button" class="btn_emnoChk btn btn_default " value="중복체크" title="중복체크" />
-											<span id="emno_check_text" ></span>
-										</dd>
-									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">권한</dt>
-										<dd class="col-md-10 col-xs-10">
-											<select id="uss_auth_cd" name="uss_auth_cd" class="col_md_4">
-							          			<option value="" >--선택--</option>
-												<c:forEach var="authList" items="${authList}">
-													<option value="${authList.AUTHOR_CODE}" <c:if test="${resultView.USS_AUTH_CD eq authList.AUTHOR_CODE }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
-												</c:forEach>
-											</select>
-										</dd>
-									</dl>
+							<div class="clearfix">
+							<ul class="col-md-6">
+								<li class="form-group">
+										<label>사용자 ID</label>
+																						<c:set var="modeType" value="<%=VarConsts.MODE_U%>"/>
+												<c:choose>
+													<c:when test="${params.mode eq modeType }">
+														<br/><span class="">${resultView.USS_ID }</span>
+														<input type="hidden" id="uss_id" name="uss_id" class="form-control" value="${params.uss_id }" />
+													</c:when>
+													<c:otherwise>
+														<div class="input-group">
+															<input name="uss_id" id="uss_id" type="text" value="" class="form-control" />
+															<a href="#" class="btn_usrChk input-group-addon">중복체크</a>
+														</div>
+														<span class="clearfix" id="id_check_text"></span>
+													</c:otherwise>
+												</c:choose>
+									</li>
+									<li class="form-group">
+										<label>비밀번호</label>
+										<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
+									</li>
+									<li class="form-group">
+										<label class=" ">비밀번호확인</label>
+											<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control" />
+									</li>
+									<li class="form-group">
+										<label>사원번호</label>
+										<div class="input-group">
+											<input name="uss_em_no" id="uss_em_no" type="text" value="" class="form-control" />
+											<a class="btn_emnoChk input-group-addon" href="#">중복체크</a>
+									</div>
+									<span id="emno_check_text" ></span>
+									</li>
+									<li class="form-group">
+										<label>권한</label>
+										<select id="uss_auth_cd" name="uss_auth_cd" class="form-control">
+						          			<option value="" >--선택--</option>
+											<c:forEach var="authList" items="${authList}">
+												<option value="${authList.AUTHOR_CODE}" <c:if test="${resultView.USS_AUTH_CD eq authList.AUTHOR_CODE }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
+											</c:forEach>
+										</select>
 								</li>
+								</ul>
+								<ul class="col-md-6">
+									<li class="form-group">
+											<label>성명</label>
+												<input name="uss_nm" id="uss_nm" type="text" value="${resultView.USS_NM }" class="form-control" />
+									</li>
+									<li class="form-group">
+											<label>부서</label>
+												<select id="dp_cd" name="dp_cd" class="form-control">
+													<option value="" >--선택--</option>
+													<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach>
+												</select>
+									</li>
+									<li class="form-group">
+										<label>생년월일</label>
+											<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control" />
+									</li>
+									<li class="form-group">
+										<label>성별</label><br/>
+										<span>
+											<input class="col_md_2" name="uss_sex" id="uss_sex_m" type="radio" value="M" <c:if test="${empty resultView.USS_SEX || resultView.USS_SEX eq 'M' }">checked="checked"</c:if>>
+											남자
+											<input class="col_md_2"  name="uss_sex" id="uss_sex_w" type="radio" value="W" <c:if test="${resultView.USS_SEX eq 'W' }">checked="checked"</c:if> >
+											여자
+										</span>
+									</li>
+									<li class="form-group">
+										<label>전화번호</label><br/>
+											<span class="form-inline">
+											<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="form-control table-cell"/>
+											-
+											<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="form-control table-cell"/>
+											-
+											<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="form-control table-cell"/>
+											</span>
+									</li>
+									<li class="form-group">
+										<label>이메일</label>
+											<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="form-control" />
+									</li>
+									
 							</ul>
+							</div>
+						<div class="clearfix">
+					    <span class="pull-right">
+					    	<input  class="btn-ok btn btn btn-warning" type="button" value="저장" />
+					    	<input class="btn-cancel btn btn-default"  type="button" value="취소" />
+							</span>
+						</div>	
 						</form>
 					</div>
-					
-					<div class="pull-right">
-					    <input  class="btn-ok btn btn_info btn btn-warning" type="button" value="저장" />
-					    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
-					</div>	
+					</div>
 				</div>
 				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>

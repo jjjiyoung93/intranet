@@ -17,18 +17,19 @@
 		</nav>
 		
 		<div id="page-wrapper">
-			<section class="clearfix">
+			<section class="row">
 				<div class="col-lg-10">
 				
 					<!-- 타이틀 및 페이지 네비 -->		
-					<h4 class="title">
-						${titleNaviMap.MN_NM }
-						<span class="pull-right text-muted small">
-							HOME > ${titleNaviMap.NAVI_NM }
-						</span>
-					</h4>
+					<h2 class="page-title clearfix">
+								${titleNaviMap.MN_NM }
+								<span class="pull-right site-map">
+									HOME > ${titleNaviMap.NAVI_NM }
+								</span>
+							</h2>
 					
 					<!-- 수정본 -->
+					<div class="form-container">
 					<div class="board-view">
 						<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/uss01Form.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
@@ -36,68 +37,82 @@
 							<input type="hidden" name="uss_id" id="uss_id" value="${params.uss_id }" />
 							<input type="hidden" id="mode" name="mode" value="" />
 							
-							<ul>
-								<li>
-									<dl class="row first-line ">
-										<dt class="col-md-2 col-xs-2">사용자 ID</dt>
-										<dd class="col-md-10 col-xs-10">
+							<ul class="payment-form">
+								<li class="">
+									<dl class="clearfix">
+										<dt class="col-md-2 col-sm-3">사용자 ID</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_ID }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">부서</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">부서</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.DP_NM }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">성명</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">성명</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_NM }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">생년월일</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">생년월일</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_BIRTH }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">성별</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">성별</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_SEX_VAL }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">전화번호</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">전화번호</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_TEL }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">이메일</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">이메일</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_EMAIL }
 										</dd>
 									</dl>
-									<dl class="row ">
-										<dt class="col-md-2 col-xs-2">권한</dt>
-										<dd class="col-md-10 col-xs-10">
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">권한</dt>
+										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_AUTH_NM }
 										</dd>
 									</dl>
 								</li>
 							</ul>
+							<p class="clearfix">
+									<input class="btn btn-default btn-list"  type="button" value="목록" />
+									<span class="pull-right">
+										<input class="btn-upd btn btn-warning" type="button" value="수정" />
+										<input class="btn-del btn btn-warning" type="button" value="삭제" />
+									</span>
+							</p>
 						</form>
 					</div>
-						
-					<div class="clearfix">
-						<input class="btn-upd btn btn_info" type="button" value="수정" />
-						<input class="btn-del btn btn_info" type="button" value="삭제" />
-					    <div class="pull-right">
-					    	<input class="btn btn-default btn-list"  type="button" value="목록" />
-					    </div>
-					</div>
+				</div>
 				</div>
 				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>

@@ -23,23 +23,27 @@
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" id="cPage" name="cPage" value="${cPage }" />
 						<!-- 타이틀 및 페이지 네비 -->
-							<h4 class="title">${titleNaviMap.MN_NM }<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span></h4>
-						<fieldset>
+								<h2 class="page-title clearfix">
+								${titleNaviMap.MN_NM }
+								<span class="pull-right site-map">
+									HOME > ${titleNaviMap.NAVI_NM }
+								</span>
+							</h2>
+							<div class="form-container">
 							<input type="hidden" name="uss_id" id="uss_id" value=""/>
-							<p class="clearfix ">
+							<div class="clearfix ">
 								<strong class="list_count" >Total : ${totalCnt} 건</strong>
-									<span class="pull-right">
-											<span class="form-inline">
-											<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-											</select>
-											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-											<input type="button" class="fnSearch btn-warning btn" value="검색" title="검색" />
-										</span>							
-									</span>
-								</p>
-						</fieldset>
+								<span class="pull-right">
+										<span class="form-inline">
+										<select name="searchGubun" id="searchGubun" class="form-control table-cell" title="search" >
+											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+										</select>
+										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
+										<input type="button" class="fnSearch btn-warning btn table-cell" value="검색" title="검색" />
+									</span>							
+								</span>
+							</div>
 						<div class="table-responsive">
 						<table class="table table-bordered" summary="사용자관리 목록">
 							<colgroup>
@@ -53,13 +57,13 @@
 							</colgroup>
 							<thead>
 								<tr>
-									<th>번호</th>
+									<th class="visible-md visible-lg">번호</th>
 									<th>ID</th>
 									<th>부서</th>
 									<th>성명</th>
 									<th>권한</th>
-									<th>이메일</th>
-									<th>전화번호</th>
+									<th class="visible-md visible-lg">이메일</th>
+									<th class="visible-md visible-lg">전화번호</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -72,15 +76,15 @@
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
 											<tr>
-												<th>${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+												<th class="visible-md visible-lg">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
 												<td >
 													<a href="javascript:fnView('${list.USS_ID}');">${list.USS_ID}</a> 
 												</td>
 												<td>${list.DP_NM}</td>
 												<td>${list.USS_NM}</td>
 												<td>${list.USS_AUTH_NM}</td>
-												<td>${list.USS_EMAIL}</td>
-												<td>${list.USS_TEL}</td>
+												<td class="visible-md visible-lg">${list.USS_EMAIL}</td>
+												<td class="visible-md visible-lg">${list.USS_TEL}</td>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
@@ -90,14 +94,17 @@
 					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
-						<p class="clearfix">
-							<span class=""></span>
-								<strong>${pageNavigator }</strong>
-								<button class="fnJoin full-right btn btn_info" >등 록</button>
-						</p>
+						<div class="clearfix">
+							<ul class="pagination">
+								${pageNavigator }
+							</ul>
+							<span class="pull-right">
+								<button class="fnJoin btn btn-warning" >등 록</button>
+							</span>
+						</div>
 					</div>
 					<div>
-						
+						</div>
 					</div>
 </form>
 </div>
