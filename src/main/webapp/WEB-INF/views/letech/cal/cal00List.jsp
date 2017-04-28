@@ -55,7 +55,6 @@
 <%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script> --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/fullcalendar/lib/jquery.min.js"></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lib/moment.min.js'></script>
-
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.min.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/fullcalendar/lang-all.js'></script>
 <script type="text/javascript">
@@ -65,7 +64,7 @@ $(document).ready(function() {
 	var currentLangCode = 'ko';
 	$('#calendar').fullCalendar({
 		header: {
-			left: 'prev,next today',
+			left: 'prevYear,prev,next,nextYear today',
 			center: 'title',
 			right: 'month,basicWeek'
 //			right: 'month,basicWeek,basicDay'
