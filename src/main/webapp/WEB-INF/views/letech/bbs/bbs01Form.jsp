@@ -85,20 +85,28 @@
 										<dt class="col-md-2 col-sm-3 control-label">첨부파일</dt>
 										<dd class="col-md-10 col-sm-9">
 											<div  class="form-horizontal">
-												<div class="">
+												<ul class="file-list">
 													<c:forEach var="file" items="${fileList }" varStatus="status">
-														<div id="file_${file.FILE_SEQ }">
+														<li class="file-form" id="file_${file.FILE_SEQ }">
 															<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-															<input class="btn btn-default" type="button" value="파일삭제" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" />
-														</div>
+															<span class="file-btn">
+																<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_SEQ }')" >
+																	<i class="glyphicon glyphicon-remove"></i>
+																</button>
+															</span>
+														</li>
 													</c:forEach>
-													<div id="my-file" class="form-inline">
-														<div id="div_file">
-															<input class="input-group" name="file" id="file1" type="file" value="" />
-															<input class="btn btn-default"  type="button" value="추가" id="button-add-file"/>
-														</div>
-													</div>
-												</div>
+													<li>
+														<ul id="my-file" class="form-inline">
+															<li id="div_file file-form" class="file-form">
+																<input class="input-group" name="file" id="file1" type="file" value="" />
+																<span class="btn btn-xs btn-success file-btn" id="button-add-file">
+																	<i class="glyphicon glyphicon-plus"></i>
+																</span>
+															</li>
+														</ul>
+													</li>
+												</ul>
 											</div>
 										</dd>
 									</dl>
@@ -186,9 +194,9 @@
 			/* 첨부파일 추가 삭제 기능 */
 			var count = 1;
 			$('#button-add-file').click(function(){
-				var html = "<div id='file_"+count+"'>";
+				var html = "<li id='file_"+count+"'>";
 				html += "<input class='input-group' type='file' name='file"+count+"' id='file"+count+"' />";
-				html += "&nbsp;<input type='button' value='삭제' class='button-delete-file btn btn-default'/></div>";
+				html += "<span class='button-delete-file btn btn-danger btn-xs file-btn'><i class='glyphicon glyphicon-remove'></i></span></li>";
 				count++;
 				file_count = count;
 				$("#my-file").append(html);
