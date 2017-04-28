@@ -3,8 +3,8 @@
 
 /* 갤러리 게시판 가로 1개  */
 .gallery_bd  {padding:0 15px;}
-.gallery_bd ul {border-top:2px solid #787878;}
-.gallery_bd ul li {border-bottom:1px solid #ddd;}
+.gallery_bd ul {border-top:1px solid #ddd;}
+.gallery_bd ul li {border-bottom:2px solid #ddd;}
 .gallery_bd ul li img { width:100%;max-height:80px;}
 .gallery_bd ul li dl { position:relative;padding:7px 0; } 
 .gallery_bd ul li:last-child dl { }

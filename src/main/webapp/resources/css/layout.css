@@ -111,7 +111,7 @@ body.login {
 
 /* search */
 .search-box{padding:15px;background:#f9f9f9;border:1px solid #e6e9ed;}
-.search-container{width:400px;margin:auto;}
+.search-container{float:right;width:400px;margin:auto;}
 
 /* file */
 ul.file-list{padding:0 0 5px;}

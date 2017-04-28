@@ -126,8 +126,8 @@
 						</form>
 						<div class="clearfix">
 							<span class="pull-right">
-							    <input class="btn-cancel btn btn-default"  type="button" value="취소" />
-							    <input  class="btn-ok btn btn_info btn btn-default" type="button" value="저장" />
+							    <input class="btn-cancel btn btn-sm btn-default"  type="button" value="취소" />
+							    <input  class="btn-ok btn btn_info btn-sm btn btn-warning" type="button" value="저장" />
 							</span>
 						</div>
 					</div>

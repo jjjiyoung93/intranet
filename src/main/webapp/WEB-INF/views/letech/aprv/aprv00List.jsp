@@ -57,7 +57,7 @@
 											<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
 										</c:forEach>
 									</select>
-									<label>학인</label>
+									<label>확인</label>
 									<select id="searchCdList2" name="searchCdList2" class="form-control table-cell">
 											<option value="" >--전쳬--</option>
 											<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
