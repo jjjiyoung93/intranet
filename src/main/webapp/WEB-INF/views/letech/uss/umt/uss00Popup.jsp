@@ -13,73 +13,81 @@
 
 <jsp:include page="/resources/com/inc/javascript.jsp" />
 </head>
-<body>
-<div id="wrap">
+<body class="pop">
+<div id="wrap" class="container">
 	<section class="col_md_12" >
-			<form class="pp_form2" name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/search/uss00Popup.do" >
-				<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
-				 <h2 class="sub_title">사용자 검색</h2>
-				<fieldset>
-					<div class="col_md_8 full-right">
-						<select name="searchGubun" id="searchGubun" class="col_md_3" title="search">
-							<option value="01" <c:if test="${params.searchGubun eq '01'}">selected = "selected"</c:if>>ID</option>
-							<option value="02" <c:if test="${params.searchGubun eq '02'}">selected = "selected"</c:if>>성명</option>
-						</select>
-						<input class="col_md_7" type="text" name="searchField" id="searchField"  value="${params.searchField}" class="col_md_5" title="검색어 입력" />
-						<input type="button" class="fnSearch btn btn_info" value="검색" title="검색" />
-					</div>
-				</fieldset>
-				<table width="100%" cellspacing="0" cellpadding="0"  summary="사용자관리 목록">
-					<caption>사용자관리 목록</caption>
-					<colgroup>
-						<col width="5%" />
-						<col width="16%" />
-						<col width="10%" />
-						<col width="20%" />
-						<col width="*" />
-						<col width="20%" />
-					</colgroup>
-					<thead>
-						<tr>
-							<th>번호</th>
-							<th>ID</th>
-							<th>성명</th>
-							<th>권한</th>
-							<th>이메일</th>
-							<th>전화번호</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:choose>
-							<c:when test="${totalCnt < 1 }">
-								<tr>
-									<td colspan="5">검색된 내용이 없습니다.</td>
-								</tr>
-							</c:when>
-							<c:otherwise>
-								<c:forEach var="list" items="${resultList}" varStatus="status">
+		<form class="pp_form2" name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/search/uss00Popup.do" >
+			<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
+			<fieldset>
+				<h1 class="">사용자 검색</h1>
+				<div class="clearfix pop-contents">
+					<span class="pull-right">
+						<span class="form-inline">
+							<select name="searchGubun" id="searchGubun" class="form-control table-cell" title="search">
+								<option value="01" <c:if test="${params.searchGubun eq '01'}">selected = "selected"</c:if>>ID</option>
+								<option value="02" <c:if test="${params.searchGubun eq '02'}">selected = "selected"</c:if>>성명</option>
+							</select>
+							<input class="form-control table-cell" type="text" name="searchField" id="searchField"  value="${params.searchField}" class="col_md_5" title="검색어 입력" />
+							<input type="button" class="fnSearch btn-warning btn table-cell" value="검색" title="검색" />
+						</span>							
+					</span>
+				</div>
+				
+				<div class="table-responsive">
+					<table class="table table-bordered" summary="사용자검색 목록">
+						<colgroup>
+							<col width="5%" />
+							<col width="16%" />
+							<col width="10%" />
+							<col width="20%" />
+							<col width="*" />
+							<col width="20%" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th class="visible-md visible-lg">번호</th>
+								<th>ID</th>
+								<th>성명</th>
+								<th>권한</th>
+								<th class="visible-md visible-lg">이메일</th>
+								<th class="visible-md visible-lg">전화번호</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:choose>
+								<c:when test="${totalCnt < 1 }">
 									<tr>
-										<th>${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-										<td style="text-align: left;">&nbsp;
-											<a href="#" onclick="javascript:setData('${list.USS_ID}', '${list.USS_NM }');">${list.USS_ID}</a>
-										</td>
-										<td>${list.USS_NM}</td>
-										<td>${list.USS_AUTH_NM}</td>
-										<td>${list.USS_EMAIL}</td>
-										<td>${list.USS_TEL}</td>
+										<td colspan="5">검색된 내용이 없습니다.</td>
 									</tr>
-								</c:forEach>
-							</c:otherwise>
-					</c:choose>
-				</tbody>
-			</table>
-			<div class="table_foot2">
-				<!-- pase nav-->
-				<p class="page_nav" style="text-align: center;">
-					<strong>${pageNavigator }</strong>
-					<button class="fnClose full-right btn btn_info" >닫기</button>
+								</c:when>
+								<c:otherwise>
+									<c:forEach var="list" items="${resultList}" varStatus="status">
+										<tr>
+											<th class="visible-md visible-lg">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+											<td style="text-align: left;">&nbsp;
+												<a href="#" onclick="javascript:setData('${list.USS_ID}', '${list.USS_NM }');">${list.USS_ID}</a>
+											</td>
+											<td>${list.USS_NM}</td>
+											<td>${list.USS_AUTH_NM}</td>
+											<td class="visible-md visible-lg">${list.USS_EMAIL}</td>
+											<td class="visible-md visible-lg">${list.USS_TEL}</td>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</tbody>
+					</table>
+				</div>
+				<p class="clearfix pop-btn">
+					<ul class="pagination">
+						${pageNavigator }
+					</ul>
+					<!--<a href="#cancel" class="btn-cancel" onclick="window.parent.closeModal();"><span>닫기</span></a> -->
+					<span class="pull-right">
+						<a href="#cancel" class="btn btn-default" onclick="window.self.close();">닫기</a>
+					</span>
 				</p>
-			</div>
+			</fieldset>
 		</form>
 	</section>
 </div>
