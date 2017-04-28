@@ -35,13 +35,15 @@
 							HOME > ${titleNaviMap.NAVI_NM }
 						</span>
 					</h2>
-				
 					<!-- 달력 start -->
 					<div class="form-container">
+					<p class="clearfix">
+							<span class="pull-right"><input class="fnJoin btn btn-sm btn-default" type="button" value="등록" /></span>
+						</p>
 						<div id='calendar'></div>
 						<!-- 달력 end -->
 						<p class="clearfix">
-							<span class="pull-right"><input class="fnJoin btn btn-warning" type="button" value="일정등록" /></span>
+							<span class="pull-right"><input class="fnJoin btn btn-sm btn-default" type="button" value="등록" /></span>
 						</p>
 					</div>
 				</form>
