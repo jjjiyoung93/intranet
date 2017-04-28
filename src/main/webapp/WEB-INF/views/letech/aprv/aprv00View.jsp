@@ -233,40 +233,39 @@
 													<c:forEach var="line" items="${lineList }" varStatus="status">
 														<c:choose>
 															<c:when test="${line.APRV_EMP_NO eq loginVO.id && (line.APRV_YN_CD eq '0' || line.APRV_YN_CD eq '2') && old_aprv eq '1' && line.REFE_YN ne 'Y'}">
+																<!-- 결재자 일경우 이면서 대기, 보류일경우 -->
 																<tr class="gradeA odd" role="row">
 																	<td class="sorting_1">
 											    						${line.USS_NM }
-												    					<c:if test="${line.REFE_YN eq 'Y' }">
-												    						(참조인)
-												    					</c:if>
-																	</td>
-																	<td>
-												    					<c:choose>
-												    						<c:when test="${ line.RECE_YN eq '1' }">
-												    							확인
-												    						</c:when>
-												    						<c:otherwise>
-												    							미확인
-												    						</c:otherwise>
-												    					</c:choose>
-																	</td>
+											    						<input name="aprv_emp_no" id="aprv_emp_no" type="hidden" value="${line.APRV_EMP_NO }"/>
+											    					</td>
 																	<td>
 														    			<c:if test="${line.CONF_YN eq 'Y' }" >
-												    						확인
+													    					확인
 														    			</c:if>
 														    			<c:if test="${line.CONF_YN eq 'N' }" >
-												    						미확인
+													    					미확인
 														    			</c:if>
-																	</td>
+										    						</td>
+																	<td>${line.APRV_ORDR }</td>
 																	<td>
-												    					<c:if test="${line.REFE_YN ne 'Y' }">
-													    						${line.APRV_YN_NM }
-													    				</c:if>
+											    						<select id="aprv_yn_cd" name="aprv_yn_cd" >
+											    							<option value="0" <c:if test="${line.APRV_YN_CD eq '0' }">selected="selected"</c:if> >대기</option>
+											    							<option value="1" <c:if test="${line.APRV_YN_CD eq '1' }">selected="selected"</c:if> >승인</option>
+											    							<option value="2" <c:if test="${line.APRV_YN_CD eq '2' }">selected="selected"</c:if> >보류</option>
+											    							<option value="3" <c:if test="${line.APRV_YN_CD eq '3' }">selected="selected"</c:if> >반려</option>
+											    						</select>
+											    					</td>
+																	<td class="center">
+																		<input type="text" id="aprv_cont" name="aprv_cont" value="${line.APRV_CONT }" />
 																	</td>
-																	<td class="center">${line.APRV_CONT }</td>
+																	<td class="center">
+								    									<input class="btn btn_warning"  type="button" value="결재" onClick="aprvOk()" />
+											    					</td>
 																</tr>	
 															</c:when>
 															<c:otherwise>
+																<!-- 결재자가 아닐경우 -->
 																<tr class="gradeA odd" role="row">
 																	<td class="sorting_1">
 												    					${line.USS_NM }
