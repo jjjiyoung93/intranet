@@ -63,7 +63,7 @@ $(document).ready(function() {
 	var currentLangCode = 'ko';
 	$('#calendar').fullCalendar({
 		header: {
-			left: 'prev,next today',
+			left: 'prevYear,prev,next,nextYear today',
 			center: 'title',
 			right: 'month,basicWeek'
 //			right: 'month,basicWeek,basicDay'
