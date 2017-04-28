@@ -46,6 +46,7 @@
 				   		</div>
 						</c:if> --%>
 					<div class="form-container">
+					
 					<div class="table-responsive ">
 						<!-- 테이블 -->
 						<table class="table table-bordered">
@@ -106,7 +107,7 @@
 						<!-- page nav -->
 						<p class="clearfix" >
 							<span class="pull-right">
-								<input class="btn btn-warning" onclick="fnInsert();" value="권한상속관계추가" type="button"/>
+								<input class="btn btn-sm btn-warning" onclick="fnInsert();" value="권한상속관계추가" type="button"/>
 							</span>
 						</p>
 	

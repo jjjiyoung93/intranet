@@ -274,8 +274,8 @@
 								<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
 									<c:set var="btnVal" value="재결재" />
 								</c:if>
-								<input type="button" id="btn-ok" name="btn-ok" class="btn btn-warning" value="${btnVal }"/>
-								<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
+								<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
+								<input type="button" id="btn-ok" name="btn-ok" class="btn btn-sm btn-warning" value="${btnVal }"/>
 <%--
  							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
 							    <input class="btn-cancel btn btn_default"  type="button" value="취소" />

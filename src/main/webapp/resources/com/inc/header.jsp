@@ -157,15 +157,15 @@ $(document).ready(function(){
 			var aprvListCnt3 = aprvList3.length;
 			
 			for(var i=0; i<aprvListCnt0; i++){
-				$("#aside_aprv0").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList0[i]['CD']+"\">"+aprvList0[i]['CD_NM']+"("+aprvList0[i]['TYPE_CNT']+")</a></li>");
+				$("#aside_aprv0").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList0[i]['CD']+"\">"+"- "+aprvList0[i]['CD_NM']+"("+aprvList0[i]['TYPE_CNT']+")</a></li>");
 			}
 
 			for(var i=0; i<aprvListCnt2; i++){
-				$("#aside_aprv2").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList2[i]['CD']+"\">"+aprvList2[i]['CD_NM']+"("+aprvList2[i]['TYPE_CNT']+")</a></li>");
+				$("#aside_aprv2").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList2[i]['CD']+"\">"+"- "+aprvList2[i]['CD_NM']+"("+aprvList2[i]['TYPE_CNT']+")</a></li>");
 			}
 
 			for(var i=0; i<aprvListCnt3; i++){
-				$("#aside_aprv3").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList3[i]['CD']+"\">"+aprvList3[i]['CD_NM']+"("+aprvList3[i]['TYPE_CNT']+")</a></li>");
+				$("#aside_aprv3").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList3[i]['CD']+"\">"+"- "+aprvList3[i]['CD_NM']+"("+aprvList3[i]['TYPE_CNT']+")</a></li>");
 			}
 			/* 결재 정보 목록 END */
 			

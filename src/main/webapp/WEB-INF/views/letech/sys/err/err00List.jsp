@@ -94,11 +94,14 @@
 									</tbody>
 								</table>
 								
+							</div>
+							<div class="text-center">
+							<br/>
 								<!-- page nav -->
-									<ul class="pagination">
+									<ul class="pagination pagination-sm">
 										${pageNavigator }
 									</ul>
-							</div>
+									</div>
 						</div>
 					</div>
 				</form>

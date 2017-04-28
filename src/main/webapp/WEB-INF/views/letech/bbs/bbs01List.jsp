@@ -37,55 +37,58 @@
 						<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />
 					
 						<!-- 타이틀 및 페이지 네비 -->
-						<h4 class="page-title clearfix">
+						<h2 class="page-title clearfix">
 							${params.bbs_nm}
 							<span class="pull-right site-map">
 								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
 							</span>
-						</h4>
-				
+							
+						</h2>
 						<c:if test="${bbsTabList ne null}">
-							<article>
+							<%-- <article>
 								<ul class="tab_gnb">
 									<c:forEach var="list3" items="${bbsTabList}" varStatus="status">
 										<c:if test="${params.bbs_id eq list3.BBS_ID}">
 											<c:set var="bbsNm" value="${list3.BBS_NM}" />
 										</c:if>
-										<%-- <li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
+										<li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
 											<a href="#" onclick="fnTabMove('bbs/bbs00List.do','${list3.BBS_ID}')">${list3.BBS_NM}</a>
-										</li> --%>
+										</li>
 									</c:forEach>
 								</ul>
-					   		</article>
+					   		</article> --%>
 						</c:if>
 						<div class="form-container">
-						<div class="row">
-							<div class="col-lg-6">
-								<div class="form-inline">
-									<div class="form-group">
-										<div class="input-group">
-											<strong class="list_count" >Total : ${totalCnt} 건</strong>
-										</div>
-									</div>
+						<div class="clearfix search-box">
+							<div class="search-container">
+								<div class="col-xs-5 un-style">
+									<span class="inline-element">
+										<select class="form-control " name="searchGubun" id="searchGubun" class="" title="search" >
+											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
+											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
+										</select>
+									</span>
 								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-inline pull-right">
-									<select class="form-control table-cell" name="searchGubun" id="searchGubun" class="" title="search" >
-										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
-										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
-									</select>
+								<div class="col-xs-7 un-style">
 									<div class="input-group">
 										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
 										<span class="input-group-btn">
-											<button class="fnSearch btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i>
+											<button class="fnSearch btn btn-default" type="button">
+													<i class="glyphicon glyphicon-search"></i>
+													<span class="hidden-xs hidden-sm"> 검색</span>
 											</button>
 										</span>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="table-responsive">
+						<p class="clearfix board-top">
+							<span class="pull-right">
+								<input type="button" class="fnJoin btn btn-sm btn-default" value="등록"/>
+							</span>
+							<strong class="list_count" >Total : ${totalCnt} 건</strong>
+						</p>
+						<div class="">
 							<div class="gallery_bd">
 								<c:choose>
 									<c:when test="${fn:length(resultList) < 1 }">
@@ -97,14 +100,14 @@
 										<ul class="row">
 											<c:forEach var="list" items="${resultList}" varStatus="status">
 												<li>
-													<a href="#" onclick="fnView('${list.BBS_SEQ}');">
-														<dl>
-															<dt><img src="${pageContext.request.contextPath}/cmm/FileDown.do?file_path=${list.FILE_PATH }&file_stre_nm=${list.FILE_STRE_NM }&file_nm=${list.FILE_STRE_NM }.${list.FILE_EXT}" alt="${list.FILE_NM }"  /></dt>
-															<dd>${list.TITLE }</dd>
-															<dd class="img_content">${list.CONTENT }</dd>
-															<dd class="img_dt">${list.REG_DT }</dd>
+														<dl class="row">
+															<dt class="col-xs-3"><img src="${pageContext.request.contextPath}/cmm/FileDown.do?file_path=${list.FILE_PATH }&file_stre_nm=${list.FILE_STRE_NM }&file_nm=${list.FILE_STRE_NM }.${list.FILE_EXT}" alt="${list.FILE_NM }"  /></dt>
+															<dd class="col-xs-9">
+																<a class="img-title" href="#" onclick="fnView('${list.BBS_SEQ}');">${list.TITLE }</a>
+																<div class="img_content">${list.CONTENT }</div>
+																<span class="img_dt">${list.REG_DT }</span>
+															</dd>
 														</dl>
-													</a>
 												</li>
 											</c:forEach>
 										</ul>
@@ -112,13 +115,13 @@
 								</c:choose>
 							</div>
 						</div>
-						
-						<div class="clearfix">
-							<ul class="pagination">
+						<div class="text-center">
+							<br/>
+							<ul class="pagination pagination-sm">
 								${pageNavigator }
 							</ul>
 							<span class="form-inline pull-right">
-								<input type="button" class="fnJoin btn btn-warning" value="등록"/>
+								<input type="button" class="fnJoin btn btn-sm btn-default" value="등록"/>
 							</span>
 						</div>
 						</div>			 

@@ -92,7 +92,7 @@
 					<p class="clearfix board-top">
 						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
 					</p>
-						<table class="table table-bordered" >
+						<table class="table table-bordered reactive" >
 							<colgroup>
 								<col width="50" class="hidden-xs hidden-sm"/>
 								<col width="80"/>

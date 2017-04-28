@@ -30,20 +30,35 @@
 								</span>
 							</h2>
 							<div class="form-container">
-							<input type="hidden" name="uss_id" id="uss_id" value=""/>
-							<div class="clearfix ">
-								<strong class="list_count" >Total : ${totalCnt} 건</strong>
-								<span class="pull-right">
-										<span class="form-inline">
-										<select name="searchGubun" id="searchGubun" class="form-control table-cell" title="search" >
-											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-										</select>
-										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
-										<input type="button" class="fnSearch btn-warning btn table-cell" value="검색" title="검색" />
-									</span>							
-								</span>
+								<div class="clearfix search-box">
+									<input type="hidden" name="uss_id" id="uss_id" value=""/>
+									<div class="search-container ">
+										<div class ="col-xs-5 un-style">
+											<span class="inline-element">
+												<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+													<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+													<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+												</select>
+											</span>
+										</div>
+										<div class="col-xs-7 un-style">
+											<div class="input-group">
+												<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+												<span class="input-group-btn">
+													<button type="button" class="fnSearch btn-info btn"  >
+														<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+													</button>
+												</span>
+											</div>
+										</div>
+								</div>
 							</div>
+							<p class="clearfix board-top">
+								<span class="pull-right">
+									<button class="fnJoin btn btn-sm btn-warning" >등 록</button>
+								</span>
+								<strong class="list_count" >Total : ${totalCnt} 건</strong>
+							</p>
 						<div class="table-responsive">
 						<table class="table table-bordered" summary="사용자관리 목록">
 							<colgroup>
@@ -94,12 +109,13 @@
 					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
-						<div class="clearfix">
-							<ul class="pagination">
+						<div class="text-center">
+						<br/>
+							<ul class="pagination pagination-sm">
 								${pageNavigator }
 							</ul>
 							<span class="pull-right">
-								<button class="fnJoin btn btn-warning" >등 록</button>
+								<button class="fnJoin btn btn-sm btn-warning" >등 록</button>
 							</span>
 						</div>
 					</div>

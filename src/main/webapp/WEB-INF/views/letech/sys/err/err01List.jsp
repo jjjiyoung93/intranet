@@ -50,7 +50,7 @@
 							</div>
 						</div>
 						
-						<div class="">
+						<div class="table-responsive">
 							<table class="table table-bordered">
 								<colgroup>
 									<col width="5%"/>
@@ -100,8 +100,9 @@
 							</table>
 						</div>
 						
-						<div class="clearfix">
-							<ul class="pagination">${pageNavigator }</ul>
+						<div class="text-center">
+							<br/>
+							<ul class="pagination pagination-sm">${pageNavigator }</ul>
 						</div>
 					</div>
 					</form>

@@ -110,15 +110,15 @@
 									</li>
 								</ul>
 								<p class="clearfix">
-									<input class="btn btn-default btn-list"  type="button" value="목록" />
+									<input class="btn btn-default btn-sm btn-list"  type="button" value="목록" />
 									<span class="pull-right">
 										<c:choose>
 			            	<c:when test="${params.mode eq 'edit'}">
-			            		<input class="btn btn-warning btn-completion" type="button" value="완료" />
-											<input class="btn btn-warning btn-save" type="button" value="저장" />
+			            		<input class="btn btn-warning btn-sm btn-completion" type="button" value="완료" />
+											<input class="btn btn-warning btn-sm btn-save" type="button" value="저장" />
 			            	</c:when>
 			            	<c:otherwise>
-			            		<input class="btn btn-warning btn-process" type="button" value="처리" />
+			            		<input class="btn btn-warning btn-sm btn-process" type="button" value="처리" />
 			            	</c:otherwise>
 			            </c:choose>
 									</span>

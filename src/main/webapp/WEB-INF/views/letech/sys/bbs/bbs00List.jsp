@@ -116,7 +116,7 @@
 		</div>
 			<p class="clearfix">
 					<span class="pull-right">
-						<a href="#" class="btn btn-warning" onclick="fnInsert();">게시판추가</a>
+						<a href="#" class="btn btn-sm btn-warning" onclick="fnInsert();">게시판추가</a>
 					</span>
 				</p>
 			<div class="pop_bg">

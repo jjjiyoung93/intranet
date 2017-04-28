@@ -39,7 +39,7 @@
 						<!-- page -->
 						<p class="clearfix">
 							<span class="pull-right">
-								<input type="button" class="button-a btn btn-warning" onclick="fnInsert();" value="코드추가">
+								<input type="button" class="button-a btn btn-sm btn-warning" onclick="fnInsert();" value="코드추가">
 							</span>
 						</p>
 						<!-- 테이블 -->
@@ -182,6 +182,11 @@
 								</tbody>
 							</table>
 						</div>
+							<p class="clearfix">
+							<span class="pull-right">
+								<input type="button" class="button-a btn btn-sm btn-warning" onclick="fnInsert();" value="코드추가">
+							</span>
+						</p>
 			<!-- page nav -->
 							
 						<div class="pop_bg">

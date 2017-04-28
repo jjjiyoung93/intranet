@@ -127,7 +127,7 @@
 						</li>
 					</sec:authorize>
 					<li>
-						<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="btn btn_xs btn_classic" role="button">로그아웃</a>
+						<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="" role="button">로그아웃</a>
 					</li>
 				</ul>
 			</li>

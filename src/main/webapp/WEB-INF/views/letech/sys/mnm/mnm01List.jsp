@@ -147,8 +147,8 @@
 										</div>
 										<p class="clearfix">
 											<span class="pull-right">
-												<a href="#delete" class="btn_del btn btn-default" ><span>삭제</span></a>
-												<a href="#submit" class="btn_ok btn btn-warning" ><span>저장</span></a>
+												<a href="#delete" class="btn_del btn btn-sm btn-default" ><span>삭제</span></a>
+												<a href="#submit" class="btn_ok btn btn-sm btn-warning" ><span>저장</span></a>
 			<!-- 								<a href="#cancel" class="btn btn_default"><span>닫기</span></a> -->
 											</span>
 										</p>

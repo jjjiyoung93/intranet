@@ -24,9 +24,9 @@ table thead tr th{text-align:center;}
 .inline-element{display:block;margin-right:2px;}
 
  a.i-logout{padding:13px 15px! important;}
- a.i-logout span{font-size:18px;font-weight:700;color:#f4f892;}
+ a.i-logout span{font-size:18px;font-weight:700;color:#94e2f3;}
  a.i-logout span i {display:inline-block;top:3px;}
- a.i-logout:hover span{color:#a6d9d7;}
+ a.i-logout:hover span{color:#000;}
 
 /*top*/
 h1.logo a.navbar-brand{padding:5px 15px;}
@@ -39,9 +39,17 @@ h1.logo a.navbar-brand{padding:5px 15px;}
 .navbar-top-links .dropdown-menu li{display:block;border-bottom:1px solid #e5e5e5;}
 .navbar-top-links .dropdown-menu li:last-child{margin-right:0;border-bottom:none;}
 .navbar-default .navbar-toggle .icon-bar{background-color:#fff;}
+.navbar-top-links > li > a:visited, 
+.navbar-top-links > li > a:active, 
+.navbar-top-links > li > a:hover,
+.navbar-top-links > li > a:focus{background:#6f615e! important;}
 
 .top_menu ul li a {position:relative;}
 .depth-one{position:absolute;top:100px;}
+
+#alarmOne{margin-top:0;}
+#alarmOne li{}
+#alarmOne li ul li{border:none;padding:3px 0;}
 
 /*nav*/
 .sidebar .sidebar-nav.navbar-collapse{padding:0;}
@@ -117,7 +125,7 @@ ul.file-list li ul li .file-btn{position:absolute;right:7px;top:7px;}
 .board-top{margin:7px 0;}
 .board-top strong{display:inline-block;margin-top:7px;}
 
-table{table-layout:fixed; word-break:break-all;}
+table.reactive{table-layout:fixed; word-break:break-all;}
 th,td{font-size:14px;}
 .tab_gnb{margin-bottom:20px;}
 .table-responsive{margin:10px 0 0;font-size:14px;}

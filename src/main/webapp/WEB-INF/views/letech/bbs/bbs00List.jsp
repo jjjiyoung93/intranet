@@ -75,7 +75,10 @@
 										<div class="input-group">
 											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
 											<span class="input-group-btn">
-												<button class="fnSearch btn btn-info" type="button"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
+												<button class="fnSearch btn btn-info" type="button">
+													<i class="glyphicon glyphicon-search"></i>
+													<span class="hidden-xs hidden-sm"> 검색</span>
+												</button>
 											</span>
 										</div>
 									</div>
@@ -88,7 +91,7 @@
 								<strong class="list_count" >Total : ${totalCnt} 건</strong>
 							</p>
 						<div class="">
-							<table class="table table-bordered">
+							<table class="table table-bordered reactive">
 								<colgroup>
 									<col width="50" class="hidden-xs hidden-sm"/>
 									<col width="*"/>

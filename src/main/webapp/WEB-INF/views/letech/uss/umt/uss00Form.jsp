@@ -33,7 +33,7 @@
 							<input type="hidden" name="id_check" id="id_check" value="" />
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
-							<div class="clearfix">
+							<div class="row">
 							<ul class="col-md-6">
 								<li class="form-group">
 										<label>사용자 ID</label>
@@ -124,8 +124,8 @@
 							</div>
 						<div class="clearfix">
 					    <span class="pull-right">
-					    	<input  class="btn-ok btn btn btn-warning" type="button" value="저장" />
-					    	<input class="btn-cancel btn btn-default"  type="button" value="취소" />
+					    	<input  class="btn-ok btn btn btn-sm btn-warning" type="button" value="저장" />
+					    	<input class="btn-cancel btn btn-sm btn-default"  type="button" value="취소" />
 							</span>
 						</div>	
 						</form>
