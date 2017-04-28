@@ -43,41 +43,64 @@
 							<span class="pull-right site-map">
 								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
 							</span>
+							
 						</h2>
 
-						<c:if test="${bbsTabList ne null}">
+						<%-- <c:if test="${bbsTabList ne null}">
 							<article>
 								<ul class="tab_gnb">
 									<c:forEach var="list3" items="${bbsTabList}" varStatus="status">
 										<c:if test="${params.bbs_id eq list3.BBS_ID}">
 											<c:set var="bbsNm" value="${list3.BBS_NM}" />
 										</c:if>
-										<%-- <li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
+										<li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
 											<a href="#" onclick="fnTabMove('bbs/bbs00List.do','${list3.BBS_ID}')">${list3.BBS_NM}</a>
-										</li> --%>
+										</li>
 									</c:forEach>
 								</ul>
 					   		</article>
-						</c:if>
+						</c:if> --%>
 						<div class="form-container">
-							<div class="clearfix">
-										<strong class="list_count" >Total : ${totalCnt} 건</strong>
-										<span class="pull-right form-inline">
-											<select class="form-control table-cell" name="searchGubun" id="searchGubun" class="" title="search" >
+							<div class="clearfix search-box">
+								<div class="search-container">
+									<div class="col-xs-5 un-style">
+										<span class="inline-element">
+											<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
 												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
 												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
 											</select>
-											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control table-cell" title="검색어 입력" />
-											<button class="fnSearch btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i> 검색</button>
-									</span>
+										</span>
+									</div>
+									<div class="col-xs-7 un-style">
+										<div class="input-group">
+											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+											<span class="input-group-btn">
+												<button class="fnSearch btn btn-info" type="button"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
+											</span>
+										</div>
+									</div>
+								</div>
 							</div>
-						<div class="table-responsive">
+							<p class="clearfix board-top">
+								<span class="pull-right">
+									<input type="button" class="fnJoin btn btn-sm btn-default" value="등록"/>
+								</span>
+								<strong class="list_count" >Total : ${totalCnt} 건</strong>
+							</p>
+						<div class="">
 							<table class="table table-bordered">
+								<colgroup>
+									<col width="50" class="hidden-xs hidden-sm"/>
+									<col width="*"/>
+									<col width="80" class="hidden-xs hidden-sm"/>
+									<col width="110"/>
+									<col width="60" class="hidden-xs hidden-sm"/>
+								</colgroup>
 								<thead>
 									<tr role="row">
 										<th class="hidden-xs hidden-sm">번호</th>
 										<th class="">제목</th>
-										<th class="">작성자</th>
+										<th class="hidden-xs hidden-sm">작성자</th>
 										<th class="">작성일</th>
 										<th class="hidden-xs hidden-sm">조회수</th>
 									</tr>
@@ -92,16 +115,16 @@
 										<c:otherwise>
 											<c:forEach var="list" items="${resultList}" varStatus="status">
 												<tr class="gradeA odd" role="row">
-													<td class="hidden-xs hidden-sm">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</td>
+													<td class="text-center hidden-xs hidden-sm">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</td>
 													<td class=""><c:forEach begin="1"
 															end="${list.LEVEL_CNT }" step="1">
 															<span class="re_re"></span>
 														</c:forEach> 
 															<a class="" href="#" onclick="fnView('${list.BBS_SEQ}');"><span class="ellip ellip-line">${list.TITLE}</span></a>
 													</td>
-													<td class="">${list.REG_NM}</td>
-													<td class="">${list.REG_DT}</td>
-													<td class="hidden-xs hidden-sm">${list.HIT}</td>
+													<td class="text-center hidden-xs hidden-sm">${list.REG_NM}</td>
+													<td class="text-center">${list.REG_DT}</td>
+													<td class="text-center hidden-xs hidden-sm">${list.HIT}</td>
 												</tr>
 											</c:forEach>
 										</c:otherwise>
@@ -110,15 +133,18 @@
 							</table>
 						</div>
 						
-						<p class="clearfix">
-							<ul class="pagination">
-										${pageNavigator }
-							</ul>
-										<span class="form-inline pull-right">
-											<input type="button" class="fnJoin btn btn-warning" value="등록"/>
-										</span>
+						
+					<div class="text-center">
+						<ul class="pagination pagination-sm">
+								${pageNavigator}
+						</ul>
+					</div>
+						<div class="clearfix">
+								<span class="form-inline pull-right">
+									<input type="button" class="fnJoin btn btn-sm btn-default" value="등록"/>
+								</span>
+						</div>
 							
-						</p>
 						</div>
 					</form>
 				</div>

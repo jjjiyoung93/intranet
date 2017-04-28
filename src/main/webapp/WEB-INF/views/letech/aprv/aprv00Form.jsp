@@ -153,20 +153,30 @@
 									</li>
 									<li>
 										<dl class="clearfix">
-											<dt class="col-md-2 col-xs-3">첨부파일</dt>
-											<dd class="col-md-10 col-xs-9 form-group">
-												<c:forEach var="file" items="${fileList }" varStatus="status">
-													<div id="file_${file.FILE_NO }">
-														<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-														<input type="button" value="파일삭제" class="btn btn-default" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" />
-													</div>
-												</c:forEach>
-												<div  class="form-inline">
-													<div class="">
-														<input type="file" name="file" id="file1" class="input-group">
-														<input type="button" id="button-add-file" class="btn btn-default" value="추가"/>
-													</div>
-												</div>
+											<dt class="col-md-2 col-sm-3 control-label">첨부파일</dt>
+											<dd class="col-md-10 col-sm-9">
+												<ul class="file-list">
+													<c:forEach var="file" items="${fileList }" varStatus="status">
+														<li id="file_${file.FILE_NO }">
+															<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
+															<span class="file-btn">
+																<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" >
+																	<i class="glyphicon glyphicon-remove"></i>
+																</button>
+															</span>
+														</li>
+													</c:forEach>
+													<li>
+														<ul class="" id="my-file">
+															<li class="file-form">
+																	<input type="file" name="file" id="file1" class="input-group">
+																<span class="btn btn-xs btn-success file-btn" id="button-add-file">
+																	<i class="glyphicon glyphicon-plus"></i>
+																</span>
+															</li>
+														</ul>
+													</li>
+												</ul>
 											</dd>
 										</dl>
 									</li>
@@ -375,9 +385,9 @@ $(document).ready(function() {
 	/* 첨부파일 추가 삭제 기능 */
 	var count = 0;
 	$('#button-add-file').click(function(){
-		var html = "<div id='file_"+count+"'>";
+		var html = "<li id='file_"+count+"'>";
 		html += "<input type='file' name='file"+count+"' id='file"+count+"' />";
-		html += "&nbsp;<input type='button' value='삭제' class='button-delete-file'/></div>";
+		html += "<span class='button-delete-file btn btn-danger btn-xs file-btn'><i class='glyphicon glyphicon-remove'></i></span></li>";
 		count++;
 		$("#my-file").append(html);
 	});

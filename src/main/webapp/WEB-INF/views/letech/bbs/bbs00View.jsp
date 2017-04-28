@@ -154,14 +154,15 @@
 						<div class="clearfix">
 							<br/>
 						<span class="pull-right">
+							 <input class="btn-list btn btn-sm btn-default"  type="button" value="목록" />
 							<c:if test="${bbsInfo.REP_YN eq 'Y' }">
 								<input  class="btn-rep btn btn-xs btn-default" type="button" value="답변" />
 							</c:if>
 							<c:if test="${resultView.REG_ID eq loginVO.id }">
-								<input  class="btn-upd btn btn-warning" type="button" value="수정" />
-								<input  class="btn-del btn btn-warning" type="button" value="삭제" />
+								<input  class="btn-upd btn btn-sm btn-warning" type="button" value="수정" />
+								<input  class="btn-del btn btn-sm btn-warning" type="button" value="삭제" />
 							</c:if>
-						    <input class="btn-list btn btn-default"  type="button" value="목록" />
+						   
 							</span>
 						</div>
 					</div>

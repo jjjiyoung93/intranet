@@ -15,12 +15,18 @@ p{margin:10px 0 20px;}
 caption{display:none;}
 .nav-tabs>li>a{color:#23527c;}
 .table-cell{max-width:100px;display:table-cell! important;width:auto;}
-.ellip-line{display:inline-block;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;max-width:100%;}
-.ellip, .ellip-line{position:relative;overflow:hidden;padding-top:1px;vertical-align:top;}
 h6{font-size:16px;font-weight:bold;}
 .badge{background:#fd8a78;}
 .top-rol{color:#fd8a78;}
 table thead tr th{text-align:center;}
+
+.un-style{padding:0;margin:0;}
+.inline-element{display:block;margin-right:2px;}
+
+ a.i-logout{padding:13px 15px! important;}
+ a.i-logout span{font-size:18px;font-weight:700;color:#f4f892;}
+ a.i-logout span i {display:inline-block;top:3px;}
+ a.i-logout:hover span{color:#a6d9d7;}
 
 /*top*/
 h1.logo a.navbar-brand{padding:5px 15px;}
@@ -66,7 +72,7 @@ h1.logo a.navbar-brand{padding:5px 15px;}
 
 /*container*/
 #page-wrapper{padding:15px;border-left:1px solid #e7e7e7;background:#f3f3f4;}
-.page-title{font-weight:bold;padding:25px 0 30px;margin:0;color:#442c02;border-bottom:2px solid #e6e9ed;}
+.page-title{font-weight:bold;padding:25px 0 30px;margin:0;color:#442c02;border-bottom:2px solid #5bc0de;}
 .site-map{margin-top:10px;font-size:14px;font-weight:normal;}
 .un-style{padding:0;margin:0;}
 
@@ -92,11 +98,31 @@ body.login {
 .login-form h3{padding:25px 0 5px;text-align:center;font-size:25px;font-weight:600;color:#31b0d5;}
 .login-form p{text-align:center;font-size:14px;color:#787878;padding-bottom:20px;}
 
+/* 일정 */
+
+
+/* search */
+.search-box{padding:15px;background:#f9f9f9;border:1px solid #e6e9ed;}
+.search-container{width:400px;margin:auto;}
+
+/* file */
+ul.file-list{padding:0 0 5px;}
+ul.file-list li {margin-bottom:7px;}
+ul.file-list li ul li{padding:7px 0;margin-bottom:2px;position:relative;background:#f9f9f9;}
+ul.file-list li ul li .file-btn{position:absolute;right:7px;top:7px;}
+
+
 
 /*table*/
+.board-top{margin:7px 0;}
+.board-top strong{display:inline-block;margin-top:7px;}
+
+table{table-layout:fixed; word-break:break-all;}
 th,td{font-size:14px;}
 .tab_gnb{margin-bottom:20px;}
 .table-responsive{margin:10px 0 0;font-size:14px;}
+.ellip-line{display:inline-block;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;max-width:100%;}
+.ellip, .ellip-line{position:relative;overflow:hidden;padding-top:1px;vertical-align:top;}
 
 
 
@@ -171,11 +197,18 @@ body.pop .pop-btn{margin:0;padding-top:15px;border-top:1px solid #ddd;}
 	.navbar-top-links{position:absolute;display:inline-block;top:0px;right:60px;}
 	.site-map{display:none;}
 	.page-title{font-weight:bold;padding:15px 0;font-size:1.5em;}
+	.login-box{margin-top:10%;}
 	.login-cont{height:auto;border-radius:0;background:none;}
 	.login-cont .login-back{height:auto;border-radius:0;}
 	.login-logo{padding:0;}
 	.login-intra{display:none;}
 	.login-back p{display:none;}
+	.board-date{width:100px;}
+	
+	.fc-center > h2{font-size:18px;font-weight:bold;}
+}
+@media(max-width:517px){
+	.search-container{width:100%;}
 }
 
 

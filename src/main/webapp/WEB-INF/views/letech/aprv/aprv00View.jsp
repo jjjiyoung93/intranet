@@ -154,7 +154,7 @@
 								<dt class="panel-heading">결제라인</dt>
 								<dd class="panel-body">
 									<div class="table-responsive">
-										<table class="table table-bordered table-condensed">
+										<table class="table table-bordered">
 										<colgroup>
 											<col width="10%"/>
 					    					<c:if test="${params.line_chk eq 'N' }">

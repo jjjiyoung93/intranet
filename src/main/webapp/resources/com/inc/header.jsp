@@ -92,7 +92,12 @@ if(Sessinfo != null){
 					</li> --%>
 					
 					<c:if test="${loginVO != null}">
-					<li class="dropdown hidden-xs">
+						<li class="">
+							<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="i-logout" role="button">
+								<span ><i class="glyphicon glyphicon-off"></i></span>
+							</a>
+						</li>
+					<%-- <li class="dropdown hidden-xs">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
 							<i class="glyphicon glyphicon-user"></i>
 							<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
@@ -111,7 +116,7 @@ if(Sessinfo != null){
 								<a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do" class="btn btn_xs btn_classic" role="button">로그아웃</a>
 							</li>
 						</ul>
-					</li>
+					</li> --%>
 					</c:if>
 			</ul>
 		</div>

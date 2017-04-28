@@ -19,10 +19,13 @@
 			<section class="row">
 				<!-- 타이틀 및 페이지 네비 -->
 				<div class="col-lg-10">
-					<h4 class="title">
-						${titleNaviMap.MN_NM }
-						<span class="pull-right text-muted small">HOME > ${titleNaviMap.NAVI_NM }</span>
-					</h4>
+					<h2 class="page-title clearfix">
+							정보수정
+							<span class="pull-right site-map">
+								HOME > 정보수정
+							</span>
+						</h2>
+					<div class="form-container">
 					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/index.do" >
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
@@ -38,7 +41,9 @@
 											<dd class="col-md-10 col-9">
 												<input name="dp_cd" id="dp_cd" type="hidden" value="${resultView.DP_CD }" />
 												<c:forEach var="departList" items="${departList}">
-													<c:if test="${departList.DP_CD eq resultView.DP_CD }">${departList.DP_NM}</c:if>
+													<c:if test="${departList.DP_CD eq resultView.DP_CD }">
+														<input type="text" value="${departList.DP_NM}" class="form-control form-group" readonly/>
+													</c:if>
 												</c:forEach>
 											</dd>
 										</dl>
@@ -47,7 +52,7 @@
 										<dl class="row first-line">
 											<dt class="col-md-2 col-xs-3">사용자 ID</dt>
 											<dd class="col-md-10 col-9">
-												${resultView.USS_ID }
+												<input type="text" value="${resultView.USS_ID }" class="form-control form-group" readonly/>
 												<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
 												<input name="uss_sex" id="uss_sex" type="hidden" value="${resultView.USS_SEX }"/>
 											</dd>
@@ -55,62 +60,61 @@
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-xs-3">성명</dt>
-											<dd class="col-md-10 col-9">
-												<input name="uss_nm" id="uss_nm" type="hidden" value="${resultView.USS_NM }"/>
-												${resultView.USS_NM }
+											<dt class="col-md-2 col-sm-3">성명</dt>
+											<dd class="col-md-10 col-sm-9">
+												<input name="uss_nm" id="uss_nm" type="text" class="form-control form-group" value="${resultView.USS_NM }" readonly/>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-xs-3">비밀번호</dt>
-											<dd class="col-md-10 col-9">
+											<dt class="col-md-2 col-sm-3">비밀번호</dt>
+											<dd class="col-md-10 col-sm-9">
 												<div class="form-inline">
-													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
+													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control form-group" />
 												</div>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-xs-3">비밀번호 확인</dt>
-											<dd class="col-md-10 col-9">
+											<dt class="col-md-2 col-sm-3">비밀번호 확인</dt>
+											<dd class="col-md-10 col-sm-9">
 												<div class="form-inline">
-													<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control" />
+													<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control form-group" />
 												</div>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-xs-3">생년월일</dt>
-											<dd class="col-md-10 col-9">
+											<dt class="col-md-2 col-sm-3">생년월일</dt>
+											<dd class="col-md-10 col-sm-9">
 												<div class="form-inline">
-													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control" />
+													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control form-group" />
 												</div>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-xs-3">전화번호</dt>
-											<dd class="col-md-10 col-9">
-												<div class="form-inline">
-													<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="i_text form-control"/>
+											<dt class="col-md-2 col-sm-3">전화번호</dt>
+											<dd class="col-md-10 col-sm-9">
+												<div class="form-inline form-group" >
+													<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="i_text form-control table-cell"/>
 														-
-														<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="i_text form-control"/>
+														<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="i_text form-control table-cell"/>
 														-
-													<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="i_text form-control"/>
+													<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="i_text form-control table-cell"/>
 												</div>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-xs-3">이메일</dt>
-											<dd class="col-md-10 col-9">
-												<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }" class="form-control" />
+											<dt class="col-md-2 col-sm-3">이메일</dt>
+											<dd class="col-md-10 col-sm-9">
+												<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }" class="form-control form-group" />
 											</dd>
 										</dl>
 									</li>
@@ -119,10 +123,11 @@
 						</form>
 						<p class="clearfix" >
 							<span class="pull-right">
-							<a class="btn-ok btn btn-warning" href="#submit" role="button">저장</a>
 						  <a href="#cancel" class="btn-cancel btn btn-default " ><span>취소</span></a>
+							<a class="btn-ok btn btn-warning" href="#submit" role="button">수정</a>
 							</span>
 						</p>
+						</div>
 					</div>
 					<jsp:include page="/resources/com/inc/aside.jsp" />
 				</section>

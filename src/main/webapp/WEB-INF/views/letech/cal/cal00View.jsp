@@ -44,8 +44,8 @@
 							<ul class="payment-form">
 								<li>
 									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">시작일자(시간)</dt>
-										<dd class="col-md-10 col-sm-9">
+										<dt class="col-md-3 col-sm-3">시작일자(시간)</dt>
+										<dd class="col-md-9 col-sm-9">
 											<div class="form-inline">
 													${resultView.CAL_ST_DT }
 													(
@@ -63,8 +63,8 @@
 								</li>
 								<li>
 									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">종료일자(시간)</dt>
-										<dd class="col-md-10 col-sm-9">
+										<dt class="col-md-3 col-sm-3">종료일자(시간)</dt>
+										<dd class="col-md-9 col-sm-9">
 											<div class="form-inline">
 												${resultView.CAL_ED_DT }
 												(
@@ -81,24 +81,24 @@
 								</li>
 								<li>
 									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">제목</dt>
-										<dd class="col-md-10 col-sm-9">
+										<dt class="col-md-3 col-sm-3">제목</dt>
+										<dd class="col-md-9 col-sm-9">
 											${resultView.CAL_NM }
 										</dd>
 									</dl>
 								</li>
 								<li>
 									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">내용</dt>
-										<dd class="col-md-10 col-sm-9">
+										<dt class="col-md-3 col-sm-3">내용</dt>
+										<dd class="col-md-9 col-sm-9">
 											${resultView.CAL_CONTENT }
 										</dd>
 									</dl>
 								</li>
 								<li>
 									<dl class="clearfix">
-										<dt class="col-md-2 col-sm-3">첨부파일</dt>
-										<dd class="col-md-10 col-sm-9">
+										<dt class="col-md-3 col-sm-3">첨부파일</dt>
+										<dd class="col-md-9 col-sm-9">
 											<c:forEach var="file" items="${fileList }" varStatus="status">
 											<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a>
 											</c:forEach>
@@ -107,18 +107,20 @@
 								</li>
 							</ul>
 						</div>
+						<p class="clearfix" >
+							<!-- 메인화면인이 일정관리화면인지 구분 (1:메인화면) -->
+							<a href="#cancel" class="btn-cancel  btn btn-default" ><span>목록</span></a>
+							<c:if test="${params.flag ne '1' }" >
+								<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >
+								<span class="pull-right">
+									<a href="#submit" class="btn-del btn btn-default" ><span>삭제</span></a>
+									<a href="#submit" class="btn-ok btn btn-warning" ><span>수정</span></a>
+								</span>
+								</c:if>
+							</c:if>
+						</p>
 					</div>
 				</form>
-				<p class="clearfix" >
-					<!-- 메인화면인이 일정관리화면인지 구분 (1:메인화면) -->
-					<c:if test="${params.flag ne '1' }" >
-						<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >
-							<a href="#submit" class="btn-ok btn btn-warning" ><span>수정</span></a>
-							<a href="#submit" class="btn-del btn btn-default" ><span>삭제</span></a>
-						</c:if>
-					</c:if>
-					<a href="#cancel" class="btn-cancel  btn btn-default pull-right" ><span>목록</span></a>
-				</p>
 			</div>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 	</section>

@@ -46,59 +46,73 @@
 						</span>
 					</h2>
 					<div class="form-container">
-					<div class="form-inline">
-						<div class="clearfix">
-							<span class="visible-lg-inline visible-md-inline">
-								<label>결제구분코드</label>
-								<select id="searchCdList1" name="searchCdList1" class="form-control table-cell">
-										<option value="" >--전체--</option>
-									<c:forEach var="codeList" items="${codeList}">
-										<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
-									</c:forEach>
-								</select>
-								<label>학인여부</label>
-								<select id="searchCdList2" name="searchCdList2" class="form-control table-cell">
-										<option value="" >--전쳬--</option>
-										<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
-										<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
-								</select>
-							</span>
-							<div class="pull-right">
-							<select name="searchGubun" id="searchGubun" class="form-control table-cell" title="search" >
-								<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-								제목
-								</option>
-								<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
-								내용
-								</option>
-							</select>
-								<input class="form-control table-cell" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-										<button class="btn btn-default" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i>검색</button>
+					<div class="clearfix search-box">
+						<div class="search-container2 row">
+							<div class="col-md-6">
+								<span class="visible-lg-inline visible-md-inline">
+									<label>구분코드</label>
+									<select id="searchCdList1" name="searchCdList1" class="form-control table-cell">
+											<option value="" >--전체--</option>
+										<c:forEach var="codeList" items="${codeList}">
+											<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
+										</c:forEach>
+									</select>
+									<label>학인</label>
+									<select id="searchCdList2" name="searchCdList2" class="form-control table-cell">
+											<option value="" >--전쳬--</option>
+											<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
+											<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
+									</select>
+								</span>
+							</div>
+						<div class="col-md-6">
+							<div class="col-xs-5 un-style">
+								<span class="inline-element">
+									<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
+										제목
+										</option>
+										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
+										내용
+										</option>
+									</select>
+								</span>
+							</div>
+							<div class="col-xs-7 un-style">
+								<div class="input-group">
+								<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
+									<span class="input-group-btn">
+										<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
+									</span>
+								</div>
+							</div>
 							</div>
 						</div>
 					</div>
-					<div class="table-responsive">
+					<p class="clearfix board-top">
+						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
+					</p>
 						<table class="table table-bordered" >
 							<colgroup>
-								<col width="5%"/>
-								<col width="10%"/>
-								<col width="10%"/>
-								<col width="10%"/>
-								<col width="20%"/>
+								<col width="50" class="hidden-xs hidden-sm"/>
+								<col width="80"/>
+								<col width="80" class="hidden-xs hidden-sm"/>
+								<col width="50"/>
 								<col width="*"/>
-								<col width="15%"/>
-								<col width="10%"/>
+								<col width="180" class="hidden-xs hidden-sm"/>
+								<col width="100" class="hidden-xs hidden-sm"/>
+								<col width="100"/>
 							</colgroup>
 							<thead>
 								<tr role="row">
-									<th class="hidden-xs">NO</th>
+									<th class="hidden-xs hidden-sm">NO</th>
 									<th class="">보고자</th>
-									<th class="hidden-xs">결제구분</th>
-									<th class="">확인여부</th>
+									<th class="hidden-xs hidden-sm">구분</th>
+									<th class="">확인</th>
 									<th class="">제 목</th>
-									<th class="hidden-xs">기간</th>
-									<th class="hidden-xs">보고일</th>
-									<th class="">결제형태</th>
+									<th class="hidden-xs hidden-sm">기간</th>
+									<th class="hidden-xs hidden-sm">보고일</th>
+									<th class="">상태</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -113,13 +127,13 @@
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
 											<tr class="">
-												<td class="hidden-xs">
+												<td class="hidden-xs hidden-sm text-center">
 													${totalCnt - status.index - ((cPage-1) * (intListCnt))}
 												</td>
 												<td>
 													${list.REPT_APRV_NM}
 												</td>
-												<td class="hidden-xs">
+												<td class="hidden-xs hidden-sm">
 													${list.APRV_TYPE_NM}
 												</td>
 												<td class="">
@@ -134,13 +148,13 @@
 												</td>
 												<td class="center">
 													<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
-													${list.TITLE}
+													<span class="ellip ellip-line">${list.TITLE}</span>
 													</a>
 												</td>
-												<td class="hidden-xs">
+												<td class="hidden-xs hidden-sm">
 													${list.TERM_ST_YM} - ${list.TERM_ED_YM}
 												</td>
-												<td class="hidden-xs">
+												<td class="hidden-xs hidden-sm">
 													${list.CRTN_DT}
 												</td>
 												<td class="center">
@@ -178,12 +192,13 @@
 								</c:choose>			
 							</tbody>
 						</table>
-					</div>
-						<div class="clearfix">
-							<ul class="pagination" >
+						<div class="text-center">
+							<ul class="pagination pagination-sm" >
 								${pageNavigator}
 							</ul>
-							<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-warning" value="글쓰기"/></span>
+						</div>
+						<div class="clearfix">
+							<span class="pull-right"><input type="button" id="fnJoin1" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
 						</div>
 					</div>
 				</form>
@@ -207,6 +222,12 @@ $(document).ready(function(){
 
 	/* 등록 */
 	$("#fnJoin").click(function(){
+		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");
+		$("#frm1").submit();
+	});
+	
+	/* 등록 */
+	$("#fnJoin1").click(function(){
 		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");
 		$("#frm1").submit();
 	});
