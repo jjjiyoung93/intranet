@@ -170,6 +170,7 @@ td.list_tow span.code-two{margin-left:10px;}
 span.code-three {margin-left:20px;}
 
 /* 달력 */
+.fc-center > h2{font-size:18px;font-weight:bold;}
 .fc .fc-row{margin-right:0! important;padding:5px 0;}
 .fc th{padding:10px 0;background:#fff;}
 .fc .fc-row{background:#fff;padding:0;}
@@ -213,12 +214,11 @@ body.pop .pop-btn{margin:0;padding-top:15px;border-top:1px solid #ddd;}
 	.login-back p{display:none;}
 	.board-date{width:100px;}
 	
-	.fc-center > h2{font-size:18px;font-weight:bold;}
+
 }
 @media(max-width:517px){
 	.search-container{width:100%;}
 }
-
 
 
 @media(min-height:720px){

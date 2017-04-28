@@ -1072,3 +1072,8 @@ be a descendant of the grid when it is being dragged.
 .fc-sat{ color: blue !important; }
 
 .fc-sun { color: red !important; }
+
+
+@media(max-width:439px){
+.fc-center > h2{margin-top:15px! important;}
+}
