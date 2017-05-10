@@ -8,6 +8,7 @@
 <title>Letech Intranet</title>
 <link href="${pageContext.request.contextPath}/resources/js/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" >
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
+<link href="${pageContext.request.contextPath}/resources/js/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" >
 </head>
 <body>
 	<div id="warpper">

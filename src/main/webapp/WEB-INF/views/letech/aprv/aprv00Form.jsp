@@ -18,6 +18,8 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <%-- <script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script> --%>
+<link href="${pageContext.request.contextPath}/resources/js/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" >
+
 </head>
 
 <body>
