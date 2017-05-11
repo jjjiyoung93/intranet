@@ -502,8 +502,6 @@ function fn_downFile(file_path, file_stre_nm, file_nm){
 function addRow() {
 	var nextRows = aprv_line.rows.length;
 	
-	
-	
 	// 결재라인 개수 설정
 	document.frm1.aprv_line_cnt.value = nextRows;
 	
@@ -518,8 +516,11 @@ function addRow() {
 	oCell2.style.cssText = "text-align:center;";
 	oCell3.style.cssText = "text-align:center;";
 	
-	oCell1.innerHTML = "<input name='aprv_emp_no"+ nextRows +"' id='aprv_emp_no"+ nextRows +"' type='hidden' /><input name='aprv_emp_no"+ nextRows +"_nm' id='aprv_emp_no"+ nextRows +"_nm' type='text' class='form-control table-cell' />&nbsp;<input type='button' class='btn btn-default' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />"
-					+ "&nbsp;&nbsp;<input type='checkbox' id='refe_yn"+ nextRows +"' name='refe_yn"+ nextRows +"' value='Y' onclick='fn_order(this)' /><label for='refe_yn"+ nextRows +"'>참조인</label>";
+	oCell1.innerHTML = "<input name='aprv_emp_no"+ nextRows +"' id='aprv_emp_no"+ nextRows +"' type='hidden' />"
+					 + "<input name='aprv_emp_no"+ nextRows +"_nm' id='aprv_emp_no"+ nextRows +"_nm' type='text' class='form-control table-cell' />&nbsp;"
+					 + "<input type='button' class='btn btn-default' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />&nbsp;&nbsp;"
+					 + "<input type='checkbox' id='refe_yn"+ nextRows +"' name='refe_yn"+ nextRows +"' value='Y' onclick='fn_order(this)' />"
+					 + "<label for='refe_yn"+ nextRows +"'>참조인</label>";
 	oCell2.innerHTML = "<input name='aprv_ordr"+ nextRows +"' id='aprv_ordr"+ nextRows +"' value='"+ nextRows +"' type='text' class='form-control' readonly />";
 	oCell3.innerHTML = "대기<input name='aprv_yn_cd"+ nextRows +"' id='aprv_yn_cd"+ nextRows +"' type='hidden' value='0' />";
 	oCell4.innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
@@ -544,18 +545,29 @@ function delRow() {
 		if($("#refe_yn"+(i+1)).is(":checked")){			
 			checkVal = "checked='checked'";
 		}
-		aprv_line.rows[i].cells[0].innerHTML = "<input name='aprv_emp_no"+ i +"' id='aprv_emp_no"+ i +"' value='"+$("#aprv_emp_no"+(i+1)).val()+"' type='hidden' /><input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='i_text input_size100' />&nbsp;<input type='button' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />"
-				+ "&nbsp;&nbsp;<input type='checkbox' id='refe_yn"+ i +"' name='refe_yn"+ i +"' value='Y' onclick='fn_order(this)' "+checkVal+" /><label for='refe_yn"+ i +"'>참조인</label>";
+		/* aprv_line.rows[i].cells[0].innerHTML = "<input name='aprv_emp_no"+ i +"' id='aprv_emp_no"+ i +"' value='"+$("#aprv_emp_no"+(i+1)).val()+"' type='hidden' />"
+				+ "<input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='i_text input_size100' />&nbsp;"
+				+ "<input type='button' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />&nbsp;&nbsp;"
+				+ "<input type='checkbox' id='refe_yn"+ i +"' name='refe_yn"+ i +"' value='Y' onclick='fn_order(this)' "+checkVal+" /><label for='refe_yn"+ i +"'>참조인</label>";
 // 		aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ i +"' type='text' class='i_text input_size50' readonly />";
 		aprv_line.rows[i].cells[2].innerHTML = "대기<input name='aprv_yn_cd"+ i +"' id='aprv_yn_cd"+ i +"' type='hidden' value='0' />";
-		aprv_line.rows[i].cells[3].innerHTML = "<input type=button value='삭제' onClick='delRow()' />";
+		aprv_line.rows[i].cells[3].innerHTML = "<input type=button value='삭제' onClick='delRow()' />"; */
+		
+		aprv_line.rows[i].cells[0].innerHTML = "<input name='aprv_emp_no"+ i +"' id='aprv_emp_no"+ i +"' value='"+$("#aprv_emp_no"+(i+1)).val()+"' type='hidden' />"
+				+ "<input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='form-control table-cell' />&nbsp;"
+				+ "<input type='button' class='btn btn-default' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />&nbsp;&nbsp;"
+				+ "<input type='checkbox' id='refe_yn"+ i +"' name='refe_yn"+ i +"' value='Y' onclick='fn_order(this)' "+checkVal+" />"
+				+ "<label for='refe_yn"+ i +"'>참조인</label>";
+		aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ i +"' type='text' class='form-control' readonly />";
+		aprv_line.rows[i].cells[2].innerHTML = "대기<input name='aprv_yn_cd"+ i +"' id='aprv_yn_cd"+ i +"' type='hidden' value='0' />";
+		aprv_line.rows[i].cells[3].innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
 	}
 	var cnt = 1;
 	for(var i = 1; i <= aprv_line.rows.length; i++) {
 		if($("#refe_yn"+i).is(":checked")){
-			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='i_text input_size50' readonly />";
+			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control' readonly />";
 		}else{
-			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='i_text input_size50' readonly />";
+			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
 			cnt++;
 		}
 	}
@@ -568,9 +580,9 @@ function fn_order(obj){
 	if($(obj).is(":checked")){
 		for(var i = 1; i < aprv_line.rows.length; i++) {
 			if(i == aprv_line.clickedRowIndex || $("#refe_yn"+i).is(":checked")){
-				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='i_text input_size50' readonly />";
+				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control' readonly />";
 			}else{
-				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='i_text input_size50' readonly />";
+				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
 				cnt++;
 			}
 		}
@@ -578,7 +590,7 @@ function fn_order(obj){
 		for(var i = 1; i <= aprv_line.rows.length; i++) {
 			if($("#refe_yn"+i).is(":checked")){
 			}else{
-				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='i_text input_size50' readonly />";
+				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
 				cnt++;
 			}
 		}

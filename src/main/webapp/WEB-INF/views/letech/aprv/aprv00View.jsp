@@ -127,7 +127,7 @@
 					            <li>
 					            	<dl class="clearfix">
 						          	<dt class="col-md-2 col-sm-3">보고내용</dt>
-						          	<dd>
+						          	<dd class="col-md-10 col-sm-9">
 						          		${viewMap.REPT_CONT }
 						            </dd>
 					            	</dl>
