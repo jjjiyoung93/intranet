@@ -31,12 +31,6 @@
 			<div id="page-wrapper">
 				<div class="row">
 					<div class="col-lg-10">
-					<h2 class="page-title clearfix">
-						${titleNaviMap.MN_NM }
-						<span class="pull-right site-map">
-							HOME > ${titleNaviMap.NAVI_NM }
-						</span>
-					</h2>
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
@@ -52,239 +46,247 @@
 							<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
 							<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
 							<!-- 검색 정보 End -->
+							
+							<h2 class="page-title clearfix">
+								${titleNaviMap.MN_NM }
+								<span class="pull-right site-map">
+									HOME > ${titleNaviMap.NAVI_NM }
+								</span>
+							</h2>
 						
-						<div class="form-container">
-							<div class="board-write">
-								<ul>
-									<li>
-										<dl class="clearfix ">
-											<dt class="col-md-2 col-sm-3">보고자</dt>
-											<dd class="col-md-10 col-sm-9 form-group">
-											<span class="form-inline">
-												<c:set var="rept_aprv_no" value=""/>
-												<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
-												<c:choose>
-													<c:when test="${params.mode eq mode_u }">
-														<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
-														<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
-													</c:when>
-													<c:otherwise>
-														<input type="text" class="form-control" value="${loginVO.name }" readonly/>
-														<c:set var="rept_aprv_no" value="${loginVO.id }"/>
-													</c:otherwise>
-												</c:choose>
-												<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
-												</span>
-											</dd>
-										</dl>
-	
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">소속</dt>
-											<dd class="col-md-10 col-sm-9 form-group"><span class="form-inline"><input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/></span></dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">프로젝트</dt>
-											<dd class="col-md-10 col-sm-9 form-group">
-												<div class="form-inline">
-													<select id="proj_cd" name="proj_cd" class="form-control">
-														<option value="">선택</option>
-														<c:forEach var="proj" items="${projList }" varStatus="status">
-														<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
-														</c:forEach>
-													</select>
-												</div>
-											</dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">결제구분</dt>
-											<dd class="col-md-10 col-sm-9 form-group">
-												<div class="form-inline">
-													<select id="cdList1" name="cdList1" class="form-control form-group">
-															<option value="" >--1차 구분 선택--</option>
-														<c:forEach var="codeList" items="${codeList}">
-															<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
-														</c:forEach>
-													</select>
-													<select id="cdList2" name="cdList2" class="form-control ">
-															<option value="" >--2차 구분 선택--</option>
-														<c:forEach var="codeList2" items="${codeList2}">
-															<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
-														</c:forEach>
-													</select>
-													<!--  반차여부 -->
-													<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
-												</div>
-											</dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">제목</dt>
-											<dd class="col-md-10 col-sm-9 form-group"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">기간</dt>
-											<dd class="col-md-10 col-sm-9 form-group">
-												<div class="form-inline">
-													<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
-														~
-													<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
-												</div>
-											</dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">행선지</dt>
-											<dd class="col-md-10 col-sm-9 form-group"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3">보고내용</dt>
-											<dd class="col-md-10 col-sm-9 form-group"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="clearfix">
-											<dt class="col-md-2 col-sm-3 control-label">첨부파일</dt>
-											<dd class="col-md-10 col-sm-9">
-												<ul class="file-list">
-													<c:forEach var="file" items="${fileList }" varStatus="status">
-														<li id="file_${file.FILE_NO }">
-															<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-															<span class="file-btn">
-																<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" >
-																	<i class="glyphicon glyphicon-remove"></i>
-																</button>
-															</span>
-														</li>
-													</c:forEach>
-													<li>
-														<ul class="" id="my-file">
-															<li class="file-form">
-																	<input type="file" name="file" id="file1" class="input-group">
-																<span class="btn btn-xs btn-success file-btn" id="button-add-file">
-																	<i class="glyphicon glyphicon-plus"></i>
+						
+							<div class="form-container">
+								<div class="board-write">
+									<ul>
+										<li>
+											<dl class="clearfix ">
+												<dt class="col-md-2 col-sm-3">보고자</dt>
+												<dd class="col-md-10 col-sm-9 form-group">
+												<span class="form-inline">
+													<c:set var="rept_aprv_no" value=""/>
+													<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
+													<c:choose>
+														<c:when test="${params.mode eq mode_u }">
+															<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
+															<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
+														</c:when>
+														<c:otherwise>
+															<input type="text" class="form-control" value="${loginVO.name }" readonly/>
+															<c:set var="rept_aprv_no" value="${loginVO.id }"/>
+														</c:otherwise>
+													</c:choose>
+													<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
+													</span>
+												</dd>
+											</dl>
+		
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">소속</dt>
+												<dd class="col-md-10 col-sm-9 form-group"><span class="form-inline"><input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/></span></dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">프로젝트</dt>
+												<dd class="col-md-10 col-sm-9 form-group">
+													<div class="form-inline">
+														<select id="proj_cd" name="proj_cd" class="form-control">
+															<option value="">선택</option>
+															<c:forEach var="proj" items="${projList }" varStatus="status">
+															<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
+															</c:forEach>
+														</select>
+													</div>
+												</dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">결제구분</dt>
+												<dd class="col-md-10 col-sm-9 form-group">
+													<div class="form-inline">
+														<select id="cdList1" name="cdList1" class="form-control form-group">
+																<option value="" >--1차 구분 선택--</option>
+															<c:forEach var="codeList" items="${codeList}">
+																<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
+															</c:forEach>
+														</select>
+														<select id="cdList2" name="cdList2" class="form-control ">
+																<option value="" >--2차 구분 선택--</option>
+															<c:forEach var="codeList2" items="${codeList2}">
+																<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
+															</c:forEach>
+														</select>
+														<!--  반차여부 -->
+														<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
+													</div>
+												</dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">제목</dt>
+												<dd class="col-md-10 col-sm-9 form-group"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">기간</dt>
+												<dd class="col-md-10 col-sm-9 form-group">
+													<div class="form-inline">
+														<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
+															~
+														<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
+													</div>
+												</dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">행선지</dt>
+												<dd class="col-md-10 col-sm-9 form-group"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">보고내용</dt>
+												<dd class="col-md-10 col-sm-9 form-group"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3 control-label">첨부파일</dt>
+												<dd class="col-md-10 col-sm-9">
+													<ul class="file-list">
+														<c:forEach var="file" items="${fileList }" varStatus="status">
+															<li id="file_${file.FILE_NO }">
+																<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
+																<span class="file-btn">
+																	<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" >
+																		<i class="glyphicon glyphicon-remove"></i>
+																	</button>
 																</span>
 															</li>
-														</ul>
-													</li>
-												</ul>
-											</dd>
-										</dl>
-									</li>
-								</ul>
-							</div>
-							<div class="clearfix">
-								<dl class="panel panel-default">
-									<dt class="panel-heading">결제라인</dt>
-									<dd class="panel-body">
-						          		<c:set var="lineVar" value="1" />
-						          		<c:if test="${fn:length(lineList) > 0 }">
-						          			<c:set var="lineVar" value="${fn:length(lineList) }" />
-						          		</c:if>
-						    			<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
-						    			
-										<div class="table-responsive">
-										<table id="aprv_line" class="table table-bordered">
-										<thead>
-											<tr role="row">
-												<th>결재자</th>
-												<th>순서</th>
-												<th>상태</th>
-												<th >
-													<span class="">
-														<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-															<span class="btn btn-xs btn-default" onClick="addRow();"><i class="glyphicon glyphicon-plus-sign" ></i> 추가</span>
-														</c:if>
-													</span>
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:choose>
-												<c:when test="${params.mode eq mode_u && fn:length(lineList) > 0 }">
-													<!-- 수정 폼일경우 -->
-													<c:forEach var="line" items="${lineList }" varStatus="status">
-														<tr class="gradeA odd" role="row" onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
+														</c:forEach>
+														<li>
+															<ul class="" id="my-file">
+																<li class="file-form">
+																		<input type="file" name="file" id="file1" class="input-group">
+																	<span class="btn btn-xs btn-success file-btn" id="button-add-file">
+																		<i class="glyphicon glyphicon-plus"></i>
+																	</span>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</dd>
+											</dl>
+										</li>
+									</ul>
+								</div>
+								<div class="clearfix">
+									<dl class="panel panel-default">
+										<dt class="panel-heading">결제라인</dt>
+										<dd class="panel-body">
+							          		<c:set var="lineVar" value="1" />
+							          		<c:if test="${fn:length(lineList) > 0 }">
+							          			<c:set var="lineVar" value="${fn:length(lineList) }" />
+							          		</c:if>
+							    			<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
+							    			
+											<div class="table-responsive">
+											<table id="aprv_line" class="table table-bordered">
+											<thead>
+												<tr role="row">
+													<th>결재자</th>
+													<th>순서</th>
+													<th>상태</th>
+													<th >
+														<span class="">
+															<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
+																<span class="btn btn-xs btn-default" onClick="addRow();"><i class="glyphicon glyphicon-plus-sign" ></i> 추가</span>
+															</c:if>
+														</span>
+													</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:choose>
+													<c:when test="${params.mode eq mode_u && fn:length(lineList) > 0 }">
+														<!-- 수정 폼일경우 -->
+														<c:forEach var="line" items="${lineList }" varStatus="status">
+															<tr class="gradeA odd" role="row" onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
+																<td class="sorting_1">
+										    						<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" />
+										    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text form-control table-cell" readonly="readonly" />
+																	<!-- 반려일경우 결재자 추가 삭제 막음 -->
+																	<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
+												    						<input type="button" value="찾기" class="btn btn-default" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
+												    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
+																	</c:if>
+																	<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
+																			<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
+																	</c:if>
+																</td>
+																<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text form-inline"  readonly /></td>
+																<td><input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" /></td>
+																<td><i class="glyphicon glyphicon-minus-sign"></i>
+																	<!-- 반려일경우 결재자 추가 삭제 막음 -->
+																	<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
+																		<c:if test="${status.count > 1 }">	<!-- 첫번재 결재자는 삭제 안됨. -->
+																    		<input type="button" class="btn bnt-xs btn-default" value="삭제" onClick="delRow()" />
+																    	</c:if>
+																	</c:if>
+																</td>
+															</tr>
+														</c:forEach>
+													</c:when>
+													<c:otherwise>
+														<!-- 등록폼일경우 -->
+														<tr class="gradeA odd" role="row">
 															<td class="sorting_1">
-									    						<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" />
-									    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text form-control table-cell" readonly="readonly" />
-																<!-- 반려일경우 결재자 추가 삭제 막음 -->
-																<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-											    						<input type="button" value="찾기" class="btn btn-default" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
-											    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
-																</c:if>
-																<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
-																		<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
-																</c:if>
+																<div class="from-inline">
+									    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
+									    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell" type="text" value="" />
+										    							<input type="button" class="btn btn-default" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
+										    						<span style="display:none">
+										    							<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
+										    						</span>
+									    					</div>
 															</td>
-															<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text form-inline"  readonly /></td>
-															<td><input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" /></td>
-															<td><i class="glyphicon glyphicon-minus-sign"></i>
-																<!-- 반려일경우 결재자 추가 삭제 막음 -->
-																<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-																	<c:if test="${status.count > 1 }">	<!-- 첫번재 결재자는 삭제 안됨. -->
-															    		<input type="button" class="btn bnt-xs btn-default" value="삭제" onClick="delRow()" />
-															    	</c:if>
-																</c:if>
+															<td>
+																<span class="form-inline">
+																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control" readonly />														
+																</span>
 															</td>
+															<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
+															<td></td>
 														</tr>
-													</c:forEach>
-												</c:when>
-												<c:otherwise>
-													<!-- 등록폼일경우 -->
-													<tr class="gradeA odd" role="row">
-														<td class="sorting_1">
-															<div class="from-inline">
-								    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
-								    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell" type="text" value="" />
-									    							<input type="button" class="btn btn-default" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
-									    						<span style="display:none">
-									    							<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
-									    						</span>
-								    					</div>
-														</td>
-														<td>
-															<span class="form-inline">
-																<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control" readonly />														
-															</span>
-														</td>
-														<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
-														<td></td>
-													</tr>
-												</c:otherwise>
-											</c:choose>
-										</tbody>
-									</table>
-									</div>
-								</dd>
-							</dl>
+													</c:otherwise>
+												</c:choose>
+											</tbody>
+										</table>
+										</div>
+									</dd>
+								</dl>
+							</div>
+							<p class="clearfix">
+								<span class="pull-right">
+									<c:set var="btnVal" value="저장" />
+									<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
+										<c:set var="btnVal" value="재결재" />
+									</c:if>
+									<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
+									<input type="button" id="btn-ok" name="btn-ok" class="btn btn-sm btn-warning" value="${btnVal }"/>
+	<%--
+	 							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
+								    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
+	 --%>
+								</span>
+							</p>
 						</div>
-						<p class="clearfix">
-							<span class="pull-right">
-								<c:set var="btnVal" value="저장" />
-								<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
-									<c:set var="btnVal" value="재결재" />
-								</c:if>
-								<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
-								<input type="button" id="btn-ok" name="btn-ok" class="btn btn-sm btn-warning" value="${btnVal }"/>
-<%--
- 							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
-							    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
- --%>
-							</span>
-						</p>
-					</div>
 					</form>
 				</div>
 				<jsp:include page="/resources/com/inc/aside.jsp" />
@@ -375,13 +377,12 @@ $(document).ready(function() {
 		if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
 			/* 수정 폼일경우 상세화면으로 이동 */
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00View.do");
-			$("#frm1").submit();
-			
 		}else{
 			/* 입력 폼일경우 목록화면으로 이동 */
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");
-			$("#frm1").submit();	
+			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");	
 		}
+		$("#frm1").removeAttr("enctype");
+		$("#frm1").submit();
 	});
 	
 	/* 첨부파일 추가 삭제 기능 */

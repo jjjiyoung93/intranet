@@ -211,15 +211,15 @@ $(document).ready(function() {
 	/* 취소 */
 	$( ".btn-cancel" ).click(function() {
 		if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
-			/* 수정 폼일경우 상세화면으로 이동 */
+			/* 수정 폼일경우 상세화면으로 이동 */			
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/cal/cal00View.do");
-			$("#frm1").submit();
-			
 		}else{
 			/* 입력 폼일경우 목록화면으로 이동 */
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/cal/cal00List.do");
-			$("#frm1").submit();	
 		}
+		
+		$("#frm1").removeAttr("enctype");
+		$("#frm1").submit();
 	});
 	
 	/* 첨부파일 추가 삭제 기능 */

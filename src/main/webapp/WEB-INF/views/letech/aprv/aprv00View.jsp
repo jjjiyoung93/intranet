@@ -137,7 +137,7 @@
 						          	<dt class="col-md-2 col-sm-3">첨부파일</dt>
 						          	<dd class="col-md-10 col-sm-9">
 										<c:forEach var="file" items="${fileList }" varStatus="status">
-																		<div id="file_${file.FILE_NO }"><a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a></div>
+											<div id="file_${file.FILE_NO }"><a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a></div>
 										</c:forEach>
 						            </dd>
 					            	</dl>
@@ -379,6 +379,7 @@ $(document).ready(function() {
 	/* 취소 */
 	$( "#btn-cancel" ).click(function() {
 		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");
+		$("#frm1").removeAttr("enctype");
 		$("#frm1").submit();
 	});
 });
