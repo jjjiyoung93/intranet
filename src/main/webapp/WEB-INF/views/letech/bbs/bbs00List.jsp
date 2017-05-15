@@ -43,7 +43,6 @@
 							<span class="pull-right site-map">
 								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
 							</span>
-							
 						</h2>
 
 						<%-- <c:if test="${bbsTabList ne null}">

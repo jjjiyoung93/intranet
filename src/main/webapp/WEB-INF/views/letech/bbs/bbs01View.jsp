@@ -42,12 +42,12 @@
 					</c:if>
 					
 					<!-- 타이틀 및 페이지 네비 -->
-					<h4 class="page-title clearfix">
-						${bbsNm }
-						<span class="pull-right site-map">
-							HOME > 게시판 > <strong>${bbsNm }</strong>
-						</span>
-					</h4>
+						<h2 class="page-title clearfix">
+							${params.bbs_nm}
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
+							</span>
+						</h2>
 					
 					<div class="form-container">
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
@@ -124,6 +124,7 @@
 			$( ".btn-upd" ).click(function() {
 				$("#mode").val("<%=VarConsts.MODE_U%>");
 				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Form.do");
+				$("#frm1").removeAttr("enctype");
 				$("#frm1").submit();
 			});
 			/* 목록 */
@@ -154,12 +155,14 @@
 				$("#p_seq").val($("#bbs_seq").val());
 				$("#mode").val("<%=VarConsts.MODE_R%>");
 				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Form.do");
+				$("#frm1").removeAttr("enctype");
 				$("#frm1").submit();
 			})
 		});
 		
 		function goList(){
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");
+			$("#frm1").removeAttr("enctype");
 			$("#frm1").submit();
 		}
 	

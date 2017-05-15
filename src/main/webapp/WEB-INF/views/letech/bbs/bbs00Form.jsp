@@ -48,9 +48,10 @@
 					<h2 class="page-title clearfix">
 						${bbsNm}
 						<span class="pull-right site-map">
-							HOME > 게시판 > <strong>${bbsNm}</strong>
+							HOME > ${titleNaviMap.MN_NM } > ${bbsNm}
 						</span>
 					</h2>
+					
 					<div class="form-container">
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
@@ -96,7 +97,7 @@
 													<li >
 														<ul id="my-file" class="form-inline">
 															<li id="div_file file-form" class="file-form">
-																<input class="input-group" name="file" id="file1" type="file" value="" />
+																<input class="input-group" name="file" id="file0" type="file" value="" />
 																<span class="btn btn-xs btn-success file-btn" id="button-add-file">
 																	<i class="glyphicon glyphicon-plus"></i>
 																</span>
@@ -173,18 +174,16 @@
 			if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
 				/* 수정 폼일경우 상세화면으로 이동 */
 				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
-				$("#frm1").submit();
-				
 			}else if($("#mode").val() == "<%=VarConsts.MODE_R%>"){
 				var p_seq = $("#p_seq").val();
 				$("#bbs_seq").val(p_seq);
 				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
-				$("#frm1").submit();
 			}else{
 				/* 입력 폼일경우 목록화면으로 이동 */
-				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");
-				$("#frm1").submit();	
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");	
 			}
+			$("#frm1").removeAttr("enctype");
+			$("#frm1").submit();
 		});
 		
 		/* 첨부파일 추가 삭제 기능 */

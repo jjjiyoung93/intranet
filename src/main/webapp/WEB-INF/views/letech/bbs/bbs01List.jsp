@@ -35,29 +35,30 @@
 						<input type="hidden" name="bbs_id" id="bbs_id" value="${params.bbs_id }" />
 						<input type="hidden" name="bbs_seq" id="bbs_seq" value="" />
 						<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />
-					
-						<!-- 타이틀 및 페이지 네비 -->
-						<h2 class="page-title clearfix">
-							${params.bbs_nm}
-							<span class="pull-right site-map">
-								HOME > ${titleNaviMap.MN_NM } > ${params.bbs_nm}
-							</span>
-							
-						</h2>
+						
 						<c:if test="${bbsTabList ne null}">
-							<%-- <article>
+							<article>
 								<ul class="tab_gnb">
 									<c:forEach var="list3" items="${bbsTabList}" varStatus="status">
 										<c:if test="${params.bbs_id eq list3.BBS_ID}">
 											<c:set var="bbsNm" value="${list3.BBS_NM}" />
 										</c:if>
-										<li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
+										<%-- <li class="<c:if test="${params.bbs_id eq list3.BBS_ID}">on </c:if>col_md_3">
 											<a href="#" onclick="fnTabMove('bbs/bbs00List.do','${list3.BBS_ID}')">${list3.BBS_NM}</a>
-										</li>
+										</li> --%>
 									</c:forEach>
 								</ul>
-					   		</article> --%>
+					   		</article>
 						</c:if>
+						
+						<!-- 타이틀 및 페이지 네비 -->
+						<h2 class="page-title clearfix">
+							${bbsNm}
+							<span class="pull-right site-map">
+								HOME > ${titleNaviMap.MN_NM } > ${bbsNm}
+							</span>
+						</h2>
+						
 						<div class="form-container">
 						<div class="clearfix search-box">
 							<div class="search-container">

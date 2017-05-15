@@ -42,11 +42,12 @@
 					</c:if>
 					<!-- 타이틀 및 페이지 네비 -->
 					<h2 class="page-title clearfix">
-						${bbsNm }
+						${bbsNm}
 						<span class="pull-right site-map">
-							HOME > 게시판 > <strong>${bbsNm }</strong>
+							HOME > ${titleNaviMap.MN_NM } > ${bbsNm}
 						</span>
 					</h2>
+						
 					<div class="form-container">
 						<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
 							<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
@@ -157,7 +158,7 @@
 						<span class="pull-right">
 							 <input class="btn-list btn btn-sm btn-default"  type="button" value="목록" />
 							<c:if test="${bbsInfo.REP_YN eq 'Y' }">
-								<input  class="btn-rep btn btn-xs btn-default" type="button" value="답변" />
+								<input  class="btn-rep btn btn-sm btn-default" type="button" value="답변" />
 							</c:if>
 							<c:if test="${resultView.REG_ID eq loginVO.id }">
 								<input  class="btn-upd btn btn-sm btn-warning" type="button" value="수정" />
@@ -195,6 +196,7 @@
 			$( ".btn-upd" ).click(function() {
 				$("#mode").val("<%=VarConsts.MODE_U%>");
 				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Form.do");
+				$("#frm1").removeAttr("enctype");
 				$("#frm1").submit();
 			});
 			/* 목록 */
@@ -225,6 +227,7 @@
 				$("#p_seq").val($("#bbs_seq").val());
 				$("#mode").val("<%=VarConsts.MODE_R%>");
 				$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Form.do");
+				$("#frm1").removeAttr("enctype");
 				$("#frm1").submit();
 			})
 		});
@@ -232,12 +235,14 @@
 		/* 목록이동 */
 		function goList(){
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");
+			$("#frm1").removeAttr("enctype");
 			$("#frm1").submit();
 		}
 		
 		/* 상세조회 */
 		function fnView(){
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
+			$("#frm1").removeAttr("enctype");
 			$("#frm1").submit();
 		}
 		
