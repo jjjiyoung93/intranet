@@ -17,12 +17,6 @@
 			<jsp:include page="/resources/com/inc/header.jsp" />
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>	
-		
-		<%-- <jsp:include page="/resources/com/inc/header.jsp" /> --%>
-	    <%-- <jsp:include page="/resources/com/inc/menu.jsp" /> --%>
-		<%-- <jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" /> --%>
-		<%-- <%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %> --%>
-		
 	    <!-- 컨텐츠-->
     	<div class="" id="page-wrapper">
 	   	 	<section class="row">
@@ -111,7 +105,7 @@
 									<c:choose>
 										<c:when test="${totalCnt < 1 }">
 											<tr>
-												<td colspan="5">검색된 내용이 없습니다.</td>
+												<td class="text-center" colspan="5">검색된 내용이 없습니다.</td>
 											</tr>
 										</c:when>
 										<c:otherwise>
