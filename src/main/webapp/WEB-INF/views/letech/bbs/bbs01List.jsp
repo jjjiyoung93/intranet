@@ -74,7 +74,7 @@
 									<div class="input-group">
 										<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
 										<span class="input-group-btn">
-											<button class="fnSearch btn btn-default" type="button">
+											<button class="fnSearch btn btn-info" type="button">
 													<i class="glyphicon glyphicon-search"></i>
 													<span class="hidden-xs hidden-sm"> 검색</span>
 											</button>
