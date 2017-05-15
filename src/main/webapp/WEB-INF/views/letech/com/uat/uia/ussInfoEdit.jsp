@@ -35,11 +35,12 @@
 						<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
 						<input type="hidden" id="uss_auth_cd" name="uss_auth_cd" value="${resultView.USS_AUTH_CD}"/>
 							<div class="board-view">
-								<ul>
+								<div class="row">
+								<ul class="col-md-6">
 									<li>
 										<dl class="row first-line">
-											<dt class="col-md-2 col-xs-3">부서</dt>
-											<dd class="col-md-10 col-9">
+											<dt class="col-md-3 col-sm-3">부서</dt>
+											<dd class="col-md-9 col-sm-9">
 												<input name="dp_cd" id="dp_cd" type="hidden" value="${resultView.DP_CD }" />
 												<c:forEach var="departList" items="${departList}">
 													<c:if test="${departList.DP_CD eq resultView.DP_CD }">
@@ -50,57 +51,27 @@
 										</dl>
 									</li>
 									<li>
-										<dl class="row first-line">
-											<dt class="col-md-2 col-xs-3">사용자 ID</dt>
-											<dd class="col-md-10 col-9">
-												<input type="text" value="${resultView.USS_ID }" class="form-control form-group" readonly/>
-												<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
-												<input name="uss_sex" id="uss_sex" type="hidden" value="${resultView.USS_SEX }"/>
-											</dd>
-										</dl>
-									</li>
-									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-sm-3">성명</dt>
-											<dd class="col-md-10 col-sm-9">
+											<dt class="col-md-3 col-sm-3">성명</dt>
+											<dd class="col-md-9 col-sm-9">
 												<input name="uss_nm" id="uss_nm" type="text" class="form-control form-group" value="${resultView.USS_NM }" readonly/>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-sm-3">비밀번호</dt>
-											<dd class="col-md-10 col-sm-9">
-												<div class="form-inline">
-													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control form-group" />
+											<dt class="col-md-3 col-sm-3">생년월일</dt>
+											<dd class="col-md-9 col-sm-9">
+												<div class="form-group">
+													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control " />
 												</div>
 											</dd>
 										</dl>
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-sm-3">비밀번호 확인</dt>
-											<dd class="col-md-10 col-sm-9">
-												<div class="form-inline">
-													<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control form-group" />
-												</div>
-											</dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="row ">
-											<dt class="col-md-2 col-sm-3">생년월일</dt>
-											<dd class="col-md-10 col-sm-9">
-												<div class="form-inline">
-													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control form-group" />
-												</div>
-											</dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="row ">
-											<dt class="col-md-2 col-sm-3">전화번호</dt>
-											<dd class="col-md-10 col-sm-9">
+											<dt class="col-md-3 col-sm-3">전화번호</dt>
+											<dd class="col-md-9 col-sm-9">
 												<div class="form-inline form-group" >
 													<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="i_text form-control table-cell"/>
 														-
@@ -113,19 +84,52 @@
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-2 col-sm-3">이메일</dt>
-											<dd class="col-md-10 col-sm-9">
+											<dt class="col-md-3 col-sm-3">이메일</dt>
+											<dd class="col-md-9 col-sm-9">
 												<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }" class="form-control form-group" />
 											</dd>
 										</dl>
 									</li>
 								</ul>
+								<ul class="col-md-6">
+									<li>
+										<dl class="row">
+											<dt class="col-md-3 col-sm-3">사용자 ID</dt>
+											<dd class="col-md-9 col-sm-9">
+												<input type="text" value="${resultView.USS_ID }" class="form-control form-group" readonly/>
+												<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
+												<input name="uss_sex" id="uss_sex" type="hidden" value="${resultView.USS_SEX }"/>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">비밀번호</dt>
+											<dd class="col-md-9 col-sm-9 ">
+												<div class="form-group">
+													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">비밀번호 확인</dt>
+											<dd class="col-md-9 col-sm-9 ">
+												<div class="form-group">
+													<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control " />
+												</div>
+											</dd>
+										</dl>
+									</li>
+								</ul>
+								</div>
 							</div>
 						</form>
 						<p class="clearfix" >
 							<span class="pull-right">
+							<a class="btn-ok btn btn-info" href="#submit" role="button">수정</a>
 						  <a href="#cancel" class="btn-cancel btn btn-default " ><span>취소</span></a>
-							<a class="btn-ok btn btn-warning" href="#submit" role="button">수정</a>
 							</span>
 						</p>
 						</div>
