@@ -323,7 +323,6 @@
 	
 		/* 파일 다운로드 */
 		function fn_downFile(file_path, file_stre_nm, file_nm){
-			alert(file_path+" / "+file_stre_nm+" / "+file_nm);
 			$("#file_path").val(file_path);
 			$("#file_stre_nm").val(file_stre_nm);
 			$("#file_nm").val(file_nm);
