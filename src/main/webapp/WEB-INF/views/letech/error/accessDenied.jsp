@@ -7,19 +7,19 @@
 <title>[NullPointerException]에러</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 </head>
-<body class="login">
-<div class="container">
-	<div class="er_box">
-		<div class="col_md_12">
-			<h1 class="error_title">
-				<span>ACCESS</span> DENIED
-			</h1>
-		</div>
-		<h3 class="er_txt">사용자 권한이 없습니다.<br>
-				다시 한번 확인 해 주시기 바랍니다.
-		</h3>
+<body class="error-body">
+	<div class="wapper">
+		<div class="container">
+			<div class="login-box er_box">
+				<h1 class="error_title">
+					<span>ACCESS</span> DENIED
+				</h1>
+				<h3 class="er_txt">사용자 권한이 없습니다.<br>
+					다시 한번 확인 해 주시기 바랍니다.
+				</h3>
+			</div>
 	</div>
-</div>
+</div>				
 <script type="text/javascript">
 setTimeout("gomain()", 5000);
 function gomain(){

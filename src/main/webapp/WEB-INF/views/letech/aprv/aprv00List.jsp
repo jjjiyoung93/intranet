@@ -65,29 +65,32 @@
 									</select>
 								</span>
 							</div>
-						<div class="col-md-6">
-							<div class="col-xs-5 un-style">
-								<span class="inline-element">
-									<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-										<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-										제목
-										</option>
-										<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
-										내용
-										</option>
-									</select>
-								</span>
-							</div>
-							<div class="col-xs-7 un-style">
-								<div class="input-group">
-								<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-									<span class="input-group-btn">
-										<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
+						<div class="col-md-6 pull-right">
+							<div class="">
+								<div class="col-xs-5 un-style">
+									<span class="inline-element">
+										<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
+											제목
+											</option>
+											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
+											내용
+											</option>
+										</select>
 									</span>
 								</div>
-							</div>
+							
+								<div class="col-xs-7 un-style">
+									<div class="input-group">
+									<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
+										<span class="input-group-btn">
+											<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
+										</span>
+									</div>
+								</div>
 							</div>
 						</div>
+					</div>
 					</div>
 					<p class="clearfix board-top">
 						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
@@ -206,12 +209,8 @@
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</div>
 	</div>
+	<jsp:include page="/resources/com/inc/footer.jsp" />
 </div>
-<footer>
-	<div class="container">
-		<p>COPYRIGHT(C)2015 LE Tech CO.,LTD.ALL RIGHTS RESERVED.</p>
-	</div>
-</footer>
 <script type="text/javascript">
 
 $(document).ready(function(){

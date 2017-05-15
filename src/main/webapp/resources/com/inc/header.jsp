@@ -65,7 +65,7 @@ if(Sessinfo != null){
 						</ul>
 					</li>
 					
-					<%-- <li class="hidden-xs">
+				<%-- 	<li class="hidden-xs hidden-sm">
 						<a data-toggle="collapse" data-parent="#accordion" href="#userOne" aria-expanded="false">
 							<i class="glyphicon glyphicon-user"></i><%=SES_NM %>
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 

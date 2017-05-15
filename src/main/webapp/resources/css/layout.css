@@ -1,5 +1,6 @@
 
-body{background:#8fd7d4;}
+html,body{height:100%;}
+body{margin:0;background:#8fd7d4;}
 h1,h2,h3,h4,h5,
 ul,li,ol,dl,dt,dd,
 div,p{margin:0;padding:0;}
@@ -9,7 +10,7 @@ ul,ol{list-style:none;}
 .nav>li>a:hover{}
 .open>a{background:#9e8a66! important;}
 .clear-left-padding{padding-left:0;}
-#wrapper{position:relative;}
+#wrapper{min-height:100%;position: relative;padding-bottom:50px;}
 span.red-color{color:#fff;}
 p{margin:10px 0 20px;}
 caption{display:none;}
@@ -79,14 +80,14 @@ h1.logo a.navbar-brand{padding:5px 15px;}
 .notic_box ul li span{width:100%;display:block;margin-top:5px;}
 
 /*container*/
-#page-wrapper{padding:15px;border-left:1px solid #e7e7e7;background:#f3f3f4;}
+#page-wrapper{min-height:900px;padding:15px;padding-bottom:50px;border-left:1px solid #e7e7e7;background:#f3f3f4;}
 .page-title{font-weight:bold;padding:25px 0 30px;margin:0;color:#442c02;border-bottom:2px solid #5bc0de;}
 .site-map{margin-top:10px;font-size:14px;font-weight:normal;}
 .un-style{padding:0;margin:0;}
 
 
 /*footer*/
-footer{padding:30px 0;text-align:center;background:#fff;border-top:1px solid #e7e7e7;}
+footer{width:100%;height:50px;position:absolute;bottom:0;left:0;padding:7px 0;text-align:center;background:#fff;border-top:1px solid #e7e7e7;}
 
 
 /*로그인*/
@@ -189,6 +190,17 @@ span.code-three {margin-left:20px;}
 .tree li a {text-decoration: none;color:#369;}
 .tree li button, .tree li button:active, .tree li button:focus {text-decoration: none;color:#369;border:none;background:transparent;margin:0px;padding:0px;outline: 0;}
 
+/*error*/
+body.error-body { 
+	background: -webkit-linear-gradient(-45deg,rgba(0,0,0, .8),rgba(0,0,0, .8)) fixed,url(../images/layout/login_bg1.jpg) fixed; /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(-45deg,rgba(0,0,0, .8), rgba(0,0,0, .8)) fixed,url(../images/layout/login_bg1.jpg) fixed; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background-size: cover;
+}
+.error_title{color:#fff;font-size:100px;font-weight:700;}
+.error_title span{color:crimson;}
+.er_txt{line-height:150%;color:#fff;}
+
+
 @media(min-width:768px){
 	.sidebar{z-index:1;position:absolute;width:250px;margin-top:53px;}
 	#page-wrapper{min-height:568px;position:inherit;margin:0 0 0 250px;padding:30px;}
@@ -214,7 +226,12 @@ body.pop .pop-btn{margin:0;padding-top:15px;border-top:1px solid #ddd;}
 	.login-back p{display:none;}
 	.board-date{width:100px;}
 	
-
+	footer{font-size:11px;}
+	
+	.error_title{font-size:50px;font-weight:700;}
+	.er_txt{font-size:20px;line-height:150%;color:#fff;}
+	
+	
 }
 @media(max-width:517px){
 	.search-container{width:100%;}
@@ -226,7 +243,7 @@ body.pop .pop-btn{margin:0;padding-top:15px;border-top:1px solid #ddd;}
 }
 
 @media(min-height:900px){
-	#page-wrapper{min-height:870px;}
+	#page-wrapper{min-height:920px;}
 }
 
 @media(min-height:1080px){
