@@ -29,7 +29,7 @@
 								<option value="02" <c:if test="${params.searchGubun eq '02'}">selected = "selected"</c:if>>성명</option>
 							</select>
 							<input class="form-control table-cell" type="text" name="searchField" id="searchField"  value="${params.searchField}" class="col_md_5" title="검색어 입력" />
-							<input type="button" class="fnSearch btn-warning btn table-cell" value="검색" title="검색" />
+							<input type="button" class="fnSearch btn-info btn table-cell" value="검색" title="검색" />
 						</span>							
 					</span>
 				</div>
@@ -80,12 +80,12 @@
 					</table>
 				</div>
 				<p class="clearfix pop-btn">
-					<ul class="pagination">
+					<ul class="pagination pagination-sm">
 						${pageNavigator }
 					</ul>
 					<!--<a href="#cancel" class="btn-cancel" onclick="window.parent.closeModal();"><span>닫기</span></a> -->
 					<span class="pull-right">
-						<a href="#cancel" class="btn btn-default" onclick="window.self.close();">닫기</a>
+						<a href="#cancel" class="btn btn-default btn-sm" onclick="window.self.close();">닫기</a>
 					</span>
 				</p>
 			</fieldset>
