@@ -37,7 +37,7 @@
 				</h2>
 				<div class="form-container">
 				<div class="board-view">
-					<ul>
+					<ul class="row">
 						<li>
 							<dl class="clearfix first-line ">
 								<dt class="col-md-2 col-sm-3">시작일자(시간)</dt>
@@ -135,8 +135,8 @@
 			</div>
 			<p class="clearfix" >
 				<span class="pull-right">
+					<a href="#submit" class="btn-ok btn btn-sm btn-info" ><span>저장</span></a>
 					<a href="#cancel" class="btn-cancel btn btn-sm btn-default" ><span>취소</span></a>
-					<a href="#submit" class="btn-ok btn btn-sm btn-warning" ><span>저장</span></a>
 				</span>
 			</p>
 			</div>
