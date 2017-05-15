@@ -40,8 +40,8 @@
 					</div>
 					<p class="clearfix pop-btn">
 						<span class="pull-right">
-	           <a href="#cancel" class="btn btn-default" onclick="window.self.close();">닫기</a>
-	           <a href="#submit" class="btn btn-info" onclick="fnSubmit('${params.flag}');">저장</a>
+	           <a href="#submit" class="btn btn-info btn-sm" onclick="fnSubmit('${params.flag}');">저장</a>
+	           <a href="#cancel" class="btn btn-default btn-sm" onclick="window.self.close();">닫기</a>
 	         </span>
 	       </p>
 		    </fieldset>

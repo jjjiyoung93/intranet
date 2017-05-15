@@ -44,8 +44,8 @@
 		<p class="clearfix pop-btn">
 				<!--<a href="#cancel" class="btn-cancel" onclick="window.parent.closeModal();"><span>닫기</span></a> -->
 			<span class="pull-right">
-				<a href="#cancel" class="btn btn-default" onclick="window.self.close();">닫기</a>
-				<a href="#submit" class="btn btn-info" onclick="fnSubmit('${params.flag}');">저장</a>
+				<a href="#submit" class="btn btn-sm btn-info" onclick="fnSubmit('${params.flag}');">저장</a>
+				<a href="#cancel" class="btn btn-sm btn-default" onclick="window.self.close();">닫기</a>
 			</span>
 		</p>
 	</fieldset>

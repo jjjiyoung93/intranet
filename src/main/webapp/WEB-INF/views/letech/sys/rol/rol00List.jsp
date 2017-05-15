@@ -35,7 +35,7 @@
 			<div class="form-container">						
 						<p class="clearfix">
 					<span class="pull-right">
-						<a href="#" class="btn btn-warning" onclick="fnInsert();">패턴추가</a>
+						<a href="#" class="btn btn-info btn-sm" onclick="fnInsert();">패턴추가</a>
 					</span>
 				</p>
 		
@@ -172,9 +172,15 @@
 					
 				</tbody>
 			</table>
+			
 		</div>
 			<!-- page nav -->
 
+	<p class="clearfix">
+		<span class="pull-right">
+			<a href="#" class="btn btn-info btn-sm" onclick="fnInsert();">패턴추가</a>
+		</span>
+	</p>
 	
 	<div class="pop_bg">
 		<div class="popup"style="height:1px;">

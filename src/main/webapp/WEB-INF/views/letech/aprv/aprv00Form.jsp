@@ -223,14 +223,14 @@
 										    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text form-control table-cell" readonly="readonly" />
 																	<!-- 반려일경우 결재자 추가 삭제 막음 -->
 																	<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-												    						<input type="button" value="찾기" class="btn btn-default" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
+												    						<input type="button" value="찾기" class="btn btn-default btn-sm" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
 												    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
 																	</c:if>
 																	<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
 																			<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
 																	</c:if>
 																</td>
-																<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text form-inline"  readonly /></td>
+																<td><input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" value="${line.APRV_ORDR }" class="i_text form-inline input-sm"  readonly /></td>
 																<td><input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="${line.APRV_YN_CD }" class="i_text" /></td>
 																<td><i class="glyphicon glyphicon-minus-sign"></i>
 																	<!-- 반려일경우 결재자 추가 삭제 막음 -->
@@ -249,8 +249,8 @@
 															<td class="sorting_1">
 																<div class="from-inline">
 									    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
-									    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell" type="text" value="" />
-										    							<input type="button" class="btn btn-default" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
+									    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell input-sm" type="text" value="" />
+										    							<input type="button" class="btn btn-default btn-sm" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
 										    						<span style="display:none">
 										    							<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
 										    						</span>
@@ -258,7 +258,7 @@
 															</td>
 															<td>
 																<span class="form-inline">
-																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control" readonly />														
+																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control input-sm" readonly />														
 																</span>
 															</td>
 															<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
@@ -278,8 +278,8 @@
 									<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
 										<c:set var="btnVal" value="재결재" />
 									</c:if>
+									<input type="button" id="btn-ok" name="btn-ok" class="btn btn-sm btn-info" value="${btnVal }"/>
 									<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
-									<input type="button" id="btn-ok" name="btn-ok" class="btn btn-sm btn-warning" value="${btnVal }"/>
 	<%--
 	 							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
 								    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
@@ -518,11 +518,11 @@ function addRow() {
 	oCell3.style.cssText = "text-align:center;";
 	
 	oCell1.innerHTML = "<input name='aprv_emp_no"+ nextRows +"' id='aprv_emp_no"+ nextRows +"' type='hidden' />"
-					 + "<input name='aprv_emp_no"+ nextRows +"_nm' id='aprv_emp_no"+ nextRows +"_nm' type='text' class='form-control table-cell' />&nbsp;"
-					 + "<input type='button' class='btn btn-default' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />&nbsp;&nbsp;"
+					 + "<input name='aprv_emp_no"+ nextRows +"_nm' id='aprv_emp_no"+ nextRows +"_nm' type='text' class='form-control table-cell input-sm' />&nbsp;"
+					 + "<input type='button' class='btn btn-default btn-sm' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />&nbsp;&nbsp;"
 					 + "<input type='checkbox' id='refe_yn"+ nextRows +"' name='refe_yn"+ nextRows +"' value='Y' onclick='fn_order(this)' />"
 					 + "<label for='refe_yn"+ nextRows +"'>참조인</label>";
-	oCell2.innerHTML = "<input name='aprv_ordr"+ nextRows +"' id='aprv_ordr"+ nextRows +"' value='"+ nextRows +"' type='text' class='form-control' readonly />";
+	oCell2.innerHTML = "<input name='aprv_ordr"+ nextRows +"' id='aprv_ordr"+ nextRows +"' value='"+ nextRows +"' type='text' class='form-control input-sm' readonly />";
 	oCell3.innerHTML = "대기<input name='aprv_yn_cd"+ nextRows +"' id='aprv_yn_cd"+ nextRows +"' type='hidden' value='0' />";
 	oCell4.innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
 	
@@ -530,7 +530,7 @@ function addRow() {
 	for(var i = 1; i <= aprv_line.rows.length; i++) {
 		if($("#refe_yn"+i).is(":checked")){
 		}else{
-			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
+			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control input-sm' readonly />";
 			cnt++;
 		}
 	}
@@ -555,20 +555,20 @@ function delRow() {
 		aprv_line.rows[i].cells[3].innerHTML = "<input type=button value='삭제' onClick='delRow()' />"; */
 		
 		aprv_line.rows[i].cells[0].innerHTML = "<input name='aprv_emp_no"+ i +"' id='aprv_emp_no"+ i +"' value='"+$("#aprv_emp_no"+(i+1)).val()+"' type='hidden' />"
-				+ "<input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='form-control table-cell' />&nbsp;"
-				+ "<input type='button' class='btn btn-default' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />&nbsp;&nbsp;"
+				+ "<input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='form-control table-cell input-sm' />&nbsp;"
+				+ "<input type='button' class='btn btn-default btn-sm' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />&nbsp;&nbsp;"
 				+ "<input type='checkbox' id='refe_yn"+ i +"' name='refe_yn"+ i +"' value='Y' onclick='fn_order(this)' "+checkVal+" />"
 				+ "<label for='refe_yn"+ i +"'>참조인</label>";
-		aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ i +"' type='text' class='form-control' readonly />";
+		aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ i +"' type='text' class='form-control input-sm' readonly />";
 		aprv_line.rows[i].cells[2].innerHTML = "대기<input name='aprv_yn_cd"+ i +"' id='aprv_yn_cd"+ i +"' type='hidden' value='0' />";
 		aprv_line.rows[i].cells[3].innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
 	}
 	var cnt = 1;
 	for(var i = 1; i <= aprv_line.rows.length; i++) {
 		if($("#refe_yn"+i).is(":checked")){
-			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control' readonly />";
+			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control input-sm' readonly />";
 		}else{
-			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
+			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control input-sm' readonly />";
 			cnt++;
 		}
 	}
@@ -581,9 +581,9 @@ function fn_order(obj){
 	if($(obj).is(":checked")){
 		for(var i = 1; i < aprv_line.rows.length; i++) {
 			if(i == aprv_line.clickedRowIndex || $("#refe_yn"+i).is(":checked")){
-				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control' readonly />";
+				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control input-sm' readonly />";
 			}else{
-				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
+				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control input-sm' readonly />";
 				cnt++;
 			}
 		}
@@ -591,7 +591,7 @@ function fn_order(obj){
 		for(var i = 1; i <= aprv_line.rows.length; i++) {
 			if($("#refe_yn"+i).is(":checked")){
 			}else{
-				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control' readonly />";
+				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control input-sm' readonly />";
 				cnt++;
 			}
 		}

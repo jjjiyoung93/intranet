@@ -25,6 +25,7 @@
 	<div id="page-wrapper">
 		<div class="row">
 			<section class="row">
+				<div class="col-lg-10">
 			
 				<!-- 타이틀 및 페이지 네비 -->
 				<!-- page -->
@@ -42,7 +43,6 @@
 					<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
 					<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
 					<!-- 검색 정보 End -->
-					<div class="col-lg-10">
 						<h2 class="page-title clearfix">
 							${titleNaviMap.MN_NM }
 							<span class="pull-right site-map">
@@ -297,8 +297,8 @@
 											</c:otherwise>
 										</c:choose>
 											</tbody>
-											</div>
 							    			</table>
+											</div>
 							            </dd>
 						            </dl>
 							    	</div>
@@ -307,8 +307,8 @@
 							<p class="clearfix">
 								<span class="pull-right">
 								<c:if test="${viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' }">
-					   	 			<input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="수정" />
-					   			 <input class="btn btn-sm btn-warning"  type="button" id="btn-delete" value="삭제" />
+					   	 			<input class="btn btn-sm btn-info" type="button" id="btn-ok" value="수정" />
+					   			 <input class="btn btn-sm btn-default"  type="button" id="btn-delete" value="삭제" />
 								</c:if>
 								<c:if test="${viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '3' }">
 									<input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="재결재" />
@@ -321,7 +321,6 @@
 				</form>
 					
 				</div>
-				<div >
 				<jsp:include page="/resources/com/inc/aside.jsp" />
 			</section>
 	

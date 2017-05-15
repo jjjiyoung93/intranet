@@ -9,7 +9,7 @@
 </head>
 
 <body>
-	<div id="warpper">
+	<div id="wrapper">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<jsp:include page="/resources/com/inc/header.jsp" />
 			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
@@ -55,7 +55,7 @@
 							</div>
 							<p class="clearfix board-top">
 								<span class="pull-right">
-									<button class="fnJoin btn btn-sm btn-warning" >등 록</button>
+									<button class="fnJoin btn btn-sm btn-default" >등 록</button>
 								</span>
 								<strong class="list_count" >Total : ${totalCnt} 건</strong>
 							</p>
@@ -115,15 +115,15 @@
 								${pageNavigator }
 							</ul>
 							<span class="pull-right">
-								<button class="fnJoin btn btn-sm btn-warning" >등 록</button>
+								<button class="fnJoin btn btn-sm btn-default" >등 록</button>
 							</span>
 						</div>
 					</div>
 					<div>
 						</div>
 					</div>
-</form>
-</div>
+				</form>
+			</div>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 	</div>

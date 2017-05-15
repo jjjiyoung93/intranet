@@ -128,8 +128,8 @@
 						</form>
 						<p class="clearfix" >
 							<span class="pull-right">
-							<a class="btn-ok btn btn-info" href="#submit" role="button">수정</a>
-						  <a href="#cancel" class="btn-cancel btn btn-default " ><span>취소</span></a>
+							<a class="btn-ok btn btn-info btn-sm" href="#submit" role="button">수정</a>
+						  <a href="#cancel" class="btn-cancel btn btn-default btn-sm" ><span>취소</span></a>
 							</span>
 						</p>
 						</div>

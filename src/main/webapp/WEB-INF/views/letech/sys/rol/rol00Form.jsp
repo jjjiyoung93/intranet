@@ -53,8 +53,8 @@
 				</ul>
 				<p class="clearfix">
 			 		<span class="pull-right">
-						<a href="#cancel" class="btn btn-default" onclick="window.self.close();"><span>닫기</span></a>
-						<a href="#submit" class="btn btn-info" onclick="fnSubmit('${params.flag}');"><span>저장</span></a>
+						<a href="#submit" class="btn btn-info btn-sm" onclick="fnSubmit('${params.flag}');"><span>저장</span></a>
+						<a href="#cancel" class="btn btn-default btn-sm" onclick="window.self.close();"><span>닫기</span></a>
 			 		</span>
 				</p>
 				
