@@ -63,7 +63,7 @@
 							<input type="hidden" id="p_seq" name="p_seq" value="${params.p_seq }" />
 							<input type="hidden" name="bbs_seq" id="bbs_seq" value="${resultView.BBS_SEQ }" />
 				
-							<ul class="form-write">
+							<ul class="form-write row">
 								<li>
 									<dl class="clearfix form-group form-horizontal">
 										<dt class="col-md-2 col-sm-3 control-label">제목</dt>
@@ -128,12 +128,12 @@
 								</li>
 							</ul>
 						</form>
-					</div>
 					<div class="clearfix">
 						<span class="pull-right">
-						    <input  class="btn-ok btn btn_info btn btn-warning" type="button" value="저장" />
-					    	<input class="btn-cancel btn btn_default"  type="button" value="취소" />
+						    <input  class="btn-ok btn btn-info btn-sm" type="button" value="저장" />
+					    	<input class="btn-cancel btn btn-default btn-sm"  type="button" value="취소" />
 						</span>
+					</div>
 					</div>
 				</div>
 				<!-- aside(공지사항) -->
