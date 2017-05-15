@@ -34,7 +34,7 @@
 								<p> <strong>엘이테크 임직원 전용 인트라넷</strong> </p>
 								<input type="text" id="id" name="id" value="" class="form-control form-group input-lg" placeholder="ID">
 										<input type="password" id="password"  class="form-control form-group input-lg" name="password"  placeholder="Password">
-										<input type="submit" value="LOGIN" class="btn btn-lg btn-info btn-block" >
+										<input type="submit" value="LOGIN" class="btn btn-lg btn-info btn-block" onclick="actionLogin()">
 							</div>
 						</div>
 					</div>
@@ -52,7 +52,6 @@ function fnGoJoin(){
 }
 
 function actionLogin() {
-
     if (document.loginForm.id.value =="") {
         alert("아이디를 입력하세요");
     } else if (document.loginForm.password.value =="") {
