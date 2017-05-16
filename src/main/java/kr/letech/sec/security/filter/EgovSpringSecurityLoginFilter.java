@@ -244,6 +244,8 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 							//사용자 정보가 없는 경우 로그인 화면으로 redirect 시킴
 //							httpRequest.setAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 							RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginURL);
+							//로그인 실패 확인
+							request.setAttribute("loginYn", "N");
 							dispatcher.forward(httpRequest, httpResponse);
 							
 							//chain.doFilter(request, response);
