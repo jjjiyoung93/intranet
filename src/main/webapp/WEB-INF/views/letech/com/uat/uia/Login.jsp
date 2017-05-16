@@ -50,13 +50,7 @@ function loginCheck(){
 	 if (document.loginForm.loginYn.value == "N") {
 		 alert("일치하는 정보가 없습니다.\n아이디와 비밀번호를 확인해주세요.");
 	 }
-}
-
-function enterkey() {
-    if (window.event.keyCode == 13) {
-
-         alert("enter");
-    }
+	 document.loginForm.id.focus();
 }
 
 function actionLogin() {
