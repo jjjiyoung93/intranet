@@ -10,7 +10,7 @@
 	<body class="login" onload="loginCheck()">
 		<div id="wrapper">
 			<div class="container">
-				<form name="loginForm" action ="<%=request.getContextPath()%>/uat/uia/actionLogin.do" method="post">
+				<form name="loginForm" action ="<%=request.getContextPath()%>/uat/uia/actionLogin.do" method="post" onsubmit="return actionLogin()">
 					<input type="hidden" name="file1" id="file1" value=""/>
 					<input type="hidden" name="file2" id="file2" value=""/>
 					<input type="hidden" name="seq_no" id="seq_no" value="1111111"/>
@@ -35,7 +35,7 @@
 								<p> <strong>엘이테크 임직원 전용 인트라넷</strong> </p>
 								<input type="text" id="id" name="id" value="" class="form-control form-group input-lg" placeholder="ID">
 										<input type="password" id="password"  class="form-control form-group input-lg" name="password"  placeholder="Password">
-										<input type="button" value="LOGIN" class="btn btn-lg btn-info btn-block" onclick="actionLogin()">
+										<input type="submit" value="LOGIN" class="btn btn-lg btn-info btn-block">
 							</div>
 						</div>
 					</div>
@@ -52,24 +52,32 @@ function loginCheck(){
 	 }
 }
 
-function fnGoJoin(){
-	alert("이동");
-	document.frm1.submit();
+function enterkey() {
+    if (window.event.keyCode == 13) {
+
+         alert("enter");
+    }
 }
 
 function actionLogin() {
     if (document.loginForm.id.value =="") {
         alert("아이디를 입력하세요");
+        document.loginForm.id.focus();
+        return false;
     } else if (document.loginForm.password.value =="") {
         alert("비밀번호를 입력하세요");
+        document.loginForm.password.focus();
+        return false;
     } else if (document.loginForm.password.value.length <= 3) {
     	alert("비밀번호는 4자리 이상 입력하셔야합니다.");
-    } else {
+    	document.loginForm.password.focus();
+    	return false;
+    } /* else {
         document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
         //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
         //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
         document.loginForm.submit();
-    }
+    } */
 }
 
 
