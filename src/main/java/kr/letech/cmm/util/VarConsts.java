@@ -77,7 +77,11 @@ public class VarConsts {
 	 * 타입 = String<br>
 	 * 값 = 'CD0011'<br>
 	 */
-	public static final String EAM_VACATION_CODE = "CD0001002";
+//	public static final String EAM_VACATION_CODE = "CD0001002";
+	/*
+	 * 현재 휴가 코드가 CD0001011로 사용되고 있음.
+	 */
+	public static final String EAM_VACATION_CODE = "CD0001011";
 	
 	/**
 	 * 종류 = 결재구분코드 (출장)<br>
