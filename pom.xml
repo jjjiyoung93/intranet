@@ -19,7 +19,27 @@
 	
 	<!-- </repositories> -->
 	<repositories>
+		<!-- 19.07.31 nexus start -->
+		<!-- <repository>
+			<id>letech-nexus</id>
+			<url>http://10.10.250.201:8081/nexus</url>
+		</repository>
 		<repository>
+			<id>egovframe2</id>
+			<url>http://maven.egovframe.kr:8080/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+		    <id>oracle</id>
+		    <name>ORACLE JDBC Repository</name>
+		    <url>http://maven.jahia.org/maven2</url>
+		</repository> -->
+		<!-- <repository>
 			<id>egovframe</id>
 			<url>http://www.egovframe.go.kr/maven/</url>
 			<releases>
@@ -33,9 +53,37 @@
 		    <id>oracle</id>
 		    <name>ORACLE JDBC Repository</name>
 		    <url>http://maven.jahia.org/maven2</url>
+		</repository> -->
+		<!-- end -->
+		
+		<!-- START 	19.07.30	김지연 	 추가 -->
+		<repository>
+			<id>mvn2</id>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>egovframe2</id>
+			<url>http://maven.egovframe.kr:8080/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+		    <id>oracle</id>
+		    <name>ORACLE JDBC Repository</name>
+		    <url>http://maven.jahia.org/maven2</url>
 		</repository>
 	</repositories>
-	
+	<!-- END -->
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -205,11 +253,17 @@
 		<!-- END -->
 		
 		<!-- oracle -->
+		<!-- 19.07.30	김지연	버전 수정 -->
 		<dependency>
 		    <groupId>com.oracle</groupId>
 		    <artifactId>ojdbc6</artifactId>
-		    <version>11.1.0.7.0</version>
+		    <version>12.1.0.1</version>
 		</dependency>
+		<!-- <dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc6</artifactId>
+		    <version>11.1.0.7.0</version>
+		</dependency> -->
 		
 		<!-- json -->
 		 <dependency>
