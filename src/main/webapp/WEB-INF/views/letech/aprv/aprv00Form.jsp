@@ -104,7 +104,7 @@
 										</li>
 										<li>
 											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">결제구분</dt>
+												<dt class="col-md-2 col-sm-3">결재구분</dt>
 												<dd class="col-md-10 col-sm-9 form-group">
 													<div class="form-inline">
 														<select id="cdList1" name="cdList1" class="form-control form-group">
@@ -164,7 +164,7 @@
 															<li id="file_${file.FILE_NO }">
 																<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
 																<span class="file-btn">
-																	<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }')" >
+																	<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }', event)" >
 																		<i class="glyphicon glyphicon-remove"></i>
 																	</button>
 																</span>
@@ -188,7 +188,7 @@
 								</div>
 								<div class="clearfix">
 									<dl class="panel panel-default">
-										<dt class="panel-heading">결제라인</dt>
+										<dt class="panel-heading">결재라인</dt>
 										<dd class="panel-body">
 							          		<c:set var="lineVar" value="1" />
 							          		<c:if test="${fn:length(lineList) > 0 }">
@@ -400,7 +400,12 @@ $(document).ready(function() {
 });
 
 /* 파일 삭제 */
-function fn_delFile(file_path, file_stre_nm, file_no){
+function fn_delFile(file_path, file_stre_nm, file_no, event){
+	/* 19.08.02	김지연	파일 삭제시 목록으로 이동하는 문제 해결
+		원인 : 클릭 이벤트 전파
+		해결 : event.preventDefault() 추가
+	 */
+	event.preventDefault();
 	if(confirm("해당 파일을 삭제하시겠습니까?")){			
 		$.ajax({
 			url: "${pageContext.request.contextPath}/aprv/aprv01Ajax.do",
@@ -410,6 +415,7 @@ function fn_delFile(file_path, file_stre_nm, file_no){
 			success: function(result){
 				
 				$("#file_"+file_no).remove();
+				
 			},error: function (request, status, error) {
 				alert("삭제에 실패 했습니다.");
 //					alert(request.responseText);
