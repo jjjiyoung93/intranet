@@ -29,6 +29,11 @@
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" name="bbs_id" id="bbs_id" value="${params.bbs_id }" />
 						<input type="hidden" name="bbs_seq" id="bbs_seq" value="" />
+						<!--
+							19.07.30 김지연 구버전 추가기능 복사 
+							Revision 387 18. 8. 10. 오전 8:51	1	jwchoi	페이지 이동을 위한 input cpage 태그 없음으로 추가
+						-->
+						<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
 						<!--<input type="hidden" name="bbs_nm" id="bbs_nm" value="" />-->	
 										
 						<!-- 타이틀 및 페이지 네비 -->
