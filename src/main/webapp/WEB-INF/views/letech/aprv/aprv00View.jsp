@@ -82,9 +82,9 @@
 					            </li>
 					      		<li>
 					      		<dl class="clearfix">
-						          	<dt class="col-md-2 col-sm-3">결제구분</dt>
+						          	<dt class="col-md-2 col-sm-3">결재구분</dt>
 						          	<dd class="col-md-10 col-sm-9">
-										결제구분:
+										결재구분:
 										<c:forEach var="code" items="${codeList}">
 											<c:if test="${viewMap.APRV_TYPE_CD eq code.CD }">
 																		<font style="color:red">${code.CD_NM}</font>
