@@ -42,7 +42,7 @@ if(Sessinfo != null){
 						</a>
 						<ul id="alarmOne" class="panel navber-right dropdown-menu collapse">
 							<li>
-								<a data-toggle="collapse" data-parent="#accordion" href="#aside_aprv0" aria-expanded="false">결제(<font id="aside_aprvCnt0"></font>)
+								<a data-toggle="collapse" data-parent="#accordion" href="#aside_aprv0" aria-expanded="false">결재(<font id="aside_aprvCnt0"></font>)
 									<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
 								</a>
 								<ul id="aside_aprv0" class="collapse">
