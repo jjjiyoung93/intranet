@@ -160,7 +160,12 @@
 							<c:if test="${bbsInfo.REP_YN eq 'Y' }">
 								<input  class="btn-rep btn btn-sm btn-default" type="button" value="답변" />
 							</c:if>
-							<c:if test="${resultView.REG_ID eq loginVO.id }">
+							<!-- 
+								19.07.30 김지연 구버전 추가기능 복사
+								Revision 388	18. 8. 13. 오후 5:39	1	jwchoi	관리자 삭제 기능 추가
+							 -->
+<%-- 							<c:if test="${resultView.REG_ID eq loginVO.id }"> --%>
+							<c:if test="${resultView.REG_ID eq loginVO.id || loginVO.id eq 'admin01' }">
 								<input  class="btn-upd btn btn-sm btn-info" type="button" value="수정" />
 								<input  class="btn-del btn btn-sm btn-default" type="button" value="삭제" />
 							</c:if>
