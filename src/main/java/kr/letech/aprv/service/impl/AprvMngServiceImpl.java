@@ -12,11 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.letech.app.service.AppPushService;
 import kr.letech.aprv.service.AprvMngService;
+import kr.letech.cal.service.impl.CalMngDAO;
 import kr.letech.cmm.util.EgovFileTool;
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.PageNavigator;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
+import kr.letech.sys.cdm.service.impl.CodeMngDAO;
 
 @Service("aprvMngService")
 public class AprvMngServiceImpl implements AprvMngService {
@@ -27,6 +29,14 @@ public class AprvMngServiceImpl implements AprvMngService {
 	
 	@Resource(name="appPushService")
 	private AppPushService appPushService;
+	
+	/** calMngDAO */
+	@Resource(name="calMngDAO")
+	private CalMngDAO calMngDAO;
+	
+	/** codeMngDAO */
+	@Resource(name="codeMngDAO")
+	private CodeMngDAO codeMngDAO;
 	
 	/**
 	 * 페이징 처리, 목록정보
@@ -170,6 +180,29 @@ public class AprvMngServiceImpl implements AprvMngService {
 			aprvMngDAO.aprvFileInsert(fileParams);
 		}
 		
+		// 캘린더에 등록
+		// CD0001011(휴가), CD0001012(휴직), CD0001009(출장)
+		if (params.get("cdList1").equals("CD0001011") || params.get("cdList1").equals("CD0001012") || params.get("cdList1").equals("CD0001009")) {
+			Map calAprvMap = null;
+			calAprvMap = params;
+			String aprv_nm = String.valueOf(params.get("aprv_nm"));	// 결재자 이름
+			calAprvMap.put("cd", params.get("cdList2"));
+			
+			Map codeView = codeMngDAO.getCodeView(calAprvMap);	// 코드 조회
+			
+			String cd_nm = String.valueOf(codeView.get("CD_NM"));	// 코드 이름
+			calAprvMap.put("cal_nm", aprv_nm + " " +cd_nm);
+			
+			calAprvMap.put("cal_content", calAprvMap.get("cal_nm"));
+			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
+			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
+			calAprvMap.put("uss_id", params.get("rept_aprv_no"));
+			
+			int cal_seq = calMngDAO.calInsert(calAprvMap);
+			params.put("cal_no", cal_seq);
+			aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+		}
+
 		return procResultVal;
 	}
 	
@@ -305,6 +338,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 			procResultVal = aprvMngDAO.aprvDelete(params);
 		}
 		
+		// 캘린더 삭제
+//		if(procResultVal > 0) {
+//			calMngDAO.calDelete(params);
+//		}
+//		
 		return procResultVal;
 	}
 	
