@@ -47,6 +47,8 @@
 							<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
 							<!-- 검색 정보 End -->
 							
+							<input type="hidden" id="cal_no" name="cal_no" value="${viewMap.CAL_NO}" />
+							
 							<h2 class="page-title clearfix">
 								${titleNaviMap.MN_NM }
 								<span class="pull-right site-map">
