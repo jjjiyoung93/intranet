@@ -215,10 +215,15 @@ public class AprvMngController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/aprv/aprv00Tran.do")
-	public String basicTran(final MultipartHttpServletRequest multiRequest, ModelMap model) throws Exception {
+	public String basicTran(final MultipartHttpServletRequest multiRequest, ModelMap model, HttpServletRequest request) throws Exception {
 		
 		Map params = ReqUtils.getParameterMap3(multiRequest);
 		model.addAttribute("params", params);
+		
+		// 사용자 정보 넣기
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		params.put("aprv_nm", loginVO.getName());
 		
 		String mode = VarConsts.MODE_I;
 		if (params.get("mode") != null) {
