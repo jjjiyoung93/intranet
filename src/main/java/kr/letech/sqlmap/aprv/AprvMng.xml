@@ -149,6 +149,7 @@
 		                                 AND AAA.APRV_ORDR NOT IN 0
 		                                 AND AAA.APRV_NO = AA.APRV_NO
 		                               GROUP BY AAA.APRV_NO)) AS APRV_ID	/* 현재 결재할 사람의 ID */
+             , A.CAL_NO		/* 캘린더 번호*/
 			 
 		 FROM STD_APRV_MNG A
 		    LEFT OUTER JOIN STD_USS_MNG B ON B.USS_ID = A.REPT_APRV_NO
@@ -405,6 +406,7 @@
 			, NVL(C.APRV_LINE_CD, '0') AS APRV_LINE_CD
 			, D.CONF_TYPE					/* 확인 유무 */
 			, E.DP_NM AS dpNm
+			, A.CAL_NO		/* 캘린더 번호 */
 		FROM STD_APRV_MNG A
 			LEFT OUTER JOIN STD_USS_MNG B ON B.USS_ID = A.REPT_APRV_NO
 			LEFT OUTER JOIN VW_LINE_CNT C ON C.APRV_NO = A.APRV_NO
@@ -470,6 +472,7 @@
 		          , PLACE = #{place, jdbcType=VARCHAR}
 		          , MODI_EMP_NO = #{rept_aprv_no, jdbcType=VARCHAR}
 		          , MODI_DT = SYSDATE
+		          , CAL_NO = #{cal_no, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</update>
 	
