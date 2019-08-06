@@ -192,7 +192,6 @@ public class AprvMngServiceImpl implements AprvMngService {
 			
 			String cd_nm = String.valueOf(codeView.get("CD_NM"));	// 코드 이름
 			calAprvMap.put("cal_nm", aprv_nm + " " +cd_nm);
-			
 			calAprvMap.put("cal_content", calAprvMap.get("cal_nm"));
 			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
 			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
@@ -312,7 +311,39 @@ public class AprvMngServiceImpl implements AprvMngService {
 				aprvMngDAO.aprvFileInsert(fileParams);
 			}
 		}
+		// 캘린더 수정
+		// CD0001011(휴가), CD0001012(휴직), CD0001009(출장)
+		if (params.get("cdList1").equals("CD0001011") || params.get("cdList1").equals("CD0001012") || params.get("cdList1").equals("CD0001009")) {
+			Map calAprvMap = null;
+			calAprvMap = params;
+			
+			String aprv_nm = String.valueOf(params.get("aprv_nm"));	// 결재자 이름
+			calAprvMap.put("cd", params.get("cdList2"));	// 코드 조회용
+			
+			Map codeView = codeMngDAO.getCodeView(calAprvMap);	// 코드 조회
+			
+			String cd_nm = String.valueOf(codeView.get("CD_NM"));	// 코드 이름
+			
+			calAprvMap.put("cal_nm", aprv_nm + " " +cd_nm);
+			calAprvMap.put("cal_content", calAprvMap.get("cal_nm"));
+			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
+			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
 
+			// 생성된 캘린더가 있을 때 캘린더 수정
+			if(!"".equals(params.get("cal_no"))){
+				calAprvMap.put("cal_seq", params.get("cal_no"));
+				calMngDAO.calUpdate(calAprvMap);	// 캘린더 수정
+				
+			// 생성된 캘린더가 없을 때 캘린더 생성
+			}else if("".equals(params.get("cal_no"))){
+				calAprvMap.put("uss_id", params.get("rept_aprv_no"));
+				
+				int cal_seq = calMngDAO.calInsert(calAprvMap);	// 캘린더 삭제
+				params.put("cal_no", cal_seq);
+				
+				aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+			}
+		}
 		return procResultVal;
 	}
 	
@@ -339,10 +370,10 @@ public class AprvMngServiceImpl implements AprvMngService {
 		}
 		
 		// 캘린더 삭제
-//		if(procResultVal > 0) {
-//			calMngDAO.calDelete(params);
-//		}
-//		
+		if(procResultVal > 0 && !"".equals(params.get("cal_seq"))) {
+			calMngDAO.calDelete(params);
+		}
+		
 		return procResultVal;
 	}
 	
