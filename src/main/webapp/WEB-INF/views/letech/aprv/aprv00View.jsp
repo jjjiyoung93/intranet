@@ -355,12 +355,16 @@ $(document).ready(function() {
 			
 			$("#mode").val("<%=VarConsts.MODE_D%>");
 			var aprv_no = $("#aprv_no").val();
+			var cal_no = "${viewMap.CAL_NO}";	// 캘린더 번호
 			
 			$.ajax({
 				url: "${pageContext.request.contextPath}/aprv/aprv01Tran.do",
 				type: "post",
 				dataType : "json", 
-				data : {"aprv_no":aprv_no},
+				data : {
+						 "aprv_no": aprv_no
+						,"cal_seq" : cal_no
+						},
 				success: function(result){
 					var url_val = "";
 					if($("#mode").val() == "<%=VarConsts.MODE_D%>"){
