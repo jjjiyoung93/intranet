@@ -123,6 +123,7 @@
 														</select>
 														<!--  반차여부 -->
 														<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
+<!-- 													<input type="button" id="sampleTitleBtn" class="btn btn-sm btn-default" value="샘플 제목 생성"> -->
 													</div>
 												</dd>
 											</dl>
@@ -399,7 +400,31 @@ $(document).ready(function() {
 	$(document).on('click', '.button-delete-file', function(event) {
 		$(this).parent().remove();
 	});
+	
+	/* 샘플 제목 생성 기능 */
+	$("#sampleTitleBtn").click(fn_sampleTitle);
 });
+/* 샘플 제목 생성 기능 */
+function fn_sampleTitle(){
+	var cdList1_val = $("#cdList1 option:selected").val();
+	var cdList2_val = $("#cdList2 option:selected").val();
+	
+	if(cdList1_val != "" && cdList2_val != ""){
+		var cdList1 = $("#cdList1 option:selected").text();
+		var cdList2 = $("#cdList2 option:selected").text();
+		// CD0001012 휴직 / CD0001013 근무제 / CD0001001 업무보고
+		if("CD0001012" == cdList1_val || "CD0001013" == cdList1_val || "CD0001001" == cdList1_val){
+			if("CD0001013001" == cdList2_val){
+				cdList2 = "유연";
+			}else if("CD0001013003" == cdList2_val){
+				cdList2 = "조퇴";
+			}
+			$("#title").val("00월_"+cdList1+"_"+cdList2+"_20000000");
+		}else{
+			$("#title").val("00월_"+cdList1+"_"+cdList2+"_00_20000000");
+		}
+	}
+}
 
 /* 파일 삭제 */
 function fn_delFile(file_path, file_stre_nm, file_no, event){
