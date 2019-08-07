@@ -15,10 +15,10 @@
 		        ELSE '진행중'
 		      END APRV_YN_NM
 		    , CASE
-		        WHEN TOT_CNT = APRV_YN_0 THEN '1'
-		        WHEN TOT_CNT = APRV_YN_1 THEN '2'
-		        WHEN APRV_YN_2 > 0 THEN '3'
-		        WHEN APRV_YN_3 > 0 THEN '4'
+		        WHEN TOT_CNT = APRV_YN_0 THEN '0'
+		        WHEN TOT_CNT = APRV_YN_1 THEN '1'
+		        WHEN APRV_YN_2 > 0 THEN '2'
+		        WHEN APRV_YN_3 > 0 THEN '3'
 		        ELSE '9'
 		      END APRV_YN_TP
 			, APRV_YN_1 AS APRV_YN_END_NO
@@ -159,8 +159,10 @@
 			LEFT OUTER JOIN VW_STD_CONF G ON G.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_STD_CONF_Y H ON H.APRV_NO = A.APRV_NO
 		WHERE 1=1
+		<if test='uss_auth_cd != "ROLE_ADMIN"'>
 			AND ( A.REPT_APRV_NO = #{uss_id}
 					OR A.APRV_NO IN (SELECT APRV_NO FROM STD_APRV_LINE WHERE APRV_EMP_NO = #{uss_id}) )		/* 만약 결재자 일경우에 결재가 완료된 정보를 안보여줄경우  */
+		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 			<choose>
 				<when test='searchGubun == "01"' >
@@ -197,10 +199,10 @@
 		        ELSE '진행중'
 		      END APRV_YN_NM
 		    , CASE
-		        WHEN TOT_CNT = APRV_YN_0 THEN '1'
-		        WHEN TOT_CNT = APRV_YN_1 THEN '2'
-		        WHEN APRV_YN_2 > 0 THEN '3'
-		        WHEN APRV_YN_3 > 0 THEN '4'
+		        WHEN TOT_CNT = APRV_YN_0 THEN '0'
+		        WHEN TOT_CNT = APRV_YN_1 THEN '1'
+		        WHEN APRV_YN_2 > 0 THEN '2'
+		        WHEN APRV_YN_3 > 0 THEN '3'
 		        ELSE '9'
 		      END APRV_YN_TP
 			, APRV_YN_1 AS APRV_YN_END_NO
@@ -276,9 +278,12 @@
 		    LEFT OUTER JOIN VW_STD_LINE F ON F.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_STD_CONF G ON G.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_APRV_LINE E ON E.APRV_NO = A.APRV_NO
-		WHERE ( A.REPT_APRV_NO = #{uss_id}
-					OR A.APRV_NO IN (SELECT APRV_NO FROM STD_APRV_LINE WHERE APRV_EMP_NO = #{uss_id}) )		<!-- 만약 결재자 일경우에 결재가 완료된 정보를 안보여줄경우  -->
+		WHERE 1=1
+		<if test='uss_auth_cd != "ROLE_ADMIN"'>
+			AND( A.REPT_APRV_NO = #{uss_id}
+				OR A.APRV_NO IN (SELECT APRV_NO FROM STD_APRV_LINE WHERE APRV_EMP_NO = #{uss_id}) )		<!-- 만약 결재자 일경우에 결재가 완료된 정보를 안보여줄경우  -->
 <!-- 					OR ( A.APRV_NO IN (SELECT APRV_NO FROM STD_APRV_LINE WHERE APRV_EMP_NO = #{uss_id}) AND E.APROV_YN != '완료' ) )	 --> <!-- 만약 결재자 일경우에 결재가 완료된 정보를 안보여줄경우  -->
+		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 			<choose>
 				<when test='searchGubun == "01"' >
