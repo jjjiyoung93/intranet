@@ -22,6 +22,7 @@ import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.sys.cdm.service.CodeMngService;
 import kr.letech.sys.mail.service.MailAprvService;
+import kr.letech.uss.umt.service.impl.UssMngDAO;
 
 @Controller
 public class AprvMngController {
@@ -43,6 +44,10 @@ public class AprvMngController {
     /* 메일 발송을 위한 서비스 */
 	@Resource(name="mailAprvService")
 	private MailAprvService mailAprvService;
+	
+	/** ussMngDAO */
+	@Resource(name="ussMngDAO")
+	private UssMngDAO ussMngDAO;
 
 	/**
 	 * 결재관리 화면
@@ -56,13 +61,26 @@ public class AprvMngController {
 	public String getAprvList(HttpServletRequest request, ModelMap model) throws Exception {
 
 		Map params = ReqUtils.getParameterMap(request);
-		
-		System.out.println("===================>"+System.getProperty("os.name").toUpperCase());
-		
+
 		// 사용자 정보 넣기
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("uss_id", loginVO.getId());
+		
+		Map ussView = ussMngDAO.getUssView(params);
+		params.put("uss_auth_cd", ussView.get("USS_AUTH_CD"));
+		
+		// 상태 검색 코드 추가
+		String searchCdList3 = null;
+		if (params.get("searchCdList3") != null) {
+			searchCdList3 = String.valueOf(params.get("searchCdList3"));
+			params.put("searchCdList3", searchCdList3);
+		}
+		
+		// admin일 경우 default로 반려 리스트 출력
+		if(ussView.get("USS_AUTH_CD").equals("ROLE_ADMIN") && searchCdList3 == null) {
+			params.put("searchCdList3", "3");
+		}
 
 		// 목록 및 총건수, 페이징 
 		Map bbsObject = aprvMngService.getAprvPageingList(params);
@@ -96,12 +114,20 @@ public class AprvMngController {
 	@RequestMapping(value = "/aprv/aprv00View.do")
 	public String getAprvView(HttpServletRequest request, ModelMap model) throws Exception {
 		Map params = ReqUtils.getParameterMap(request);
-		model.addAttribute("params", params);
 
 		// 사용자 정보 넣기
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		params.put("uss_id", loginVO.getId());
+		
+		// 권한 넣기
+		Map ussView = ussMngDAO.getUssView(params);
+		params.put("uss_auth_cd", ussView.get("USS_AUTH_CD"));
+
+		model.addAttribute("params", params);
+
 		params.put("aprv_emp_no", loginVO.getId());
+		
 		
 		/* 상세 정보 조회 */
 		Map viewMap = aprvMngService.getAprvView(params);
