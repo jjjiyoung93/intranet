@@ -48,8 +48,8 @@
 					<div class="form-container">
 					<div class="clearfix search-box">
 						<div class="search-container2 row">
-							<div class="col-md-6">
-								<span class="visible-lg-inline visible-md-inline">
+							<div class="col-md-12">
+								<span class="">
 									<label>구분코드</label>
 									<select id="searchCdList1" name="searchCdList1" class="form-control table-cell">
 											<option value="" >--전체--</option>
@@ -73,9 +73,9 @@
 									</select>
 								</span>
 							</div>
-						<div class="col-md-6 pull-right">
+						<div class="col-md-7 mt10 pull-right">
 							<div class="">
-								<div class="col-xs-5 un-style">
+								<div class="col-xs-4 un-style">
 									<span class="inline-element">
 										<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
 											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
@@ -88,7 +88,7 @@
 									</span>
 								</div>
 							
-								<div class="col-xs-7 un-style">
+								<div class="col-xs-8 un-style">
 									<div class="input-group">
 									<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
 										<span class="input-group-btn">
