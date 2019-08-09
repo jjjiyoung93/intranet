@@ -49,7 +49,7 @@
 					<div class="clearfix search-box">
 						<div class="search-container2 row">
 							<div class="col-md-12">
-								<span class="">
+								<span class="search-select-wrap">
 									<label>구분코드</label>
 									<select id="searchCdList1" name="searchCdList1" class="form-control table-cell">
 											<option value="" >--전체--</option>
