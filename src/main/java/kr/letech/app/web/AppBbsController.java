@@ -144,8 +144,10 @@ public class AppBbsController {
 			aprvMngService.aprvLineUpdate(params);	// 결재승인(완료, 보류, 반려)
 			model.addAttribute("success", "0");
 		}catch(SQLException e){
+			e.printStackTrace();
 			model.addAttribute("success", "1");
 		}catch(Exception e){
+			e.printStackTrace();
 			model.addAttribute("success", "1");
 		}
 		
