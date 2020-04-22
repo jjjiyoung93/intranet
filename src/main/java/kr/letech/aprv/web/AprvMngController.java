@@ -305,7 +305,12 @@ public class AprvMngController {
 		String sAprvEmpNo = String.valueOf(params.get("aprv_emp_no"));
 		
 		String viewName = "jsonView";
-		aprvMngService.aprvLineUpdate(params);	// 결재승인(완료, 보류, 반려)
+		try {
+			aprvMngService.aprvLineUpdate(params);	// 결재승인(완료, 보류, 반려)
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
 		params.put("aprv_no", sAprvNo);
 		params.put("aprv_emp_no", sAprvEmpNo);
