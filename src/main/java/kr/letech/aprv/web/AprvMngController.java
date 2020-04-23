@@ -228,7 +228,7 @@ public class AprvMngController {
 		aprvMngService.aprvDelete(params);	// 결재정보 삭제
 		
 		//메일 발송 내용 등록
-		mailAprvService.aprvMailSendInsert(params);
+		//mailAprvService.aprvMailSendInsert(params);
 		
 		return viewName;
 	}
@@ -283,7 +283,7 @@ public class AprvMngController {
 		model.addAttribute("mode", mode);
 		
 		//메일 발송 내용 등록
-		mailAprvService.aprvMailSendInsert(params);
+		//mailAprvService.aprvMailSendInsert(params);
 		
 		return "letech/aprv/aprv00Tran";
 	}
@@ -316,7 +316,7 @@ public class AprvMngController {
 		params.put("aprv_emp_no", sAprvEmpNo);
 		
 		//메일 발송 내용 등록
-		mailAprvService.aprvMailSendInsert(params);
+		//mailAprvService.aprvMailSendInsert(params);
 		
 		return viewName;
 	}
