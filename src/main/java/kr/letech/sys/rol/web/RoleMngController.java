@@ -59,8 +59,13 @@ public class RoleMngController {
 		
 		model.addAttribute("highList", highList);
 		model.addAttribute("params", params);
+		System.out.println("rol00List 이거 탓음~~~~~~~~~~~~~~");
+		System.out.println("rol00List 이거 탓음~~~~~~~~~~~~~~");
+		System.out.println("rol00List 이거 탓음~~~~~~~~~~~~~~");
+		System.out.println("rol00List 이거 탓음~~~~~~~~~~~~~~");
 
-		return "letech/sys/rol/rol00List";
+//		return "letech/sys/rol/rol00List";
+		return "letech/rol/rol00List";
 	}
 	
 	/**
