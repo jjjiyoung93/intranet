@@ -16,50 +16,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
  		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-	
-	<!-- </repositories> -->
+
 	<repositories>
-		<!-- 19.07.31 nexus start -->
-		<!-- <repository>
+		<!-- 20.12.03. egovframe2, oracle, mvn2에서 필요한 dependency들을 letech-nexus에 올렸습니다.  -->
+		<repository>
 			<id>letech-nexus</id>
-			<url>http://10.10.250.201:8081/nexus</url>
-		</repository>
-		<repository>
-			<id>egovframe2</id>
-			<url>http://maven.egovframe.kr:8080/maven/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-		    <id>oracle</id>
-		    <name>ORACLE JDBC Repository</name>
-		    <url>http://maven.jahia.org/maven2</url>
-		</repository> -->
-		<!-- <repository>
-			<id>egovframe</id>
-			<url>http://www.egovframe.go.kr/maven/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-		    <id>oracle</id>
-		    <name>ORACLE JDBC Repository</name>
-		    <url>http://maven.jahia.org/maven2</url>
-		</repository> -->
-		<!-- end -->
-		
-		<!-- START 	19.07.30	김지연 	 추가 -->
-		<repository>
-			<id>mvn2</id>
-			<url>http://repo1.maven.org/maven2/</url>
+			<url>http://10.10.250.60:32770/repository/maven-public</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -67,23 +29,35 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		<repository>
-			<id>egovframe2</id>
-			<url>http://maven.egovframe.kr:8080/maven/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-		    <id>oracle</id>
-		    <name>ORACLE JDBC Repository</name>
-		    <url>http://maven.jahia.org/maven2</url>
-		</repository>
+<!-- 		<repository> -->
+<!-- 			<id>mvn2</id> -->
+<!-- 			<url>https://repo1.maven.org/maven2/</url> -->
+<!-- 			<releases> -->
+<!-- 				<enabled>true</enabled> -->
+<!-- 			</releases> -->
+<!-- 			<snapshots> -->
+<!-- 				<enabled>true</enabled> -->
+<!-- 			</snapshots> -->
+<!-- 		</repository> -->
+<!-- 		<repository> -->
+<!-- 			<id>egovframe2</id> -->
+<!-- 			<url>http://maven.egovframe.kr:8080/maven/</url> -->
+<!-- 			<releases> -->
+<!-- 				<enabled>true</enabled> -->
+<!-- 			</releases> -->
+<!-- 			<snapshots> -->
+<!-- 				<enabled>false</enabled> -->
+<!-- 			</snapshots> -->
+<!-- 		</repository> -->
+<!-- 		<repository> -->
+<!-- 		    <id>oracle</id> -->
+<!-- 		    <name>ORACLE JDBC Repository</name> -->
+<!-- 		    <url>http://maven.jahia.org/maven2</url> -->
+<!-- 		</repository> -->
 	</repositories>
-	<!-- END -->
+	
+	
+	
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -109,13 +83,13 @@
             <artifactId>egovframework.rte.fdl.security</artifactId>
             <version>${egovframework.rte.version}</version>
         </dependency>
-<!-- 2016.03.24 Start -->		
+		<!-- 2016.03.24 Start -->		
 		<dependency>
             <groupId>egovframework.rte</groupId>
             <artifactId>egovframework.rte.psl.dataaccess</artifactId>
             <version>${egovframework.rte.version}</version>
         </dependency>
-<!-- 2016.03.24 End -->
+		<!-- 2016.03.24 End -->
 				
 		<!-- AspectJ -->
 		<dependency>
