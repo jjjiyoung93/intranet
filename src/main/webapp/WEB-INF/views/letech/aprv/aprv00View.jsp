@@ -310,7 +310,7 @@
 							    	</div>
 							    	
 									<!-- 지출결의서 보기 -->	
-									<c:if test="${recList ne null}">			            
+<%-- 								<c:if test="${recList ne null}">	             --%>
 					            	<div class="clearfix">
 					            	 <dl class="panel panel-default" style="padding:0;">
 					            	  <dt onclick="myFunction()" class="panel-heading">지출결의서 보기 &nbsp;
@@ -326,17 +326,11 @@
 						            	     <thead class="table_s" style="text-align:center;">
 						            	      <tr>
 						            	       <td class="table_menu"></td>
-						            	       <td class="table_menu"></td>
-						            	       <td class="table_menu"></td>
 						            	      </tr>
 						            	      <tr>
 						            	       <td>${recrecList.APRV_LINE_NM}</td>
-						            	       <td>${recList.APRV_LINE_NM}</td>
-						            	       <td>${recList.APRV_LINE_NM}</td>
 						            	      </tr>
 						            	      <tr>
-						            	       <td>${recList.APRV_DATE}</td>
-						            	       <td>${recList.APRV_DATE}</td>
 						            	       <td>${recList.APRV_DATE}</td>
 						            	      </tr>
 						            	     </thead>
@@ -388,7 +382,8 @@
 											   <tbody>
 											     <tr>
 											      <td>
-											       <div style="border:1px solid lightgray; float:left; width:180%; height:70%; padding:10%;">
+											       <div class="col-sm-6">
+											       <div style="border:1px solid lightgray; height:70%; padding:10%;">
 											         <div>
 											          <ul>
 											           <li style="letter-spacing:0px;">날짜시간과세
@@ -407,7 +402,7 @@
 											         </div>
 											       </div>
 
-											       <div style="border:1px solid lightgray; float:left; width:180%; height:70%; padding:10%;">
+											       <div style="border:1px solid lightgray; height:70%; padding:10%;">
 											         <table>
 											           <tbody>
 											            <tr>
@@ -475,21 +470,22 @@
 											         
 											         
 											       </div>
+											       </div>
 											      </td>
-											      <div style="border:1px solid lightgray; float:right; width:150%; height:150%; padding:10%;">
-											       <table>
-											        <tbody>
-											         <tr>
+											      <td>
+											       <div class="col-sm-6" style="border:1px solid lightgray; height:150%; padding:10%;">
+											         <table>
+											           <tbody>
+											             <tr>
 <!-- 											           <th style="letter-spacing:0px;">구분</th> -->
-											         </tr>
+											             </tr>
 											        
-											        </tbody>
+											           </tbody>
 											       
-											       </table>
-											      
+											         </table>
 											      
 											      </div>
-											      
+											      </td>
 											     </tr>
 											   </tbody>
 											 </table>	
@@ -500,9 +496,9 @@
 									     </div>	
 					            	 </dl>
 					            	</div>
-					            </c:if>
+<%-- 					            </c:if>	 --%>
 					            
-					            	
+					            		
 							</ul>
 							<p class="clearfix">
 								<span class="pull-right">
