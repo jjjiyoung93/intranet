@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Letech Intranet</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
@@ -14,7 +15,12 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <link href="${pageContext.request.contextPath}/resources/js/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" >
 </head>
-
+<style>
+ td.table_menu {
+ 	background : lightgray;
+ 
+ }
+</style>
 <body>
 <div id="wrapper">
  	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -302,7 +308,194 @@
 							            </dd>
 						            </dl>
 							    	</div>
-				            	</li>
+							    	
+									<!-- 지출결의서 보기 -->				            
+					            	<div class="clearfix">
+					            	 <dl class="panel panel-default" style="padding:0;">
+					            	  <dt class="panel-heading">지출결의서 보기 &nbsp;
+					            	  <span  type="button" onclick="myFunction()" class="pull-right glyphicon glyphicon-menu-down"></span>
+					            	  </dt>
+					            	  <div id="myDIV" style="display:none;">
+									     <div class="panel-body" style= "border:1px solid lightgray; margin:2%;">
+						            	   <div class="table-responsive">
+						            	    <table class="table table-bordered" style="float:right; width:40%;">
+						            	     <thead class="table_s" style="text-align:center;">
+						            	      <tr>
+						            	       <td class="table_menu"></td>
+						            	       <td class="table_menu"></td>
+						            	       <td class="table_menu"></td>
+						            	      </tr>
+						            	      <tr>
+						            	       <td>${list.APRV_LINE_NM}</td>
+						            	       <td>${list.APRV_LINE_NM}</td>
+						            	       <td>${list.APRV_LINE_NM}</td>
+						            	      </tr>
+						            	      <tr>
+						            	       <td>${list.APRV_DATE}</td>
+						            	       <td>${list.APRV_DATE}</td>
+						            	       <td>${list.APRV_DATE}</td>
+						            	      </tr>
+						            	     </thead>
+						            	    </table>
+						            	   </div>
+						            	  <div style="margin-top:5%; margin-bottom:5%;">
+					            	       <h2 style="text-align:center;">
+					            	   	    <span>지출결의서</span>
+					            	   	    <span>${list.CARD_TYPE}</span>
+					            	       </h2>
+					            	      </div>
+					            	      <div style="margin-top:2%; margin-bottom:2%;">
+					            	       <span>문서번호 :</span> &nbsp;
+					            	       <span>${list.DOC_NO}</span>
+					            	      </div> 
+						            	   <div class="table-responsive">
+						            	    <table class="table table-bordered">
+						            	     <thead class="table_s">
+						            	      <tr>
+						            	       <td class="table_menu" style="width:30%;">발의자</td>
+						            	       <td>${list.USER_NM} / ${list.DEPT_NM}</td>
+						            	      </tr>
+						            	      <tr>
+						            	       <td class="table_menu" style="width:30%;">발의일자</td>
+						            	       <td>${list.DRAFT_DATE}</td>
+						            	      </tr>
+						            	      <tr>
+						            	       <td class="table_menu" style="width:30%;">제목</td>
+						            	       <td>${list.APPR_SUBJ}</td>
+						            	      </tr>
+						            	      <tr>
+						            	       <td class="table_menu" style="width:30%;">내용</td>
+						            	       <td>${list.APPR_CONT}</td>
+						            	      </tr>
+						            	     </thead>
+						            	    </table>
+						            	   </div>					            	       
+					            	       <div style="margin-top:2%;">
+					            	       	 <span>ㆍ</span>&nbsp;
+					            	         <span>총 </span>&nbsp;
+					            	         <span></span>
+					            	         <span>건 </span>&nbsp;
+					            	         <span></span>
+					            	         <span>원 </span>
+					            	       </div>
+					            	       <div>
+					            	         <hr>
+											 <table>
+											   <tbody>
+											     <tr>
+											      <td>
+											       <div style="border:1px solid lightgray; float:left; width:230%; height:70%; margin:5%; padding:10%;">
+											         <div>
+											          <ul>
+											           <li style="letter-spacing:0px;">날짜시간과세
+											             ${list.APV_DT} ${list.APV_TM} ${list.MEST_TAXT_TYP_INFO}
+											           </li>
+											           <li style="letter-spacing:0px;">
+											             <strong>가맹점명 ${list.MEST_NM}</strong>
+											           </li>
+											           <li style="letter-spacing:0px;">
+											            	카드번호 ${list.BANK_CD} ${list.CARD_NO} ${list.R_USER_NM}
+											           </li>
+											          </ul>
+											         </div>
+											         <div style="float:right; margin_bottom:30%;">
+											          <strong style="letter-spacing:0px;color:blue;">40000 ${list.APR_SPLY_AMT}원</strong>
+											         </div>
+											       </div>
+
+											       <div style="border:1px solid lightgray; float:left; width:230%; height:70%; margin:5%; padding:10%;">
+											         <table>
+											           <tbody>
+											            <tr>
+											               <th>카드정보</th>
+											               <td>
+											                <span>${list.BANK_CD} ${list.CARD_NO}</span>
+											               </td>
+											            </tr>
+											            <tr>
+											               <th>거래일시</th>
+											               <td>
+											                <span>${list.APV_DT} ${list.APV_TM}</span>
+											               </td>
+											            </tr>
+											            <tr>
+											               <th>승인번호</th>
+											               <td>
+											                <span>${list.APV_NO}</span>
+											               </td>
+											            </tr>
+											            <tr>
+											               <th>공급금액</th>
+											               <td>
+											                <span>${list.SPLY_AMT}</span>
+											               </td>
+											            </tr>											            
+											            <tr>
+											               <th>부가세</th>
+											               <td>
+											                <span>${list.VAT_AMT}</span>
+											               </td>
+											            </tr>	
+											            <tr>
+											               <th>봉사료</th>
+											               <td>
+											                <span>${list.SRV_FEE}</span>
+											               </td>
+											            </tr>		
+											            <tr>
+											               <th>가맹점/대표자</th>
+											               <td>
+											                <span>${list.MEST_NM} ${list.MEST_REPR_NM}</span>
+											               </td>
+											            </tr>		
+											            <tr>
+											               <th>가맹점업종</th>
+											               <td>
+											                <span>${list.CARD_TPBZ_NM}</span>
+											               </td>
+											            </tr>	
+											            <tr>
+											               <th>가맹점주소</th>
+											               <td>
+											                <span>${list.MEST_ADDR_1}</span>
+											               </td>
+											            </tr>	
+											            <tr>
+											               <th>사업자등록번호</th>
+											               <td>
+											                <span>${list.MEST_BIZ_NO}</span>
+											               </td>
+											            </tr>												            							           
+											           </tbody>
+											         </table>
+											         
+											         
+											       </div>
+											      </td>
+											      <td style="border:1px solid lightgray; float:right; width:200%; height:150%; margin:10%; padding:10%;">
+											       <table>
+											        <tbody>
+											         <tr>
+											         
+											         </tr>
+											        
+											        </tbody>
+											       
+											       </table>
+											      
+											      
+											      </td>
+											     </tr>
+											   </tbody>
+											 </table>	
+
+					            	         <hr style="color:black;">
+					            	       </div> 
+					            	       
+									     </div>	
+					            	 </dl>
+					            	</div>
+					            	
 							</ul>
 							<p class="clearfix">
 								<span class="pull-right">
@@ -423,6 +616,15 @@ function aprvOk(){
 		} 
 	});
 }
+	function myFunction() {
+		event.preventDefault()
+		  var x = document.getElementById("myDIV");
+		  if (x.style.display === "none") {
+		    x.style.display = "block";
+		  } else {
+		    x.style.display = "none";
+		  }
+		}
 
 </script>
 </body>
