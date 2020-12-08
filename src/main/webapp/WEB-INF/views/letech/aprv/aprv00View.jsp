@@ -309,11 +309,15 @@
 						            </dl>
 							    	</div>
 							    	
-									<!-- 지출결의서 보기 -->				            
+									<!-- 지출결의서 보기 -->	
+									<c:if test="${recList ne null}">			            
 					            	<div class="clearfix">
 					            	 <dl class="panel panel-default" style="padding:0;">
-					            	  <dt class="panel-heading">지출결의서 보기 &nbsp;
-					            	  <span  type="button" onclick="myFunction()" class="pull-right glyphicon glyphicon-menu-down"></span>
+					            	  <dt onclick="myFunction()" class="panel-heading">지출결의서 보기 &nbsp;
+					            	   <a class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse" aria-expanded="false" aria-controls="collapse">
+                            			<span class="pull-right glyphicon glyphicon-menu-left"></span>
+                           			   </a>
+                           			   <ul class="sub panel-collapse collapse" id="collapse${status.index}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapse${status.index}"></ul>
 					            	  </dt>
 					            	  <div id="myDIV" style="display:none;">
 									     <div class="panel-body" style= "border:1px solid lightgray; margin:2%;">
@@ -326,14 +330,14 @@
 						            	       <td class="table_menu"></td>
 						            	      </tr>
 						            	      <tr>
-						            	       <td>${list.APRV_LINE_NM}</td>
-						            	       <td>${list.APRV_LINE_NM}</td>
-						            	       <td>${list.APRV_LINE_NM}</td>
+						            	       <td>${recrecList.APRV_LINE_NM}</td>
+						            	       <td>${recList.APRV_LINE_NM}</td>
+						            	       <td>${recList.APRV_LINE_NM}</td>
 						            	      </tr>
 						            	      <tr>
-						            	       <td>${list.APRV_DATE}</td>
-						            	       <td>${list.APRV_DATE}</td>
-						            	       <td>${list.APRV_DATE}</td>
+						            	       <td>${recList.APRV_DATE}</td>
+						            	       <td>${recList.APRV_DATE}</td>
+						            	       <td>${recList.APRV_DATE}</td>
 						            	      </tr>
 						            	     </thead>
 						            	    </table>
@@ -341,31 +345,31 @@
 						            	  <div style="margin-top:5%; margin-bottom:5%;">
 					            	       <h2 style="text-align:center;">
 					            	   	    <span>지출결의서</span>
-					            	   	    <span>${list.CARD_TYPE}</span>
+					            	   	    <span>${recList.CARD_TYPE}</span>
 					            	       </h2>
 					            	      </div>
 					            	      <div style="margin-top:2%; margin-bottom:2%;">
 					            	       <span>문서번호 :</span> &nbsp;
-					            	       <span>${list.DOC_NO}</span>
+					            	       <span>${recList.DOC_NO}</span>
 					            	      </div> 
 						            	   <div class="table-responsive">
 						            	    <table class="table table-bordered">
 						            	     <thead class="table_s">
 						            	      <tr>
 						            	       <td class="table_menu" style="width:30%;">발의자</td>
-						            	       <td>${list.USER_NM} / ${list.DEPT_NM}</td>
+						            	       <td>${recList.USER_NM} / ${recList.DEPT_NM}</td>
 						            	      </tr>
 						            	      <tr>
 						            	       <td class="table_menu" style="width:30%;">발의일자</td>
-						            	       <td>${list.DRAFT_DATE}</td>
+						            	       <td>${recList.DRAFT_DATE}</td>
 						            	      </tr>
 						            	      <tr>
 						            	       <td class="table_menu" style="width:30%;">제목</td>
-						            	       <td>${list.APPR_SUBJ}</td>
+						            	       <td>${recList.APPR_SUBJ}</td>
 						            	      </tr>
 						            	      <tr>
 						            	       <td class="table_menu" style="width:30%;">내용</td>
-						            	       <td>${list.APPR_CONT}</td>
+						            	       <td>${recList.APPR_CONT}</td>
 						            	      </tr>
 						            	     </thead>
 						            	    </table>
@@ -384,86 +388,86 @@
 											   <tbody>
 											     <tr>
 											      <td>
-											       <div style="border:1px solid lightgray; float:left; width:230%; height:70%; margin:5%; padding:10%;">
+											       <div style="border:1px solid lightgray; float:left; width:180%; height:70%; padding:10%;">
 											         <div>
 											          <ul>
 											           <li style="letter-spacing:0px;">날짜시간과세
-											             ${list.APV_DT} ${list.APV_TM} ${list.MEST_TAXT_TYP_INFO}
+											             ${recList.APV_DT} ${recList.APV_TM} ${recList.MEST_TAXT_TYP_INFO}
 											           </li>
 											           <li style="letter-spacing:0px;">
-											             <strong>가맹점명 ${list.MEST_NM}</strong>
+											             <strong>가맹점명 ${recList.MEST_NM}</strong>
 											           </li>
 											           <li style="letter-spacing:0px;">
-											            	카드번호 ${list.BANK_CD} ${list.CARD_NO} ${list.R_USER_NM}
+											            	카드번호 ${recList.BANK_CD} ${recList.CARD_NO} ${recList.R_USER_NM}
 											           </li>
 											          </ul>
 											         </div>
 											         <div style="float:right; margin_bottom:30%;">
-											          <strong style="letter-spacing:0px;color:blue;">40000 ${list.APR_SPLY_AMT}원</strong>
+											          <strong style="letter-spacing:0px;color:blue;">40000 ${recList.APR_SPLY_AMT}원</strong>
 											         </div>
 											       </div>
 
-											       <div style="border:1px solid lightgray; float:left; width:230%; height:70%; margin:5%; padding:10%;">
+											       <div style="border:1px solid lightgray; float:left; width:180%; height:70%; padding:10%;">
 											         <table>
 											           <tbody>
 											            <tr>
 											               <th>카드정보</th>
 											               <td>
-											                <span>${list.BANK_CD} ${list.CARD_NO}</span>
+											                <span>${recList.BANK_CD} ${recList.CARD_NO}</span>
 											               </td>
 											            </tr>
 											            <tr>
 											               <th>거래일시</th>
 											               <td>
-											                <span>${list.APV_DT} ${list.APV_TM}</span>
+											                <span>${recList.APV_DT} ${recList.APV_TM}</span>
 											               </td>
 											            </tr>
 											            <tr>
 											               <th>승인번호</th>
 											               <td>
-											                <span>${list.APV_NO}</span>
+											                <span>${recList.APV_NO}</span>
 											               </td>
 											            </tr>
 											            <tr>
 											               <th>공급금액</th>
 											               <td>
-											                <span>${list.SPLY_AMT}</span>
+											                <span>${recList.SPLY_AMT}</span>
 											               </td>
 											            </tr>											            
 											            <tr>
 											               <th>부가세</th>
 											               <td>
-											                <span>${list.VAT_AMT}</span>
+											                <span>${recList.VAT_AMT}</span>
 											               </td>
 											            </tr>	
 											            <tr>
 											               <th>봉사료</th>
 											               <td>
-											                <span>${list.SRV_FEE}</span>
+											                <span>${recList.SRV_FEE}</span>
 											               </td>
 											            </tr>		
 											            <tr>
 											               <th>가맹점/대표자</th>
 											               <td>
-											                <span>${list.MEST_NM} ${list.MEST_REPR_NM}</span>
+											                <span>${recList.MEST_NM} ${recList.MEST_REPR_NM}</span>
 											               </td>
 											            </tr>		
 											            <tr>
 											               <th>가맹점업종</th>
 											               <td>
-											                <span>${list.CARD_TPBZ_NM}</span>
+											                <span>${recList.CARD_TPBZ_NM}</span>
 											               </td>
 											            </tr>	
 											            <tr>
 											               <th>가맹점주소</th>
 											               <td>
-											                <span>${list.MEST_ADDR_1}</span>
+											                <span>${recList.MEST_ADDR_1}</span>
 											               </td>
 											            </tr>	
 											            <tr>
 											               <th>사업자등록번호</th>
 											               <td>
-											                <span>${list.MEST_BIZ_NO}</span>
+											                <span>${recList.MEST_BIZ_NO}</span>
 											               </td>
 											            </tr>												            							           
 											           </tbody>
@@ -472,11 +476,11 @@
 											         
 											       </div>
 											      </td>
-											      <td style="border:1px solid lightgray; float:right; width:200%; height:150%; margin:10%; padding:10%;">
+											      <div style="border:1px solid lightgray; float:right; width:150%; height:150%; padding:10%;">
 											       <table>
 											        <tbody>
 											         <tr>
-											         
+<!-- 											           <th style="letter-spacing:0px;">구분</th> -->
 											         </tr>
 											        
 											        </tbody>
@@ -484,7 +488,8 @@
 											       </table>
 											      
 											      
-											      </td>
+											      </div>
+											      
 											     </tr>
 											   </tbody>
 											 </table>	
@@ -495,6 +500,8 @@
 									     </div>	
 					            	 </dl>
 					            	</div>
+					            </c:if>
+					            
 					            	
 							</ul>
 							<p class="clearfix">
