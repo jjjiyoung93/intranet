@@ -740,4 +740,412 @@
 		    )
 		]]>
 	</update>
+	
+	<insert id="insertBizplayData" parameterType="map">
+		MERGE INTO BIZPLAY_0411A
+		USING DUAL
+		   ON ( CARD_NO = #{CARD_NO}
+		     AND SEQ = #{SEQ}
+		     AND APV_DT = #{APV_DT})
+		WHEN MATCHED THEN
+			UPDATE SET
+			RESULT_CD = #{RESULT_CD, jdbcType=VARCHAR},
+			RESULT_MG = #{RESULT_MG, jdbcType=VARCHAR},
+			NEXT_KEY = #{NEXT_KEY, jdbcType=VARCHAR},
+			BIZ_NO = #{BIZ_NO, jdbcType=VARCHAR},
+			BANK_CD = #{BANK_CD, jdbcType=VARCHAR},
+			CARD_TYPE = #{CARD_TYPE, jdbcType=VARCHAR},
+			CARD_B_TYPE = #{CARD_B_TYPE, jdbcType=VARCHAR},
+			APV_NO = #{APV_NO, jdbcType=VARCHAR},
+			APV_TM = #{APV_TM, jdbcType=VARCHAR},
+			APV_CAN_YN = #{APV_CAN_YN, jdbcType=VARCHAR},
+			APV_CAN_DT = #{APV_CAN_DT, jdbcType=VARCHAR},
+			SETL_SCHE_DT = #{SETL_SCHE_DT, jdbcType=VARCHAR},
+			APR_AMT = #{APR_AMT, jdbcType=NUMERIC},
+			APR_SPLY_AMT = #{APR_SPLY_AMT, jdbcType=NUMERIC},
+			APR_VAT_AMT = #{APR_VAT_AMT, jdbcType=NUMERIC},
+			BUY_SUM = #{BUY_SUM, jdbcType=NUMERIC},
+			SPLY_AMT = #{SPLY_AMT, jdbcType=NUMERIC},
+			VAT_AMT = #{VAT_AMT, jdbcType=NUMERIC},
+			SRV_FEE = #{SRV_FEE, jdbcType=NUMERIC},
+			COMM = #{COMM, jdbcType=NUMERIC},
+			OVRS_USE_YN = #{OVRS_USE_YN, jdbcType=VARCHAR},
+			CURR_CD = #{CURR_CD, jdbcType=VARCHAR},
+			CURR_AMT = #{CURR_AMT, jdbcType=NUMERIC},
+			ORG_SPLY_AMT = #{ORG_SPLY_AMT, jdbcType=NUMERIC},
+			ORG_VAT = #{ORG_VAT, jdbcType=NUMERIC},
+			ITLM_MMS_CNT = #{ITLM_MMS_CNT, jdbcType=VARCHAR},
+			MEST_NM = #{MEST_NM, jdbcType=VARCHAR},
+			MEST_NO = #{MEST_NO, jdbcType=VARCHAR},
+			MEST_TAXT_TYP_INFO = #{MEST_TAXT_TYP_INFO, jdbcType=VARCHAR},
+			MEST_BIZ_NO = #{MEST_BIZ_NO, jdbcType=VARCHAR},
+			MEST_REPR_NM = #{MEST_REPR_NM, jdbcType=VARCHAR},
+			MEST_TEL_NO = #{MEST_TEL_NO, jdbcType=VARCHAR},
+			MEST_ZIP_CD = #{MEST_ZIP_CD, jdbcType=VARCHAR},
+			MEST_ADDR_1 = #{MEST_ADDR_1, jdbcType=VARCHAR},
+			MEST_ADDR_2 = #{MEST_ADDR_2, jdbcType=VARCHAR},
+			CARD_TPBZ_CD = #{CARD_TPBZ_CD, jdbcType=VARCHAR},
+			CARD_TPBZ_NM = #{CARD_TPBZ_NM, jdbcType=VARCHAR},
+			REG_GB = #{REG_GB, jdbcType=VARCHAR},
+			BUY_YN = #{BUY_YN, jdbcType=VARCHAR},
+			PURCH_DATE = #{PURCH_DATE, jdbcType=VARCHAR},
+			ACQU_EXCH = #{ACQU_EXCH, jdbcType=VARCHAR},
+			COLL_NO = #{COLL_NO, jdbcType=VARCHAR},
+			VAT_RFND_STS = #{VAT_RFND_STS, jdbcType=VARCHAR},
+			PROC_STS = #{PROC_STS, jdbcType=VARCHAR},
+			TRAN_KIND_CD = #{TRAN_KIND_CD, jdbcType=VARCHAR},
+			TRAN_KIND_NM = #{TRAN_KIND_NM, jdbcType=VARCHAR},
+			TRAN_KIND_ERP_CO_CD = #{TRAN_KIND_ERP_CO_CD, jdbcType=VARCHAR},
+			BIZ_UNIT_NM = #{BIZ_UNIT_NM, jdbcType=VARCHAR},
+			BIZ_UNIT_ERP_CD = #{BIZ_UNIT_ERP_CD, jdbcType=VARCHAR},
+			SUMMARY = #{SUMMARY, jdbcType=VARCHAR},
+			USER_NM = #{USER_NM, jdbcType=VARCHAR},
+			USER_ID = #{USER_ID, jdbcType=VARCHAR},
+			USER_EMP_CD = #{USER_EMP_CD, jdbcType=VARCHAR},
+			USER_EMP_OFFICE = #{USER_EMP_OFFICE, jdbcType=VARCHAR},
+			DEPT_NM = #{DEPT_NM, jdbcType=VARCHAR},
+			DEPT_CD = #{DEPT_CD, jdbcType=VARCHAR},
+			DEPT_ERP_CD = #{DEPT_ERP_CD, jdbcType=VARCHAR},
+			R_USER_NM = #{R_USER_NM, jdbcType=VARCHAR},
+			R_USER_ID = #{R_USER_ID, jdbcType=VARCHAR},
+			R_EMP_ERP_CD = #{R_EMP_ERP_CD, jdbcType=VARCHAR},
+			R_USER_EMP_OFFICE = #{R_USER_EMP_OFFICE, jdbcType=VARCHAR},
+			R_DEPT_NM = #{R_DEPT_NM, jdbcType=VARCHAR},
+			R_DEPT_ERP_CD = #{R_DEPT_ERP_CD, jdbcType=VARCHAR},
+			LST_USER_ID = #{LST_USER_ID, jdbcType=VARCHAR},
+			LST_USER_EMP_CD = #{LST_USER_EMP_CD, jdbcType=VARCHAR},
+			LST_USER_DEPT_ERP_CD = #{LST_USER_DEPT_ERP_CD, jdbcType=VARCHAR},
+			LST_MOD_DT = #{LST_MOD_DT, jdbcType=VARCHAR},
+			ERP_CODE = #{ERP_CODE, jdbcType=VARCHAR},
+			APPR_STS = #{APPR_STS, jdbcType=VARCHAR},
+			APPR_SUBJ = #{APPR_SUBJ, jdbcType=VARCHAR},
+			APPR_CONT = #{APPR_CONT, jdbcType=VARCHAR},
+			ERP_ASST_CD = #{ERP_ASST_CD, jdbcType=VARCHAR},
+			ATT_IMG_YN = #{ATT_IMG_YN, jdbcType=VARCHAR},
+			ATT_IMG_CNT = #{ATT_IMG_CNT, jdbcType=VARCHAR},
+			SUMMARY_2 = #{SUMMARY_2, jdbcType=VARCHAR},
+			SUMMARY_3 = #{SUMMARY_3, jdbcType=VARCHAR},
+			SUMMARY_4 = #{SUMMARY_4, jdbcType=VARCHAR},
+			SUMMARY_5 = #{SUMMARY_5, jdbcType=VARCHAR},
+			SUMMARY_6 = #{SUMMARY_6, jdbcType=VARCHAR},
+			PPP_APPR_VOUCH_YN = #{PPP_APPR_VOUCH_YN, jdbcType=VARCHAR},
+			PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO, jdbcType=VARCHAR},
+			RESERVE_01_NM = #{RESERVE_01_NM, jdbcType=VARCHAR},
+			RESERVE_01_CODE = #{RESERVE_01_CODE, jdbcType=VARCHAR},
+			RESERVE_01_ERP_CD = #{RESERVE_01_ERP_CD, jdbcType=VARCHAR},
+			EVENT_DATETIME = #{EVENT_DATETIME, jdbcType=VARCHAR},
+			START_DTM = #{START_DTM, jdbcType=VARCHAR},
+			END_DTM = #{END_DTM, jdbcType=VARCHAR},
+			EVENT_DTM = #{EVENT_DTM, jdbcType=VARCHAR},
+			ASSET_DIV_NM = #{ASSET_DIV_NM, jdbcType=VARCHAR},
+			ASSET_DEPT_NM = #{ASSET_DEPT_NM, jdbcType=VARCHAR},
+			ASSET_DIV_ERP_CD = #{ASSET_DIV_ERP_CD, jdbcType=VARCHAR},
+			ASSET_DEPT_ERP_CD = #{ASSET_DEPT_ERP_CD, jdbcType=VARCHAR},
+			DEDCT_YN = #{DEDCT_YN, jdbcType=VARCHAR},
+			BIZ_UNIT_NM2 = #{BIZ_UNIT_NM2, jdbcType=VARCHAR},
+			BIZ_UNIT_ERP_CD2 = #{BIZ_UNIT_ERP_CD2, jdbcType=VARCHAR},
+			PAY_ACCOUNT_NO = #{PAY_ACCOUNT_NO, jdbcType=VARCHAR},
+			PAY_HOLDER_NAME = #{PAY_HOLDER_NAME, jdbcType=VARCHAR},
+			PAY_BANK = #{PAY_BANK, jdbcType=VARCHAR},
+			EXPN_PAY_DT = #{EXPN_PAY_DT, jdbcType=VARCHAR},
+			EXPN_PRE_DT = #{EXPN_PRE_DT, jdbcType=VARCHAR},
+			DOC_NO = #{DOC_NO, jdbcType=VARCHAR},
+			SUMMARY_7 = #{SUMMARY_7, jdbcType=VARCHAR},
+			SUMMARY_8 = #{SUMMARY_8, jdbcType=VARCHAR},
+			RSCH_CD = #{RSCH_CD, jdbcType=VARCHAR},
+			RSCH_NM = #{RSCH_NM, jdbcType=VARCHAR},
+			ADVC_CD = #{ADVC_CD, jdbcType=VARCHAR},
+			ADVC_NM = #{ADVC_NM, jdbcType=VARCHAR},
+			CARD_ERP_CD = #{CARD_ERP_CD, jdbcType=VARCHAR},
+			CARD_NICK_NM = #{CARD_NICK_NM, jdbcType=VARCHAR},
+			DRAFT_DATE = #{DRAFT_DATE, jdbcType=VARCHAR},
+			PTL_ID = #{PTL_ID, jdbcType=VARCHAR},
+			USE_INTT_ID = #{USE_INTT_ID, jdbcType=VARCHAR},
+			LST_APRV_DATE = #{LST_APRV_DATE, jdbcType=VARCHAR},
+			APPR_SEQ_NO = #{APPR_SEQ_NO, jdbcType=VARCHAR},
+			RESOLLIST_SEQ_NO = #{RESOLLIST_SEQ_NO, jdbcType=VARCHAR},
+			PROC_BANK_ACCT_NO = #{PROC_BANK_ACCT_NO, jdbcType=VARCHAR},
+			PROC_HOLDER_NAME = #{PROC_HOLDER_NAME, jdbcType=VARCHAR},
+			PROC_BANK_NM = #{PROC_BANK_NM, jdbcType=VARCHAR},
+			CAN_MG = #{CAN_MG, jdbcType=VARCHAR},
+			ERP_STAT_NO = #{ERP_STAT_NO, jdbcType=VARCHAR},
+			CAR_INFO = #{CAR_INFO, jdbcType=VARCHAR}
+		WHEN NOT MATCHED THEN
+			INSERT VALUES ( 
+			#{RESULT_CD, jdbcType=VARCHAR},
+			#{RESULT_MG, jdbcType=VARCHAR},
+			#{NEXT_KEY, jdbcType=VARCHAR},
+			#{BIZ_NO, jdbcType=VARCHAR},
+			#{BANK_CD, jdbcType=VARCHAR},
+			#{CARD_TYPE, jdbcType=VARCHAR},
+			#{CARD_NO, jdbcType=VARCHAR},
+			#{CARD_B_TYPE, jdbcType=VARCHAR},
+			#{SEQ, jdbcType=VARCHAR},
+			#{APV_DT, jdbcType=VARCHAR},
+			#{APV_NO, jdbcType=VARCHAR},
+			#{APV_TM, jdbcType=VARCHAR},
+			#{APV_CAN_YN, jdbcType=VARCHAR},
+			#{APV_CAN_DT, jdbcType=VARCHAR},
+			#{SETL_SCHE_DT, jdbcType=VARCHAR},
+			#{APR_AMT, jdbcType=NUMERIC},
+			#{APR_SPLY_AMT, jdbcType=NUMERIC},
+			#{APR_VAT_AMT, jdbcType=NUMERIC},
+			#{BUY_SUM, jdbcType=NUMERIC},
+			#{SPLY_AMT, jdbcType=NUMERIC},
+			#{VAT_AMT, jdbcType=NUMERIC},
+			#{SRV_FEE, jdbcType=NUMERIC},
+			#{COMM, jdbcType=NUMERIC},
+			#{OVRS_USE_YN, jdbcType=VARCHAR},
+			#{CURR_CD, jdbcType=VARCHAR},
+			#{CURR_AMT, jdbcType=NUMERIC},
+			#{ORG_SPLY_AMT, jdbcType=NUMERIC},
+			#{ORG_VAT, jdbcType=NUMERIC},
+			#{ITLM_MMS_CNT, jdbcType=VARCHAR},
+			#{MEST_NM, jdbcType=VARCHAR},
+			#{MEST_NO, jdbcType=VARCHAR},
+			#{MEST_TAXT_TYP_INFO, jdbcType=VARCHAR},
+			#{MEST_BIZ_NO, jdbcType=VARCHAR},
+			#{MEST_REPR_NM, jdbcType=VARCHAR},
+			#{MEST_TEL_NO, jdbcType=VARCHAR},
+			#{MEST_ZIP_CD, jdbcType=VARCHAR},
+			#{MEST_ADDR_1, jdbcType=VARCHAR},
+			#{MEST_ADDR_2, jdbcType=VARCHAR},
+			#{CARD_TPBZ_CD, jdbcType=VARCHAR},
+			#{CARD_TPBZ_NM, jdbcType=VARCHAR},
+			#{REG_GB, jdbcType=VARCHAR},
+			#{BUY_YN, jdbcType=VARCHAR},
+			#{PURCH_DATE, jdbcType=VARCHAR},
+			#{ACQU_EXCH, jdbcType=VARCHAR},
+			#{COLL_NO, jdbcType=VARCHAR},
+			#{VAT_RFND_STS, jdbcType=VARCHAR},
+			#{PROC_STS, jdbcType=VARCHAR},
+			#{TRAN_KIND_CD, jdbcType=VARCHAR},
+			#{TRAN_KIND_NM, jdbcType=VARCHAR},
+			#{TRAN_KIND_ERP_CO_CD, jdbcType=VARCHAR},
+			#{BIZ_UNIT_NM, jdbcType=VARCHAR},
+			#{BIZ_UNIT_ERP_CD, jdbcType=VARCHAR},
+			#{SUMMARY, jdbcType=VARCHAR},
+			#{USER_NM, jdbcType=VARCHAR},
+			#{USER_ID, jdbcType=VARCHAR},
+			#{USER_EMP_CD, jdbcType=VARCHAR},
+			#{USER_EMP_OFFICE, jdbcType=VARCHAR},
+			#{DEPT_NM, jdbcType=VARCHAR},
+			#{DEPT_CD, jdbcType=VARCHAR},
+			#{DEPT_ERP_CD, jdbcType=VARCHAR},
+			#{R_USER_NM, jdbcType=VARCHAR},
+			#{R_USER_ID, jdbcType=VARCHAR},
+			#{R_EMP_ERP_CD, jdbcType=VARCHAR},
+			#{R_USER_EMP_OFFICE, jdbcType=VARCHAR},
+			#{R_DEPT_NM, jdbcType=VARCHAR},
+			#{R_DEPT_ERP_CD, jdbcType=VARCHAR},
+			#{LST_USER_ID, jdbcType=VARCHAR},
+			#{LST_USER_EMP_CD, jdbcType=VARCHAR},
+			#{LST_USER_DEPT_ERP_CD, jdbcType=VARCHAR},
+			#{LST_MOD_DT, jdbcType=VARCHAR},
+			#{ERP_CODE, jdbcType=VARCHAR},
+			#{APPR_STS, jdbcType=VARCHAR},
+			#{APPR_SUBJ, jdbcType=VARCHAR},
+			#{APPR_CONT, jdbcType=VARCHAR},
+			#{ERP_ASST_CD, jdbcType=VARCHAR},
+			#{ATT_IMG_YN, jdbcType=VARCHAR},
+			#{ATT_IMG_CNT, jdbcType=VARCHAR},
+			#{SUMMARY_2, jdbcType=VARCHAR},
+			#{SUMMARY_3, jdbcType=VARCHAR},
+			#{SUMMARY_4, jdbcType=VARCHAR},
+			#{SUMMARY_5, jdbcType=VARCHAR},
+			#{SUMMARY_6, jdbcType=VARCHAR},
+			#{PPP_APPR_VOUCH_YN, jdbcType=VARCHAR},
+			#{PPP_APPR_SEQ_NO, jdbcType=VARCHAR},
+			#{RESERVE_01_NM, jdbcType=VARCHAR},
+			#{RESERVE_01_CODE, jdbcType=VARCHAR},
+			#{RESERVE_01_ERP_CD, jdbcType=VARCHAR},
+			#{EVENT_DATETIME, jdbcType=VARCHAR},
+			#{START_DTM, jdbcType=VARCHAR},
+			#{END_DTM, jdbcType=VARCHAR},
+			#{EVENT_DTM, jdbcType=VARCHAR},
+			#{ASSET_DIV_NM, jdbcType=VARCHAR},
+			#{ASSET_DEPT_NM, jdbcType=VARCHAR},
+			#{ASSET_DIV_ERP_CD, jdbcType=VARCHAR},
+			#{ASSET_DEPT_ERP_CD, jdbcType=VARCHAR},
+			#{DEDCT_YN, jdbcType=VARCHAR},
+			#{BIZ_UNIT_NM2, jdbcType=VARCHAR},
+			#{BIZ_UNIT_ERP_CD2, jdbcType=VARCHAR},
+			#{PAY_ACCOUNT_NO, jdbcType=VARCHAR},
+			#{PAY_HOLDER_NAME, jdbcType=VARCHAR},
+			#{PAY_BANK, jdbcType=VARCHAR},
+			#{EXPN_PAY_DT, jdbcType=VARCHAR},
+			#{EXPN_PRE_DT, jdbcType=VARCHAR},
+			#{DOC_NO, jdbcType=VARCHAR},
+			#{SUMMARY_7, jdbcType=VARCHAR},
+			#{SUMMARY_8, jdbcType=VARCHAR},
+			#{RSCH_CD, jdbcType=VARCHAR},
+			#{RSCH_NM, jdbcType=VARCHAR},
+			#{ADVC_CD, jdbcType=VARCHAR},
+			#{ADVC_NM, jdbcType=VARCHAR},
+			#{CARD_ERP_CD, jdbcType=VARCHAR},
+			#{CARD_NICK_NM, jdbcType=VARCHAR},
+			#{DRAFT_DATE, jdbcType=VARCHAR},
+			#{PTL_ID, jdbcType=VARCHAR},
+			#{USE_INTT_ID, jdbcType=VARCHAR},
+			#{LST_APRV_DATE, jdbcType=VARCHAR},
+			#{APPR_SEQ_NO, jdbcType=VARCHAR},
+			#{RESOLLIST_SEQ_NO, jdbcType=VARCHAR},
+			#{PROC_BANK_ACCT_NO, jdbcType=VARCHAR},
+			#{PROC_HOLDER_NAME, jdbcType=VARCHAR},
+			#{PROC_BANK_NM, jdbcType=VARCHAR},
+			#{CAN_MG, jdbcType=VARCHAR},
+			#{ERP_STAT_NO, jdbcType=VARCHAR},
+			#{CAR_INFO, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertBizplayFile" parameterType="map">
+		INSERT INTO BIZPLAY_0411A_FILE (
+			CARD_NO
+			, SEQ
+			, APV_DT
+			, IMG_SEQ_NO
+			, REG_DTM
+			, RCPT_IMG_URL
+			, ORG_IMG_URL
+		) VALUES (
+			#{CARD_NO, jdbcType=VARCHAR}
+			, #{SEQ, jdbcType=VARCHAR}
+			, #{APV_DT, jdbcType=VARCHAR}
+			, #{IMG_SEQ_NO, jdbcType=VARCHAR}
+			, #{REG_DTM, jdbcType=VARCHAR}
+			, #{RCPT_IMG_URL, jdbcType=VARCHAR}
+			, #{ORG_IMG_URL, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<delete id="deleteBizplayFile" parameterType="map">
+		DELETE BIZPLAY_0411A_FILE
+		 WHERE CARD_NO = #{CARD_NO, jdbcType=VARCHAR}
+		   AND SEQ = #{SEQ, jdbcType=VARCHAR}
+		   AND APV_DT = #{APV_DT, jdbcType=VARCHAR} 
+	</delete>
+	
+	<!-- 결재정보 등록 -->
+	<insert id="insertBizplayAprv" parameterType="map">
+		<selectKey keyProperty="APRV_NO" resultType="String" order="BEFORE">
+			SELECT NVL(MAX(TO_NUMBER(APRV_NO)),0)+1
+			 FROM STD_APRV_MNG
+		</selectKey>
+		MERGE INTO STD_APRV_MNG
+		USING DUAL
+		   ON ( PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO} )
+		WHEN MATCHED THEN
+			UPDATE SET
+			  REPT_APRV_NO = #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}
+			  , APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}
+			  , TITLE = #{TITLE, jdbcType=VARCHAR}
+			  , PROJ_CD = #{PROJ_CD, jdbcType=VARCHAR}
+			  , TERM_ST_YM = #{TERM_ST_YM, jdbcType=VARCHAR}
+			  , TERM_ED_YM = #{TERM_ED_YM, jdbcType=VARCHAR}
+			  , REPT_CONT = #{REPT_CONT, jdbcType=VARCHAR}
+			  , HALF_TYPE_CD = #{HALF_TYPE_CD, jdbcType=VARCHAR}
+			  , PLACE = #{PLACE, jdbcType=VARCHAR}
+			  , CRTN_EMP_NO = #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , CRTN_DT = TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
+			  , MODI_EMP_NO = #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , MODI_DT = TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
+		WHEN NOT MATCHED THEN
+			INSERT ( 
+				APRV_NO
+			  , REPT_APRV_NO
+			  , APRV_TYPE_CD
+			  , APRV_TYPE_DTIL_CD
+			  , TITLE
+			  , PROJ_CD
+			  , TERM_ST_YM
+			  , TERM_ED_YM
+			  , REPT_CONT
+			  , HALF_TYPE_CD
+			  , PLACE
+			  , CRTN_EMP_NO
+			  , CRTN_DT
+			  , MODI_EMP_NO
+			  , MODI_DT
+			  , PPP_APPR_SEQ_NO
+			) 
+			VALUES (
+				#{APRV_NO}
+			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , #{APRV_TYPE_CD, jdbcType=VARCHAR}
+			  , #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}
+			  , #{TITLE, jdbcType=VARCHAR}
+			  , #{PROJ_CD, jdbcType=VARCHAR}
+			  , #{TERM_ST_YM, jdbcType=VARCHAR}
+			  , #{TERM_ED_YM, jdbcType=VARCHAR}
+			  , #{REPT_CONT, jdbcType=VARCHAR}
+			  , #{HALF_TYPE_CD, jdbcType=VARCHAR}
+			  , #{PLACE, jdbcType=VARCHAR}
+			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
+			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
+			  , #{PPP_APPR_SEQ_NO, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<insert id="insertBizplayAprvLine" parameterType="map">
+		<selectKey keyProperty="APRV_NO" resultType="String" order="BEFORE">
+			SELECT APRV_NO
+			 FROM STD_APRV_MNG
+			 WHERE PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO}
+		</selectKey>
+		INSERT INTO STD_APRV_LINE(
+				APRV_NO
+			  , APRV_EMP_NO
+			  , APRV_ORDR
+			  , APRV_YM
+			  , APRV_YN_CD
+			  , APRV_CONT
+			  , CRTN_EMP_NO
+			  , CRTN_DT
+			  , MODI_EMP_NO
+			  , MODI_DT
+			  , CONF_YN
+			  , REFE_YN
+			) VALUES
+			(
+				#{APRV_NO, jdbcType=VARCHAR}
+			  , #{APRV_EMP_CD, jdbcType=VARCHAR}
+			  , #{APRV_ORDR, jdbcType=VARCHAR}
+			  , #{APRV_YM, jdbcType=VARCHAR}
+			  , #{APRV_YN_CD, jdbcType=VARCHAR}
+			  , #{APRV_CONT, jdbcType=VARCHAR}
+			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , SYSDATE
+			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , TO_DATE(#{MODI_DT},'YYYYMMDDHH24MISS')
+			  , #{CONF_YN, jdbcType=VARCHAR}
+			  , #{REFE_YN, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<delete id="deleteBizplayAprvLine" parameterType="map">
+		DELETE STD_APRV_LINE
+		 WHERE APRV_NO = (SELECT APRV_NO
+						    FROM STD_APRV_MNG
+						   WHERE PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO})
+	</delete>
+	
+	<select id="getBizplayData" resultType="HashMap" parameterType="map">
+		SELECT *
+		  FROM BIZPLAY_0411A
+		 WHERE PPP_APPR_SEQ_NO = (SELECT PPP_APPR_SEQ_NO
+		                            FROM STD_APRV_MNG
+		                           WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR})
+	</select>
+	
+	<select id="getBizplayFile" resultType="HashMap" parameterType="map">
+		SELECT CARD_NO, SEQ, APV_DT, IMG_SEQ_NO, REG_DTM, RCPT_IMG_URL, ORG_IMG_URL
+		  FROM BIZPLAY_0411A_FILE
+		 WHERE CARD_NO = #{CARD_NO, jdbcType=VARCHAR}
+		   AND SEQ = #{SEQ, jdbcType=VARCHAR}
+		   AND APV_DT = #{APV_DT, jdbcType=VARCHAR}
+	</select>
 </mapper>

@@ -202,4 +202,37 @@ public class AprvMngDAO extends AbstractDAO {
 	public void updateCompanion(Map params) throws Exception {
 		update("aprvMng.updateCompanion", params);
 	}
+
+	public int insertBizplayData(Map params) throws Exception {
+		return (Integer)insert("aprvMng.insertBizplayData", params);
+	}
+
+	public int insertBizplayFile(Map params) {
+		return (Integer)insert("aprvMng.insertBizplayFile", params);
+	}
+	
+	public int deleteBizplayFile(Map params) {
+		return (Integer)insert("aprvMng.deleteBizplayFile", params);
+	}
+	
+	public int insertBizplayAprv(Map params) {
+		return (Integer)insert("aprvMng.insertBizplayAprv", params);
+		
+	}
+	
+	public int insertBizplayAprvLine(Map params) throws Exception {
+		return (Integer)insert("aprvMng.insertBizplayAprvLine", params);
+	}
+	
+	public int deleteBizplayAprvLine(Map params) throws Exception {
+		return (Integer)insert("aprvMng.deleteBizplayAprvLine", params);
+	}
+
+	public List getBizplayData(Map params) throws Exception {
+		return (List)getList("aprvMng.getBizplayData", params);
+	}
+	
+	public List getBizplayFile(Map params) throws Exception {
+		return (List)getList("aprvMng.getBizplayFile", params);
+	}
 }

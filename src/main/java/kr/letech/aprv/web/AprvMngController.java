@@ -1,5 +1,7 @@
 package kr.letech.aprv.web;
 
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -7,11 +9,20 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.LoginVO;
@@ -135,10 +146,15 @@ public class AprvMngController {
 		List lineList = aprvMngService.aprvLineList(params);
 		/* 결재 첨부파일정보 조회 */
 		List fileList = aprvMngService.aprvFileList(params);
+		/* 지출결의서 조회 */
+		Map recMap = (Map) aprvMngService.getAprvRecList(params);
 		
 		model.addAttribute("viewMap", viewMap);
 		model.addAttribute("lineList", lineList);
-		model.addAttribute("fileList", fileList);		
+		model.addAttribute("fileList", fileList);
+		model.addAttribute("recList", recMap.get("recList"));
+		model.addAttribute("recFileList", recMap.get("recFileList"));
+		
 
 		/*코드리스트 조회를 위한 상위코드입력*/
 		params.put("up_cd", VarConsts.EAM_MASTER_CODE);
@@ -380,6 +396,28 @@ public class AprvMngController {
 		model.addAttribute("aprvCount0", aprvCount0);
 		model.addAttribute("aprvCount2", aprvCount2);
 		model.addAttribute("aprvCount3", aprvCount3);
+		
+		return viewName;
+	}
+	
+	/**
+	* BIZPLAY API를 호출하여 받아온 데이터를 LETECH INTRANET 데이터베이스에 적재
+	* 작성자 : JO MIN SOO
+	* 변경이력 :
+	* @param request
+	* @param model
+	* @return
+	* @throws Exception
+	*/
+	@RequestMapping(value = "/aprv/loadBizplay.do")
+	public String loadBizplay(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		String viewName = "jsonView";
+
+		Object rtnJsonData = aprvMngService.loadBizplay(params);
+		params.put("rtnJsonData", rtnJsonData);
 		
 		return viewName;
 	}

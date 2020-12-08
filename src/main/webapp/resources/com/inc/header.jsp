@@ -35,6 +35,9 @@ if(Sessinfo != null){
 		<div class="top_menu">
 			<ul class="nav navbar-top-links navbar-right" >
 					<li>
+						<input type="button" id="test" name="test" class="btn btn-sm btn-default" value="호출">
+					</li>
+					<li>
 						<a data-toggle="collapse" data-parent="#accordion" href="#alarmOne" aria-expanded="false">
 							<i class="glyphicon glyphicon-bell"></i>
 							<span class="badge active"><font id="aside_aprvTotCnt"></font></span>
@@ -182,6 +185,19 @@ $(document).ready(function(){
 			/* 결재 관련 건수 END */
 		}
 	});	
+});
+$(function() {
+	$('#test').on("click", function() {
+		$.ajax({
+			type: 'GET',
+			url: '${pageContext.request.contextPath}/aprv/loadBizplay.do',
+			dataType: 'json',
+			data : {"START_DATE" : "20201203", "END_DATE" : "20201203"},
+			success: function(rtnData) {
+				console.log(rtnData);
+			}
+		});	
+	});
 });
 </script>
 			

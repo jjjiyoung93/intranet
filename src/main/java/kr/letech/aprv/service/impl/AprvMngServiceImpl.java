@@ -1,14 +1,22 @@
 package kr.letech.aprv.service.impl;
 
+import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.ibatis.reflection.wrapper.MapWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.letech.app.service.AppPushService;
 import kr.letech.aprv.service.AprvMngService;
@@ -19,6 +27,9 @@ import kr.letech.cmm.util.PageNavigator;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.sys.cdm.service.impl.CodeMngDAO;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
+import net.sf.json.JSONObject;
 
 @Service("aprvMngService")
 public class AprvMngServiceImpl implements AprvMngService {
@@ -556,4 +567,163 @@ public class AprvMngServiceImpl implements AprvMngService {
 	public void updateConfYn(Map params) throws Exception {
 		aprvMngDAO.updateConfYn(params);
 	}
+
+	/**
+	* BIZPLAY API를 호출하여 받아온 데이터를 LETECH INTRANET 데이터베이스에 적재
+	* 작성자 : JO MIN SOO
+	* 변경이력 :
+	* @param request
+	* @param model
+	* @return
+	* @throws Exception
+	*/
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public Object loadBizplay(Map params) throws Exception {
+		// 입력부 데이터 입력 시작 
+		JSONObject jsonData = new JSONObject();
+		jsonData.put("API_ID", "0411A");
+		jsonData.put("API_KEY", "b10b7fb2-dccc-1657-bde8-b580cbc48355");
+		jsonData.put("ORG_CD", "6298800134");
+		
+		JSONObject reqData = new JSONObject();
+		reqData.put("BIZ_NO", "6298800134");
+		reqData.put("CARD_NO", "");
+//		reqData.put("START_DATE", "20201120");
+		reqData.put("START_DATE", params.get("START_DATE"));
+		reqData.put("START_TIME", "");
+//		reqData.put("END_DATE", "20201205");
+		reqData.put("END_DATE", params.get("END_DATE"));
+		reqData.put("END_TIME", "");
+		reqData.put("RCV_STS", "");
+		reqData.put("REQ_CNT", "");
+		reqData.put("NEXT_KEY", "");
+		reqData.put("REQ_ATTIMG_YN", "Y"); // 첨부이미지포함여부
+		
+		
+		jsonData.put("REQ_DATA", reqData);
+		// 입력부 데이터 입력 끝 
+		
+		// BIZPLAY API의 URL에 입력부 데이터를 추가하여 인코딩한 URL 생성
+		URI targetUrl = UriComponentsBuilder.fromUriString("https://webankapi.appplay.co.kr/")	// Build the base link
+			.path("gateway.do")					// Add path
+		    .queryParam("JSONData", jsonData)	// Add one or more query params
+		    .build()							// Build the URL
+		    .encode()							// Encode any URI items that need to be encoded
+		    .toUri();							// Convert to URI
+		
+		// RestTemplate을 이용하여 API 호출 및 데이터 반환
+		RestTemplate rest = new RestTemplate();
+		String result = rest.getForObject(targetUrl, String.class);
+		
+		// 받아온 데이터를 Map 데이터로 변환
+		Map rtnData = JSONObject.fromObject(result);
+		
+		JSONArray resData = (JSONArray) rtnData.get("RES_DATA");
+		
+		for(int i = 0; i < resData.size(); i++) {
+			Map tempMap = (Map) resData.get(i);
+			Map paramMap = new HashMap();
+			
+			// 공통 코드 추가
+			paramMap.put("RESULT_MG", rtnData.get("RESULT_MG"));
+			paramMap.put("RESULT_CD", rtnData.get("RESULT_CD"));
+			paramMap.put("NEXT_KEY", rtnData.get("NEXT_KEY"));
+			
+			for(Object key : tempMap.keySet()) {
+				// jsonarray에는 null이 JSONNull타입임.. 따라서 그대로 사용하면 mybatis에서 에러가 발생했음. JSONNull인 경우 저장하지 않아 null로 처리
+				if(!(tempMap.get(key).getClass() == JSONNull.class)) {
+					paramMap.put(key, tempMap.get(key));
+				}
+			}
+			
+			// BIZPLAY_0411A 테이블에 모든 결재건 적재
+			aprvMngDAO.insertBizplayData(paramMap);
+			
+			// BIZPLAY_0411A_FILE 테이블에 결재건에 대한 첨부파일들 등록
+			aprvMngDAO.deleteBizplayFile(paramMap);
+			JSONArray fileList = (JSONArray) tempMap.get("ATT_IMG_LIST");
+			for(int j = 0; j < fileList.size(); j++) {
+				Map tempMap2 = (Map) fileList.get(j);
+				paramMap.put("IMG_SEQ_NO", tempMap2.get("IMG_SEQ_NO"));
+				paramMap.put("REG_DTM", tempMap2.get("REG_DTM"));
+				paramMap.put("RCPT_IMG_URL", tempMap2.get("RCPT_IMG_URL"));
+				paramMap.put("ORG_IMG_URL", tempMap2.get("ORG_IMG_URL"));
+				
+				aprvMngDAO.insertBizplayFile(paramMap);
+			}
+			
+			
+			// 모든 데이터 중 결재완료(9)인 데이터는 지출결의 완료 등록
+			if(("9").equals(paramMap.get("APPR_STS"))) {
+				// 저장될 데이터 정제 시작 
+//				params.put("REPT_APRV_NO", paramMap.get("USER_ID"));
+				paramMap.put("REPT_APRV_NO", "msjo");
+				paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
+				paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // [법인은 1, 일반(개인)은 2, 송금은 3]
+				
+				String title = String.valueOf(paramMap.get("APV_DT")).substring(4, 6);
+				title += "월_지출결의_" + "";
+				title += (paramMap.get("CARD_TYPE").equals("1")) ? "법인_" : "개인_";
+				title += String.valueOf(paramMap.get("SUMMARY")).substring(0, 2) + "_";
+				title += paramMap.get("DRAFT_DATE");
+				paramMap.put("TITLE", title);
+				
+				paramMap.put("PROJ_CD", paramMap.get("BIZ_UNIT_ERP_CD"));
+				
+				String date = String.valueOf(paramMap.get("DRAFT_DATE"));
+				String convertDate = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
+				paramMap.put("TERM_ST_YM", convertDate);
+				paramMap.put("TERM_ED_YM", convertDate);
+
+				paramMap.put("REPT_CONT", paramMap.get("APPR_CONT"));
+				paramMap.put("HALF_TYPE_CD", "0");
+				paramMap.put("PLACE", "-");
+				// 저장될 데이터 정제 끝
+				
+				aprvMngDAO.insertBizplayAprv(paramMap);
+				
+				// 결재 대상(결재 라인) 등록
+				JSONArray aprvLineArray = (JSONArray) tempMap.get("CD_PPP_APPR_REC");
+				aprvMngDAO.deleteBizplayAprvLine(paramMap);	// 결재라인 지우기
+				for (int j = 0; j < aprvLineArray.size(); j++) {
+					// 결재라인 맵 초기화
+					Map aprvLineMap = (Map) aprvLineArray.get(j);
+					
+					aprvLineMap.put("PPP_APPR_SEQ_NO", paramMap.get("PPP_APPR_SEQ_NO"));
+					aprvLineMap.put("APRV_NO", paramMap.get("APRV_NO"));
+					aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")) + 1);
+					aprvLineMap.put("APRV_YN_CD", 1);
+//					aprvLineMap.put("CRTN_EMP_NO", paramMap.get("USER_ID"));
+					aprvLineMap.put("CRTN_EMP_NO", "msjo");
+					aprvLineMap.put("MODI_DT", aprvLineMap.get("APRV_DATE"));
+					aprvLineMap.put("REFE_YN", 'N');
+					aprvLineMap.put("CONF_YN", 'Y');
+					
+					aprvMngDAO.insertBizplayAprvLine(aprvLineMap);	// 결재라인 등록
+				}
+				
+			}
+		}
+		// 결과 반환
+		return null;
+	}
+
+	@Override
+	public Map getAprvRecList(Map params) throws Exception {
+		List recList = aprvMngDAO.getBizplayData(params);
+		params.put("recList", recList);
+		
+		List<Map> fileList = new ArrayList<Map>();
+		for(int i = 0; i < recList.size(); i++) {
+			List tempList = aprvMngDAO.getBizplayFile((Map)recList.get(i));
+			for(int j = 0; j < tempList.size(); j++) {
+				fileList.add((Map) tempList.get(j));
+			}
+		}
+		params.put("recFileList", fileList);
+		
+		return params;
+	}
+
 }
