@@ -140,13 +140,28 @@
 					            </li>
 					            <li>
 					            	<dl class="clearfix">
-						          	<dt class="col-md-2 col-sm-3">첨부파일</dt>
-						          	<dd class="col-md-10 col-sm-9">
-										<c:forEach var="file" items="${fileList }" varStatus="status">
-											<div id="file_${file.FILE_NO }"><a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a></div>
-										</c:forEach>
-						            </dd>
-					            	</dl>
+							          	<dt class="col-md-2 col-sm-3">첨부파일</dt>
+										<dd class="col-md-10 col-sm-9">
+											<c:choose>
+												<c:when test="${not empty recList}">
+													<c:forEach var="file" items="${recFileList }"
+														varStatus="status">
+														<div>
+															<a href="${file.ORG_IMG_URL }" onclick="window.open(this.href,'첨부파일'); return false;">첨부파일${status.count }</a>
+														</div>
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
+													<c:forEach var="file" items="${fileList }"
+														varStatus="status">
+														<div id="file_${file.FILE_NO }">
+															<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a>
+														</div>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
+										</dd>
+									</dl>
 					            </li>
 					            <li>
 					            	<div class="clearfix">
@@ -310,7 +325,7 @@
 							    	</div>
 							    	
 									<!-- 지출결의서 보기 -->	
-<%-- 								<c:if test="${recList ne null}">	             --%>
+								<c:if test="${recList ne null}">	            
 					            	<div class="clearfix">
 					            		<dl class="panel panel-default" style="padding:0;">
 					            			<dt onclick="myFunction()" class="panel-heading">지출결의서 보기 &nbsp;
@@ -325,8 +340,8 @@
 													<table class="table table-bordered" style="float:right; width:40%;">
 														<thead class="table_s" style="text-align:center;">
 															<tr><td class="table_menu"></td></tr>
-<%-- 															<tr><td>${APRV_LINE_NM}</td></tr> --%>
-<%-- 															<tr><td>${APRV_DATE}</td></tr> --%>
+															<tr><td>${APRV_LINE_NM}</td></tr>
+															<tr><td>${APRV_DATE}</td></tr>
 														</thead>
 													</table>
 												</div>
@@ -386,7 +401,7 @@
 	
 															<div style="border: 1px solid lightgray; height: 70%; padding: 10%;">
 																<table>
-																	<tbody>
+																	<tbody style="margin-right:10%;">
 																		<tr>
 																			<th>카드정보</th>
 																			<td><span>${recList.BANK_CD} ${recList.CARD_NO}</span></td>
@@ -436,6 +451,33 @@
 																<tbody>
 																	<tr>
 																		<th style="letter-spacing:0px;">구분</th>
+																		<td>
+																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																		<td>
+																	</tr>
+																	<tr>
+																		<th style="letter-spacing:0px;">분류</th>
+																		<td>
+																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																		<td>
+																	</tr>
+																	<tr>
+																		<th style="letter-spacing:0px;">상세내용</th>
+																		<td>
+																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																		<td>
+																	</tr>
+																	<tr>
+																		<th style="letter-spacing:0px;">신청금액</th>
+																		<td>
+																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																		<td>
+																	</tr>
+																	<tr>
+																		<th style="letter-spacing:0px;">프로젝트</th>
+																		<td>
+																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																		<td>
 																	</tr>
 																</tbody>
 															</table>
@@ -446,7 +488,7 @@
 											</div>	
 										</dl>
 									</div>
-<%-- 								</c:if> --%>
+								</c:if>
 									
 							</ul>
 							<p class="clearfix">
