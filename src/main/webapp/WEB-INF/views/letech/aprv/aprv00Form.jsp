@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
 <head>
@@ -140,8 +141,36 @@
 												<dd class="col-md-10 col-sm-9 form-group">
 													<div class="form-inline">
 														<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
-															~
+														<select name="term_st_h" id="term_st_h" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
+															<option value="">--</option>
+															<c:forEach var="i" begin="8" end="19">
+																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
+																<option value="${no }" <c:if test="${no eq viewMap.TERM_ST_H }" >selected="selected"</c:if> >${no }시</option>																	
+															</c:forEach>
+														</select>
+														<select name="term_st_m" id="term_st_m" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
+															<option value="">--</option>
+															<c:forEach var="i" begin="0" end="30" step="30">
+																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
+																<option value="${no }" <c:if test="${no eq viewMap.TERM_ST_M }" >selected="selected"</c:if> >${no }분</option>																	
+															</c:forEach>
+														</select>
+															 ~ 
 														<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
+														<select name="term_ed_h" id="term_ed_h" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
+															<option value="">--</option>
+															<c:forEach var="i" begin="8" end="19">
+																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
+																<option value="${no }" <c:if test="${no eq viewMap.TERM_ED_H }" >selected="selected"</c:if> >${no }시</option>																	
+															</c:forEach>
+														</select>
+														<select name="term_ed_m" id="term_ed_m" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
+															<option value="">--</option>
+															<c:forEach var="i" begin="0" end="30" step="30">
+																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
+																<option value="${no }" <c:if test="${no eq viewMap.TERM_ED_M }" >selected="selected"</c:if> >${no }분</option>																	
+															</c:forEach>
+														</select>
 													</div>
 												</dd>
 											</dl>
@@ -359,6 +388,17 @@ $("#cdList1").change(function(){
 		});
 	}
 	
+	if($(this).val() == "CD0001011") {
+		$("#term_st_h").css("display", "");
+		$("#term_st_m").css("display", "");
+		$("#term_ed_h").css("display", "");
+		$("#term_ed_m").css("display", "");
+	} else {
+		$("#term_st_h").css("display", "none");
+		$("#term_st_m").css("display", "none");
+		$("#term_ed_h").css("display", "none");
+		$("#term_ed_m").css("display", "none");
+	}
 });
 
 $(document).ready(function() {
@@ -498,7 +538,25 @@ function getValidation(){
 				return false;
 			}
 		}
-		
+		if($("#cdList1").val() == "CD0001011"){
+			if($("#term_st_h").val() == ""){
+				alert("시작 시간을 입력해 주세요.");
+				$("#term_st_h").focus();
+				return false;
+			} else if($("#term_st_m").val() == ""){
+				alert("시작 분을 입력해 주세요.");
+				$("#term_st_m").focus();
+				return false;
+			} else if($("#term_ed_h").val() == ""){
+				alert("종료 시간을 입력해 주세요.");
+				$("#term_ed_h").focus();
+				return false;
+			} else if($("#term_ed_m").val() == ""){
+				alert("종료 분을 입력해 주세요.");
+				$("#term_ed_m").focus();
+				return false;
+			}
+		}
 		if($("#rept_cont").val() == ""){
 			alert("보고내용을 입력해 주세요.");
 			$("#rept_cont").focus();

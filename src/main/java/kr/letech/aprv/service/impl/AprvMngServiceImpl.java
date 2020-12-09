@@ -203,9 +203,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 			
 			String cd_nm = String.valueOf(codeView.get("CD_NM"));	// 코드 이름
 			calAprvMap.put("cal_nm", aprv_nm + " " +cd_nm);
-			calAprvMap.put("cal_content", calAprvMap.get("cal_nm"));
+			calAprvMap.put("cal_content", params.get("rept_cont"));
 			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
 			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
+			calAprvMap.put("cal_st_time", String.valueOf(params.get("term_st_h")) + String.valueOf(params.get("term_st_m")));
+			calAprvMap.put("cal_ed_time", String.valueOf(params.get("term_ed_h")) + String.valueOf(params.get("term_ed_m")));
 			calAprvMap.put("uss_id", params.get("rept_aprv_no"));
 			
 			int cal_seq = calMngDAO.calInsert(calAprvMap);
@@ -336,9 +338,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 			String cd_nm = String.valueOf(codeView.get("CD_NM"));	// 코드 이름
 			
 			calAprvMap.put("cal_nm", aprv_nm + " " +cd_nm);
-			calAprvMap.put("cal_content", calAprvMap.get("cal_nm"));
+			calAprvMap.put("cal_content", params.get("rept_cont"));
 			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
 			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
+			calAprvMap.put("cal_st_time", String.valueOf(params.get("term_st_h")) + String.valueOf(params.get("term_st_m")));
+			calAprvMap.put("cal_ed_time", String.valueOf(params.get("term_ed_h")) + String.valueOf(params.get("term_ed_m")));
 
 			// 생성된 캘린더가 있을 때 캘린더 수정
 			if(!"".equals(params.get("cal_no"))){
@@ -569,9 +573,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 	}
 
 	/**
-	* BIZPLAY API를 호출하여 받아온 데이터를 LETECH INTRANET 데이터베이스에 적재
-	* 작성자 : JO MIN SOO
-	* 변경이력 :
+	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
 	* @param request
 	* @param model
 	* @return
@@ -709,6 +711,13 @@ public class AprvMngServiceImpl implements AprvMngService {
 		return null;
 	}
 
+	/**
+	* BIZPLAY에서 받아온 영수증과 첨부파일이미지를 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	@Override
 	public Map getAprvRecList(Map params) throws Exception {
 		List recList = aprvMngDAO.getBizplayData(params);

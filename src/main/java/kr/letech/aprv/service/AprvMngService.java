@@ -110,9 +110,8 @@ public interface AprvMngService {
 	public void updateConfYn(Map params) throws Exception;
 	
 	/**
-	* BIZPLAY API를 호출하여 받아온 데이터를 LETECH INTRANET 데이터베이스에 적재
+	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
 	* 작성자 : JO MIN SOO
-	* 변경이력 :
 	* @param request
 	* @param model
 	* @return
@@ -120,6 +119,13 @@ public interface AprvMngService {
 	*/
 	public Object loadBizplay(Map params) throws Exception;
 
+	/**
+	* BIZPLAY에서 받아온 영수증과 첨부파일이미지를 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public Map getAprvRecList(Map params) throws Exception;
 
 }

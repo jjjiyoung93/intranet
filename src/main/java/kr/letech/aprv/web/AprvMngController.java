@@ -215,6 +215,7 @@ public class AprvMngController {
 			params.put("up_cd", viewMap.get("APRV_TYPE_CD"));
 			List codeList2 = codeMngService.getCodeList(params);
 			model.addAttribute("codeList2", codeList2);
+			
 		}
 				
 		return "letech/aprv/aprv00Form";
@@ -373,8 +374,6 @@ public class AprvMngController {
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 
-		
-		
 		params.put("aprv_up_cd", VarConsts.EAM_MASTER_CODE);
 		params.put("uss_id", loginVO.getId());
 		// 결재중
@@ -401,9 +400,8 @@ public class AprvMngController {
 	}
 	
 	/**
-	* BIZPLAY API를 호출하여 받아온 데이터를 LETECH INTRANET 데이터베이스에 적재
+	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
 	* 작성자 : JO MIN SOO
-	* 변경이력 :
 	* @param request
 	* @param model
 	* @return

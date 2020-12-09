@@ -203,35 +203,91 @@ public class AprvMngDAO extends AbstractDAO {
 		update("aprvMng.updateCompanion", params);
 	}
 
+	/**
+	* BIZPLAY에서 받아온 데이터를 저장
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public int insertBizplayData(Map params) throws Exception {
 		return (Integer)insert("aprvMng.insertBizplayData", params);
 	}
 
+	/**
+	* BIZPLAY에서 결재완료된 건의 영수증 첨부파일을 추가
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public int insertBizplayFile(Map params) {
 		return (Integer)insert("aprvMng.insertBizplayFile", params);
 	}
 	
+	/**
+	* BIZPLAY에서 결재완료된 건의 영수증 첨부파일을 제거
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public int deleteBizplayFile(Map params) {
 		return (Integer)insert("aprvMng.deleteBizplayFile", params);
 	}
 	
+	/**
+	* BIZPLAY에서 결재완료된 건의 결재정보를 인트라넷에 추가
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public int insertBizplayAprv(Map params) {
 		return (Integer)insert("aprvMng.insertBizplayAprv", params);
 		
 	}
 	
+	/**
+	* BIZPLAY에서 결재완료된 건의 결재라인을 추가
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public int insertBizplayAprvLine(Map params) throws Exception {
 		return (Integer)insert("aprvMng.insertBizplayAprvLine", params);
 	}
 	
+	/**
+	* BIZPLAY에서 결재완료된 건의 결재라인을 제거
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public int deleteBizplayAprvLine(Map params) throws Exception {
 		return (Integer)insert("aprvMng.deleteBizplayAprvLine", params);
 	}
 
+	/**
+	* BIZPLAY에서 받아온 영수증을 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public List getBizplayData(Map params) throws Exception {
 		return (List)getList("aprvMng.getBizplayData", params);
 	}
 	
+	/**
+	* BIZPLAY에서 받아온 영수증의 첨부파일을 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
 	public List getBizplayFile(Map params) throws Exception {
 		return (List)getList("aprvMng.getBizplayFile", params);
 	}

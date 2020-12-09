@@ -405,6 +405,12 @@
 			, A.PROJ_CD					/* 프로젝트코드 */
 			, A.TERM_ST_YM					/* 기간시작일자 */
 			, A.TERM_ED_YM					/* 기간종료일자 */
+			, A.TERM_ST_HM					/* 기간시작시간 */
+			, A.TERM_ED_HM					/* 기간종료시간 */
+			, SUBSTR(A.TERM_ST_HM, 1, 2) TERM_ST_H
+			, SUBSTR(A.TERM_ST_HM, 3, 4) TERM_ST_M
+			, SUBSTR(A.TERM_ED_HM, 1, 2) TERM_ED_H
+			, SUBSTR(A.TERM_ED_HM, 3, 4) TERM_ED_M
 			, A.REPT_CONT					/* 보고내용 */
 			, A.HALF_TYPE_CD				/* 반차구분코드 */
 			, A.PLACE					/* 행선지 */
@@ -443,6 +449,8 @@
 			  , CRTN_DT
 			  , MODI_EMP_NO
 			  , MODI_DT
+			  , TERM_ST_HM
+			  , TERM_ED_HM
 			) VALUES
 			(
 				#{aprv_no}
@@ -460,6 +468,8 @@
 			  , SYSDATE
 			  , #{rept_aprv_no, jdbcType=VARCHAR}
 			  , SYSDATE
+			  , #{term_st_h, jdbcType=VARCHAR}||#{term_st_m, jdbcType=VARCHAR}
+			  , #{term_ed_h, jdbcType=VARCHAR}||#{term_ed_m, jdbcType=VARCHAR}
 			)
 	</insert>
 	
@@ -478,6 +488,8 @@
 		          , MODI_EMP_NO = #{rept_aprv_no, jdbcType=VARCHAR}
 		          , MODI_DT = SYSDATE
 		          , CAL_NO = #{cal_no, jdbcType=VARCHAR}
+		          , TERM_ST_HM = #{term_st_h, jdbcType=VARCHAR}||#{term_st_m, jdbcType=VARCHAR}
+			      , TERM_ED_HM = #{term_ed_h, jdbcType=VARCHAR}||#{term_ed_m, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</update>
 	
