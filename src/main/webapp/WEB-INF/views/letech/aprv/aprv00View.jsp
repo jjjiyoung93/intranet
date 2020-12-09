@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
 <html>
 <head>
@@ -405,14 +406,27 @@
 															<div style="border: 1px solid lightgray; height:70%; padding: 10%;">
 																<div>
 																	<ul>
-																		<li style="letter-spacing: 0px;">${recList.APV_DT} ${recList.APV_TM} ${recList.MEST_TAXT_TYP_INFO}</li>
+																		<li style="letter-spacing: 0px;">
+																		<fmt:parseDate value="${recList.APV_DT}" var="APV_DT_format" pattern="yyyyMMdd"/>
+																		<fmt:formatDate value="${APV_DT_format}" pattern="yyyy.MM.dd"/>
+																		<fmt:parseDate value="${recList.APV_TM}" var="APV_TM_format" pattern="HHmmss"/>
+																		<fmt:formatDate value="${APV_TM_format}" pattern="HH:mm"/>
+																		
+																		${recList.MEST_TAXT_TYP_INFO}
+																		</li>
 																		<li style="letter-spacing: 0px;"><strong>${recList.MEST_NM}</strong></li>
-																		<li style="letter-spacing: 0px;">${recList.BANK_CD} ${recList.CARD_NO}</li>
+																		<li style="letter-spacing: 0px;">${recList.BANK_CD}  
+<%-- 																			<fmt:parseNumber value="${recList.CARD_NO}" var="CARD_NO_format" pattern="################"/> --%>
+<%-- 																			<fmt:formatNumber value="${CARD_NO_format}" pattern="####-####-####-####"/> --%>
+																		
+																		</li>
 																		<li style="letter-spacing: 0px;">${recList.R_USER_NM}</li>
 																	</ul>
 																</div>
 																<div style="float: right; margin_bottom: 30%;">
-																	<strong style="letter-spacing: 0px; color: blue;">${recList.APR_SPLY_AMT}원</strong>
+																	<strong style="letter-spacing: 0px; color: blue;">
+																		<fmt:formatNumber type="currency" pattern="###,###,###원" value="${recList.APR_SPLY_AMT}" />
+																	</strong>
 																</div>
 															</div>
 	
@@ -469,31 +483,33 @@
 																	<tr>
 																		<th class="recipt" style="letter-spacing:0px;">구분</th>
 																		<td>
-																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.TRAN_KIND_NM}" readonly>
+																			<span>${recList.TRAN_KIND_NM}</span>
 																		<td>
 																	</tr>
 																	<tr>
 																		<th class="recipt" style="letter-spacing:0px;">분류</th>
 																		<td>
-																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.SUMMARY}" readonly>
+																			<span>${recList.SUMMARY}</span>
 																		<td>
 																	</tr>
 																	<tr>
 																		<th class="recipt" style="letter-spacing:0px;">상세내용</th>
 																		<td>
-																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.SUMMARY_2}" readonly>
+																			<span>${recList.SUMMARY_2}</span>
 																		<td>
 																	</tr>
 																	<tr>
 																		<th class="recipt" style="letter-spacing:0px;">신청금액</th>
 																		<td>
-																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.APR_AMT}원" readonly>
+																			<span>
+																				<fmt:formatNumber type="number" pattern="###,###,###원" value="${recList.APR_AMT}" />
+																			</span>
 																		<td>
 																	</tr>
 																	<tr>
 																		<th class="recipt" style="letter-spacing:0px;">프로젝트</th>
 																		<td>
-																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.BIZ_UNIT_NM}" readonly>
+																			<span>${recList.BIZ_UNIT_NM}</span>
 																		<td>
 																	</tr>
 																</tbody>
@@ -636,6 +652,10 @@ function aprvOk(){
 		    x.style.display = "none";
 		  }
 		}
+	function  cardNoParse(){
+		var card_no = $("#card_no").val();
+		}
+	
 
 </script>
 </body>
