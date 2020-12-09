@@ -20,6 +20,11 @@
  	background : lightgray;
  
  }
+ th.recipt {
+ 	white-space : nowrap;
+ 	text-align : right;
+ 	padding-right : 20px;
+ }
 </style>
 <body>
 <div id="wrapper">
@@ -328,7 +333,7 @@
 								<c:if test="${recList ne null}">	            
 					            	<div class="clearfix">
 					            		<dl class="panel panel-default" style="padding:0;">
-					            			<dt onclick="myFunction()" class="panel-heading">지출결의서 보기 &nbsp;
+					            			<dt onclick="myFunction()" class="panel-heading" style="cursor:pointer;">지출결의서 보기 &nbsp;
 					            	   			<a class="collapsed" data-toggle="collapse" data-parent="#selector" href="#collapse" aria-expanded="false" aria-controls="collapse">
                             						<span class="pull-right glyphicon glyphicon-menu-left"></span>
                            			   			</a>
@@ -336,15 +341,18 @@
 					            	  		</dt>
 					            	  		<div id="myDIV" style="display:none;">
 <!-- 											<di class="panel-body" style= "border:1px solid lightgray; margin:2%;"> -->
-												<div class="table-responsive">
-													<table class="table table-bordered" style="float:right; width:40%;">
-														<thead class="table_s" style="text-align:center;">
-															<tr><td class="table_menu"></td></tr>
-															<tr><td>${APRV_LINE_NM}</td></tr>
-															<tr><td>${APRV_DATE}</td></tr>
-														</thead>
-													</table>
-												</div>
+
+													<!--결재라인 -->
+<!-- 												<div class="table-responsive"> -->
+<!-- 													<table class="table table-bordered" style="float:right; width:40%;"> -->
+<!-- 														<thead class="table_s" style="text-align:center;"> -->
+<!-- 															<tr><td class="table_menu"></td></tr> -->
+<%-- 															<tr><td>${APRV_LINE_NM}</td></tr> --%>
+<%-- 															<tr><td>${APRV_DATE}</td></tr> --%>
+<!-- 														</thead> -->
+<!-- 													</table> -->
+<!-- 												</div> -->
+
 												<div style="margin-top:5%; margin-bottom:5%;">
 													<h2 style="text-align:center;">
 														<span>지출결의서(${CARD_TYPE})</span>
@@ -359,19 +367,25 @@
 														<thead class="table_s">
 															<tr>
 																<td class="table_menu" style="width:30%;">발의자</td>
-																<td>${USER_NM} / ${DEPT_NM}</td>
+																<td>${viewMap.REPT_APRV_NM } / ${viewMap.DPNM }
+																	(<c:forEach var="proj" items="${projList }" varStatus="status">
+																		<c:if test="${proj.CD eq viewMap.PROJ_CD }">
+																		${proj.CD_NM }
+																		</c:if>
+																	</c:forEach>)	
+																</td>
 															</tr>
 															<tr>
 											   				<td class="table_menu" style="width:30%;">발의일자</td>
-											   				<td>${DRAFT_DATE}</td>
+											   				<td>${viewMap.TERM_ST_YM }</td>
 											       		</tr>
 											  			<tr>
 											      				<td class="table_menu" style="width:30%;">제목</td>
-											      				<td>${APPR_SUBJ}</td>
+											      				<td>${viewMap.TITLE }</td>
 											  			</tr>
 											  			<tr>
 											   				<td class="table_menu" style="width:30%;">내용</td>
-											   				<td>${APPR_CONT}</td>
+											   				<td>${viewMap.REPT_CONT }</td>
 											  			</tr>
 														</thead>
 													</table>
@@ -385,61 +399,64 @@
 							            	         <span>원 </span>
 					            	       		</div>
 				            	       			<c:forEach var="recList" items="${recList }">
-					            	       		<div class="row">
+					            	       		<div class="row" style="margin: 0 0 2% 2%;">
 				            	         			<hr>
 					            	         			<div class="col-sm-6">
-															<div style="border: 1px solid lightgray; height: 70%; padding: 10%;">
-																<ul>
-																	<li style="letter-spacing: 0px;">${recList.APV_DT} ${recList.APV_TM} ${recList.MEST_TAXT_TYP_INFO}</li>
-																	<li style="letter-spacing: 0px;"><strong>${recList.MEST_NM}</strong></li>
-																	<li style="letter-spacing: 0px;">${recList.BANK_CD} ${recList.CARD_NO}	 ${recList.R_USER_NM}</li>
-																</ul>
+															<div style="border: 1px solid lightgray; height:70%; padding: 10%;">
+																<div>
+																	<ul>
+																		<li style="letter-spacing: 0px;">${recList.APV_DT} ${recList.APV_TM} ${recList.MEST_TAXT_TYP_INFO}</li>
+																		<li style="letter-spacing: 0px;"><strong>${recList.MEST_NM}</strong></li>
+																		<li style="letter-spacing: 0px;">${recList.BANK_CD} ${recList.CARD_NO}</li>
+																		<li style="letter-spacing: 0px;">${recList.R_USER_NM}</li>
+																	</ul>
+																</div>
 																<div style="float: right; margin_bottom: 30%;">
 																	<strong style="letter-spacing: 0px; color: blue;">${recList.APR_SPLY_AMT}원</strong>
 																</div>
 															</div>
 	
-															<div style="border: 1px solid lightgray; height: 70%; padding: 10%;">
+															<div style="border: 1px solid lightgray; height: 100%; padding: 10%;">
 																<table>
 																	<tbody style="margin-right:10%;">
 																		<tr>
-																			<th>카드정보</th>
+																			<th class="recipt">카드정보</th>
 																			<td><span>${recList.BANK_CD} ${recList.CARD_NO}</span></td>
 																		</tr>
 																		<tr>
-																			<th>거래일시</th>
+																			<th class="recipt">거래일시</th>
 																			<td><span>${recList.APV_DT} ${recList.APV_TM}</span></td>
 																		</tr>
 																		<tr>
-																			<th>승인번호</th>
+																			<th class="recipt">승인번호</th>
 																			<td><span>${recList.APV_NO}</span></td>
 																		</tr>
 																		<tr>
-																			<th>공급금액</th>
+																			<th class="recipt">공급금액</th>
 																			<td><span>${recList.SPLY_AMT}</span></td>
 																		</tr>
 																		<tr>
-																			<th>부가세</th>
+																			<th class="recipt">부가세</th>
 																			<td><span>${recList.VAT_AMT}</span></td>
 																		</tr>
 																		<tr>
-																			<th>봉사료</th>
+																			<th class="recipt">봉사료</th>
 																			<td><span>${recList.SRV_FEE}</span></td>
 																		</tr>
 																		<tr>
-																			<th>가맹점/대표자</th>
+																			<th class="recipt">가맹점/대표자</th>
 																			<td><span>${recList.MEST_NM} ${recList.MEST_REPR_NM}</span></td>
 																		</tr>
 																		<tr>
-																			<th>가맹점업종</th>
+																			<th class="recipt">가맹점업종</th>
 																			<td><span>${recList.CARD_TPBZ_NM}</span></td>
 																		</tr>
 																		<tr>
-																			<th>가맹점주소</th>
+																			<th class="recipt">가맹점주소</th>
 																			<td><span>${recList.MEST_ADDR_1}</span></td>
 																		</tr>
 																		<tr>
-																			<th>사업자등록번호</th>
+																			<th class="recipt">사업자등록번호</th>
 																			<td><span>${recList.MEST_BIZ_NO}</span></td>
 																		</tr>
 																	</tbody>
@@ -450,39 +467,39 @@
 															<table>
 																<tbody>
 																	<tr>
-																		<th style="letter-spacing:0px;">구분</th>
+																		<th class="recipt" style="letter-spacing:0px;">구분</th>
 																		<td>
-																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
-																		<td>
-																	</tr>
-																	<tr>
-																		<th style="letter-spacing:0px;">분류</th>
-																		<td>
-																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.TRAN_KIND_NM}" readonly>
 																		<td>
 																	</tr>
 																	<tr>
-																		<th style="letter-spacing:0px;">상세내용</th>
+																		<th class="recipt" style="letter-spacing:0px;">분류</th>
 																		<td>
-																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
-																		<td>
-																	</tr>
-																	<tr>
-																		<th style="letter-spacing:0px;">신청금액</th>
-																		<td>
-																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.SUMMARY}" readonly>
 																		<td>
 																	</tr>
 																	<tr>
-																		<th style="letter-spacing:0px;">프로젝트</th>
+																		<th class="recipt" style="letter-spacing:0px;">상세내용</th>
 																		<td>
-																			<input type="text" size="20" style="width:100%; margin:5%; border:0;" value="">
+																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.SUMMARY_2}" readonly>
+																		<td>
+																	</tr>
+																	<tr>
+																		<th class="recipt" style="letter-spacing:0px;">신청금액</th>
+																		<td>
+																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.APR_AMT}원" readonly>
+																		<td>
+																	</tr>
+																	<tr>
+																		<th class="recipt" style="letter-spacing:0px;">프로젝트</th>
+																		<td>
+																			<input type="text" size="40" style="width:100%; margin:5%; border:0;" value="${recList.BIZ_UNIT_NM}" readonly>
 																		<td>
 																	</tr>
 																</tbody>
 															</table>
 														</div>
-													<hr style="color:black;">
+													<hr>
 												</div> 
 												</c:forEach>	
 											</div>	
