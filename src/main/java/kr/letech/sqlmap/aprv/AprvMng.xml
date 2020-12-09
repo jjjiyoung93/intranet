@@ -1146,8 +1146,8 @@
 	</delete>
 	
 	<select id="getBizplayData" resultType="HashMap" parameterType="map">
-		SELECT *
-		  FROM BIZPLAY_0411A
+		SELECT A.*, '****-' || SUBSTR(CARD_NO, 5, 4) || '-' || SUBSTR(CARD_NO, 9, 4) || '-' || SUBSTR(CARD_NO, 13, 4) CARD_NO_MASKING
+		  FROM BIZPLAY_0411A A
 		 WHERE PPP_APPR_SEQ_NO = (SELECT PPP_APPR_SEQ_NO
 		                            FROM STD_APRV_MNG
 		                           WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR})
