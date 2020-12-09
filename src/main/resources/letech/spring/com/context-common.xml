@@ -61,12 +61,6 @@
     <!-- choose one from above and alias it to the name Spring expects -->
     <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" />
     
-    <!-- scheduler -->
-    <!--  메일보내기가 계속 호출되던 것 호출 안 되게 수정 2020.08.19. jyk -->
-<!--     <context:component-scan base-package="kr.letech.cmm.schedule" /> -->
-<!-- 	<task:scheduler id="jobScheduler" pool-size="10" /> -->
-<!-- 	<task:annotation-driven scheduler="jobScheduler" /> -->
-	
 	<!-- Spring mail configuration --> 
 	<bean id="mailSender" class ="org.springframework.mail.javamail.JavaMailSenderImpl" >
 		<property name="host" value="localhost" />
@@ -80,4 +74,8 @@
 	       </props>
 	    </property>
 	</bean>
+
+	<!-- 스케쥴러 자동 스캔 -->
+    <task:annotation-driven/>
+    
 </beans>

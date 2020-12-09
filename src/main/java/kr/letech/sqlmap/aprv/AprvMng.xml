@@ -1129,9 +1129,9 @@
 			  , #{APRV_YM, jdbcType=VARCHAR}
 			  , #{APRV_YN_CD, jdbcType=VARCHAR}
 			  , #{APRV_CONT, jdbcType=VARCHAR}
-			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , SYSDATE
-			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+			  , #{CRTN_EMP_NO, jdbcType=VARCHAR}
+			  , TO_DATE(#{CRTN_DT},'YYYYMMDDHH24MISS')
+			  , #{APRV_EMP_CD, jdbcType=VARCHAR}
 			  , TO_DATE(#{MODI_DT},'YYYYMMDDHH24MISS')
 			  , #{CONF_YN, jdbcType=VARCHAR}
 			  , #{REFE_YN, jdbcType=VARCHAR}

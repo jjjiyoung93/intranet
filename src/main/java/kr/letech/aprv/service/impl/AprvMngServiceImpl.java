@@ -680,7 +680,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 
 				paramMap.put("REPT_CONT", paramMap.get("APPR_CONT"));
 				paramMap.put("HALF_TYPE_CD", "0");
-				paramMap.put("PLACE", "-");
+//				paramMap.put("PLACE", "-");
 				// 저장될 데이터 정제 끝
 				
 				aprvMngDAO.insertBizplayAprv(paramMap);
@@ -698,6 +698,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 					aprvLineMap.put("APRV_YN_CD", 1);
 //					aprvLineMap.put("CRTN_EMP_NO", paramMap.get("USER_ID"));
 					aprvLineMap.put("CRTN_EMP_NO", "msjo");
+					aprvLineMap.put("CRTN_DT", paramMap.get("DRAFT_DATE"));
 					aprvLineMap.put("MODI_DT", aprvLineMap.get("APRV_DATE"));
 					aprvLineMap.put("REFE_YN", 'N');
 					aprvLineMap.put("CONF_YN", 'Y');
@@ -707,7 +708,6 @@ public class AprvMngServiceImpl implements AprvMngService {
 				
 			}
 		}
-		// 결과 반환
 		return null;
 	}
 
