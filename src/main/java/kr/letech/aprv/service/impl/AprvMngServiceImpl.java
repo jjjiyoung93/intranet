@@ -667,7 +667,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 				
 				String title = String.valueOf(paramMap.get("APV_DT")).substring(4, 6);
 				title += "월_지출결의_" + "";
-				title += (paramMap.get("CARD_TYPE").equals("1")) ? "법인_" : "개인_";
+				title += (paramMap.get("CARD_TYPE").equals("1")) ? "법인_" : "일반_";
 				title += String.valueOf(paramMap.get("SUMMARY")).substring(0, 2) + "_";
 				title += paramMap.get("DRAFT_DATE");
 				paramMap.put("TITLE", title);
