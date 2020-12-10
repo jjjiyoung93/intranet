@@ -52,9 +52,9 @@
 				NVL(MAX(cal_seq),0)+1
 			FROM std_cal_mng 
 		</selectKey>
-		INSERT INTO std_cal_mng (cal_seq, cal_nm, cal_content, cal_st_dt, cal_ed_dt, cal_st_time, cal_ed_time, uss_id, reg_dt)
+		INSERT INTO std_cal_mng (cal_seq, cal_nm, cal_content, cal_st_dt, cal_ed_dt, cal_st_time, cal_ed_time, uss_id, reg_dt, aprv_yn)
 		  VALUES (#{cal_seq}, #{cal_nm}, #{cal_content, jdbcType=VARCHAR}, #{cal_st_dt}, #{cal_ed_dt}
-		  			, #{cal_st_time, jdbcType=VARCHAR}, #{cal_ed_time, jdbcType=VARCHAR}, #{uss_id, jdbcType=VARCHAR}, SYSDATE)
+		  			, #{cal_st_time, jdbcType=VARCHAR}, #{cal_ed_time, jdbcType=VARCHAR}, #{uss_id, jdbcType=VARCHAR}, SYSDATE, #{aprv_yn, jdbcType=VARCHAR})
 	</insert>
 	<!-- 일정 상세정보 -->
 	<select id="getCalView" resultType="HashMap" parameterType="map">
@@ -67,6 +67,7 @@
 		  , cal_ed_dt
 		  , cal_st_time
 		  , cal_ed_time
+		  , aprv_yn
 		  , TO_CHAR(reg_dt, 'YYYY-MM-DD') reg_dt
 		  , CASE
 		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 1, 2)
@@ -97,6 +98,7 @@
 			, cal_ed_dt = #{cal_ed_dt}
 			, cal_st_time = #{cal_st_time, jdbcType=VARCHAR}
 			, cal_ed_time = #{cal_ed_time, jdbcType=VARCHAR}
+			, aprv_yn = #{aprv_yn, jdbcType=VARCHAR}
 		WHERE cal_seq = #{cal_seq}
 	</update>
 	<!-- 일정 삭제 -->

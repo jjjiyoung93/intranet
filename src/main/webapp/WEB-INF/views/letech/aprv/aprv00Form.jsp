@@ -492,7 +492,8 @@ function fn_delFile(file_path, file_stre_nm, file_no, event){
 }
 
 function getValidation(){
-	if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
+<%-- 	if($("#mode").val() == "<%=VarConsts.MODE_U%>"){ --%>
+	if(false){
 		
 	}else{
 		/* 입력 폼일경우 */
@@ -543,18 +544,33 @@ function getValidation(){
 				alert("시작 시간을 입력해 주세요.");
 				$("#term_st_h").focus();
 				return false;
-			} else if($("#term_st_m").val() == ""){
+			}
+			if($("#term_st_m").val() == ""){
 				alert("시작 분을 입력해 주세요.");
 				$("#term_st_m").focus();
 				return false;
-			} else if($("#term_ed_h").val() == ""){
+			}
+			if($("#term_ed_h").val() == ""){
 				alert("종료 시간을 입력해 주세요.");
 				$("#term_ed_h").focus();
 				return false;
-			} else if($("#term_ed_m").val() == ""){
+			} 
+			if($("#term_ed_m").val() == ""){
 				alert("종료 분을 입력해 주세요.");
 				$("#term_ed_m").focus();
 				return false;
+			}
+			if($("#term_st_ym").val() == $("#term_ed_ym").val()) {
+				if($("#term_st_h").val() > $("#term_ed_h").val()) {
+					alert("시작 시간이 종료 시간보다 늦습니다.");
+					$("#term_st_h").focus();
+					return false;
+				}
+				if($("#term_st_h").val() == $("#term_ed_h").val() && $("#term_st_m").val() > $("#term_ed_m").val()) {
+					alert("시작 시간이 종료 시간보다 늦습니다.");
+					$("#term_st_m").focus();
+					return false;
+				}
 			}
 		}
 		if($("#rept_cont").val() == ""){
@@ -562,8 +578,15 @@ function getValidation(){
 			$("#rept_cont").focus();
 			return false;
 		}
+		
 	}
 	
+	if($("#cdList1").val() != "CD0001011"){
+		$("#term_st_h").val(null);
+		$("#term_st_m").val(null);
+		$("#term_ed_h").val(null);
+		$("#term_ed_m").val(null);
+	}
 	return true;
 }
 

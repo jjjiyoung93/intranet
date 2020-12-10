@@ -111,7 +111,7 @@
 							<!-- 메인화면인이 일정관리화면인지 구분 (1:메인화면) -->
 							<a href="#cancel" class="btn-cancel btn-sm btn btn-default" ><span>목록</span></a>
 							<c:if test="${params.flag ne '1' }" >
-								<c:if test="${resultView.USS_ID eq resultView.session_uss_id}" >
+								<c:if test="${resultView.USS_ID eq resultView.session_uss_id and resultView.APRV_YN ne 'Y'}" >
 								<span class="pull-right">
 									<a href="#submit" class="btn-ok btn btn-info btn-sm" ><span>수정</span></a>
 									<a href="#submit" class="btn-del btn btn-default btn-sm" ><span>삭제</span></a>

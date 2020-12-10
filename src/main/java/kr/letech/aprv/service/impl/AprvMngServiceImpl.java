@@ -209,6 +209,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 			calAprvMap.put("cal_st_time", String.valueOf(params.get("term_st_h")) + String.valueOf(params.get("term_st_m")));
 			calAprvMap.put("cal_ed_time", String.valueOf(params.get("term_ed_h")) + String.valueOf(params.get("term_ed_m")));
 			calAprvMap.put("uss_id", params.get("rept_aprv_no"));
+			calAprvMap.put("aprv_yn", 'Y');
+			
 			
 			int cal_seq = calMngDAO.calInsert(calAprvMap);
 			params.put("cal_no", cal_seq);
@@ -343,7 +345,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
 			calAprvMap.put("cal_st_time", String.valueOf(params.get("term_st_h")) + String.valueOf(params.get("term_st_m")));
 			calAprvMap.put("cal_ed_time", String.valueOf(params.get("term_ed_h")) + String.valueOf(params.get("term_ed_m")));
-
+			calAprvMap.put("aprv_yn", 'Y');
+			
 			// 생성된 캘린더가 있을 때 캘린더 수정
 			if(!"".equals(params.get("cal_no"))){
 				calAprvMap.put("cal_seq", params.get("cal_no"));
@@ -591,10 +594,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 		JSONObject reqData = new JSONObject();
 		reqData.put("BIZ_NO", "6298800134");
 		reqData.put("CARD_NO", "");
-//		reqData.put("START_DATE", "20201120");
 		reqData.put("START_DATE", params.get("START_DATE"));
 		reqData.put("START_TIME", "");
-//		reqData.put("END_DATE", "20201205");
 		reqData.put("END_DATE", params.get("END_DATE"));
 		reqData.put("END_TIME", "");
 		reqData.put("RCV_STS", "");
@@ -659,7 +660,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			// 모든 데이터 중 결재완료(9)인 데이터는 지출결의 완료 등록
 			if(("9").equals(paramMap.get("APPR_STS"))) {
 				// 저장될 데이터 정제 시작 
-//				params.put("REPT_APRV_NO", paramMap.get("USER_ID"));
+//				paramMap.put("REPT_APRV_NO", paramMap.get("USER_ID"));
 				paramMap.put("REPT_APRV_NO", "msjo");
 				paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
 				paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // [법인은 1, 일반(개인)은 2, 송금은 3]
