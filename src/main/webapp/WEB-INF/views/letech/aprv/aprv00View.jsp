@@ -331,7 +331,7 @@
 							    	</div>
 							    	
 									<!-- 지출결의서 보기 -->	
-								<c:if test="${recList ne null}">	            
+								<c:if test="${not empty recList}">	            
 					            	<div class="clearfix">
 					            		<dl class="panel panel-default" style="padding:0;">
 					            			<dt onclick="myFunction()" class="panel-heading" style="cursor:pointer;">지출결의서 보기 &nbsp;
@@ -353,16 +353,30 @@
 <!-- 														</thead> -->
 <!-- 													</table> -->
 <!-- 												</div> -->
-
-												<div style="margin-top:5%; margin-bottom:5%;">
-													<h2 style="text-align:center;">
-														<span>지출결의서(${CARD_TYPE})</span>
-													</h2>
-												</div>
-												<div style="margin-top:2%; margin-bottom:2%;">
-													<span>문서번호 :</span> &nbsp;
-													<span>${DOC_NO}</span>
-												</div> 
+												<c:forEach var="recList" items="${recList }" begin="0" end="0">
+													<div style="margin-top:5%; margin-bottom:5%;">
+														<h2 style="text-align:center;">
+															<span>지출결의서(
+																<c:set var="card_type_nm" value="${recList.CARD_TYPE}" />
+																	<c:choose>
+																		<c:when test="${card_type_nm eq '1' }">
+																			<span>법인</span>
+																		</c:when>
+																		<c:when test="${card_type_nm eq '2' }">
+																			<span>일반</span>
+																		</c:when>
+																		<c:when test="${card_type_nm eq '3' }">
+																			<span>송금</span>
+																		</c:when>
+																	</c:choose>
+															)	
+															</span>
+														</h2>
+													</div>
+													<div style="margin-top:2%; margin-bottom:2%;">
+														<span>문서번호 : ${recList.DOC_NO}</span>
+													</div> 
+												</c:forEach>
 												<div class="table-responsive">
 													<table class="table table-bordered">
 														<thead class="table_s">
@@ -391,14 +405,20 @@
 														</thead>
 													</table>
 												</div>
-					            	       		<div style="margin-top:2%;">
-					            	       	 		<span>ㆍ</span>&nbsp;
-							            	         <span>총 </span>&nbsp;
-							            	         <span></span>
-							            	         <span>건 </span>&nbsp;
-							            	         <span></span>
-							            	         <span>원 </span>
-					            	       		</div>
+						            	       		<div style="margin-top:2%;">
+						            	       	 		<span>ㆍ</span>&nbsp;
+								            	         <span>총 </span>&nbsp;
+								            	         <span>${recList.size() }</span>
+								            	         <span>건 </span>&nbsp;
+								            	         
+												<c:forEach var="recList" items="${recList }" varStatus="status">
+													<c:set var="sum" value="${sum+recList.APR_AMT }"/>
+													
+					            	       		</c:forEach>
+								            	         <span>
+								            	          	<fmt:formatNumber type="currency" pattern="#,###원" value="${sum}" />
+								            	          </span>
+						            	       		</div>
 				            	       			<c:forEach var="recList" items="${recList }">
 					            	       		<div class="row" style="margin: 0 0 2% 2%;">
 				            	         			<hr>
@@ -411,13 +431,47 @@
 																		<fmt:formatDate value="${APV_DT_format}" pattern="yyyy.MM.dd"/>
 																		<fmt:parseDate value="${recList.APV_TM}" var="APV_TM_format" pattern="HHmmss"/>
 																		<fmt:formatDate value="${APV_TM_format}" pattern="HH:mm"/>
+																		<c:set var="mest_type" value="${recList.MEST_TAXT_TYP_INFO}" />
+																			<c:choose>
+																				<c:when test="${mest_type eq '00' }">
+																					<span style="border:1px solid lightgray; padding:1%;">미등록</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '01' }">
+																					<span style="border:1px solid lightgray; padding:1%;">일반</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '02' }">
+																					<span style="border:1px solid lightgray; padding:1%;">간이</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '03' }">
+																					<span style="border:1px solid lightgray; padding:1%;">면세</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '04' }">
+																					<span style="border:1px solid lightgray; padding:1%;">비영리</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '09' }">
+																					<span style="border:1px solid lightgray; padding:1%;">휴업</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '10' }">
+																					<span style="border:1px solid lightgray; padding:1%;">폐업</span>
+																				</c:when>
+																				<c:when test="${mest_type eq '99' }">
+																					<span style="border:1px solid lightgray; padding:1%;">해외</span>
+																				</c:when>
+																			</c:choose>
 																		
-																		${recList.MEST_TAXT_TYP_INFO}
 																		</li>
 																		<li style="letter-spacing: 0px;"><strong>${recList.MEST_NM}</strong></li>
-																		<li style="letter-spacing: 0px;">${recList.BANK_CD}  
-<%-- 																			<fmt:parseNumber value="${recList.CARD_NO}" var="CARD_NO_format" pattern="################"/> --%>
-<%-- 																			<fmt:formatNumber value="${CARD_NO_format}" pattern="####-####-####-####"/> --%>
+																		<li style="letter-spacing: 0px;">
+																			<c:set var="bank_cd" value="${recList.BANK_CD}" />
+																			<c:choose>
+																				<c:when test="${bank_cd eq '30000015' }">
+																					<span>하나</span>
+																				</c:when>
+																				<c:when test="${bank_cd eq '30000018' }">
+																					<span>우리</span>
+																				</c:when>
+																			</c:choose>
+																		${recList.CARD_NO_MASKING}
 																		
 																		</li>
 																		<li style="letter-spacing: 0px;">${recList.R_USER_NM}</li>
@@ -425,21 +479,37 @@
 																</div>
 																<div style="float: right; margin_bottom: 30%;">
 																	<strong style="letter-spacing: 0px; color: blue;">
-																		<fmt:formatNumber type="currency" pattern="###,###,###원" value="${recList.APR_SPLY_AMT}" />
+																		<fmt:formatNumber type="currency" pattern="#,###원" value="${recList.BUY_SUM}" />
 																	</strong>
 																</div>
 															</div>
 	
-															<div style="border: 1px solid lightgray; height: 100%; padding: 10%;">
+															<div style="border: 1px solid lightgray; height: 100%; padding: 15px;">
+																<span style="background-image:url('../images/layout/bg_cardbill.gif'); background-repeat:repeat-y; "></span>
 																<table>
 																	<tbody style="margin-right:10%;">
 																		<tr>
 																			<th class="recipt">카드정보</th>
-																			<td><span>${recList.BANK_CD} ${recList.CARD_NO}</span></td>
+																			<td><span>
+																					<c:set var="bank_cd" value="${recList.BANK_CD}" />
+																						<c:choose>
+																							<c:when test="${bank_cd eq '30000015' }">
+																								<span>하나</span>
+																							</c:when>
+																							<c:when test="${bank_cd eq '30000018' }">
+																								<span>우리</span>
+																							</c:when>
+																						</c:choose>
+																				${recList.CARD_NO_MASKING}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">거래일시</th>
-																			<td><span>${recList.APV_DT} ${recList.APV_TM}</span></td>
+																			<td><span>
+																					<fmt:parseDate value="${recList.APV_DT}" var="APV_DT_format" pattern="yyyyMMdd"/>
+																					<fmt:formatDate value="${APV_DT_format}" pattern="yyyy.MM.dd"/>
+																					<fmt:parseDate value="${recList.APV_TM}" var="APV_TM_format" pattern="HHmmss"/>
+																					<fmt:formatDate value="${APV_TM_format}" pattern="HH:mm"/>
+																			</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">승인번호</th>
@@ -459,7 +529,7 @@
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점/대표자</th>
-																			<td><span>${recList.MEST_NM} ${recList.MEST_REPR_NM}</span></td>
+																			<td><span>${recList.MEST_NM}/${recList.MEST_REPR_NM}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점업종</th>
@@ -502,7 +572,7 @@
 																		<th class="recipt" style="letter-spacing:0px;">신청금액</th>
 																		<td>
 																			<span>
-																				<fmt:formatNumber type="number" pattern="###,###,###원" value="${recList.APR_AMT}" />
+																				<fmt:formatNumber type="number" pattern="#,###원" value="${recList.APR_AMT}" />
 																			</span>
 																		<td>
 																	</tr>
@@ -512,6 +582,16 @@
 																			<span>${recList.BIZ_UNIT_NM}</span>
 																		<td>
 																	</tr>
+<%-- 																	<c:if test=""> --%>
+<!-- 																		<tr> -->
+<!-- 																			<th class="recipt" style="letter-spacing:0px;">입금은행/계좌번호</th> -->
+<!-- 																			<td> -->
+<%-- 																				<span>${recList.SUMMARY_3}</span> --%>
+<!-- 																			<td> -->
+<!-- 																	</tr> -->
+<%-- 																	</c:if> --%>
+																	
+																	
 																</tbody>
 															</table>
 														</div>
@@ -652,8 +732,10 @@ function aprvOk(){
 		    x.style.display = "none";
 		  }
 		}
-	function  cardNoParse(){
-		var card_no = $("#card_no").val();
+	function cardNoReplace(){
+		var card_No = $("#recList.card_no").val();
+		return card_No.toString().replace(/\B(?=\d{4})+(?!\d))/g, '-')
+		
 		}
 	
 
