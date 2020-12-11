@@ -382,7 +382,8 @@
 														<thead class="table_s">
 															<tr>
 																<td class="table_menu" style="width:30%;">발의자</td>
-																<td>${viewMap.REPT_APRV_NM } / ${viewMap.DPNM }
+																<td>${viewMap.REPT_APRV_NM } / 
+<%-- 																	<fmt: ${viewMap.DPNM } --%>
 																	(<c:forEach var="proj" items="${projList }" varStatus="status">
 																		<c:if test="${proj.CD eq viewMap.PROJ_CD }">
 																		${proj.CD_NM }
@@ -472,9 +473,8 @@
 																				</c:when>
 																			</c:choose>
 																		${recList.CARD_NO_MASKING}
-																		
+																		(${recList.R_USER_NM})
 																		</li>
-																		<li style="letter-spacing: 0px;">${recList.R_USER_NM}</li>
 																	</ul>
 																</div>
 																<div style="float: right; margin_bottom: 30%;">
@@ -485,9 +485,12 @@
 															</div>
 	
 															<div style="border: 1px solid lightgray; height: 100%; padding: 15px;">
-																<span style="background-image:url('../images/layout/bg_cardbill.gif'); background-repeat:repeat-y; "></span>
+<%-- 																			<span style="background:url('${pageContext.request.contextPath}/resources/images/layout/bg_cardbill.gif'); "></span> --%>
 																<table>
 																	<tbody style="margin-right:10%;">
+<!-- 																		<tr style="width:100%;"> -->
+																		
+<!-- 																		</tr> -->
 																		<tr>
 																			<th class="recipt">카드정보</th>
 																			<td><span>
@@ -511,7 +514,7 @@
 																					<fmt:formatDate value="${APV_TM_format}" pattern="HH:mm"/>
 																			</span></td>
 																		</tr>
-																		<tr>
+																	<tr>
 																			<th class="recipt">승인번호</th>
 																			<td><span>${recList.APV_NO}</span></td>
 																		</tr>
@@ -529,7 +532,7 @@
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점/대표자</th>
-																			<td><span>${recList.MEST_NM}/${recList.MEST_REPR_NM}</span></td>
+																			<td><span>${recList.MEST_NM} &nbsp; ${recList.MEST_REPR_NM}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점업종</th>
@@ -582,16 +585,14 @@
 																			<span>${recList.BIZ_UNIT_NM}</span>
 																		<td>
 																	</tr>
-<%-- 																	<c:if test=""> --%>
-<!-- 																		<tr> -->
-<!-- 																			<th class="recipt" style="letter-spacing:0px;">입금은행/계좌번호</th> -->
-<!-- 																			<td> -->
-<%-- 																				<span>${recList.SUMMARY_3}</span> --%>
-<!-- 																			<td> -->
-<!-- 																	</tr> -->
-<%-- 																	</c:if> --%>
-																	
-																	
+																		<c:if test="${recList.CARD_TYPE eq '2'}">
+																			<tr>
+																				<th class="recipt" style="letter-spacing:0px;">입금은행/계좌번호</th>
+																				<td>
+																					<span>${recList.SUMMARY_3}</span>
+																				<td>
+																			</tr>
+																		</c:if>
 																</tbody>
 															</table>
 														</div>
@@ -600,6 +601,7 @@
 												</c:forEach>	
 											</div>	
 										</dl>
+										<span style="background:url('${pageContext.request.contextPath}/resources/images/layout/bg_cardbill.gif'); "></span>
 									</div>
 								</c:if>
 									
