@@ -587,7 +587,7 @@
 																	</tr>
 																		<c:if test="${recList.CARD_TYPE eq '2'}">
 																			<tr>
-																				<th class="recipt" style="letter-spacing:0px;">입금은행/계좌번호</th>
+																				<th class="recipt" style="letter-spacing:0px;">계좌정보</th>
 																				<td>
 																					<span>${recList.SUMMARY_3}</span>
 																				<td>
