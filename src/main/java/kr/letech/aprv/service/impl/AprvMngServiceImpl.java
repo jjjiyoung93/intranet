@@ -660,7 +660,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			// 모든 데이터 중 결재완료(9)인 데이터는 지출결의 완료 등록
 			if(("9").equals(paramMap.get("APPR_STS"))) {
 				// 저장될 데이터 정제 시작 
-				paramMap.put("REPT_APRV_NO", paramMap.get("USER_EMP_CD"));
+				paramMap.put("REPT_APRV_NO", paramMap.get("LST_USER_EMP_CD"));
 //				paramMap.put("REPT_APRV_NO", "msjo");
 				paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
 				paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // [법인은 1, 일반(개인)은 2, 송금은 3]
@@ -669,7 +669,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 				title += "월_지출결의_" + "";
 				if(paramMap.get("CARD_TYPE").equals("1")) {
 					title += "법인_";
-				} else if(paramMap.get("CARD_TYPE").equals("")) {
+				} else if(paramMap.get("CARD_TYPE").equals("2")) {
 					title += "일반_";
 				} else {
 					title += "송금_";
@@ -701,10 +701,13 @@ public class AprvMngServiceImpl implements AprvMngService {
 					
 					// 임시방편으로 참조인이 null이면 저장안함
 					if(aprvLineMap.get("APRV_EMP_CD").equals("null")) continue;
+
+					// 결재라인 0번은 자신임 그래서 뺌
+					if(aprvLineMap.get("APPV_SEQ_NO").equals("0")) continue;
 					
 					aprvLineMap.put("PPP_APPR_SEQ_NO", paramMap.get("PPP_APPR_SEQ_NO"));
 					aprvLineMap.put("APRV_NO", paramMap.get("APRV_NO"));
-					aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")) + 1);
+					aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")));
 					aprvLineMap.put("APRV_YN_CD", 1);
 					aprvLineMap.put("CRTN_EMP_NO", paramMap.get("USER_EMP_CD"));
 //					aprvLineMap.put("CRTN_EMP_NO", "msjo");
