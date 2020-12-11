@@ -383,7 +383,7 @@
 															<tr>
 																<td class="table_menu" style="width:30%;">발의자</td>
 																<td>${viewMap.REPT_APRV_NM } / 
-<%-- 																	<fmt: ${viewMap.DPNM } --%>
+	 																${viewMap.DPNM }
 																	(<c:forEach var="proj" items="${projList }" varStatus="status">
 																		<c:if test="${proj.CD eq viewMap.PROJ_CD }">
 																		${proj.CD_NM }
