@@ -699,12 +699,6 @@ public class AprvMngServiceImpl implements AprvMngService {
 					// 결재라인 맵 초기화
 					Map aprvLineMap = (Map) aprvLineArray.get(j);
 					
-					// 임시방편으로 참조인이 null이면 저장안함
-					if(aprvLineMap.get("APRV_EMP_CD").equals("null")) continue;
-
-					// 결재라인 0번은 자신임 그래서 뺌
-					if(aprvLineMap.get("APPV_SEQ_NO").equals("0")) continue;
-					
 					aprvLineMap.put("PPP_APPR_SEQ_NO", paramMap.get("PPP_APPR_SEQ_NO"));
 					aprvLineMap.put("APRV_NO", paramMap.get("APRV_NO"));
 					aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")));
@@ -713,10 +707,21 @@ public class AprvMngServiceImpl implements AprvMngService {
 //					aprvLineMap.put("CRTN_EMP_NO", "msjo");
 					aprvLineMap.put("CRTN_DT", paramMap.get("DRAFT_DATE"));
 					aprvLineMap.put("MODI_DT", aprvLineMap.get("APRV_DATE"));
-					aprvLineMap.put("REFE_YN", 'N');
 					aprvLineMap.put("CONF_YN", 'Y');
-					
-					aprvMngDAO.insertBizplayAprvLine(aprvLineMap);	// 결재라인 등록
+					if(aprvLineMap.get("APPR_KIND").equals("4")) { // 참조인
+						aprvLineMap.put("REFE_YN", "Y");
+					} else {
+						aprvLineMap.put("REFE_YN", "N");
+					}
+		
+					if(aprvLineMap.get("APPR_KIND").equals("2") || aprvLineMap.get("APPR_KIND").equals("4")) { // 2: 결재자,  4: 참조인
+						// 결재가 완료되기 전 참조인이 지결을 읽지 않으면 null로 받아와짐 ==> 데이터를 못받아서 인트라넷에 적용 불가능 ==> continue로 넘어감
+						if(aprvLineMap.get("APRV_EMP_CD").equals("null")) { 
+							continue;
+						} else {
+							aprvMngDAO.insertBizplayAprvLine(aprvLineMap);	// 결재라인 등록
+						}
+					}
 				}
 				
 			}
