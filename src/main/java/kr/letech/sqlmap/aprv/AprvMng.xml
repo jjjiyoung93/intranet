@@ -1020,6 +1020,7 @@
 			, REG_DTM
 			, RCPT_IMG_URL
 			, ORG_IMG_URL
+			, IMG_NM
 		) VALUES (
 			#{CARD_NO, jdbcType=VARCHAR}
 			, #{SEQ, jdbcType=VARCHAR}
@@ -1028,6 +1029,7 @@
 			, #{REG_DTM, jdbcType=VARCHAR}
 			, #{RCPT_IMG_URL, jdbcType=VARCHAR}
 			, #{ORG_IMG_URL, jdbcType=VARCHAR}
+			, #{IMG_NM, jdbcType=VARCHAR}
 		)
 	</insert>
 	
@@ -1164,7 +1166,7 @@
 	</select>
 	
 	<select id="getBizplayFile" resultType="HashMap" parameterType="map">
-		SELECT CARD_NO, SEQ, APV_DT, IMG_SEQ_NO, REG_DTM, RCPT_IMG_URL, ORG_IMG_URL
+		SELECT CARD_NO, SEQ, APV_DT, IMG_SEQ_NO, REG_DTM, RCPT_IMG_URL, ORG_IMG_URL, IMG_NM
 		  FROM BIZPLAY_0411A_FILE
 		 WHERE CARD_NO = #{CARD_NO, jdbcType=VARCHAR}
 		   AND SEQ = #{SEQ, jdbcType=VARCHAR}

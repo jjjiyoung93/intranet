@@ -652,6 +652,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 				paramMap.put("REG_DTM", tempMap2.get("REG_DTM"));
 				paramMap.put("RCPT_IMG_URL", tempMap2.get("RCPT_IMG_URL"));
 				paramMap.put("ORG_IMG_URL", tempMap2.get("ORG_IMG_URL"));
+				paramMap.put("IMG_NM", (String)paramMap.get("APV_DT") + "_" + paramMap.get("MEST_NM") + "_" + tempMap2.get("IMG_SEQ_NO"));
 				
 				aprvMngDAO.insertBizplayFile(paramMap);
 			}

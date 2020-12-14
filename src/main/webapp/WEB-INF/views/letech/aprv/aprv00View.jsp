@@ -153,7 +153,7 @@
 													<c:forEach var="file" items="${recFileList }"
 														varStatus="status">
 														<div>
-															<a href="${file.ORG_IMG_URL }" onclick="window.open(this.href,'첨부파일'); return false;">첨부파일${status.count }</a>
+															<a href="${file.ORG_IMG_URL }" onclick="window.open(this.href,'첨부파일'); return false;">${file.IMG_NM }</a>
 														</div>
 													</c:forEach>
 												</c:when>
