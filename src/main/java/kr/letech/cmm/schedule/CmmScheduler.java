@@ -39,15 +39,17 @@ public class CmmScheduler {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()); // 날짜 포맷 지정
 		Calendar cal = Calendar.getInstance(); // 오늘 날짜  가져오기
 		
-		cal.add(Calendar.DATE, -1); // 하루 전 날
 		String endDate = df.format(cal.getTime()); // 종료일
 		
-		cal.add(Calendar.MONTH, -1); // 하루 전 + 한달 전
+		cal.add(Calendar.MONTH, -1); // 한달 전
 		String startDate = df.format(cal.getTime()); // 시작일
 		
 		params.put("START_DATE", startDate);
 		params.put("END_DATE", endDate);
 		
+		System.err.println("##### BIZPLAY 시작 #####");
+		System.err.println("startDate : " + startDate);
+		System.err.println("endDate : " + endDate);
 		try {
 			aprvMngService.loadBizplay(params);
 		} catch (Exception e) {
