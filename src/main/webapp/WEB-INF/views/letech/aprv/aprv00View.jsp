@@ -423,7 +423,7 @@
 				            	       			<c:forEach var="recList" items="${recList }">
 					            	       		<div class="row" style="margin: 0 0 2% 2%;">
 				            	         			<hr>
-					            	         			<div class="col-sm-6">
+					            	         			<div class="col-sm-7">
 															<div style="border: 1px solid lightgray; height:70%; padding: 10%; background:#F5F5F5;'">
 																<div>
 																	<ul>
@@ -537,7 +537,7 @@
 																</table>
 															</div>
 														</div>
-														<div class="col-sm-6">
+														<div class="col-sm-5">
 															<table>
 																<tbody>
 																	<tr>

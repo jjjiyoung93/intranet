@@ -665,7 +665,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 				paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
 				paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // [법인은 1, 일반(개인)은 2, 송금은 3]
 				
-				String title = String.valueOf(paramMap.get("APV_DT")).substring(4, 6);
+				String title = String.valueOf(paramMap.get("DRAFT_DATE")).substring(4, 6);
 				title += "월_지출결의_" + "";
 				if(paramMap.get("CARD_TYPE").equals("1")) {
 					title += "법인_";
@@ -680,10 +680,9 @@ public class AprvMngServiceImpl implements AprvMngService {
 				
 				paramMap.put("PROJ_CD", paramMap.get("BIZ_UNIT_ERP_CD"));
 				
-				String date = String.valueOf(paramMap.get("DRAFT_DATE"));
+				String date = String.valueOf(paramMap.get("APV_DT"));
 				String convertDate = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
-				paramMap.put("TERM_ST_YM", convertDate);
-				paramMap.put("TERM_ED_YM", convertDate);
+				paramMap.put("CONVERT_APV_DT", convertDate);
 
 				paramMap.put("REPT_CONT", paramMap.get("APPR_CONT"));
 				paramMap.put("HALF_TYPE_CD", "0");
