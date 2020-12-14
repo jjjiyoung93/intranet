@@ -463,15 +463,7 @@
 																		</li>
 																		<li style="letter-spacing: 0px;"><strong>${recList.MEST_NM}</strong></li>
 																		<li style="letter-spacing: 0px;">
-																			<c:set var="bank_cd" value="${recList.BANK_CD}" />
-																			<c:choose>
-																				<c:when test="${bank_cd eq '30000015' }">
-																					<span>하나</span>
-																				</c:when>
-																				<c:when test="${bank_cd eq '30000018' }">
-																					<span>우리</span>
-																				</c:when>
-																			</c:choose>
+																		${recList.BANK_NM}
 																		${recList.CARD_NO_MASKING}
 																		(${recList.R_USER_NM})
 																		</li>
@@ -493,17 +485,12 @@
 <!-- 																		</tr> -->
 																		<tr>
 																			<th class="recipt">카드정보</th>
-																			<td style="padding-bottom:10px;"><span>
-																					<c:set var="bank_cd" value="${recList.BANK_CD}" />
-																						<c:choose>
-																							<c:when test="${bank_cd eq '30000015' }">
-																								<span>하나</span>
-																							</c:when>
-																							<c:when test="${bank_cd eq '30000018' }">
-																								<span>우리</span>
-																							</c:when>
-																						</c:choose>
-																				${recList.CARD_NO_MASKING}</span></td>
+																			<td style="padding-bottom:10px;">
+																				<span>
+																					${recList.BANK_NM}
+																					${recList.CARD_NO_MASKING}
+																				</span>
+																			</td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">거래일시</th>
