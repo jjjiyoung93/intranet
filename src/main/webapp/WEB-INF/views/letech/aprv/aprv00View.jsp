@@ -376,7 +376,6 @@
 													<div style="margin-top:2%; margin-bottom:2%;">
 														<span>문서번호 : ${recList.DOC_NO}</span>
 													</div> 
-												</c:forEach>
 												<div class="table-responsive">
 													<table class="table table-bordered">
 														<thead class="table_s">
@@ -392,9 +391,12 @@
 																</td>
 															</tr>
 															<tr>
-											   				<td class="table_menu" style="width:30%;">발의일자</td>
-											   				<td>${viewMap.TERM_ST_YM }</td>
-											       		</tr>
+											   					<td class="table_menu" style="width:30%;">발의일자</td>
+											   					<td>
+											   						<fmt:parseDate value="${recList.DRAFT_DATE}" var="DRAFT_DATE_FORMAT" pattern="yyyyMMdd"/>
+											   						<fmt:formatDate value="${DRAFT_DATE_FORMAT}" pattern="yyyy-MM-dd"/>
+											   					</td>
+											       			</tr>
 											  			<tr>
 											      				<td class="table_menu" style="width:30%;">제목</td>
 											      				<td>${viewMap.TITLE }</td>
@@ -406,6 +408,7 @@
 														</thead>
 													</table>
 												</div>
+											</c:forEach>
 						            	       		<div style="margin-top:2%;">
 						            	       	 		<span>ㆍ</span>&nbsp;
 								            	         <span>총 </span>&nbsp;
