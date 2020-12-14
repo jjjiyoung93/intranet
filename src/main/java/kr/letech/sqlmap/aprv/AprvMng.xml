@@ -1146,11 +1146,15 @@
 	</delete>
 	
 	<select id="getBizplayData" resultType="HashMap" parameterType="map">
-		SELECT A.*, 'XXXX-' || SUBSTR(CARD_NO, 5, 4) || '-' || SUBSTR(CARD_NO, 9, 4) || '-' || SUBSTR(CARD_NO, 13, 4) CARD_NO_MASKING
+		SELECT 'XXXX-' || SUBSTR(CARD_NO, 5, 4) || '-' || SUBSTR(CARD_NO, 9, 4) || '-' || SUBSTR(CARD_NO, 13, 4) CARD_NO_MASKING
+			, B.BIZPLAY_CD_NM BANK_NM
+			, A.*
 		  FROM BIZPLAY_0411A A
+			, BIZPLAY_CD B
 		 WHERE PPP_APPR_SEQ_NO = (SELECT PPP_APPR_SEQ_NO
-		                            FROM STD_APRV_MNG
-		                           WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR})
+								    FROM STD_APRV_MNG
+								   WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR})
+		   AND A.BANK_CD = B.BIZPLAY_CD;
 	</select>
 	
 	<select id="getBizplayFile" resultType="HashMap" parameterType="map">
