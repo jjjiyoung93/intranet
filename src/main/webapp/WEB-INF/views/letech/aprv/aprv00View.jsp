@@ -424,7 +424,7 @@
 					            	       		<div class="row" style="margin: 0 0 2% 2%;">
 				            	         			<hr>
 					            	         			<div class="col-sm-6">
-															<div style="border: 1px solid lightgray; height:70%; padding: 10%;">
+															<div style="border: 1px solid lightgray; height:70%; padding: 10%; background:#F5F5F5;'">
 																<div>
 																	<ul>
 																		<li style="letter-spacing: 0px;">
@@ -478,22 +478,22 @@
 																	</ul>
 																</div>
 																<div style="float: right; margin_bottom: 30%;">
-																	<strong style="letter-spacing: 0px; color: blue;">
+																	<strong style="letter-spacing: 0px;">
 																		<fmt:formatNumber type="currency" pattern="#,###원" value="${recList.BUY_SUM}" />
 																	</strong>
 																</div>
 															</div>
 	
-															<div style="border: 1px solid lightgray; height: 100%; padding: 15px;">
+															<div style="border: 1px solid lightgray; height:100%; padding:10%; background:#F0F8FF;">
 <%-- 																			<span style="background:url('${pageContext.request.contextPath}/resources/images/layout/bg_cardbill.gif'); "></span> --%>
 																<table>
-																	<tbody style="margin-right:10%;">
+																	<tbody style="margin:0% 10% 0% 10%;">
 <!-- 																		<tr style="width:100%;"> -->
 																		
 <!-- 																		</tr> -->
 																		<tr>
 																			<th class="recipt">카드정보</th>
-																			<td><span>
+																			<td style="padding-bottom:10px;"><span>
 																					<c:set var="bank_cd" value="${recList.BANK_CD}" />
 																						<c:choose>
 																							<c:when test="${bank_cd eq '30000015' }">
@@ -507,7 +507,7 @@
 																		</tr>
 																		<tr>
 																			<th class="recipt">거래일시</th>
-																			<td><span>
+																			<td style="padding-bottom:10px;"><span>
 																					<fmt:parseDate value="${recList.APV_DT}" var="APV_DT_format" pattern="yyyyMMdd"/>
 																					<fmt:formatDate value="${APV_DT_format}" pattern="yyyy.MM.dd"/>
 																					<fmt:parseDate value="${recList.APV_TM}" var="APV_TM_format" pattern="HHmmss"/>
@@ -516,35 +516,35 @@
 																		</tr>
 																	<tr>
 																			<th class="recipt">승인번호</th>
-																			<td><span>${recList.APV_NO}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.APV_NO}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">공급금액</th>
-																			<td><span>${recList.SPLY_AMT}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.SPLY_AMT}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">부가세</th>
-																			<td><span>${recList.VAT_AMT}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.VAT_AMT}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">봉사료</th>
-																			<td><span>${recList.SRV_FEE}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.SRV_FEE}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점/대표자</th>
-																			<td><span>${recList.MEST_NM} &nbsp; ${recList.MEST_REPR_NM}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.MEST_NM} &nbsp; ${recList.MEST_REPR_NM}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점업종</th>
-																			<td><span>${recList.CARD_TPBZ_NM}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.CARD_TPBZ_NM}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">가맹점주소</th>
-																			<td><span>${recList.MEST_ADDR_1}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.MEST_ADDR_1}</span></td>
 																		</tr>
 																		<tr>
 																			<th class="recipt">사업자등록번호</th>
-																			<td><span>${recList.MEST_BIZ_NO}</span></td>
+																			<td style="padding-bottom:10px;"><span>${recList.MEST_BIZ_NO}</span></td>
 																		</tr>
 																	</tbody>
 																</table>
@@ -554,41 +554,41 @@
 															<table>
 																<tbody>
 																	<tr>
-																		<th class="recipt" style="letter-spacing:0px;">구분</th>
-																		<td>
+																		<th class="recipt" style="letter-spacing:0px; padding-bottom:10px;">구분</th>
+																		<td style="padding-bottom:10px;">
 																			<span>${recList.TRAN_KIND_NM}</span>
 																		<td>
 																	</tr>
 																	<tr>
-																		<th class="recipt" style="letter-spacing:0px;">분류</th>
-																		<td>
+																		<th class="recipt" style="letter-spacing:0px; padding-bottom:10px;">분류</th>
+																		<td style="padding-bottom:10px;">
 																			<span>${recList.SUMMARY}</span>
 																		<td>
 																	</tr>
 																	<tr>
-																		<th class="recipt" style="letter-spacing:0px;">상세내용</th>
-																		<td>
+																		<th class="recipt" style="letter-spacing:0px; padding-bottom:10px;">상세내용</th>
+																		<td style="padding-bottom:10px;">
 																			<span>${recList.SUMMARY_2}</span>
 																		<td>
 																	</tr>
 																	<tr>
-																		<th class="recipt" style="letter-spacing:0px;">신청금액</th>
-																		<td>
+																		<th class="recipt" style="letter-spacing:0px; padding-bottom:10px;">신청금액</th>
+																		<td style="padding-bottom:10px;">
 																			<span>
 																				<fmt:formatNumber type="number" pattern="#,###원" value="${recList.APR_AMT}" />
 																			</span>
 																		<td>
 																	</tr>
 																	<tr>
-																		<th class="recipt" style="letter-spacing:0px;">프로젝트</th>
-																		<td>
+																		<th class="recipt" style="letter-spacing:0px; padding-bottom:10px;">프로젝트</th>
+																		<td style="padding-bottom:10px;">
 																			<span>${recList.BIZ_UNIT_NM}</span>
 																		<td>
 																	</tr>
 																		<c:if test="${recList.CARD_TYPE eq '2'}">
 																			<tr>
-																				<th class="recipt" style="letter-spacing:0px;">계좌정보</th>
-																				<td>
+																				<th class="recipt" style="letter-spacing:0px; padding-bottom:10px;">계좌정보</th>
+																				<td style="padding-bottom:10px;">
 																					<span>${recList.SUMMARY_3}</span>
 																				<td>
 																			</tr>
@@ -601,7 +601,7 @@
 												</c:forEach>	
 											</div>	
 										</dl>
-										<span style="background:url('${pageContext.request.contextPath}/resources/images/layout/bg_cardbill.gif'); "></span>
+<%-- 										<span style="background:url('${pageContext.request.contextPath}/resources/images/layout/bg_cardbill.gif'); "></span> --%>
 									</div>
 								</c:if>
 									
