@@ -221,7 +221,7 @@ public class AprvMngDAO extends AbstractDAO {
 	* @return
 	* @throws Exception
 	*/
-	public int insertBizplayFile(Map params) {
+	public int insertBizplayFile(Map params) throws Exception {
 		return (Integer)insert("aprvMng.insertBizplayFile", params);
 	}
 	
@@ -232,8 +232,32 @@ public class AprvMngDAO extends AbstractDAO {
 	* @return
 	* @throws Exception
 	*/
-	public int deleteBizplayFile(Map params) {
+	public int deleteBizplayFile(Map params) throws Exception {
 		return (Integer)insert("aprvMng.deleteBizplayFile", params);
+	}
+	
+	/**
+	* BIZPLAY에서 결재완료된 건의 결재라인을 추가
+	* 작성자 : JO MIN SOO
+	* 변경이력 :
+	* @param paramMap
+	* @return
+	*/
+	public int insertBizplayLine(Map params) throws Exception {
+		return (Integer)insert("aprvMng.insertBizplayLine", params);
+	}
+	
+	/**
+	* BIZPLAY에서 결재완료된 결의서의 결재라인을 반환 
+	* 작성자 : JO MIN SOO
+	* 변경이력 :
+	* @param pppApprSeqNo
+	* @return
+	* @throws Exception
+	* Method 설명 : 
+	*/
+	public List getBizplayLine(String pppApprSeqNo) throws Exception {
+		return (List)getList("aprvMng.getBizplayLine", pppApprSeqNo);
 	}
 	
 	/**
@@ -243,9 +267,8 @@ public class AprvMngDAO extends AbstractDAO {
 	* @return
 	* @throws Exception
 	*/
-	public int insertBizplayAprv(Map params) {
+	public int insertBizplayAprv(Map params) throws Exception {
 		return (Integer)insert("aprvMng.insertBizplayAprv", params);
-		
 	}
 	
 	/**
@@ -260,17 +283,6 @@ public class AprvMngDAO extends AbstractDAO {
 	}
 	
 	/**
-	* BIZPLAY에서 결재완료된 건의 결재라인을 제거
-	* 작성자 : JO MIN SOO
-	* @param params
-	* @return
-	* @throws Exception
-	*/
-	public int deleteBizplayAprvLine(Map params) throws Exception {
-		return (Integer)insert("aprvMng.deleteBizplayAprvLine", params);
-	}
-
-	/**
 	* BIZPLAY에서 받아온 영수증을 반환
 	* 작성자 : JO MIN SOO
 	* @param params
@@ -279,6 +291,17 @@ public class AprvMngDAO extends AbstractDAO {
 	*/
 	public List getBizplayData(Map params) throws Exception {
 		return (List)getList("aprvMng.getBizplayData", params);
+	}
+	
+	/**
+	* APPR_STS = 9(결재완료)인 데이터 중 APRV테이블에 PPP_APPR_SEQ_NO가 이미 등록되지 않은 데이터 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	public List getBizplayAprvData(Map params) throws Exception {
+		return (List)getList("aprvMng.getBizplayAprvData", params);
 	}
 	
 	/**
@@ -291,4 +314,5 @@ public class AprvMngDAO extends AbstractDAO {
 	public List getBizplayFile(Map params) throws Exception {
 		return (List)getList("aprvMng.getBizplayFile", params);
 	}
+
 }

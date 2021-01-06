@@ -584,7 +584,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 	*/
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public Object loadBizplay(Map params) throws Exception {
+	public void insertBizplayData(Map params) throws Exception {
 		// 입력부 데이터 입력 시작 
 		JSONObject jsonData = new JSONObject();
 		jsonData.put("API_ID", "0411A");
@@ -618,10 +618,10 @@ public class AprvMngServiceImpl implements AprvMngService {
 		// RestTemplate을 이용하여 API 호출 및 데이터 반환
 		RestTemplate rest = new RestTemplate();
 		String result = rest.getForObject(targetUrl, String.class);
+		System.out.println(result);
 		
 		// 받아온 데이터를 Map 데이터로 변환
 		Map rtnData = JSONObject.fromObject(result);
-		
 		JSONArray resData = (JSONArray) rtnData.get("RES_DATA");
 		
 		for(int i = 0; i < resData.size(); i++) {
@@ -635,15 +635,15 @@ public class AprvMngServiceImpl implements AprvMngService {
 			
 			for(Object key : tempMap.keySet()) {
 				// jsonarray에는 null이 JSONNull타입임.. 따라서 그대로 사용하면 mybatis에서 에러가 발생했음. JSONNull인 경우 저장하지 않아 null로 처리
-				if(!(tempMap.get(key).getClass() == JSONNull.class)) {
+				if(!(JSONNull.class == tempMap.get(key).getClass())) {
 					paramMap.put(key, tempMap.get(key));
 				}
 			}
 			
-			// BIZPLAY_0411A 테이블에 모든 결재건 적재
+			// BP_0411A 테이블에 모든 결재건 적재
 			aprvMngDAO.insertBizplayData(paramMap);
 			
-			// BIZPLAY_0411A_FILE 테이블에 결재건에 대한 첨부파일들 등록
+			// BP_0411A_FILE 테이블에 결재건에 대한 첨부파일들 등록
 			aprvMngDAO.deleteBizplayFile(paramMap);
 			JSONArray fileList = (JSONArray) tempMap.get("ATT_IMG_LIST");
 			for(int j = 0; j < fileList.size(); j++) {
@@ -657,76 +657,134 @@ public class AprvMngServiceImpl implements AprvMngService {
 				aprvMngDAO.insertBizplayFile(paramMap);
 			}
 			
-			
-			// 모든 데이터 중 결재완료(9)인 데이터는 지출결의 완료 등록
-			if(("9").equals(paramMap.get("APPR_STS"))) {
-				// 저장될 데이터 정제 시작 
-				paramMap.put("REPT_APRV_NO", paramMap.get("LST_USER_EMP_CD"));
-//				paramMap.put("REPT_APRV_NO", "msjo");
-				paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
-				paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // [법인은 1, 일반(개인)은 2, 송금은 3]
-				
-				String title = String.valueOf(paramMap.get("DRAFT_DATE")).substring(4, 6);
-				title += "월_지출결의_" + "";
-				if(paramMap.get("CARD_TYPE").equals("1")) {
-					title += "법인_";
-				} else if(paramMap.get("CARD_TYPE").equals("2")) {
-					title += "일반_";
-				} else {
-					title += "송금_";
+			// BP_0411A_LINE 테이블에 결재건에 대한 결재라인들 등록
+			JSONArray lineList = (JSONArray) tempMap.get("CD_PPP_APPR_REC");
+			for(int j = 0; j < lineList.size(); j++) {
+				Map tempMap2 = (Map) lineList.get(j);
+				if((JSONNull.class == tempMap2.get("APRV_EMP_CD").getClass())) {
+					continue;
 				}
-				title += String.valueOf(paramMap.get("SUMMARY")).substring(0, 2) + "_";
-				title += paramMap.get("DRAFT_DATE");
-				paramMap.put("TITLE", title);
+				paramMap.put("APPV_SEQ_NO", tempMap2.get("APPV_SEQ_NO"));
+				paramMap.put("APRV_LINE_NM", tempMap2.get("APRV_LINE_NM"));
+				paramMap.put("APPR_KIND", tempMap2.get("APPR_KIND"));
+				paramMap.put("APRV_DATE", tempMap2.get("APRV_DATE"));
+				paramMap.put("APRV_EMP_CD",  tempMap2.get("APRV_EMP_CD"));
+				paramMap.put("APRV_USER_GB", tempMap2.get("APRV_USER_GB"));
+				paramMap.put("APRV_USER_DEPT_NM", tempMap2.get("APRV_USER_DEPT_NM"));
 				
-				paramMap.put("PROJ_CD", paramMap.get("BIZ_UNIT_ERP_CD"));
-				
-				String date = String.valueOf(paramMap.get("APV_DT"));
-				String convertDate = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6, 8);
-				paramMap.put("CONVERT_APV_DT", convertDate);
-
-				paramMap.put("REPT_CONT", paramMap.get("APPR_CONT"));
-				paramMap.put("HALF_TYPE_CD", "0");
-//				paramMap.put("PLACE", "-");
-				// 저장될 데이터 정제 끝
-				
-				aprvMngDAO.insertBizplayAprv(paramMap);
-				
-				// 결재 대상(결재 라인) 등록
-				JSONArray aprvLineArray = (JSONArray) tempMap.get("CD_PPP_APPR_REC");
-				aprvMngDAO.deleteBizplayAprvLine(paramMap);	// 결재라인 지우기
-				for (int j = 0; j < aprvLineArray.size(); j++) {
-					// 결재라인 맵 초기화
-					Map aprvLineMap = (Map) aprvLineArray.get(j);
-					
-					aprvLineMap.put("PPP_APPR_SEQ_NO", paramMap.get("PPP_APPR_SEQ_NO"));
-					aprvLineMap.put("APRV_NO", paramMap.get("APRV_NO"));
-					aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")));
-					aprvLineMap.put("APRV_YN_CD", 1);
-					aprvLineMap.put("CRTN_EMP_NO", paramMap.get("USER_EMP_CD"));
-//					aprvLineMap.put("CRTN_EMP_NO", "msjo");
-					aprvLineMap.put("CRTN_DT", paramMap.get("DRAFT_DATE"));
-					aprvLineMap.put("MODI_DT", aprvLineMap.get("APRV_DATE"));
-					aprvLineMap.put("CONF_YN", 'Y');
-					if(aprvLineMap.get("APPR_KIND").equals("4")) { // 참조인
-						aprvLineMap.put("REFE_YN", "Y");
-					} else {
-						aprvLineMap.put("REFE_YN", "N");
-					}
-		
-					if(aprvLineMap.get("APPR_KIND").equals("2") || aprvLineMap.get("APPR_KIND").equals("4")) { // 2: 결재자,  4: 참조인
-						// 결재가 완료되기 전 참조인이 지결을 읽지 않으면 null로 받아와짐 ==> 데이터를 못받아서 인트라넷에 적용 불가능 ==> continue로 넘어감
-						if(aprvLineMap.get("APRV_EMP_CD").equals("null")) { 
-							continue;
-						} else {
-							aprvMngDAO.insertBizplayAprvLine(aprvLineMap);	// 결재라인 등록
-						}
-					}
-				}
-				
+				aprvMngDAO.insertBizplayLine(paramMap);
 			}
 		}
-		return null;
+	}
+
+	/**
+	* 데이터베이스에 적재된 비즈플레이 영수증들을 조합하여 인트라넷에 결재 데이터 추가
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public void insertBizplayAprv(Map params) throws Exception {
+		List<Map> rtnList = aprvMngDAO.getBizplayAprvData(params); // 비즈플레이 영수증 리스트 반환
+		
+		Map<String, Object> sortedMap = new HashMap<String, Object>();
+		
+		for(int i = 0; i < rtnList.size(); i++) { // 같은 결의서 번호끼리 묶어서 맵에 리스트로 넣어줌
+			Map rtnMap = (Map) rtnList.get(i);
+			
+			if(sortedMap.get(rtnMap.get("PPP_APPR_SEQ_NO")) == null) { // list가 있는지
+				List list = new ArrayList<Object>();
+				list.add(rtnMap);
+				sortedMap.put((String) rtnMap.get("PPP_APPR_SEQ_NO"), list);
+			} else {
+				List list = (List) sortedMap.get(rtnMap.get("PPP_APPR_SEQ_NO"));
+				list.add(rtnMap);
+			}
+		}
+		
+		for(String key : sortedMap.keySet()) { // 맵의 요소를 모두 조회하며 각 리스트 반복(리스트는 영수증 1건) 
+			List sortedList = (List) sortedMap.get(key);
+			Map paramMap = null;
+			paramMap = (Map) sortedList.get(0);
+			
+			// 모든 데이터 중 결재완료(9)인 데이터는 지출결의 완료 등록
+			// 저장될 데이터 정제 시작 
+			paramMap.put("REPT_APRV_NO", paramMap.get("LST_USER_EMP_CD")); // 작성자
+			paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
+			paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // 결재구분상세코드 [법인은 1, 일반(개인)은 2, 송금은 3]
+			
+//			String title = String.valueOf(paramMap.get("DRAFT_DATE")).substring(4, 6);
+//			title += "월_지출결의_" + "";
+//			if(paramMap.get("CARD_TYPE").equals("1")) {
+//				title += "법인_";
+//			} else if(paramMap.get("CARD_TYPE").equals("2")) {
+//				title += "일반_";
+//			} else {
+//				title += "송금_";
+//			}
+//			title += String.valueOf(paramMap.get("SUMMARY")).substring(0, 2) + "_";
+//			title += paramMap.get("DRAFT_DATE");
+//			paramMap.put("TITLE", title); // 제목
+			paramMap.put("TITLE", paramMap.get("APPR_SUBJ")); // 제목
+			
+			paramMap.put("PROJ_CD", paramMap.get("BIZ_UNIT_ERP_CD")); // 프로젝트 코드
+			
+			paramMap.put("REPT_CONT", paramMap.get("APPR_CONT")); // 보고내용 
+			paramMap.put("HALF_TYPE_CD", "0"); // 반차구분코드
+//			paramMap.put("PLACE", "-");
+
+			// 시작 ~ 종료 기간 설정
+			int startDate = Integer.parseInt(paramMap.get("APV_DT") + "");
+			int endDate = Integer.parseInt(paramMap.get("APV_DT") + "");
+			for(int i = 0; i < sortedList.size(); i++) {
+				Map paramMap2 = (Map) sortedList.get(i);
+				int date = Integer.parseInt(paramMap2.get("APV_DT") + "");
+				if(date < startDate) {
+					startDate = date;
+				} else if(date > endDate) {
+					endDate = date;
+				}
+			}
+			String termStYm = String.valueOf(startDate).substring(0, 4) + "-" + 
+								String.valueOf(startDate).substring(4, 6) + "-" + 
+								String.valueOf(startDate).substring(6, 8);
+			String termEdYm = String.valueOf(endDate).substring(0, 4) + "-" + 
+								String.valueOf(endDate).substring(4, 6) + "-" + 
+								String.valueOf(endDate).substring(6, 8);
+			paramMap.put("TERM_ST_YM", termStYm);
+			paramMap.put("TERM_ED_YM", termEdYm);
+			// 저장될 데이터 정제 끝
+			
+			aprvMngDAO.insertBizplayAprv(paramMap); // 결재정보 등록
+			
+			// 결재 대상(결재 라인) 등록
+			List aprvLineList = aprvMngDAO.getBizplayLine(paramMap.get("PPP_APPR_SEQ_NO") + "");
+			for (int j = 0; j < aprvLineList.size(); j++) {
+				Map aprvLineMap = (Map) aprvLineList.get(j);
+				
+				if(("1").equals(aprvLineMap.get("APPR_KIND"))) { // 기안자(작성자)일 때 스킵
+					continue;
+				}
+					
+				aprvLineMap.put("PPP_APPR_SEQ_NO", paramMap.get("PPP_APPR_SEQ_NO"));
+				//aprvLineMap.put("APRV_NO", paramMap.get("APRV_NO"));
+				aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")));
+				aprvLineMap.put("APRV_YN_CD", 1);
+				aprvLineMap.put("CRTN_EMP_NO", paramMap.get("USER_EMP_CD"));
+				aprvLineMap.put("CRTN_DT", paramMap.get("DRAFT_DATE"));
+				aprvLineMap.put("MODI_DT", aprvLineMap.get("APRV_DATE"));
+				aprvLineMap.put("CONF_YN", 'Y');
+				if(("4").equals(aprvLineMap.get("APPR_KIND"))) { // 참조인
+					aprvLineMap.put("REFE_YN", "Y");
+				} else {
+					aprvLineMap.put("REFE_YN", "N");
+				}
+				
+				aprvMngDAO.insertBizplayAprvLine(aprvLineMap);	// 결재라인 등록
+			}
+		}
 	}
 
 	/**
