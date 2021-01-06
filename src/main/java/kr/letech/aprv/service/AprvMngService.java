@@ -117,8 +117,18 @@ public interface AprvMngService {
 	* @return
 	* @throws Exception
 	*/
-	public Object loadBizplay(Map params) throws Exception;
+	public void insertBizplayData(Map params) throws Exception;
 
+	/**
+	* 데이터베이스에 적재된 비즈플레이 영수증들을 조합하여 인트라넷에 결재 데이터 추가
+	* 작성자 : JO MIN SOO
+	* @param request
+	* @param model
+	* @return
+	* @throws Exception
+	*/
+	public void insertBizplayAprv(Map params) throws Exception; 
+	
 	/**
 	* BIZPLAY에서 받아온 영수증과 첨부파일이미지를 반환
 	* 작성자 : JO MIN SOO

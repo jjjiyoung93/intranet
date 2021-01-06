@@ -51,7 +51,10 @@ public class CmmScheduler {
 		System.err.println("startDate : " + startDate);
 		System.err.println("endDate : " + endDate);
 		try {
-			aprvMngService.loadBizplay(params);
+			// BIZPLAY 데이터 호출하여 DB에 저장
+			aprvMngService.insertBizplayData(params);
+			// 저장된 BIZPLAY 데이터를 이용하여 결재 데이터 생성
+			aprvMngService.insertBizplayAprv(params);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

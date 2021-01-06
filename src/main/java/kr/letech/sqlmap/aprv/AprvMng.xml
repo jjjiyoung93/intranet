@@ -754,7 +754,7 @@
 	</update>
 	
 	<insert id="insertBizplayData" parameterType="map">
-		MERGE INTO BIZPLAY_0411A
+		MERGE INTO BP_0411A
 		USING DUAL
 		   ON ( CARD_NO = #{CARD_NO}
 		     AND SEQ = #{SEQ}
@@ -1012,7 +1012,7 @@
 	</insert>
 	
 	<insert id="insertBizplayFile" parameterType="map">
-		INSERT INTO BIZPLAY_0411A_FILE (
+		INSERT INTO BP_0411A_FILE (
 			CARD_NO
 			, SEQ
 			, APV_DT
@@ -1034,11 +1034,56 @@
 	</insert>
 	
 	<delete id="deleteBizplayFile" parameterType="map">
-		DELETE BIZPLAY_0411A_FILE
+		DELETE BP_0411A_FILE
 		 WHERE CARD_NO = #{CARD_NO, jdbcType=VARCHAR}
 		   AND SEQ = #{SEQ, jdbcType=VARCHAR}
 		   AND APV_DT = #{APV_DT, jdbcType=VARCHAR} 
 	</delete>
+	
+	<insert id="insertBizplayLine" parameterType="map">
+		INSERT INTO BP_0411A_LINE (
+			PPP_APPR_SEQ_NO
+			, APPV_SEQ_NO
+			, APRV_LINE_NM
+			, APPR_KIND
+			, APRV_DATE
+			, APRV_EMP_CD
+			, APRV_USER_GB
+			, APRV_USER_DEPT_NM
+		)
+		SELECT 
+			#{PPP_APPR_SEQ_NO, jdbcType=VARCHAR}
+			, #{APPV_SEQ_NO, jdbcType=VARCHAR}
+			, #{APRV_LINE_NM, jdbcType=VARCHAR}
+			, #{APPR_KIND, jdbcType=VARCHAR}
+			, #{APRV_DATE, jdbcType=VARCHAR}
+			, #{APRV_EMP_CD, jdbcType=VARCHAR}
+			, #{APRV_USER_GB, jdbcType=VARCHAR}
+			, #{APRV_USER_DEPT_NM, jdbcType=VARCHAR}
+		FROM DUAL
+		WHERE NOT EXISTS (
+			SELECT PPP_APPR_SEQ_NO
+			FROM BP_0411A_LINE
+			WHERE PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO, jdbcType=VARCHAR}
+			  AND APPR_KIND = #{APPR_KIND, jdbcType=VARCHAR}
+			  AND APRV_EMP_CD = #{APRV_EMP_CD, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="getBizplayLine" resultType="HashMap" parameterType="String">
+		SELECT 
+			PPP_APPR_SEQ_NO
+			, APRV_EMP_CD
+			, APPR_KIND
+			, APPV_SEQ_NO
+			, APRV_LINE_NM
+			, APRV_DATE
+			, APRV_USER_GB
+			, APRV_USER_DEPT_NM
+		FROM BP_0411A_LINE
+		WHERE PPP_APPR_SEQ_NO = #{pppApprSeqNo,  jdbcType=VARCHAR}
+		ORDER BY APPV_SEQ_NO
+	</select>
 	
 	<!-- 결재정보 등록 -->
 	<insert id="insertBizplayAprv" parameterType="map">
@@ -1046,68 +1091,42 @@
 			SELECT NVL(MAX(TO_NUMBER(APRV_NO)),0)+1
 			 FROM STD_APRV_MNG
 		</selectKey>
-		MERGE INTO STD_APRV_MNG
-		USING DUAL
-		   ON ( PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO} )
-		WHEN MATCHED THEN
-			UPDATE SET
-			  REPT_APRV_NO = #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}
-			  , APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}
-			  , TITLE = #{TITLE, jdbcType=VARCHAR}
-			  , PROJ_CD = #{PROJ_CD, jdbcType=VARCHAR}
-			  , TERM_ST_YM = CASE
-								WHEN #{CONVERT_APV_DT, jdbcType=VARCHAR} <![CDATA[<]]> TERM_ST_YM THEN #{CONVERT_APV_DT, jdbcType=VARCHAR}
-								ELSE TERM_ST_YM
-							 END
-			  , TERM_ED_YM = CASE
-								WHEN #{CONVERT_APV_DT, jdbcType=VARCHAR} > TERM_ED_YM THEN #{CONVERT_APV_DT, jdbcType=VARCHAR}
-								ELSE TERM_ED_YM
-							 END
-			  , REPT_CONT = #{REPT_CONT, jdbcType=VARCHAR}
-			  , HALF_TYPE_CD = #{HALF_TYPE_CD, jdbcType=VARCHAR}
-			  , PLACE = #{PLACE, jdbcType=VARCHAR}
-			  , CRTN_EMP_NO = #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , CRTN_DT = TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
-			  , MODI_EMP_NO = #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , MODI_DT = TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
-		WHEN NOT MATCHED THEN
-			INSERT ( 
-				APRV_NO
-			  , REPT_APRV_NO
-			  , APRV_TYPE_CD
-			  , APRV_TYPE_DTIL_CD
-			  , TITLE
-			  , PROJ_CD
-			  , TERM_ST_YM
-			  , TERM_ED_YM
-			  , REPT_CONT
-			  , HALF_TYPE_CD
-			  , PLACE
-			  , CRTN_EMP_NO
-			  , CRTN_DT
-			  , MODI_EMP_NO
-			  , MODI_DT
-			  , PPP_APPR_SEQ_NO
-			) 
-			VALUES (
-				#{APRV_NO}
-			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , #{APRV_TYPE_CD, jdbcType=VARCHAR}
-			  , #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}
-			  , #{TITLE, jdbcType=VARCHAR}
-			  , #{PROJ_CD, jdbcType=VARCHAR}
-			  , #{CONVERT_APV_DT, jdbcType=VARCHAR}
-			  , #{CONVERT_APV_DT, jdbcType=VARCHAR}
-			  , #{REPT_CONT, jdbcType=VARCHAR}
-			  , #{HALF_TYPE_CD, jdbcType=VARCHAR}
-			  , #{PLACE, jdbcType=VARCHAR}
-			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
-			  , #{REPT_APRV_NO, jdbcType=VARCHAR}
-			  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
-			  , #{PPP_APPR_SEQ_NO, jdbcType=VARCHAR}
-			)
+		INSERT INTO STD_APRV_MNG ( 
+			APRV_NO
+		  , REPT_APRV_NO
+		  , APRV_TYPE_CD
+		  , APRV_TYPE_DTIL_CD
+		  , TITLE
+		  , PROJ_CD
+		  , TERM_ST_YM
+		  , TERM_ED_YM
+		  , REPT_CONT
+		  , HALF_TYPE_CD
+		  , PLACE
+		  , CRTN_EMP_NO
+		  , CRTN_DT
+		  , MODI_EMP_NO
+		  , MODI_DT
+		  , PPP_APPR_SEQ_NO
+		) 
+		VALUES (
+			#{APRV_NO}
+		  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+		  , #{APRV_TYPE_CD, jdbcType=VARCHAR}
+		  , #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}
+		  , #{TITLE, jdbcType=VARCHAR}
+		  , #{PROJ_CD, jdbcType=VARCHAR}
+		  , #{TERM_ST_YM, jdbcType=VARCHAR}
+		  , #{TERM_ED_YM, jdbcType=VARCHAR}
+		  , #{REPT_CONT, jdbcType=VARCHAR}
+		  , #{HALF_TYPE_CD, jdbcType=VARCHAR}
+		  , #{PLACE, jdbcType=VARCHAR}
+		  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+		  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
+		  , #{REPT_APRV_NO, jdbcType=VARCHAR}
+		  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
+		  , #{PPP_APPR_SEQ_NO, jdbcType=VARCHAR}
+		)
 	</insert>
 	
 	<insert id="insertBizplayAprvLine" parameterType="map">
@@ -1146,28 +1165,30 @@
 			)
 	</insert>
 	
-	<delete id="deleteBizplayAprvLine" parameterType="map">
-		DELETE STD_APRV_LINE
-		 WHERE APRV_NO = (SELECT APRV_NO
-						    FROM STD_APRV_MNG
-						   WHERE PPP_APPR_SEQ_NO = #{PPP_APPR_SEQ_NO})
-	</delete>
-	
 	<select id="getBizplayData" resultType="HashMap" parameterType="map">
 		SELECT 'XXXX-' || SUBSTR(CARD_NO, 5, 4) || '-' || SUBSTR(CARD_NO, 9, 4) || '-' || SUBSTR(CARD_NO, 13, 4) CARD_NO_MASKING
-			, B.BIZPLAY_CD_NM BANK_NM
+			, B.BP_CD_NM BANK_NM
 			, A.*
-		  FROM BIZPLAY_0411A A
-			, BIZPLAY_CD B
+		  FROM BP_0411A A
+			, BP_CD B
 		 WHERE PPP_APPR_SEQ_NO = (SELECT PPP_APPR_SEQ_NO
 								    FROM STD_APRV_MNG
 								   WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR})
-		   AND A.BANK_CD = B.BIZPLAY_CD
+		   AND A.BANK_CD = B.BP_CD
+	</select>
+	
+	<select id="getBizplayAprvData" resultType="HashMap">
+		SELECT A.* 
+		  FROM BP_0411A A
+		 WHERE APPR_STS = '9'
+		   AND NOT EXISTS (SELECT PPP_APPR_SEQ_NO
+							 FROM STD_APRV_MNG B
+							WHERE A.PPP_APPR_SEQ_NO = B.PPP_APPR_SEQ_NO)
 	</select>
 	
 	<select id="getBizplayFile" resultType="HashMap" parameterType="map">
 		SELECT CARD_NO, SEQ, APV_DT, IMG_SEQ_NO, REG_DTM, RCPT_IMG_URL, ORG_IMG_URL, IMG_NM
-		  FROM BIZPLAY_0411A_FILE
+		  FROM BP_0411A_FILE
 		 WHERE CARD_NO = #{CARD_NO, jdbcType=VARCHAR}
 		   AND SEQ = #{SEQ, jdbcType=VARCHAR}
 		   AND APV_DT = #{APV_DT, jdbcType=VARCHAR}

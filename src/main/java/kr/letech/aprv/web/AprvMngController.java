@@ -414,8 +414,10 @@ public class AprvMngController {
 		
 		String viewName = "jsonView";
 
-		Object rtnJsonData = aprvMngService.loadBizplay(params);
-		params.put("rtnJsonData", rtnJsonData);
+		// BIZPLAY 데이터 호출하여 DB에 저장
+		aprvMngService.insertBizplayData(params);
+		// 저장된 BIZPLAY 데이터를 이용하여 결재 데이터 생성
+		aprvMngService.insertBizplayAprv(params);
 		
 		return viewName;
 	}
