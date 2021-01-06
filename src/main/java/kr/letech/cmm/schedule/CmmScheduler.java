@@ -42,7 +42,12 @@ public class CmmScheduler {
 		String endDate = df.format(cal.getTime()); // 종료일
 		
 		cal.add(Calendar.MONTH, -1); // 한달 전
-		String startDate = df.format(cal.getTime()); // 시작일
+		String startDate = null;
+		if(("2020").equals(df.format(cal.getTime()).substring(0, 4))) { // 시작일
+			startDate = "20210101"; // 2021년 전 인경우 2021년으로 세팅
+		} else {
+			startDate = df.format(cal.getTime());
+		}
 		
 		params.put("START_DATE", startDate);
 		params.put("END_DATE", endDate);
