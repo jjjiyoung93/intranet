@@ -21,6 +21,12 @@
 <%-- <script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script> --%>
 <link href="${pageContext.request.contextPath}/resources/js/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" rel="stylesheet" >
 
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-code-snippet.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-dom.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.js"></script>
+<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
+<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
 </head>
 
 <body>
@@ -133,6 +139,24 @@
 											<dl class="clearfix">
 												<dt class="col-md-2 col-sm-3">제목</dt>
 												<dd class="col-md-10 col-sm-9 form-group"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
+											</dl>
+										</li>
+										<li>
+											<dl class="clearfix">
+												<dt class="col-md-2 col-sm-3">기간2</dt>
+												<dd class="col-md-10 col-sm-9 form-group">
+													<div class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+														<input id="startpicker-input" type="text" aria-label="Date">
+														<span class="tui-ico-date"></span>
+														<div id="startpicker-container" style="margin-left: -1px;"></div>
+													</div>
+													~
+													<div class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+														<input id="endpicker-input" type="text" aria-label="Date">
+														<span class="tui-ico-date"></span>
+														<div id="endpicker-container" style="margin-left: -1px;"></div>
+													</div>
+												</dd>
 											</dl>
 										</li>
 										<li>
@@ -712,6 +736,26 @@ function fn_order(obj){
 	}
 }
 
+//tui.date-picker
+var picker = tui.DatePicker.createRangePicker({
+	language: 'ko',
+    startpicker: {
+        date: new Date(),
+        input: '#startpicker-input',
+        container: '#startpicker-container'
+    },
+    endpicker: {
+        date: new Date(),
+        input: '#endpicker-input',
+        container: '#endpicker-container'
+    },
+    type: 'date',
+    format: 'yyyy-MM-dd HH:mm',
+    timepicker: {
+    	language: 'ko',
+    	showMeridiem: false
+    }
+});
 </script>
 </body>
 </html>
