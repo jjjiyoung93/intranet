@@ -52,6 +52,10 @@ public class LoginVO implements Serializable{
 	private String ip;
 	/** GPKI인증 DN */
 	private String dn;
+	/** 직위 코드 */
+	private String authCd;
+	/** 직위 명 */
+	private String authNm;
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String
@@ -233,6 +237,32 @@ public class LoginVO implements Serializable{
 	 */
 	public void setDn(String dn) {
 		this.dn = dn;
+	}
+	/**
+	 * authCd 값을 리턴한다.
+	 */
+	public String getAuthCd() {
+		return authCd;
+	}
+	/**
+	 * authCd 값을 설정한다.
+	 * @param authCd
+	 */
+	public void setAuthCd(String authCd) {
+		this.authCd = authCd;
+	}
+	/**
+	 * authNm 값을 리턴한다.
+	 */
+	public String getAuthNm() {
+		return authNm;
+	}
+	/**
+	 * authNm 값을 설정한다.
+	 * @param authNm
+	 */
+	public void setAuthNm(String authNm) {
+		this.authNm = authNm;
 	}
 	/**
 	 * @return the orgnztNm

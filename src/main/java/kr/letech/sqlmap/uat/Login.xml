@@ -10,6 +10,10 @@
 		     , uss.uss_pwd AS password
 		     , uss.uss_email AS email
 		     , uss.uss_pwd AS uniqId
+		     , uss.uss_auth_cd AS authCd
+		     , (SELECT AUTHOR_NM
+		     	  FROM STD_AUT_INFO
+		     	 WHERE AUTHOR_CODE = uss.uss_auth_cd) AS authNm
 		     , dp.dp_cd AS orgnztId
 		     , dp.dp_nm AS orgnztNm
 		  FROM std_uss_mng uss
