@@ -63,189 +63,143 @@
 								</span>
 							</h2>
 						
-						
 							<div class="form-container">
-								<div class="board-write">
-									<ul>
-										<li>
-											<dl class="clearfix ">
-												<dt class="col-md-2 col-sm-3">보고자</dt>
-												<dd class="col-md-10 col-sm-9 form-group">
-												<span class="form-inline">
-													<c:set var="rept_aprv_no" value=""/>
-													<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
-													<c:choose>
-														<c:when test="${params.mode eq mode_u }">
-															<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
-															<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
-														</c:when>
-														<c:otherwise>
-															<input type="text" class="form-control" value="${loginVO.name }" readonly/>
-															<c:set var="rept_aprv_no" value="${loginVO.id }"/>
-														</c:otherwise>
-													</c:choose>
-													<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
+								<div class="board-write row">
+								
+									<!-- 소속 및 프로젝트 시작 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">소속</label>
+										</div>
+										<div class="col-lg-3">
+											<input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/>
+										</div>
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">프로젝트</label>
+										</div>
+										<div class="col-lg-3">
+											<select id="proj_cd" name="proj_cd" class="form-control">
+												<option value="">선택</option>
+												<c:forEach var="proj" items="${projList }" varStatus="status">
+												<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+									<!-- 소속 및 프로젝트 끝 END -->
+									
+									<!-- 직위 및 보고자 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">직위</label>
+										</div>
+										<div class="col-lg-3">
+											<input class="form-control" type="text" value="${loginVO.authNm }" readonly/>
+										</div>
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">보고자</label>
+										</div>
+										<div class="col-lg-3">
+											<c:set var="rept_aprv_no" value=""/>
+											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
+											<c:choose>
+												<c:when test="${params.mode eq mode_u }">
+													<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
+													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
+												</c:when>
+												<c:otherwise>
+													<input type="text" class="form-control" value="${loginVO.name }" readonly/>
+													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
+												</c:otherwise>
+											</c:choose>
+											<input type="hidden" id="rept_aprv_no" name="rept_aprv_no" value="${rept_aprv_no }" />
+										</div>
+									</div>
+									<!-- 직위 및 보고자 END -->
+
+									<!-- 제목 -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">제목</label>
+										</div>
+										<div class="col-lg-8">
+											<input class="form-control" type="text" id="title" name="title" value="${viewMap.TITLE }"/>
+										</div>
+									</div>
+									<!-- 제목 -->
+									
+									<!-- 보고내용 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">보고내용</label>
+										</div>
+										<div class="col-lg-8">
+											<textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea>
+										</div>
+									</div>
+									<!-- 보고내용 END -->
+									
+									<!-- 결재 구분 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">결재 구분</label>
+										</div>
+										<div class="col-lg-2">
+											<select id="cdList1" name="cdList1" class="form-control">
+													<option value="" >--1차 구분 선택--</option>
+												<c:forEach var="codeList" items="${codeList}">
+													<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
+												</c:forEach>
+											</select>
+										</div>
+										<div class="col-lg-2">
+											<select id="cdList2" name="cdList2" class="form-control">
+													<option value="" >--2차 구분 선택--</option>
+												<c:forEach var="codeList2" items="${codeList2}">
+													<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
+												</c:forEach>
+											</select>
+										</div>
+										<!--  반차여부 -->
+										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
+<!-- 									<input type="button" id="sampleTitleBtn" class="btn btn-sm btn-default" value="샘플 제목 생성"> -->
+									</div>
+									<!-- 결재 구분 END -->
+									
+									<!-- 결재 구분에 따라 폼 추가될 영역 START -->
+									<div id="docForm"></div>
+									<!-- 결재 구분에 따라 폼 추가될 영역 END -->
+									
+									<!-- 첨부파일 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">첨부파일</label>
+										</div>
+										<div class="col-lg-9 file-list">
+											<c:forEach var="file" items="${fileList }" varStatus="status">
+												<div id="file_${file.FILE_NO }">
+													<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
+													<span class="file-btn">
+														<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }', event)" >
+															<i class="glyphicon glyphicon-remove"></i>
+														</button>
 													</span>
-												</dd>
-											</dl>
-		
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">소속</dt>
-												<dd class="col-md-10 col-sm-9 form-group"><span class="form-inline"><input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/></span></dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">프로젝트</dt>
-												<dd class="col-md-10 col-sm-9 form-group">
-													<div class="form-inline">
-														<select id="proj_cd" name="proj_cd" class="form-control">
-															<option value="">선택</option>
-															<c:forEach var="proj" items="${projList }" varStatus="status">
-															<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
-															</c:forEach>
-														</select>
-													</div>
-												</dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">결재구분</dt>
-												<dd class="col-md-10 col-sm-9 form-group">
-													<div class="form-inline">
-														<select id="cdList1" name="cdList1" class="form-control form-group">
-																<option value="" >--1차 구분 선택--</option>
-															<c:forEach var="codeList" items="${codeList}">
-																<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
-															</c:forEach>
-														</select>
-														<select id="cdList2" name="cdList2" class="form-control ">
-																<option value="" >--2차 구분 선택--</option>
-															<c:forEach var="codeList2" items="${codeList2}">
-																<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
-															</c:forEach>
-														</select>
-														<!--  반차여부 -->
-														<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
-<!-- 													<input type="button" id="sampleTitleBtn" class="btn btn-sm btn-default" value="샘플 제목 생성"> -->
-													</div>
-												</dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">제목</dt>
-												<dd class="col-md-10 col-sm-9 form-group"><input type="text" id="title" name="title" class="form-control" value="${viewMap.TITLE }"/></dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">기간2</dt>
-												<dd class="col-md-10 col-sm-9 form-group">
-													<div class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-														<input id="startpicker-input" type="text" aria-label="Date">
-														<span class="tui-ico-date"></span>
-														<div id="startpicker-container" style="margin-left: -1px;"></div>
-													</div>
-													~
-													<div class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-														<input id="endpicker-input" type="text" aria-label="Date">
-														<span class="tui-ico-date"></span>
-														<div id="endpicker-container" style="margin-left: -1px;"></div>
-													</div>
-												</dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">기간</dt>
-												<dd class="col-md-10 col-sm-9 form-group">
-													<div class="form-inline">
-														<input name="term_st_ym" id="term_st_ym" type="text" value="${viewMap.TERM_ST_YM }" class="form-control table-cell"/>
-														<select name="term_st_h" id="term_st_h" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
-															<option value="">--</option>
-															<c:forEach var="i" begin="8" end="19">
-																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
-																<option value="${no }" <c:if test="${no eq viewMap.TERM_ST_H }" >selected="selected"</c:if> >${no }시</option>																	
-															</c:forEach>
-														</select>
-														<select name="term_st_m" id="term_st_m" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
-															<option value="">--</option>
-															<c:forEach var="i" begin="0" end="30" step="30">
-																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
-																<option value="${no }" <c:if test="${no eq viewMap.TERM_ST_M }" >selected="selected"</c:if> >${no }분</option>																	
-															</c:forEach>
-														</select>
-															 ~ 
-														<input name="term_ed_ym" id="term_ed_ym" type="text" value="${viewMap.TERM_ED_YM }" class="form-control table-cell"/>
-														<select name="term_ed_h" id="term_ed_h" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
-															<option value="">--</option>
-															<c:forEach var="i" begin="8" end="19">
-																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
-																<option value="${no }" <c:if test="${no eq viewMap.TERM_ED_H }" >selected="selected"</c:if> >${no }시</option>																	
-															</c:forEach>
-														</select>
-														<select name="term_ed_m" id="term_ed_m" class="form-control" <c:if test="${viewMap.APRV_TYPE_CD ne 'CD0001011' }">style="display:none"</c:if>>
-															<option value="">--</option>
-															<c:forEach var="i" begin="0" end="30" step="30">
-																<fmt:formatNumber var="no" minIntegerDigits="2" value="${i}" type="number"/>
-																<option value="${no }" <c:if test="${no eq viewMap.TERM_ED_M }" >selected="selected"</c:if> >${no }분</option>																	
-															</c:forEach>
-														</select>
-													</div>
-												</dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">행선지</dt>
-												<dd class="col-md-10 col-sm-9 form-group"><input type="text" name="place" id="place" class="form-control" value="${viewMap.PLACE }"/></dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3">보고내용</dt>
-												<dd class="col-md-10 col-sm-9 form-group"><textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea></dd>
-											</dl>
-										</li>
-										<li>
-											<dl class="clearfix">
-												<dt class="col-md-2 col-sm-3 control-label">첨부파일</dt>
-												<dd class="col-md-10 col-sm-9">
-													<ul class="file-list">
-														<c:forEach var="file" items="${fileList }" varStatus="status">
-															<li id="file_${file.FILE_NO }">
-																<a href="#" onclick="fn_downFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NM }')">${file.FILE_NM }</a> 
-																<span class="file-btn">
-																	<button class="btn btn-xs btn-danger" onclick="fn_delFile('${file.FILE_PATH}', '${file.FILE_STRE_NM }', '${file.FILE_NO }', event)" >
-																		<i class="glyphicon glyphicon-remove"></i>
-																	</button>
-																</span>
-															</li>
-														</c:forEach>
-														<li>
-															<ul class="" id="my-file">
-																<li class="file-form">
-																		<input type="file" name="file" id="file1" class="input-group">
-																	<span class="btn btn-xs btn-success file-btn" id="button-add-file">
-																		<i class="glyphicon glyphicon-plus"></i>
-																	</span>
-																</li>
-															</ul>
-														</li>
-													</ul>
-												</dd>
-											</dl>
-										</li>
-									</ul>
+												</div>
+											</c:forEach>
+											<div id="my-file">
+												<div class="file-form">
+													<input type="file" name="file" id="file1" class="input-group" style="display: inline;">
+													<span class="btn btn-xs btn-success file-btn" id="button-add-file"><i class="glyphicon glyphicon-plus"></i></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- 첨부파일 END -->
 								</div>
-								<div class="clearfix">
-									<dl class="panel panel-default">
-										<dt class="panel-heading">결재라인</dt>
-										<dd class="panel-body">
+								<div class="row col-lg-12">
+									<div class="panel panel-default">
+										<div class="panel-heading">결재라인</div>
+										<div class="panel-body">
 							          		<c:set var="lineVar" value="1" />
 							          		<c:if test="${fn:length(lineList) > 0 }">
 							          			<c:set var="lineVar" value="${fn:length(lineList) }" />
@@ -317,7 +271,7 @@
 																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control input-sm" readonly />														
 																</span>
 															</td>
-															<td>대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text" /></td>
+															<td style="text-align: center;">대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text"/></td>
 															<td></td>
 														</tr>
 													</c:otherwise>
@@ -325,10 +279,10 @@
 											</tbody>
 										</table>
 										</div>
-									</dd>
-								</dl>
+									</div>
+								</div>
 							</div>
-							<p class="clearfix">
+							<div class="row col-lg-12">
 								<span class="pull-right">
 									<c:set var="btnVal" value="저장" />
 									<c:if test="${viewMap.APRV_LINE_CD eq '3' }">	<!-- 반려일경우 -->
@@ -336,12 +290,13 @@
 									</c:if>
 									<input type="button" id="btn-ok" name="btn-ok" class="btn btn-sm btn-info" value="${btnVal }"/>
 									<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" onclick="javascript:self.location='index.html'"/>
-	<%--
-	 							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
-								    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
-	 --%>
+<%--
+ 							    <input  class="btn-ok btn btn_info" type="button" value="${btnVal }" />
+							    <input class="btn-cancel btn btn_default"  type="button" value="취소" />
+ --%>
 								</span>
-							</p>
+							</div>
+							<p class="clearfix"/>
 						</div>
 					</form>
 				</div>
@@ -366,32 +321,13 @@
 
 <script type="text/javascript">
 
-$(function() {
-	$("#term_st_ym").datepicker(
-		{
-			// 종료날짜 있을 경우 이전 날짜만 선택되게 함
-			onClose: function( selectedDate ) {
-		        $( "#term_ed_ym" ).datepicker( "option", "minDate", selectedDate );
-		    }
-		}		
-	);
-	$("#term_ed_ym").datepicker(
-		{
-			// 시작날짜 있을경우 이유 날짜만 선택하게 함
-			onClose: function( selectedDate ) {
-				$( "#term_st_ym" ).datepicker( "option", "maxDate", selectedDate );
-			}
-		}		
-	);
-});
-
 //select box 선택 기능
 $("#cdList1").change(function(){
 	$("#cdList2").find('option').each(function(){
 		$(this).remove();	
 	});
 	
-	$("#cdList2").append("<option value=''>--선택--</option>");
+	$("#cdList2").append("<option value=''>--2차 구분 선택--</option>");
 	
 	var selectVal = $(this).val();
 	
@@ -402,8 +338,13 @@ $("#cdList1").change(function(){
 				dataType:'json',
 				success: function(json){
 					var data = json.codeList;
-					if(data==null){
+					console.log(data);
+					if(data==""){
 						data=0;
+						$("#cdList2").css("display", "none");
+						fn_getDocCode(); // 문서 양식 불러옴(2가지 경우 중 첫번째)
+					} else {
+						$("#cdList2").css("display", "");
 					}
 					for(var i=0; i<data.length; i++){
 						$("#cdList2").append("<option value='"+ data[i]['CD'] + "' >" + data[i]['CD_NM'] + "</option>");
@@ -411,19 +352,47 @@ $("#cdList1").change(function(){
 				}
 		});
 	}
-	
-	if($(this).val() == "CD0001011") {
-		$("#term_st_h").css("display", "");
-		$("#term_st_m").css("display", "");
-		$("#term_ed_h").css("display", "");
-		$("#term_ed_m").css("display", "");
-	} else {
-		$("#term_st_h").css("display", "none");
-		$("#term_st_m").css("display", "none");
-		$("#term_ed_h").css("display", "none");
-		$("#term_ed_m").css("display", "none");
-	}
 });
+
+$("#cdList2").change(function(){ 
+	fn_getDocCode(); // 문서 양식 불러옴(2가지 경우 중 두번째)
+});
+
+// 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
+function fn_getDocCode(){
+	$.ajax({
+		type:'get',
+		url:'${pageContext.request.contextPath}/doc/doc00Ajax.do?APRV_TYPE_CD='+$("#cdList1").val()+'&APRV_TYPE_DTIL_CD='+$("#cdList2").val(),
+		dataType:'json',
+		success: function(json){
+			console.log($("#cdList1").val());
+			console.log($("#cdList2").val());
+			console.log(json.docCode);
+			$("#docForm").empty();
+			$("#docForm").append(json.DOC_INST_CODE);
+			
+			//tui.date-picker
+			var picker = tui.DatePicker.createRangePicker({
+				language: 'ko',
+			    startpicker: {
+			        input: '#term_st',
+			        container: '#startpicker-container'
+			    },
+			    endpicker: {
+			        input: '#term_ed',
+			        container: '#endpicker-container'
+			    },
+			    type: 'date',
+			    format: 'yyyy-MM-dd hh:mm',
+			    timepicker: {
+			    	language: 'ko',
+			    	showMeridiem: false,
+			    	minuteStep: 10
+			    }
+			});
+		}
+	});
+};
 
 $(document).ready(function() {
 	/* 저장 */	
@@ -455,9 +424,10 @@ $(document).ready(function() {
 	/* 첨부파일 추가 삭제 기능 */
 	var count = 0;
 	$('#button-add-file').click(function(){
-		var html = "<li id='file_"+count+"'>";
-		html += "<input type='file' name='file"+count+"' id='file"+count+"' />";
-		html += "<span class='button-delete-file btn btn-danger btn-xs file-btn'><i class='glyphicon glyphicon-remove'></i></span></li>";
+		var html = "<div id='file_"+count+"'>";
+		html += "<input type='file' name='file"+count+"' id='file"+count+"' class='input-group' style='display: inline;' />";
+		html += "<span class='btn btn-xs btn-danger file-btn button-delete-file'><i class='glyphicon glyphicon-remove'></i></span>";
+		html += "</div>";
 		count++;
 		$("#my-file").append(html);
 	});
@@ -526,6 +496,18 @@ function getValidation(){
 			$("#proj_cd").focus();
 			return false;
 		}
+
+		if($("#title").val() == ""){
+			alert("제목을 입력해 주세요.");
+			$("#title").focus();
+			return false;
+		}
+		
+		if($("#rept_cont").val() == ""){
+			alert("보고내용을 입력해 주세요.");
+			$("#rept_cont").focus();
+			return false;
+		}
 		
 		if($("#cdList1 option:selected").val() == ""){
 			alert("결재구분코드를 선택해 주세요.");
@@ -536,12 +518,6 @@ function getValidation(){
 		if($("#cdList2 option").size() > 1 && $("#cdList2 option:selected").val() == ""){
 			alert("결재상세구분코드를 선택해 주세요.");
 			$("#cdList2").focus();
-			return false;
-		}
-		
-		if($("#title").val() == ""){
-			alert("제목을 입력해 주세요.");
-			$("#title").focus();
 			return false;
 		}
 		
@@ -597,20 +573,10 @@ function getValidation(){
 				}
 			}
 		}
-		if($("#rept_cont").val() == ""){
-			alert("보고내용을 입력해 주세요.");
-			$("#rept_cont").focus();
-			return false;
-		}
+		
 		
 	}
 	
-	if($("#cdList1").val() != "CD0001011"){
-		$("#term_st_h").val(null);
-		$("#term_st_m").val(null);
-		$("#term_ed_h").val(null);
-		$("#term_ed_m").val(null);
-	}
 	return true;
 }
 
@@ -736,26 +702,6 @@ function fn_order(obj){
 	}
 }
 
-//tui.date-picker
-var picker = tui.DatePicker.createRangePicker({
-	language: 'ko',
-    startpicker: {
-        date: new Date(),
-        input: '#startpicker-input',
-        container: '#startpicker-container'
-    },
-    endpicker: {
-        date: new Date(),
-        input: '#endpicker-input',
-        container: '#endpicker-container'
-    },
-    type: 'date',
-    format: 'yyyy-MM-dd HH:mm',
-    timepicker: {
-    	language: 'ko',
-    	showMeridiem: false
-    }
-});
 </script>
 </body>
 </html>
