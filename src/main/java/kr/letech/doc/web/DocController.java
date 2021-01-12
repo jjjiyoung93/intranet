@@ -23,10 +23,10 @@ public class DocController {
 	@Resource(name = "docService")
 	private DocService docService;
 	
-	@RequestMapping(value = "/doc/doc00View.do")
+	@RequestMapping(value = "/doc/doc00Popup.do")
 	public String getDocView(HttpServletRequest request, ModelMap model) throws Exception {
 		
-		return "";
+		return "letech/doc/doc00Popup";
 	}
 	
 	@RequestMapping(value = "/doc/doc00Ajax.do")
