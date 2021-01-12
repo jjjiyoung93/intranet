@@ -62,7 +62,6 @@
                      </span>
                   </h2>
                   <div class="form-container">
-                     <
                   <div class="board-view">       
                   <ul class="payment-form">
                         <li>
@@ -609,8 +608,8 @@
                            <input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="재결재" />
                         </c:if>
                         </span>
-                            <input class="btn btn-sm btn-default"  type="button" value="목록" onclick='btn_click("yes")'/>
-                            <input class="btn btn-sm btn-default"  type="button" value="보고서" onclick='btn_click("no")'/>
+                            <input class="btn btn-sm btn-default"  type="button" value="목록"/>
+                            <input class="btn btn-sm btn-default"  type="button" value="보고서" onclick="fn_docPopup()"/>
                      </p>
                   </div>
                </div>
@@ -676,19 +675,14 @@ $(document).ready(function() {
       }
    });
    
+	/* 취소 */
+	$( "#btn-cancel" ).click(function() {
+		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");
+		$("#frm1").removeAttr("enctype");
+		$("#frm1").submit();
+	});
 });
 
-function btn_click(str){
-    if(str == "yes"){
-        $("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");
-        
-    }else if(str == "no"){
-        $("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/form00Vac.do");
-        
-    }
-    $("#frm1").removeAttr("enctype");
-    $("#frm1").submit();
-}
 /* 파일 다운로드 */
 function fn_downFile(file_path, file_stre_nm, file_nm){
    $("#file_path").val(file_path);
