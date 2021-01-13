@@ -608,7 +608,7 @@
                            <input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="재결재" />
                         </c:if>
                         </span>
-                            <input class="btn btn-sm btn-default"  type="button" value="목록"/>
+                            <input class="btn btn-sm btn-default"  type="button" id="btn-cancel" value="목록"/>
                             <input class="btn btn-sm btn-default"  type="button" value="보고서" onclick="fn_docPopup()"/>
                      </p>
                   </div>
