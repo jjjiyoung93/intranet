@@ -38,8 +38,7 @@ public class DocController {
 		
 		// 상위코드, 하위코드에 해당하는 문서코드(소스코드)
 		Map docCode = docService.getDocCode(params);
-		model.addAttribute("DOC_INST_CODE", docCode.get("DOC_INST_CODE"));
-		model.addAttribute("DOC_MODI_CODE", docCode.get("DOC_MODI_CODE"));
+		model.addAttribute("DOC_CODE", docCode.get("DOC_CODE"));
 		
 		return viewName;
 	}

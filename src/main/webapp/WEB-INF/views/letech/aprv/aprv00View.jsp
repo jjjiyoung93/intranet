@@ -38,7 +38,6 @@
       <div class="row">
          <section class="row">
             <div class="col-lg-10">
-         
             <!-- 타이틀 및 페이지 네비 -->
             <!-- page -->
             <form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
@@ -651,7 +650,8 @@ $(document).ready(function() {
          $("#mode").val("<%=VarConsts.MODE_D%>");
          var aprv_no = $("#aprv_no").val();
          var cal_no = "${viewMap.CAL_NO}";   // 캘린더 번호
-         
+         var cdList1 = "${viewMap.APRV_TYPE_CD }";
+         var cdList2 = "${viewMap.APRV_TYPE_DTIL_CD }";
          $.ajax({
             url: "${pageContext.request.contextPath}/aprv/aprv01Tran.do",
             type: "post",
@@ -659,6 +659,8 @@ $(document).ready(function() {
             data : {
                    "aprv_no": aprv_no
                   ,"cal_seq" : cal_no
+                  ,"cdList1" : cdList1
+                  ,"cdList2" : cdList2
                   },
             success: function(result){
                var url_val = "";

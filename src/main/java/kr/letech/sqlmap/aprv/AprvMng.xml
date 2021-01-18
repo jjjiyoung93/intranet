@@ -468,8 +468,8 @@
 			  , SYSDATE
 			  , #{rept_aprv_no, jdbcType=VARCHAR}
 			  , SYSDATE
-			  , #{term_st_h, jdbcType=VARCHAR}||#{term_st_m, jdbcType=VARCHAR}
-			  , #{term_ed_h, jdbcType=VARCHAR}||#{term_ed_m, jdbcType=VARCHAR}
+			  , #{term_st_hm, jdbcType=VARCHAR}
+			  , #{term_ed_hm, jdbcType=VARCHAR}
 			)
 	</insert>
 	
@@ -488,8 +488,8 @@
 		          , MODI_EMP_NO = #{rept_aprv_no, jdbcType=VARCHAR}
 		          , MODI_DT = SYSDATE
 		          , CAL_NO = #{cal_no, jdbcType=VARCHAR}
-		          , TERM_ST_HM = #{term_st_h, jdbcType=VARCHAR}||#{term_st_m, jdbcType=VARCHAR}
-			      , TERM_ED_HM = #{term_ed_h, jdbcType=VARCHAR}||#{term_ed_m, jdbcType=VARCHAR}
+		          , TERM_ST_HM = #{term_st_hm, jdbcType=VARCHAR}
+			      , TERM_ED_HM = #{term_ed_hm, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</update>
 	

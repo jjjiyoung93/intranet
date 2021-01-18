@@ -1,7 +1,5 @@
 package kr.letech.aprv.web;
 
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -9,20 +7,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.LoginVO;
@@ -31,9 +20,11 @@ import kr.letech.cmm.util.DateUtil;
 import kr.letech.cmm.util.EgovFileMngUtil;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
+import kr.letech.doc.service.DocService;
 import kr.letech.sys.cdm.service.CodeMngService;
 import kr.letech.sys.mail.service.MailAprvService;
 import kr.letech.uss.umt.service.impl.UssMngDAO;
+import net.sf.json.JSONObject;
 
 @Controller
 public class AprvMngController {
@@ -59,6 +50,9 @@ public class AprvMngController {
 	/** ussMngDAO */
 	@Resource(name="ussMngDAO")
 	private UssMngDAO ussMngDAO;
+	
+	@Resource(name="docService")
+	private DocService docService;
 
 	/**
 	 * 결재관리 화면
@@ -195,7 +189,9 @@ public class AprvMngController {
 		List projList = codeMngService.getCodeList(params);
 		model.addAttribute("projList", projList);
 		
-		
+		// js 컴파일 에러 방지를 위해 update가 아닌 insert에는 빈값을 전송
+		model.addAttribute("docJson", "{}");
+		model.addAttribute("viewJson", "{}");
 		
 		Map viewMap = null;
 		if (params.get("mode") != null && params.get("mode").equals(VarConsts.MODE_U)) {
@@ -216,6 +212,15 @@ public class AprvMngController {
 			List codeList2 = codeMngService.getCodeList(params);
 			model.addAttribute("codeList2", codeList2);
 			
+			/* 문서 코드 조회 */
+			Map codeMap = docService.getDocCode(viewMap);
+			model.addAttribute("DOC_CODE", codeMap.get("DOC_CODE"));
+			/* 문서 데이터 조회 */
+			Map docMap = docService.getDocData(viewMap);
+			JSONObject docJson = JSONObject.fromObject(docMap);
+			JSONObject viewJson = JSONObject.fromObject(viewMap);
+			model.addAttribute("docJson", docJson);
+			model.addAttribute("viewJson", viewJson);
 		}
 				
 		return "letech/aprv/aprv00Form";

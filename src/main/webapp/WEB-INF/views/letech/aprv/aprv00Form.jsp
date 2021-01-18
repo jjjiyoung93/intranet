@@ -28,7 +28,7 @@
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
 </head>
-
+<style>.form-group{padding-left: 0px; padding-right: 0px;}</style>
 <body>
 		<div id="wrapper">
 		 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -56,6 +56,11 @@
 							
 							<input type="hidden" id="cal_no" name="cal_no" value="${viewMap.CAL_NO}" />
 							
+							<input type="hidden" id="term_st_ym" name="term_st_ym" value="${viewMap.TERM_ST_YM}" />
+							<input type="hidden" id="term_ed_ym" name="term_ed_ym" value="${viewMap.TERM_ED_YM}" />
+							<input type="hidden" id="term_st_hm" name="term_st_hm" value="${viewMap.TERM_ST_HM}" />
+							<input type="hidden" id="term_ed_hm" name="term_ed_hm" value="${viewMap.TERM_ED_HM}" />
+							
 							<h2 class="page-title clearfix">
 								${titleNaviMap.MN_NM }
 								<span class="pull-right site-map">
@@ -67,17 +72,19 @@
 								<div class="board-write row">
 								
 									<!-- 소속 및 프로젝트 시작 START -->
-									<div class="col-lg-12 form-group">
-										<div class="col-lg-2 col-sm-2 text-right">
+									<div class="col-lg-6 form-group">
+										<div class="col-lg-4 col-sm-2 text-right">
 											<label class="control-label">소속</label>
 										</div>
-										<div class="col-lg-3">
+										<div class="col-lg-6">
 											<input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/>
 										</div>
-										<div class="col-lg-2 col-sm-2 text-right">
+									</div>
+									<div class="col-lg-6 form-group">
+										<div class="col-lg-4 col-sm-2 text-right">
 											<label class="control-label">프로젝트</label>
 										</div>
-										<div class="col-lg-3">
+										<div class="col-lg-6">
 											<select id="proj_cd" name="proj_cd" class="form-control">
 												<option value="">선택</option>
 												<c:forEach var="proj" items="${projList }" varStatus="status">
@@ -89,17 +96,19 @@
 									<!-- 소속 및 프로젝트 끝 END -->
 									
 									<!-- 직위 및 보고자 START -->
-									<div class="col-lg-12 form-group">
-										<div class="col-lg-2 col-sm-2 text-right">
+									<div class="col-lg-6 form-group">
+										<div class="col-lg-4 col-sm-2 text-right">
 											<label class="control-label">직위</label>
 										</div>
-										<div class="col-lg-3">
+										<div class="col-lg-6">
 											<input class="form-control" type="text" value="${loginVO.authNm }" readonly/>
 										</div>
-										<div class="col-lg-2 col-sm-2 text-right">
+									</div>
+									<div class="col-lg-6 form-group">
+										<div class="col-lg-4 col-sm-2 text-right">
 											<label class="control-label">보고자</label>
 										</div>
-										<div class="col-lg-3">
+										<div class="col-lg-6">
 											<c:set var="rept_aprv_no" value=""/>
 											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
 											<c:choose>
@@ -116,33 +125,33 @@
 										</div>
 									</div>
 									<!-- 직위 및 보고자 END -->
-
-									<!-- 제목 -->
+									
+									<!-- 제목 START -->
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
 											<label class="control-label">제목</label>
 										</div>
-										<div class="col-lg-8">
+										<div class="col-lg-9">
 											<input class="form-control" type="text" id="title" name="title" value="${viewMap.TITLE }"/>
 										</div>
 									</div>
-									<!-- 제목 -->
+									<!-- 제목 END -->
 									
 									<!-- 보고내용 START -->
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
 											<label class="control-label">보고내용</label>
 										</div>
-										<div class="col-lg-8">
+										<div class="col-lg-9">
 											<textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea>
 										</div>
 									</div>
 									<!-- 보고내용 END -->
 									
-									<!-- 결재 구분 START -->
+									<!-- 결재구분 START -->
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
-											<label class="control-label">결재 구분</label>
+											<label class="control-label">결재구분</label>
 										</div>
 										<div class="col-lg-2">
 											<select id="cdList1" name="cdList1" class="form-control">
@@ -162,12 +171,11 @@
 										</div>
 										<!--  반차여부 -->
 										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
-<!-- 									<input type="button" id="sampleTitleBtn" class="btn btn-sm btn-default" value="샘플 제목 생성"> -->
 									</div>
 									<!-- 결재 구분 END -->
 									
 									<!-- 결재 구분에 따라 폼 추가될 영역 START -->
-									<div id="docForm"></div>
+									<div id="docForm">${DOC_CODE }</div>
 									<!-- 결재 구분에 따라 폼 추가될 영역 END -->
 									
 									<!-- 첨부파일 START -->
@@ -200,12 +208,12 @@
 									<div class="panel panel-default">
 										<div class="panel-heading">결재라인</div>
 										<div class="panel-body">
-							          		<c:set var="lineVar" value="1" />
-							          		<c:if test="${fn:length(lineList) > 0 }">
-							          			<c:set var="lineVar" value="${fn:length(lineList) }" />
-							          		</c:if>
-							    			<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
-							    			
+											<c:set var="lineVar" value="1" />
+											<c:if test="${fn:length(lineList) > 0 }">
+												<c:set var="lineVar" value="${fn:length(lineList) }" />
+											</c:if>
+											<input type="hidden" name="aprv_line_cnt" id="aprv_line_cnt" value="${lineVar }">
+											
 											<div class="table-responsive">
 											<table id="aprv_line" class="table table-bordered">
 											<thead>
@@ -229,12 +237,12 @@
 														<c:forEach var="line" items="${lineList }" varStatus="status">
 															<tr class="gradeA odd" role="row" onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
 																<td class="sorting_1">
-										    						<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" />
-										    						<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text form-control table-cell" readonly="readonly" />
+																	<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${line.APRV_EMP_NO }" />
+																	<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" type="text" value="${line.USS_NM }" class="i_text form-control table-cell" readonly="readonly" />
 																	<!-- 반려일경우 결재자 추가 삭제 막음 -->
 																	<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
-												    						<input type="button" value="찾기" class="btn btn-default btn-sm" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
-												    						<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
+																			<input type="button" value="찾기" class="btn btn-default btn-sm" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
+																			<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
 																	</c:if>
 																	<c:if test="${viewMap.APRV_LINE_CD eq '3' }">
 																			<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="return false;"  <c:if test="${line.REFE_YN eq 'Y' }">checked="checked"</c:if> /><label for="refe_yn${status.count }">참조인</label>
@@ -246,8 +254,8 @@
 																	<!-- 반려일경우 결재자 추가 삭제 막음 -->
 																	<c:if test="${viewMap.APRV_LINE_CD ne '3' }">
 																		<c:if test="${status.count > 1 }">	<!-- 첫번재 결재자는 삭제 안됨. -->
-																    		<input type="button" class="btn bnt-xs btn-default" value="삭제" onClick="delRow()" />
-																    	</c:if>
+																			<input type="button" class="btn bnt-xs btn-default" value="삭제" onClick="delRow()" />
+																		</c:if>
 																	</c:if>
 																</td>
 															</tr>
@@ -258,17 +266,17 @@
 														<tr class="gradeA odd" role="row">
 															<td class="sorting_1">
 																<div class="from-inline">
-									    						<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
-									    							<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell input-sm" type="text" value="" />
-										    							<input type="button" class="btn btn-default btn-sm" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
-										    						<span style="display:none">
-										    							<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
-										    						</span>
-									    					</div>
+																<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
+																	<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell input-sm" type="text" value="" />
+																		<input type="button" class="btn btn-default btn-sm" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
+																	<span style="display:none">
+																		<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
+																	</span>
+															</div>
 															</td>
 															<td>
 																<span class="form-inline">
-																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control input-sm" readonly />														
+																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control input-sm" readonly />
 																</span>
 															</td>
 															<td style="text-align: center;">대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text"/></td>
@@ -369,27 +377,29 @@ function fn_getDocCode(){
 			console.log($("#cdList2").val());
 			console.log(json.docCode);
 			$("#docForm").empty();
-			$("#docForm").append(json.DOC_INST_CODE);
+			$("#docForm").append(json.DOC_CODE);
 			
-			//tui.date-picker
-			var picker = tui.DatePicker.createRangePicker({
-				language: 'ko',
-			    startpicker: {
-			        input: '#term_st',
-			        container: '#startpicker-container'
-			    },
-			    endpicker: {
-			        input: '#term_ed',
-			        container: '#endpicker-container'
-			    },
-			    type: 'date',
-			    format: 'yyyy-MM-dd hh:mm',
-			    timepicker: {
-			    	language: 'ko',
-			    	showMeridiem: false,
-			    	minuteStep: 10
-			    }
-			});
+			if($("#term_st").length > 0) { // 달력 양식을 사용할 때
+				//tui.date-picker
+				var picker = tui.DatePicker.createRangePicker({
+					language: 'ko',
+				    startpicker: {
+				        input: '#term_st',
+				        container: '#startpicker-container'
+				    },
+				    endpicker: {
+				        input: '#term_ed',
+				        container: '#endpicker-container'
+				    },
+				    type: 'date',
+				    format: 'yyyy-MM-dd hh:mm',
+				    timepicker: {
+				    	language: 'ko',
+				    	showMeridiem: false,
+				    	minuteStep: 10
+				    }
+				});
+			}
 		}
 	});
 };
@@ -402,6 +412,22 @@ $(document).ready(function() {
 			if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
 			}else{
 				$("#mode").val("<%=VarConsts.MODE_I%>");	
+			}
+			// datepicker의 시간을 yyyyMMdd, hhmm으로 구분하여 저장
+			if($("#term_st").val() != null) { // 기간을 사용하지 않는 양식인지 확인
+				// 기간 사용한다면
+				var term_st = $("#term_st").val();
+				var term_ed = $("#term_ed").val();
+				
+				var term_st_ym = term_st.split(" ")[0];
+				var term_st_hm = term_st.split(" ")[1].replace(":", "");
+				var term_ed_ym = term_ed.split(" ")[0];
+				var term_ed_hm = term_ed.split(" ")[1].replace(":", "");
+				
+				$("#term_st_ym").val(term_st_ym);
+				$("#term_st_hm").val(term_st_hm);
+				$("#term_ed_ym").val(term_ed_ym);
+				$("#term_ed_hm").val(term_ed_hm);
 			}
 			
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Tran.do");
@@ -437,6 +463,46 @@ $(document).ready(function() {
 	
 	/* 샘플 제목 생성 기능 */
 	$("#sampleTitleBtn").click(fn_sampleTitle);
+	
+	/* 수정인 경우 DOC CODE에 데이터를 입력 */
+	if($("#mode").val() == "<%=VarConsts.MODE_U%>"){
+		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
+		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
+		
+		for(key in docJson) {
+			if(key != "items") { // 항목인지 확인
+				$("#" + key.toLowerCase()).val(docJson[key]);
+			} else {
+				if($("#cdList1").val() == "CD0001009" && $("#cdList2").val() == "CD0001009001") {
+					fn_addBztrpItem2(docJson[key]);
+				}
+			}
+		}
+		if($("#term_st").val() != null) { // 기간을 사용하지 않는 양식인지 확인
+			console.log(docJson["TERM_EN_YM"]);
+			//tui.date-picker
+			var picker = tui.DatePicker.createRangePicker({
+				language: 'ko',
+			    startpicker: {
+			        input: '#term_st',
+			        container: '#startpicker-container',
+			        date: new Date(viewJson["TERM_ST_YM"] + " " + viewJson["TERM_ST_HM"].substring(0, 2) + ":" + viewJson["TERM_ST_HM"].substring(2, 4))
+			    },
+			    endpicker: {
+			        input: '#term_ed',
+			        container: '#endpicker-container',
+			        date: new Date(viewJson["TERM_ED_YM"] + " " + viewJson["TERM_ED_HM"].substring(0, 2) + ":" + viewJson["TERM_ED_HM"].substring(2, 4))
+			    },
+			    type: 'date',
+			    format: 'yyyy-MM-dd hh:mm',
+			    timepicker: {
+			    	language: 'ko',
+			    	showMeridiem: false,
+			    	minuteStep: 10
+			    }
+			});
+		}
+	}
 });
 /* 샘플 제목 생성 기능 */
 function fn_sampleTitle(){
@@ -485,99 +551,400 @@ function fn_delFile(file_path, file_stre_nm, file_no, event){
 	}
 }
 
+// validation으로 error class가 추가된 div에 내용이 변경되면 error class를 지워줌
+$(function() {
+	$("body").on("propertychange change keyup paste input", ".has-error", function() {
+		$(this).closest(".form-group").removeClass("has-error")
+	});
+});
 function getValidation(){
-<%-- 	if($("#mode").val() == "<%=VarConsts.MODE_U%>"){ --%>
-	if(false){
-		
-	}else{
-		/* 입력 폼일경우 */
-		if($("#proj_cd").val() == ""){
+	var valid = true;
+	
+	/******************** 공통 부분 START ********************/
+	if($("#proj_cd").val() == ""){
+		if(valid) {
 			alert("프로젝트를 입력해 주세요.");
 			$("#proj_cd").focus();
-			return false;
 		}
-
-		if($("#title").val() == ""){
+		$("#proj_cd").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	if($("#title").val() == ""){
+		if(valid) {
 			alert("제목을 입력해 주세요.");
 			$("#title").focus();
-			return false;
 		}
-		
-		if($("#rept_cont").val() == ""){
+		$("#title").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	if($("#rept_cont").val() == ""){
+		if(valid) {
 			alert("보고내용을 입력해 주세요.");
 			$("#rept_cont").focus();
-			return false;
 		}
-		
-		if($("#cdList1 option:selected").val() == ""){
-			alert("결재구분코드를 선택해 주세요.");
+		$("#rept_cont").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	if($("#cdList1 option:selected").val() == ""){
+		if(valid) {
+			alert("결재 1차 구분을 선택해 주세요.");
 			$("#cdList1").focus();
-			return false;
 		}
-		
-		if($("#cdList2 option").size() > 1 && $("#cdList2 option:selected").val() == ""){
-			alert("결재상세구분코드를 선택해 주세요.");
+		$("#cdList1").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	if($("#cdList2 option").size() > 1 && $("#cdList2 option:selected").val() == ""){
+		if(valid) {
+			alert("결재 2차 구분을 선택해 주세요.");
 			$("#cdList2").focus();
-			return false;
 		}
-		
-		if($("#term_st_ym").val() == ""){
-			alert("기간시작일자를 입력해 주세요.");
-			$("#term_st_ym").focus();
-			return false;
+		$("#cdList2").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	/******************** 공통 부분 END ********************/
+	
+	/******************** 문서 부분 START ********************/
+	// 휴가신청[전체]
+	if($("#cdList1").val() == "CD0001011") {
+		if($("#term_st").val() == ""){
+			if(valid) {
+				alert("시작 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
 		}
-		
-		if($("#term_ed_ym").val() == ""){
-			alert("기간종료일자를 입력해 주세요.");
-			$("#term_ed_ym").focus();
-			return false;
+		if($("#term_ed").val() == ""){
+			if(valid) {
+				alert("종료 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
 		}
-		if($("#cdList1").val() == "CD0001003" || $("#cdList1").val() == "CD0001004"){
-			if($("#place").val() == ""){
-				alert("행선지를 입력해 주세요.");
-				$("#place").focus();
-				return false;
+		if($("#frogh_rsn").val() == ""){
+			if(valid) {
+				alert("보고내용을 입력해 주세요.");
+				$("#frogh_rsn").focus();
 			}
+			$("#frogh_rsn").closest(".form-group").addClass("has-error");
+			valid = false;
 		}
-		if($("#cdList1").val() == "CD0001011"){
-			if($("#term_st_h").val() == ""){
-				alert("시작 시간을 입력해 주세요.");
-				$("#term_st_h").focus();
-				return false;
+		if($("#addr").val() == ""){
+			if(valid) {
+				alert("보고내용을 입력해 주세요.");
+				$("#addr").focus();
 			}
-			if($("#term_st_m").val() == ""){
-				alert("시작 분을 입력해 주세요.");
-				$("#term_st_m").focus();
-				return false;
-			}
-			if($("#term_ed_h").val() == ""){
-				alert("종료 시간을 입력해 주세요.");
-				$("#term_ed_h").focus();
-				return false;
-			} 
-			if($("#term_ed_m").val() == ""){
-				alert("종료 분을 입력해 주세요.");
-				$("#term_ed_m").focus();
-				return false;
-			}
-			if($("#term_st_ym").val() == $("#term_ed_ym").val()) {
-				if($("#term_st_h").val() > $("#term_ed_h").val()) {
-					alert("시작 시간이 종료 시간보다 늦습니다.");
-					$("#term_st_h").focus();
-					return false;
-				}
-				if($("#term_st_h").val() == $("#term_ed_h").val() && $("#term_st_m").val() > $("#term_ed_m").val()) {
-					alert("시작 시간이 종료 시간보다 늦습니다.");
-					$("#term_st_m").focus();
-					return false;
-				}
-			}
+			$("#addr").closest(".form-group").addClass("has-error");
+			valid = false;
 		}
-		
-		
+		if($("#cttplc").val() == ""){
+			if(valid) {
+				alert("보고내용을 입력해 주세요.");
+				$("#cttplc").focus();
+			}
+			$("#cttplc").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
 	}
 	
-	return true;
+	// 근무제신청[유연근무제]
+	if($("#cdList1").val() == "CD0001013" && $("#cdList2").val() == "CD0001013001") {
+		if($("#term_st").val() == ""){
+			if(valid) {
+				alert("시작 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#term_ed").val() == ""){
+			if(valid) {
+				alert("종료 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#wrk_hh").val() == ""){
+			if(valid) {
+				alert("근무시간을 입력해 주세요.");
+				$("#wrk_hh").focus();
+			}
+			$("#wrk_hh").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#main_busi").val() == ""){
+			if(valid) {
+				alert("주요업무를 입력해 주세요.");
+				$("#main_busi").focus();
+			}
+			$("#main_busi").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#rqst_rsn").val() == ""){
+			if(valid) {
+				alert("요청사유를 입력해 주세요.");
+				$("#rqst_rsn").focus();
+			}
+			$("#rqst_rsn").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+	}
+	
+	// 품의서[전체]
+	if($("#cdList1").val() == "CD0001008" && $("#cdList2").val() == "CD0001009001") {
+		if($("#bztrp_div option:selected").val() == ""){
+			if(valid) {
+				alert("품의구분을 선택해 주세요.");
+				$("#bztrp_div").focus();
+			}
+			$("#bztrp_div").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#pttn_cont").val() == ""){
+			if(valid) {
+				alert("품의내용을 선택해 주세요.");
+				$("#pttn_cont").focus();
+			}
+			$("#pttn_cont").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+	}
+	
+	// 출장[출장정산(국내)]
+	if($("#cdList1").val() == "CD0001009") {
+		if($("#pttn_div option:selected").val() == ""){
+			if(valid) {
+				alert("품의구분을 선택해 주세요.");
+				$("#pttn_div").focus();
+			}
+			$("#pttn_div").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#term_st").val() == ""){
+			if(valid) {
+				alert("시작 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#term_ed").val() == ""){
+			if(valid) {
+				alert("종료 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#bztrp_night").val() == ""){
+			if(valid) {
+				alert("숙박일을 입력해 주세요.");
+				$("#bztrp_night").focus();
+			}
+			$("#bztrp_night").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#bztrp_days").val() == ""){
+			if(valid) {
+				alert("출장일을 입력해 주세요.");
+				$("#bztrp_days").focus();
+			}
+			$("#bztrp_days").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#bztrp_purp").val() == ""){
+			if(valid) {
+				alert("출장목적을 입력해 주세요.");
+				$("#bztrp_purp").focus();
+			}
+			$("#bztrp_purp").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#bztrp_per").val() == ""){
+			if(valid) {
+				alert("출장자를 입력해 주세요.");
+				$("#bztrp_per").focus();
+			}
+			$("#bztrp_per").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#bztrp_plc").val() == ""){
+			if(valid) {
+				alert("장소를 입력해 주세요.");
+				$("#bztrp_plc").focus();
+			}
+			$("#bztrp_plc").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#dpar_area").val() == ""){
+			if(valid) {
+				alert("출발지역을 입력해 주세요.");
+				$("#dpar_area").focus();
+			}
+			$("#dpar_area").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#aryl_area").val() == ""){
+			if(valid) {
+				alert("도착지역을 입력해 주세요.");
+				$("#aryl_area").focus();
+			}
+			$("#aryl_area").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		// 상세 내역
+		$(".tr_bztrp_items").each(function(i, obj) {
+			if($(obj).find(".bztrp_item_divs option:selected").val() == "") {
+				if(valid) {
+					alert("상세 내역의 항목을 선택해 주세요.");
+					$($(obj).find(".bztrp_item_divs")).focus();
+				}
+				$($(obj).find(".bztrp_item_divs")).closest(".form-group").addClass("has-error");
+				valid = false;
+			}
+			if($(obj).find(".bztrp_item_ctnts").val() == "") {
+				if(valid) {
+					alert("상세 내역의 내역을 입력해 주세요.");
+					$($(obj).find(".bztrp_item_ctnts")).focus();
+				}
+				$($(obj).find(".bztrp_item_ctnts")).closest(".form-group").addClass("has-error");
+				valid = false;
+			}
+			if($(obj).find(".bztrp_item_amts").val() == "") {
+				if(valid) {
+					alert("상세 내역의 금액을 입력해 주세요.");
+					$($(obj).find(".bztrp_item_amts")).focus();
+				}
+				$($(obj).find(".bztrp_item_amts")).closest(".form-group").addClass("has-error");
+				valid = false;
+			}
+		});
+	}
+	
+	// 도서구매신청[전체]
+	if($("#cdList1").val() == "CD0001015") {
+		if($("#bks_nm").val() == ""){
+			if(valid) {
+				alert("도서명을 입력해 주세요.");
+				$("#bks_nm").focus();
+			}
+			$("#bks_nm").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#puch_purp").val() == ""){
+			if(valid) {
+				alert("구입목적을 입력해 주세요.");
+				$("#puch_purp").focus();
+			}
+			$("#puch_purp").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#authr_nm").val() == ""){
+			if(valid) {
+				alert("저자명을 입력해 주세요.");
+				$("#authr_nm").focus();
+			}
+			$("#authr_nm").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#pbcm").val() == ""){
+			if(valid) {
+				alert("출판사를 입력해 주세요.");
+				$("#pbcm").focus();
+			}
+			$("#pbcm").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#pblt_dd").val() == ""){
+			if(valid) {
+				alert("출판일을 입력해 주세요.");
+				$("#pblt_dd").focus();
+			}
+			$("#pblt_dd").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#isbn").val() == ""){
+			if(valid) {
+				alert("ISBN을 입력해 주세요.");
+				$("#isbn").focus();
+			}
+			$("#isbn").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#amt").val() == ""){
+			if(valid) {
+				alert("금액을 입력해 주세요.");
+				$("#amt").focus();
+			}
+			$("#amt").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#puch_hope_nmvl").val() == ""){
+			if(valid) {
+				alert("구입희망일을 입력해 주세요.");
+				$("#puch_hope_nmvl").focus();
+			}
+			$("#puch_hope_nmvl").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+	}
+	
+	// 교육훈련신청[전체]
+	if($("#cdList1").val() == "CD0001016") {
+		if($("#educ_nm").val() == ""){
+			if(valid) {
+				alert("교육명을 입력해 주세요.");
+				$("#educ_nm").focus();
+			}
+			$("#educ_nm").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#educ_purp_cntn").val() == ""){
+			if(valid) {
+				alert("교육훈련목적 및 내용을 입력해 주세요.");
+				$("#educ_purp_cntn").focus();
+			}
+			$("#educ_purp_cntn").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#term_st").val() == ""){
+			if(valid) {
+				alert("시작 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#term_ed").val() == ""){
+			if(valid) {
+				alert("종료 날짜를 선택해 주세요.");
+				$("#term_st").focus();
+			}
+			$("#term_st").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#educ_plc").val() == ""){
+			if(valid) {
+				alert("교육장소를 입력해 주세요.");
+				$("#educ_plc").focus();
+			}
+			$("#educ_plc").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#educ_inst").val() == ""){
+			if(valid) {
+				alert("교육기관을 입력해 주세요.");
+				$("#educ_inst").focus();
+			}
+			$("#educ_inst").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+	}
+	/******************** 문서 부분 END ********************/
+// 	return valid;
+	return false;
 }
 
 /* 결재자 검색 */
@@ -700,6 +1067,123 @@ function fn_order(obj){
 			}
 		}
 	}
+}
+
+// 출장 항목 추가
+function fn_addBztrpItem() {
+	// 폼의 항목들을 가져와서 seq의 최대값 계산
+	var bztrpCount = 0;
+	$(".tr_bztrp_items").each(function(i, obj) {
+		var bztrpId = $(obj).attr("id").split("_");
+		var bztrpSeq = bztrpId[bztrpId.length-1];
+		if(bztrpSeq > bztrpCount) {
+			bztrpCount = bztrpSeq; 
+		}
+	});
+	bztrpCount++;
+	
+	// 폼 추가
+	html = '';
+	html += '<tr id="tr_bztrp_item_' + bztrpCount + '" class="tr_bztrp_items">';
+	html += '	<td class="form-group">';
+	html += '		<select id="bztrp_item_div_' + bztrpCount + '" name="bztrp_item_div_' + bztrpCount + '" class="form-control bztrp_item_divs">';
+	html += '			<option value="">--선택--</option>';
+	html += '			<option value="교통비">교통비</option>';
+	html += '			<option value="여비">여비</option>';
+	html += '			<option value="기타">기타</option>';
+	html += '		</select>';
+	html += '	</td>';
+	html += '	<td class="form-group"><input id="bztrp_item_ctnt_' + bztrpCount + '" name="bztrp_item_ctnt_' + bztrpCount + '" type="text" class="form-control bztrp_item_ctnts"></td>';
+	html += '	<td class="form-group"><input id="bztrp_item_amt_' + bztrpCount + '" name="bztrp_item_amt_' + bztrpCount + '" type="text" class="form-control bztrp_item_amts text-right convNum"></td>';
+	html += '	<td class="form-group"><input id="bztrp_item_rmrk_' + bztrpCount + '" name="bztrp_item_rmrk_' + bztrpCount + '" type="text" class="form-control bztrp_item_rmrks"></td>';
+	html += '	<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_deleteBztrpItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>';
+	html += '</tr>';
+	$("#tr_bztrp_item_sum").before(html);
+}
+
+// 출장 항목 추가(업데이트인 경우)
+function fn_addBztrpItem2(data) {
+	$("#tr_bztrp_item_1").remove();
+	for(key in data) {
+		console.log(data[key]);
+		html = '';
+		html += '<tr id="tr_bztrp_item_' + data[key].BZTRP_ITEM_SEQ + '" class="tr_bztrp_items">';
+		html += '	<td class="form-group">';
+		html += '		<select id="bztrp_item_div_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_div_' + data[key].BZTRP_ITEM_SEQ + '" class="form-control bztrp_item_divs">';
+		html += '			<option value="">--선택--</option>';
+		html += '			<option value="교통비"' + (data[key].BZTRP_ITEM_DIV == "교통비" ? " selected" : "") + '>교통비</option>';
+		html += '			<option value="여비"' + (data[key].BZTRP_ITEM_DIV == "여비" ? " selected" : "") + '>여비</option>';
+		html += '			<option value="기타"' + (data[key].BZTRP_ITEM_DIV == "기타" ? " selected" : "") + '>기타</option>';
+		html += '		</select>';
+		html += '	</td>';
+		html += '	<td class="form-group"><input id="bztrp_item_ctnt_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_ctnt_' + data[key].BZTRP_ITEM_SEQ + '" type="text" class="form-control bztrp_item_ctnts" value="' + (data[key].BZTRP_ITEM_CTNT == null ? "" : data[key].BZTRP_ITEM_CTNT) + '"></td>';
+		html += '	<td class="form-group"><input id="bztrp_item_amt_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_amt_' + data[key].BZTRP_ITEM_SEQ + '" type="text" class="form-control bztrp_item_amts text-right convNum" value="' + (data[key].BZTRP_ITEM_AMT == null ? "" : data[key].BZTRP_ITEM_AMT) + '"></td>';
+		html += '	<td class="form-group"><input id="bztrp_item_rmrk_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_rmrk_' + data[key].BZTRP_ITEM_SEQ + '" type="text" class="form-control bztrp_item_rmrks" value="' + (data[key].BZTRP_ITEM_RMRK == null ? "" : data[key].BZTRP_ITEM_RMRK) + '"></td>';
+		if(data[key].BZTRP_ITEM_SEQ != "1") {
+			html += '	<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_deleteBztrpItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>';
+		}
+		html += '</tr>';
+		$("#tr_bztrp_item_sum").before(html);
+	};
+}
+
+// 출장 항목 제거
+function fn_deleteBztrpItem(btn) {
+	$(btn).parent().parent().remove();
+	itemSum();
+}
+
+// 출장 금액 합산
+$(function() {
+	$("body").on("propertychange change keyup paste input", ".bztrp_item_amts, #plnd_amt, #corp_crd_use_amt", function() {
+		itemSum();
+	});
+});
+
+function itemSum() {
+	var sum = 0;
+	$(".bztrp_item_amts").each(function(i, obj) {
+		if($(obj).val() != "") {
+			sum += parseInt(removeCommas($(obj).val()));
+		}
+	});
+	
+	$("#bztrp_item_sum").val(addCommas(sum) + "원");
+	
+	if($("#plnd_amt").val() != "") {
+		sum -= parseInt(removeCommas($("#plnd_amt").val()));
+	}
+	if($("#corp_crd_use_amt").val() != "") {
+		sum -= parseInt(removeCommas($("#corp_crd_use_amt").val()));
+	}
+	
+	$("#provd_amt").val(addCommas(sum) + "원");
+}
+// .convNum을 가진 input박스들을 숫자만 입력받게 하며 3자리마다 콤마 생성
+$("body").on("focus", ".convNum", function() {
+	var x = $(this).val();
+	x = removeCommas(x);
+	$(this).val(x);
+}).on("focusout", ".convNum", function() {
+	var x = $(this).val();
+	if(x && x.length > 0) {
+		if(!$.isNumeric(x)) {
+			x = x.replace(/[^0-9]/g,"");
+		}
+		x = addCommas(x);
+		$(this).val(x + "원");
+	}
+}).on("keyup", ".convNum", function() {
+	$(this).val($(this).val().replace(/[^0-9]/g,""));
+});
+// 3자리 단위마다 콤마 생성
+function addCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+// 모든 콤마, 원 제거
+function removeCommas(x) {
+	if(!x || x.length == 0) return "";
+	else return x.split(",").join("").split("원").join("");
 }
 
 </script>

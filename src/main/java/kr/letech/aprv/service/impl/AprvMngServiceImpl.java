@@ -26,6 +26,7 @@ import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.PageNavigator;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
+import kr.letech.doc.service.impl.DocDAO;
 import kr.letech.sys.cdm.service.impl.CodeMngDAO;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;
@@ -48,6 +49,9 @@ public class AprvMngServiceImpl implements AprvMngService {
 	/** codeMngDAO */
 	@Resource(name="codeMngDAO")
 	private CodeMngDAO codeMngDAO;
+	
+	@Resource(name="docDAO")
+	private DocDAO docDAO;
 	
 	/**
 	 * 페이징 처리, 목록정보
@@ -191,9 +195,12 @@ public class AprvMngServiceImpl implements AprvMngService {
 			aprvMngDAO.aprvFileInsert(fileParams);
 		}
 		
+		String cd1 = (String) params.get("cdList1");
+		String cd2 = (String) params.get("cdList2");
+		
 		// 캘린더에 등록
 		// CD0001011(휴가), CD0001012(휴직), CD0001009(출장)
-		if (params.get("cdList1").equals("CD0001011") || params.get("cdList1").equals("CD0001012") || params.get("cdList1").equals("CD0001009")) {
+		if ("CD0001011".equals(cd1) || "CD0001012".equals(cd1) || "CD0001009".equals(cd1)) {
 			Map calAprvMap = null;
 			calAprvMap = params;
 			String aprv_nm = String.valueOf(params.get("aprv_nm"));	// 결재자 이름
@@ -206,8 +213,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 			calAprvMap.put("cal_content", params.get("rept_cont"));
 			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
 			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
-			calAprvMap.put("cal_st_time", String.valueOf(params.get("term_st_h")) + String.valueOf(params.get("term_st_m")));
-			calAprvMap.put("cal_ed_time", String.valueOf(params.get("term_ed_h")) + String.valueOf(params.get("term_ed_m")));
+			calAprvMap.put("cal_st_time", params.get("term_st_hm"));
+			calAprvMap.put("cal_ed_time", params.get("term_ed_hm"));
 			calAprvMap.put("uss_id", params.get("rept_aprv_no"));
 			calAprvMap.put("aprv_yn", 'Y');
 			
@@ -215,6 +222,42 @@ public class AprvMngServiceImpl implements AprvMngService {
 			int cal_seq = calMngDAO.calInsert(calAprvMap);
 			params.put("cal_no", cal_seq);
 			aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+		}
+		
+		// 결재문서에 등록
+		if("CD0001011".equals(cd1)) { // 휴가신청
+			docDAO.insertFrogh(params);
+		} else if("CD0001013".equals(cd1)) { // 근무제신청
+			if("CD0001013001".equals(cd2)) { // 유연근무제
+				docDAO.insertFlexWrkSyst(params);
+			}
+		} else if("CD0001008".equals(cd1)) { // 품의서
+			docDAO.insertPttn(params);
+		} else if("CD0001009".equals(cd1)) { // 출장
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
+				// DOC_BZTRP_ADJS
+				docDAO.insertBztrpAdjs(params);
+				// DOC_BZTRP_ADJS_ITEM
+				for(Object i : params.keySet()) {
+					String key = String.valueOf(i);
+					String value = String.valueOf(params.get(key));
+					if(key.contains("bztrp_item_div_")) {
+						String num = key.replace("bztrp_item_div_", "");
+						Map itemMap = new HashMap();
+						itemMap.put("aprv_no", params.get("aprv_no"));
+						itemMap.put("bztrp_item_seq", num);
+						itemMap.put("bztrp_item_div", params.get("bztrp_item_div_" + num));
+						itemMap.put("bztrp_item_ctnt", params.get("bztrp_item_ctnt_" + num));
+						itemMap.put("bztrp_item_amt", params.get("bztrp_item_amt_" + num));
+						itemMap.put("bztrp_item_rmrk", params.get("bztrp_item_rmrk_" + num));
+						docDAO.insertBztrpAdjsItem(itemMap);
+					} 
+				}
+			}
+		} else if("CD0001015".equals(cd1)) { // 도서구매신청
+			docDAO.insertBksBuyAplf(params);
+		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
+			docDAO.insertEducTrain(params);
 		}
 
 		return procResultVal;
@@ -326,9 +369,12 @@ public class AprvMngServiceImpl implements AprvMngService {
 				aprvMngDAO.aprvFileInsert(fileParams);
 			}
 		}
+		
+		String cd1 = (String) params.get("cdList1");
+		String cd2 = (String) params.get("cdList2");
 		// 캘린더 수정
 		// CD0001011(휴가), CD0001012(휴직), CD0001009(출장)
-		if (params.get("cdList1").equals("CD0001011") || params.get("cdList1").equals("CD0001012") || params.get("cdList1").equals("CD0001009")) {
+		if ("CD0001011".equals(cd1) || "CD0001012".equals(cd1) || "CD0001009".equals(cd1)) {
 			Map calAprvMap = null;
 			calAprvMap = params;
 			
@@ -343,8 +389,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 			calAprvMap.put("cal_content", params.get("rept_cont"));
 			calAprvMap.put("cal_st_dt", params.get("term_st_ym"));
 			calAprvMap.put("cal_ed_dt", params.get("term_ed_ym"));
-			calAprvMap.put("cal_st_time", String.valueOf(params.get("term_st_h")) + String.valueOf(params.get("term_st_m")));
-			calAprvMap.put("cal_ed_time", String.valueOf(params.get("term_ed_h")) + String.valueOf(params.get("term_ed_m")));
+			calAprvMap.put("cal_st_time", params.get("term_st_hm"));
+			calAprvMap.put("cal_ed_time", params.get("term_ed_hm"));
 			calAprvMap.put("aprv_yn", 'Y');
 			
 			// 생성된 캘린더가 있을 때 캘린더 수정
@@ -362,6 +408,44 @@ public class AprvMngServiceImpl implements AprvMngService {
 				aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
 			}
 		}
+		
+		// 결재문서에 수정
+		if("CD0001011".equals(cd1)) { // 휴가신청
+			docDAO.updateFrogh(params);
+		} else if("CD0001013".equals(cd1)) { // 근무제신청
+			if("CD0001013001".equals(cd2)) { // 유연근무제
+				docDAO.updateFlexWrkSyst(params);
+			}
+		} else if("CD0001008".equals(cd1)) { // 품의서
+			docDAO.updatePttn(params);
+		} else if("CD0001009".equals(cd1)) { // 출장
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
+				// DOC_BZTRP_ADJS_ITEM
+				docDAO.deleteBztrpAdjsItem(params);
+				for(Object i : params.keySet()) {
+					String key = String.valueOf(i);
+					String value = String.valueOf(params.get(key));
+					if(key.contains("bztrp_item_div_")) {
+						String num = key.replace("bztrp_item_div_", "");
+						Map itemMap = new HashMap();
+						itemMap.put("aprv_no", params.get("aprv_no"));
+						itemMap.put("bztrp_item_seq", num);
+						itemMap.put("bztrp_item_div", params.get("bztrp_item_div_" + num));
+						itemMap.put("bztrp_item_ctnt", params.get("bztrp_item_ctnt_" + num));
+						itemMap.put("bztrp_item_amt", params.get("bztrp_item_amt_" + num));
+						itemMap.put("bztrp_item_rmrk", params.get("bztrp_item_rmrk_" + num));
+						docDAO.insertBztrpAdjsItem(itemMap);
+					} 
+				}
+				// DOC_BZTRP_ADJS
+				docDAO.updateBztrpAdjs(params);
+			}
+		} else if("CD0001015".equals(cd1)) { // 도서구매신청
+			docDAO.updateBksBuyAplf(params);
+		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
+			docDAO.updateEducTrain(params);
+		}
+		
 		return procResultVal;
 	}
 	
@@ -373,6 +457,31 @@ public class AprvMngServiceImpl implements AprvMngService {
 	public int aprvDelete(Map params) throws Exception {
 		
 		int procResultVal = 0;
+		
+		String cd1 = (String) params.get("cdList1");
+		String cd2 = (String) params.get("cdList2");
+		
+		// 결재문서 삭제
+		if("CD0001011".equals(cd1)) { // 휴가신청
+			docDAO.deleteFrogh(params);
+		} else if("CD0001013".equals(cd1)) { // 근무제신청
+			if("CD0001013001".equals(cd2)) { // 유연근무제
+				docDAO.deleteFlexWrkSyst(params);
+			}
+		} else if("CD0001008".equals(cd1)) { // 품의서
+			docDAO.deletePttn(params);
+		} else if("CD0001009".equals(cd1)) { // 출장
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
+				// DOC_BZTRP_ADJS_ITEM
+				docDAO.deleteBztrpAdjsItem(params);
+				// DOC_BZTRP_ADJS
+				docDAO.deleteBztrpAdjs(params);
+			}
+		} else if("CD0001015".equals(cd1)) { // 도서구매신청
+			docDAO.deleteBksBuyAplf(params);
+		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
+			docDAO.deleteEducTrain(params);
+		}
 		
 		// 결재 라인 삭제
 		procResultVal = aprvMngDAO.aprvLineDelete(params);

@@ -163,7 +163,9 @@
 													</a>
 												</td>
 												<td class="hidden-xs hidden-sm">
-													${list.TERM_ST_YM} - ${list.TERM_ED_YM}
+													${list.TERM_ST_YM} 
+													<c:if test="${list.TERM_ST_YM ne null }"> - </c:if> 
+													${list.TERM_ED_YM}
 												</td>
 												<td class="hidden-xs hidden-sm">
 													${list.CRTN_DT}

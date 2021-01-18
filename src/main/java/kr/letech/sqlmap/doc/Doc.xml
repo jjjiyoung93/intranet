@@ -2,22 +2,361 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="doc">	
 	<resultMap id="CLOB_CODE" type="hashMap">
-		<result property="DOC_INST_CODE" column="DOC_INST_CODE" jdbcType="CLOB" javaType="java.lang.String"/>
-		<result property="DOC_MODI_CODE" column="DOC_MODI_CODE" jdbcType="CLOB" javaType="java.lang.String"/>
+		<result property="DOC_CODE" column="DOC_CODE" jdbcType="CLOB" javaType="java.lang.String"/>
 	</resultMap>
-	<select id="getDocCode" resultMap="CLOB_CODE" parameterType="map">
+	<select id="getDocCode" parameterType="map" resultMap="CLOB_CODE">
 		SELECT CASE WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_INST_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR})
+		                THEN (SELECT DOC_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR})
 		            WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_INST_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR})
-		            ELSE (SELECT DOC_INST_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = 'CD0000' AND APRV_TYPE_DTIL_CD = 'CD0000')
-		       END AS DOC_INST_CODE,
-		       CASE WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_MODI_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR})
-		            WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_MODI_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR})
-		            ELSE (SELECT DOC_MODI_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = 'CD0000' AND APRV_TYPE_DTIL_CD = 'CD0000')
-		       END AS DOC_MODI_CODE
+		                THEN (SELECT DOC_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR})
+		            ELSE (SELECT DOC_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = 'CD0000' AND APRV_TYPE_DTIL_CD = 'CD0000')
+		       END AS DOC_CODE
 		  FROM DUAL
 	</select>
+	
+	<select id="getFrogh" parameterType="map" resultType="HashMap">
+		SELECT APRV_NO
+			 , FROGH_RSN
+			 , ADDR
+			 , CTTPLC
+		  FROM DOC_FROGH
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getFlexWrkSyst" parameterType="map" resultType="HashMap">
+		SELECT APRV_NO
+			 , MAIN_BUSI
+			 , WRK_HH
+			 , RQST_RSN
+		  FROM DOC_FLEX_WRK_SYST
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getEducTrain" parameterType="map" resultType="HashMap">
+		SELECT APRV_NO
+			 , EDUC_NM
+			 , EDUC_PURP_CNTN
+			 , EDUC_PLC
+			 , EDUC_INST
+			 , EDUC_COST
+			 , SPMN
+			 , RMRK
+		  FROM DOC_EDUC_TRAIN
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getBksBuyAplf" parameterType="map" resultType="HashMap">
+		SELECT APRV_NO
+			 , BKS_NM
+			 , PUCH_PURP
+			 , AUTHR_NM
+			 , PBCM
+			 , PBLT_DD
+			 , ISBN
+			 , AMT
+			 , PUCH_HOPE_NMVL
+			 , PUCH_HOPE_DD
+			 , RMRK
+		  FROM DOC_BKS_BUY_APLF
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<resultMap id="DOC_PTTN" type="hashMap">
+		<result property="APRV_NO" column="APRV_NO" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="PTTN_DIV" column="PTTN_DIV" jdbcType="VARCHAR" javaType="java.lang.String"/>
+		<result property="PTTN_CONT" column="PTTN_CONT" jdbcType="CLOB" javaType="java.lang.String"/>
+	</resultMap>
+	<select id="getPttn" parameterType="map" resultMap="DOC_PTTN">
+		SELECT APRV_NO
+			 , PTTN_DIV
+			 , PTTN_CONT
+		  FROM DOC_PTTN
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<select id = "getBztrpAdjs" parameterType="map" resultType="HashMap">
+		SELECT APRV_NO
+			 , BZTRP_DIV
+			 , BZTRP_PURP
+			 , BZTRP_PER
+			 , BZTRP_NIGHT
+			 , BZTRP_DAYS
+			 , BZTRP_PLC
+			 , DPAR_AREA
+			 , ARYL_AREA
+			 , PLND_AMT
+			 , CORP_CRD_USE_AMT
+			 , BZTRP_ITEM_SUM
+			 , PROVD_AMT
+			 , BZTRP_RMRK
+		  FROM DOC_BZTRP_ADJS
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<select id = "getBztrpAdjsItem" parameterType="map" resultType="HashMap">
+		SELECT APRV_NO
+			 , BZTRP_ITEM_SEQ
+			 , BZTRP_ITEM_DIV
+			 , BZTRP_ITEM_CTNT
+			 , BZTRP_ITEM_AMT
+			 , BZTRP_ITEM_RMRK
+		  FROM DOC_BZTRP_ADJS_ITEM
+		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+		 ORDER BY BZTRP_ITEM_SEQ
+	</select>
+	
+	<insert id="insertFrogh" parameterType="map">
+		INSERT INTO DOC_FROGH (
+			  APRV_NO
+			, FROGH_RSN
+			, ADDR
+			, CTTPLC
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{frogh_rsn, jdbcType=VARCHAR}
+			, #{addr, jdbcType=VARCHAR}
+			, #{cttplc, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertFlexWrkSyst" parameterType="map">
+		INSERT INTO DOC_FLEX_WRK_SYST (
+			  APRV_NO
+			, MAIN_BUSI
+			, WRK_HH
+			, RQST_RSN
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{main_busi, jdbcType=VARCHAR}
+			, #{wrk_hh, jdbcType=VARCHAR}
+			, #{rqst_rsn, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertEducTrain" parameterType="map">
+		INSERT INTO DOC_EDUC_TRAIN (
+			  APRV_NO
+			, EDUC_NM
+			, EDUC_PURP_CNTN
+			, EDUC_PLC
+			, EDUC_INST
+			, EDUC_COST
+			, SPMN
+			, RMRK
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{educ_nm, jdbcType=VARCHAR}
+			, #{educ_purp_cntn, jdbcType=VARCHAR}
+			, #{educ_plc, jdbcType=VARCHAR}
+			, #{educ_inst, jdbcType=VARCHAR}
+			, #{educ_cost, jdbcType=VARCHAR}
+			, #{spmn, jdbcType=VARCHAR}
+			, #{rmrk, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertBksBuyAplf" parameterType="map">
+		INSERT INTO DOC_BKS_BUY_APLF (
+			  APRV_NO
+			, BKS_NM
+			, PUCH_PURP
+			, AUTHR_NM
+			, PBCM
+			, PBLT_DD
+			, ISBN
+			, AMT
+			, PUCH_HOPE_NMVL
+			, PUCH_HOPE_DD
+			, RMRK
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{bks_nm, jdbcType=VARCHAR}
+			, #{puch_purp, jdbcType=VARCHAR}
+			, #{authr_nm, jdbcType=VARCHAR}
+			, #{pbcm, jdbcType=VARCHAR}
+			, #{pblt_dd, jdbcType=VARCHAR}
+			, #{isbn, jdbcType=VARCHAR}
+			, #{amt, jdbcType=VARCHAR}
+			, #{puch_hope_nmvl, jdbcType=VARCHAR}
+			, #{puch_hope_dd, jdbcType=VARCHAR}
+			, #{rmrk, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<insert id="insertPttn" parameterType="map">
+		INSERT INTO DOC_PTTN (
+			  APRV_NO
+			, PTTN_DIV
+			, PTTN_CONT
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{pttn_div, jdbcType=VARCHAR}
+			, #{pttn_cont, jdbcType=CLOB}
+		)
+	</insert>
+	
+	<insert id="insertBztrpAdjs" parameterType="map">
+		INSERT INTO DOC_BZTRP_ADJS (
+			  APRV_NO
+			, BZTRP_DIV
+			, BZTRP_PURP
+			, BZTRP_PER
+			, BZTRP_NIGHT
+			, BZTRP_DAYS
+			, BZTRP_PLC
+			, DPAR_AREA
+			, ARYL_AREA
+			, PLND_AMT
+			, CORP_CRD_USE_AMT
+			, BZTRP_ITEM_SUM
+			, PROVD_AMT
+			, BZTRP_RMRK
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{bztrp_div, jdbcType=VARCHAR}
+			, #{bztrp_purp, jdbcType=VARCHAR}
+			, #{bztrp_per, jdbcType=VARCHAR}
+			, #{bztrp_night, jdbcType=VARCHAR}
+			, #{bztrp_days, jdbcType=VARCHAR}
+			, #{bztrp_plc, jdbcType=VARCHAR}
+			, #{dpar_area, jdbcType=VARCHAR}
+			, #{aryl_area, jdbcType=VARCHAR}
+			, #{plnd_amt, jdbcType=VARCHAR}
+			, #{corp_crd_use_amt, jdbcType=VARCHAR}
+			, #{bztrp_item_sum, jdbcType=VARCHAR}
+			, #{provd_amt, jdbcType=VARCHAR}
+			, #{bztrp_rmrk, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertBztrpAdjsItem" parameterType="map">
+		INSERT INTO DOC_BZTRP_ADJS_ITEM (
+			  APRV_NO
+			, BZTRP_ITEM_SEQ
+			, BZTRP_ITEM_DIV
+			, BZTRP_ITEM_CTNT
+			, BZTRP_ITEM_AMT
+			, BZTRP_ITEM_RMRK
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, #{bztrp_item_seq, jdbcType=VARCHAR}
+			, #{bztrp_item_div, jdbcType=VARCHAR}
+			, #{bztrp_item_ctnt, jdbcType=VARCHAR}
+			, #{bztrp_item_amt, jdbcType=VARCHAR}
+			, #{bztrp_item_rmrk, jdbcType=VARCHAR}
+		)
+	</insert>	
+	
+	<update id="updateFrogh" parameterType="map">
+		UPDATE DOC_FROGH
+		   SET FROGH_RSN = #{frogh_rsn, jdbcType=VARCHAR}
+			 , ADDR      = #{addr, jdbcType=VARCHAR}
+			 , CTTPLC    = #{cttplc, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR} 
+	</update>
+	
+	<update id="updateFlexWrkSyst" parameterType="map">
+		UPDATE DOC_FLEX_WRK_SYST
+		   SET MAIN_BUSI = #{main_busi, jdbcType=VARCHAR}
+			 , WRK_HH    = #{wrk_hh, jdbcType=VARCHAR}
+			 , RQST_RSN  = #{rqst_rsn, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateEducTrain" parameterType="map">
+		UPDATE DOC_EDUC_TRAIN
+		   SET EDUC_NM        = #{educ_nm, jdbcType=VARCHAR}
+			 , EDUC_PURP_CNTN = #{educ_purp_cntn, jdbcType=VARCHAR}
+			 , EDUC_PLC       = #{educ_plc, jdbcType=VARCHAR}
+			 , EDUC_INST      = #{educ_inst, jdbcType=VARCHAR}
+			 , EDUC_COST      = #{educ_cost, jdbcType=VARCHAR}
+			 , SPMN           = #{spmn, jdbcType=VARCHAR}
+			 , RMRK           = #{rmrk, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateBksBuyAplf" parameterType="map">
+		UPDATE DOC_BKS_BUY_APLF
+		   SET BKS_NM         = #{bks_nm, jdbcType=VARCHAR}
+			 , PUCH_PURP      = #{puch_purp, jdbcType=VARCHAR}
+			 , AUTHR_NM       = #{authr_nm, jdbcType=VARCHAR}
+			 , PBCM           = #{pbcm, jdbcType=VARCHAR}
+			 , PBLT_DD        = #{pblt_dd, jdbcType=VARCHAR}
+			 , ISBN           = #{isbn, jdbcType=VARCHAR}
+			 , AMT            = #{amt, jdbcType=VARCHAR}
+			 , PUCH_HOPE_NMVL = #{puch_hope_nmvl, jdbcType=VARCHAR}
+			 , PUCH_HOPE_DD   = #{puch_hope_dd, jdbcType=VARCHAR}
+			 , RMRK           = #{rmrk, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updatePttn" parameterType="map">
+		UPDATE DOC_PTTN
+		   SET PTTN_DIV  = #{pttn_div, jdbcType=VARCHAR}
+			 , PTTN_CONT = #{pttn_cont, jdbcType=CLOB}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateBztrpAdjs" parameterType="map">
+		UPDATE DOC_BZTRP_ADJS
+		   SET BZTRP_DIV        = #{bztrp_div, jdbcType=VARCHAR}
+			 , BZTRP_PURP       = #{bztrp_purp, jdbcType=VARCHAR}
+			 , BZTRP_PER        = #{bztrp_per, jdbcType=VARCHAR}
+			 , BZTRP_NIGHT      = #{bztrp_night, jdbcType=VARCHAR}
+			 , BZTRP_DAYS       = #{bztrp_days, jdbcType=VARCHAR}
+			 , BZTRP_PLC        = #{bztrp_plc, jdbcType=VARCHAR}
+			 , DPAR_AREA        = #{dpar_area, jdbcType=VARCHAR}
+			 , ARYL_AREA        = #{aryl_area, jdbcType=VARCHAR}
+			 , PLND_AMT         = #{plnd_amt, jdbcType=VARCHAR}
+			 , CORP_CRD_USE_AMT = #{corp_crd_use_amt, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_SUM   = #{bztrp_item_sum, jdbcType=VARCHAR}
+			 , PROVD_AMT        = #{provd_amt, jdbcType=VARCHAR}
+			 , BZTRP_RMRK       = #{bztrp_rmrk, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateBztrpAdjsItem" parameterType="map">
+		UPDATE DOC_BZTRP_ADJS_ITEM
+		   SET BZTRP_ITEM_DIV  = #{bztrp_item_div, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_CTNT = #{bztrp_item_ctnt, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_AMT  = #{bztrp_item_amt, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_RMRK = #{bztrp_item_rmrk, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+		   AND BZTRP_ITEM_SEQ = #{bztrp_item_seq, jdbcType=VARCHAR}
+	</update>
+		
+	<delete id="deleteFrogh" parameterType="map">
+		DELETE FROM DOC_FROGH
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR} 
+	</delete>
+	
+	<delete id="deleteFlexWrkSyst" parameterType="map">
+		DELETE FROM DOC_FLEX_WRK_SYST
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR} 
+	</delete>
+	
+	<delete id="deleteEducTrain" parameterType="map">
+		DELETE FROM DOC_EDUC_TRAIN
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR} 
+	</delete>
+	
+	<delete id="deleteBksBuyAplf" parameterType="map">
+		DELETE FROM DOC_BKS_BUY_APLF
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deletePttn" parameterType="map">
+		DELETE FROM DOC_PTTN
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteBztrpAdjs" parameterType="map">
+		DELETE FROM DOC_BZTRP_ADJS
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteBztrpAdjsItem" parameterType="map">
+		DELETE FROM DOC_BZTRP_ADJS_ITEM
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</delete>
 </mapper>
