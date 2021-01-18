@@ -28,7 +28,10 @@
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
 </head>
-<style>.form-group{padding-left: 0px; padding-right: 0px;}</style>
+<style>
+	.form-group{padding-left: 0px; padding-right: 0px;}
+	.req-sign{color: red; font-size: 18px;}
+</style>
 <body>
 		<div id="wrapper">
 		 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -83,6 +86,7 @@
 									<div class="col-lg-6 form-group">
 										<div class="col-lg-4 col-sm-2 text-right">
 											<label class="control-label">프로젝트</label>
+											<span class="req-sign">*</span>
 										</div>
 										<div class="col-lg-6">
 											<select id="proj_cd" name="proj_cd" class="form-control">
@@ -130,6 +134,7 @@
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
 											<label class="control-label">제목</label>
+											<span class="req-sign">*</span>
 										</div>
 										<div class="col-lg-9">
 											<input class="form-control" type="text" id="title" name="title" value="${viewMap.TITLE }"/>
@@ -141,6 +146,7 @@
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
 											<label class="control-label">보고내용</label>
+											<span class="req-sign">*</span>
 										</div>
 										<div class="col-lg-9">
 											<textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea>
@@ -152,6 +158,7 @@
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
 											<label class="control-label">결재구분</label>
+											<span class="req-sign">*</span>
 										</div>
 										<div class="col-lg-2">
 											<select id="cdList1" name="cdList1" class="form-control">
@@ -693,13 +700,13 @@ function getValidation(){
 	}
 	
 	// 품의서[전체]
-	if($("#cdList1").val() == "CD0001008" && $("#cdList2").val() == "CD0001009001") {
-		if($("#bztrp_div option:selected").val() == ""){
+	if($("#cdList1").val() == "CD0001008") {
+		if($("#pttn_div option:selected").val() == ""){
 			if(valid) {
 				alert("품의구분을 선택해 주세요.");
-				$("#bztrp_div").focus();
+				$("#pttn_div").focus();
 			}
-			$("#bztrp_div").closest(".form-group").addClass("has-error");
+			$("#pttn_div").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
 		if($("#pttn_cont").val() == ""){
@@ -713,13 +720,13 @@ function getValidation(){
 	}
 	
 	// 출장[출장정산(국내)]
-	if($("#cdList1").val() == "CD0001009") {
-		if($("#pttn_div option:selected").val() == ""){
+	if($("#cdList1").val() == "CD0001009" && $("#cdList2").val() == "CD0001009001") {
+		if($("#bztrp_div option:selected").val() == ""){
 			if(valid) {
 				alert("품의구분을 선택해 주세요.");
-				$("#pttn_div").focus();
+				$("#bztrp_div").focus();
 			}
-			$("#pttn_div").closest(".form-group").addClass("has-error");
+			$("#bztrp_div").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
 		if($("#term_st").val() == ""){
@@ -943,8 +950,7 @@ function getValidation(){
 		}
 	}
 	/******************** 문서 부분 END ********************/
-// 	return valid;
-	return false;
+	return valid;
 }
 
 /* 결재자 검색 */
