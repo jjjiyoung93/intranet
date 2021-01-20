@@ -169,6 +169,7 @@
 											</select>
 										</div>
 										<div class="col-lg-2">
+										<c:if test="${not empty viewMap.APRV_TYPE_DTIL_CD }">
 											<c:if test="${params.mode eq mode_u}"><input type="hidden" name="cdList2" value="${viewMap.APRV_TYPE_DTIL_CD }"></c:if>
 											<select id="cdList2" name="cdList2" class="form-control" <c:if test="${params.mode eq mode_u}">disabled</c:if>>
 													<option value="" >--2차 구분 선택--</option>
@@ -176,6 +177,7 @@
 													<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
 												</c:forEach>
 											</select>
+										</c:if>
 										</div>
 										<!--  반차여부 -->
 										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
