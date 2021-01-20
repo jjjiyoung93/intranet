@@ -111,17 +111,17 @@ h1 {
 					<td rowspan="2" class="td-ss1 td-header">결<br><br>재</td>
 					<td colspan="2" class="td-ss2 td-header">담당</td>
 					<c:forEach var="line" items="${lineList }" varStatus="status">
-						<td colspan="2" class="td-ss2 td-header">${line.USS_NM }</td>
+						<td colspan="2" class="td-ss2 td-header">${line.APRV_AUTH_NM }</td>
 					</c:forEach>
 				</tr>
 				<tr>
 					<td colspan="2" class="td-ss2">
-						<img src="/doc/sign.do?emp_no=${viewMap.REPT_APRV_NO }" style="width: 70px;">
+						<img src="/doc/sign.do?emp_no=${viewMap.REPT_APRV_NO }" style="width: 70px; max-height: 35px;">
 					</td>
 					<c:forEach var="line" items="${lineList }" varStatus="status">
 						<td colspan="2" class="td-ss2">
 							<c:if test="${line.APRV_YN_CD eq '1' }">
-								<img src="/doc/sign.do?emp_no=${line.APRV_EMP_NO }" style="width: 70px;">
+								<img src="/doc/sign.do?emp_no=${line.APRV_EMP_NO }" style="width: 70px; max-height: 35px;">
 							</c:if>
 						</td>
 					</c:forEach>
