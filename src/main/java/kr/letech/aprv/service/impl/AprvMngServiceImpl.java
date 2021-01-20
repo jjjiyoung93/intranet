@@ -227,8 +227,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 		// 결재문서에 등록
 		if("CD0001011".equals(cd1)) { // 휴가신청
 			docDAO.insertFrogh(params);
-		} else if("CD0001013".equals(cd1)) { // 근무제신청
-			if("CD0001013001".equals(cd2)) { // 유연근무제
+		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
+			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
 				docDAO.insertFlexWrkSyst(params);
 			}
 		} else if("CD0001008".equals(cd1)) { // 품의서
@@ -412,8 +412,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 		// 결재문서에 수정
 		if("CD0001011".equals(cd1)) { // 휴가신청
 			docDAO.updateFrogh(params);
-		} else if("CD0001013".equals(cd1)) { // 근무제신청
-			if("CD0001013001".equals(cd2)) { // 유연근무제
+		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
+			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
 				docDAO.updateFlexWrkSyst(params);
 			}
 		} else if("CD0001008".equals(cd1)) { // 품의서
@@ -464,8 +464,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 		// 결재문서 삭제
 		if("CD0001011".equals(cd1)) { // 휴가신청
 			docDAO.deleteFrogh(params);
-		} else if("CD0001013".equals(cd1)) { // 근무제신청
-			if("CD0001013001".equals(cd2)) { // 유연근무제
+		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
+			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
 				docDAO.deleteFlexWrkSyst(params);
 			}
 		} else if("CD0001008".equals(cd1)) { // 품의서

@@ -11,7 +11,6 @@
 <link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/dataTables.responsive.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
@@ -161,7 +160,8 @@
 											<span class="req-sign">*</span>
 										</div>
 										<div class="col-lg-2">
-											<select id="cdList1" name="cdList1" class="form-control">
+											<c:if test="${params.mode eq mode_u}"><input type="hidden" name="cdList1" value="${viewMap.APRV_TYPE_CD }"></c:if>
+											<select id="cdList1" name="cdList1" class="form-control" <c:if test="${params.mode eq mode_u}">disabled</c:if>>
 													<option value="" >--1차 구분 선택--</option>
 												<c:forEach var="codeList" items="${codeList}">
 													<option value="${codeList.CD}" <c:if test="${viewMap.APRV_TYPE_CD eq codeList.CD }">selected</c:if>>${codeList.CD_NM}</option>
@@ -169,7 +169,8 @@
 											</select>
 										</div>
 										<div class="col-lg-2">
-											<select id="cdList2" name="cdList2" class="form-control">
+											<c:if test="${params.mode eq mode_u}"><input type="hidden" name="cdList2" value="${viewMap.APRV_TYPE_DTIL_CD }"></c:if>
+											<select id="cdList2" name="cdList2" class="form-control" <c:if test="${params.mode eq mode_u}">disabled</c:if>>
 													<option value="" >--2차 구분 선택--</option>
 												<c:forEach var="codeList2" items="${codeList2}">
 													<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
@@ -421,18 +422,15 @@ $(document).ready(function() {
 				$("#mode").val("<%=VarConsts.MODE_I%>");	
 			}
 			// datepicker의 시간을 yyyyMMdd, hhmm으로 구분하여 저장
-			if($("#term_st").val() != null) { // 기간을 사용하지 않는 양식인지 확인
-				// 기간 사용한다면
+			if($("#term_st").size() == "1" && $("#term_st").val() != "" && $("#term_ed").val() != "") { // 기간을 사용하지 않는 양식인지 확인
 				var term_st = $("#term_st").val();
-				var term_ed = $("#term_ed").val();
-				
 				var term_st_ym = term_st.split(" ")[0];
 				var term_st_hm = term_st.split(" ")[1].replace(":", "");
-				var term_ed_ym = term_ed.split(" ")[0];
-				var term_ed_hm = term_ed.split(" ")[1].replace(":", "");
-				
 				$("#term_st_ym").val(term_st_ym);
 				$("#term_st_hm").val(term_st_hm);
+				var term_ed = $("#term_ed").val();
+				var term_ed_ym = term_ed.split(" ")[0];
+				var term_ed_hm = term_ed.split(" ")[1].replace(":", "");
 				$("#term_ed_ym").val(term_ed_ym);
 				$("#term_ed_hm").val(term_ed_hm);
 			}
@@ -485,20 +483,26 @@ $(document).ready(function() {
 				}
 			}
 		}
-		if($("#term_st").val() != null) { // 기간을 사용하지 않는 양식인지 확인
-			console.log(docJson["TERM_EN_YM"]);
+		if($("#term_st").size() == "1") { // 기간을 사용하지 않는 양식인지 확인
+			var term_st_ym;
+			var term_ed_ym;
+			console.log(viewJson["TERM_ST_YM"]);
 			//tui.date-picker
+			if(viewJson["TERM_ST_YM"] != null) {
+				term_st_ym = new Date(viewJson["TERM_ST_YM"] + " " + viewJson["TERM_ST_HM"].substring(0, 2) + ":" + viewJson["TERM_ST_HM"].substring(2, 4));
+				term_ed_ym = new Date(viewJson["TERM_ED_YM"] + " " + viewJson["TERM_ED_HM"].substring(0, 2) + ":" + viewJson["TERM_ED_HM"].substring(2, 4))
+			}
 			var picker = tui.DatePicker.createRangePicker({
 				language: 'ko',
 			    startpicker: {
 			        input: '#term_st',
 			        container: '#startpicker-container',
-			        date: new Date(viewJson["TERM_ST_YM"] + " " + viewJson["TERM_ST_HM"].substring(0, 2) + ":" + viewJson["TERM_ST_HM"].substring(2, 4))
+			        date: term_st_ym
 			    },
 			    endpicker: {
 			        input: '#term_ed',
 			        container: '#endpicker-container',
-			        date: new Date(viewJson["TERM_ED_YM"] + " " + viewJson["TERM_ED_HM"].substring(0, 2) + ":" + viewJson["TERM_ED_HM"].substring(2, 4))
+			        date: term_ed_ym
 			    },
 			    type: 'date',
 			    format: 'yyyy-MM-dd hh:mm',
@@ -561,6 +565,9 @@ function fn_delFile(file_path, file_stre_nm, file_no, event){
 // validation으로 error class가 추가된 div에 내용이 변경되면 error class를 지워줌
 $(function() {
 	$("body").on("propertychange change keyup paste input", ".has-error", function() {
+		$(this).closest(".form-group").removeClass("has-error")
+	});
+	$("body").on("click", "#term_st, #term_ed", function() {
 		$(this).closest(".form-group").removeClass("has-error")
 	});
 });
@@ -655,7 +662,7 @@ function getValidation(){
 		}
 	}
 	
-	// 근무제신청[유연근무제]
+	// 유연근무제신청[시차출퇴근제]
 	if($("#cdList1").val() == "CD0001013" && $("#cdList2").val() == "CD0001013001") {
 		if($("#term_st").val() == ""){
 			if(valid) {
@@ -872,20 +879,20 @@ function getValidation(){
 			$("#pblt_dd").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
-		if($("#isbn").val() == ""){
-			if(valid) {
-				alert("ISBN을 입력해 주세요.");
-				$("#isbn").focus();
-			}
-			$("#isbn").closest(".form-group").addClass("has-error");
-			valid = false;
-		}
 		if($("#amt").val() == ""){
 			if(valid) {
 				alert("금액을 입력해 주세요.");
 				$("#amt").focus();
 			}
 			$("#amt").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#isbn").val() == ""){
+			if(valid) {
+				alert("ISBN을 입력해 주세요.");
+				$("#isbn").focus();
+			}
+			$("#isbn").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
 		if($("#puch_hope_nmvl").val() == ""){

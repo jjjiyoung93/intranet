@@ -47,17 +47,11 @@
 										<dt class="col-md-3 col-sm-3">시작일자(시간)</dt>
 										<dd class="col-md-9 col-sm-9">
 											<div class="form-inline">
-													${resultView.CAL_ST_DT }
-													(
-														<c:if test="${not empty resultView.CAL_ST_TIME }">
-																
-																	${resultView.CAL_ST_TIME_FRI }
-																시 
-																${resultView.CAL_ST_TIME_SEC }
-																	분
-														</c:if>
-													)
-													</div>
+												${resultView.CAL_ST_DT }
+												<c:if test="${not empty resultView.CAL_ST_TIME_FRI }">
+												(${resultView.CAL_ST_TIME_FRI } 시  ${resultView.CAL_ST_TIME_SEC } 분)
+												</c:if>
+												</div>
 										</dd>
 									</dl>
 								</li>
@@ -67,14 +61,9 @@
 										<dd class="col-md-9 col-sm-9">
 											<div class="form-inline">
 												${resultView.CAL_ED_DT }
-												(
-														<c:if test="${not empty resultView.CAL_ED_TIME }">
-																${resultView.CAL_ED_TIME_FRI }
-																시 
-																${resultView.CAL_ED_TIME_SEC }
-																	분
-														</c:if>
-													)
+												<c:if test="${not empty resultView.CAL_ED_TIME_FRI }">
+												(${resultView.CAL_ED_TIME_FRI } 시 ${resultView.CAL_ED_TIME_SEC } 분)
+												</c:if>
 											</div>
 										</dd>
 									</dl>

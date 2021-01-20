@@ -27,6 +27,18 @@ public class DocServiceImpl implements DocService {
 	}
 
 	/**
+	* 보고서 양식을 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	@Override
+	public Map getDocReport(Map params) throws Exception {
+		return docDAO.getDocReport(params);
+	}
+	
+	/**
 	* 결재코드에 해당하는 문서 데이터를 반환
 	* 작성자 : JO MIN SOO
 	* @param params
@@ -42,8 +54,8 @@ public class DocServiceImpl implements DocService {
 		
 		if("CD0001011".equals(cd1)) { // 휴가신청
 			docMap = docDAO.getFrogh(params);
-		} else if("CD0001013".equals(cd1)) { // 근무제신청
-			if("CD0001013001".equals(cd2)) { // 유연근무제
+		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
+			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
 				docMap = docDAO.getFlexWrkSyst(params);
 			}
 		} else if("CD0001008".equals(cd1)) { // 품의서
@@ -61,4 +73,5 @@ public class DocServiceImpl implements DocService {
 		
 		return docMap;
 	}
+
 }

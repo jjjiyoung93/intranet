@@ -75,7 +75,7 @@
                            <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">소속</dt>
                                <dd class="col-md-10 col-sm-9">
-                              ${viewMap.DPNM }
+                              ${viewMap.REPT_DP_NM }
                            </dd>
                            </dl>
                            </li>
@@ -101,11 +101,11 @@
                                                       <font style="color:red">${code.CD_NM}</font>
                                  </c:if>
                               </c:forEach>
-                                                      &nbsp;&nbsp;&nbsp;
-                                                      상세구분:
                               <c:forEach var="code2" items="${codeList2}">
                                  <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq code2.CD }">
-                                                      <font style="color:red">${code2.CD_NM}</font>
+                                     &nbsp;&nbsp;&nbsp;
+                                                                                   상세구분:
+                                     <font style="color:red">${code2.CD_NM}</font>
                                  </c:if>
                               </c:forEach>
                            </dd>
@@ -123,7 +123,9 @@
                               <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">기간</dt>
                                <dd class="col-md-10 col-sm-9">
-                               ${viewMap.TERM_ST_YM } ~ ${viewMap.TERM_ED_YM }
+                                   <c:if test="${viewMap.TERM_ST_YM ne null }">
+                                       ${viewMap.TERM_ST_YM } ~ ${viewMap.TERM_ED_YM }
+                                   </c:if>
                               </dd>
                               </dl>
                            </li>
@@ -623,7 +625,7 @@
          <jsp:include page="/resources/com/inc/footer.jsp" />
 </div>
 <form id="docFrm" name="docFrm" method="post" action="${pageContext.request.contextPath}/doc/doc00Popup.do" >
-<!-- 	<input type="hidden" id="not_uss_id" name="not_uss_id" value="" /> -->
+	<input type="hidden" id="aprv_no" name="aprv_no" value="${viewMap.APRV_NO }" />
 </form>
 <!-- 파일 다운로드 form Start -->
 <form id="downFrm" name="downFrm" method="post" action="${pageContext.request.contextPath}/cmm/FileDown.do">
@@ -735,7 +737,7 @@ function aprvOk(){
       }
    
    function fn_docPopup(){
-		window.open("", "doc00Popup","width=1300, height=750");
+		window.open("", "doc00Popup","width=720, height=750");
 		$("#docFrm").attr("target", "doc00Popup");
 // 		$("#not_uss_id").val($("#rept_aprv_no").val());
 		$("#docFrm").attr("action", "${pageContext.request.contextPath}/doc/doc00Popup.do");
