@@ -116,12 +116,12 @@ h1 {
 				</tr>
 				<tr>
 					<td colspan="2" class="td-ss2">
-						<img src="/doc/sign.do?emp_no=${viewMap.REPT_APRV_NO }" style="width: 70px; max-height: 35px;">
+						<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${viewMap.REPT_APRV_NO }" style="width: 70px; max-height: 35px;">
 					</td>
 					<c:forEach var="line" items="${lineList }" varStatus="status">
 						<td colspan="2" class="td-ss2">
 							<c:if test="${line.APRV_YN_CD eq '1' }">
-								<img src="/doc/sign.do?emp_no=${line.APRV_EMP_NO }" style="width: 70px; max-height: 35px;">
+								<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${line.APRV_EMP_NO }" style="width: 70px; max-height: 35px;">
 							</c:if>
 						</td>
 					</c:forEach>
