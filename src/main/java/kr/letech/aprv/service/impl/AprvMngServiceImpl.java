@@ -685,6 +685,18 @@ public class AprvMngServiceImpl implements AprvMngService {
 	}
 
 	/**
+	* 로그인한 사용자의 결재라인을 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	@Override
+	public List aprvLineInfoList(Map params) throws Exception {
+		return aprvMngDAO.aprvLineInfoList(params);
+	}
+	
+	/**
 	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
 	* @param request
 	* @param model

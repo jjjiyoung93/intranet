@@ -202,6 +202,17 @@ public class AprvMngDAO extends AbstractDAO {
 	public void updateCompanion(Map params) throws Exception {
 		update("aprvMng.updateCompanion", params);
 	}
+	
+	/**
+	* 로그인한 사용자의 결재라인을 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	public List aprvLineInfoList(Map params) throws Exception {
+		return getList("aprvMng.getAprvLineInfoList", params);
+	}
 
 	/**
 	* BIZPLAY에서 받아온 데이터를 저장

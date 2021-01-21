@@ -61,6 +61,9 @@
                      </span>
                   </h2>
                   <div class="form-container">
+                  	<button type="button" class="btn btn-primary" style="position: absolute; right: 40px; z-index: 999;" onclick="fn_docPopup()">
+                  		<span class="glyphicon glyphicon-file" aria-hidden="true"></span> 보고서
+                  	</button>
                   <div class="board-view">       
                   <ul class="payment-form">
                         <li>
@@ -610,7 +613,6 @@
                         </c:if>
                         </span>
                             <input class="btn btn-sm btn-default"  type="button" id="btn-cancel" value="목록"/>
-                            <input class="btn btn-sm btn-default"  type="button" value="보고서" onclick="fn_docPopup()"/>
                      </p>
                   </div>
                </div>

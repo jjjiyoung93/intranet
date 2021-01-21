@@ -110,10 +110,18 @@ public interface AprvMngService {
 	public void updateConfYn(Map params) throws Exception;
 	
 	/**
+	* 로그인한 사용자의 결재라인을 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	public List aprvLineInfoList(Map params) throws Exception;
+	
+	/**
 	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
 	* 작성자 : JO MIN SOO
-	* @param request
-	* @param model
+	* @param params
 	* @return
 	* @throws Exception
 	*/
@@ -122,8 +130,7 @@ public interface AprvMngService {
 	/**
 	* 데이터베이스에 적재된 비즈플레이 영수증들을 조합하여 인트라넷에 결재 데이터 추가
 	* 작성자 : JO MIN SOO
-	* @param request
-	* @param model
+	* @param params
 	* @return
 	* @throws Exception
 	*/

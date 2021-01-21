@@ -757,6 +757,18 @@
 		]]>
 	</update>
 	
+	<!-- 결재라인정보 목록조회 -->
+	<select id="getAprvLineInfoList" resultType="HashMap" parameterType="map" >
+		SELECT A.EMP_NO
+		        , A.APRV_ORDR
+		        , A.REFE_YN
+		        , A.APRV_EMP_NO
+		        , (SELECT USS_NM FROM STD_USS_MNG WHERE USS_ID = A.APRV_EMP_NO) AS APRV_EMP_NM
+		  FROM STD_APRV_LINE_INFO A
+		 WHERE EMP_NO = #{EMP_NO, jdbcType=VARCHAR}
+		 ORDER BY REFE_YN, APRV_ORDR
+	</select>
+	
 	<insert id="insertBizplayData" parameterType="map">
 		MERGE INTO BP_0411A
 		USING DUAL

@@ -189,6 +189,13 @@ public class AprvMngController {
 		List projList = codeMngService.getCodeList(params);
 		model.addAttribute("projList", projList);
 		
+		// 로그인한 사용자의 결재라인을 가져옴
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		params.put("EMP_NO", loginVO.getId());
+		List lineInfoList = aprvMngService.aprvLineInfoList(params);
+		model.addAttribute("lineInfoList", lineInfoList);
+		
 		// js 컴파일 에러 방지를 위해 update가 아닌 insert에는 빈값을 전송
 		model.addAttribute("docJson", "{}");
 		model.addAttribute("viewJson", "{}");

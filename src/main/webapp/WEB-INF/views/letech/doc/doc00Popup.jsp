@@ -78,7 +78,7 @@ h1 {
 .table-bordered > tbody > tr > td {
 	border: 1px solid black !important;
 }
-.td-comm {vertical-align: middle !important; height: 35px;}
+.td-comm {vertical-align: middle !important; height: 35px; white-space: break-spaces;}
 .td-header {vertical-align: middle !important; text-align: center; background-color: #ececec !important;}
 .td-ss1 {width: 0.5cm;}
 .td-ss2 {width: 1.0cm;}
@@ -111,7 +111,9 @@ h1 {
 					<td rowspan="2" class="td-ss1 td-header">결<br><br>재</td>
 					<td colspan="2" class="td-ss2 td-header">담당</td>
 					<c:forEach var="line" items="${lineList }" varStatus="status">
-						<td colspan="2" class="td-ss2 td-header">${line.APRV_AUTH_NM }</td>
+						<c:if test="${line.REFE_YN == 'N' }">
+							<td colspan="2" class="td-ss2 td-header">${line.APRV_AUTH_NM }</td>
+						</c:if>
 					</c:forEach>
 				</tr>
 				<tr>
@@ -119,11 +121,13 @@ h1 {
 						<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${viewMap.REPT_APRV_NO }" style="width: 70px; max-height: 35px;">
 					</td>
 					<c:forEach var="line" items="${lineList }" varStatus="status">
-						<td colspan="2" class="td-ss2">
-							<c:if test="${line.APRV_YN_CD eq '1' }">
-								<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${line.APRV_EMP_NO }" style="width: 70px; max-height: 35px;">
-							</c:if>
-						</td>
+						<c:if test="${line.REFE_YN == 'N' }">
+							<td colspan="2" class="td-ss2">
+								<c:if test="${line.APRV_YN_CD eq '1' }">
+									<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${line.APRV_EMP_NO }" style="width: 70px; max-height: 35px;">
+								</c:if>
+							</td>
+						</c:if>
 					</c:forEach>
 				</tr>
 			</tbody>

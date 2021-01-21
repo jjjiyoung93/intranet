@@ -32,7 +32,7 @@
 	.req-sign{color: red; font-size: 18px;}
 </style>
 <body>
-		<div id="wrapper">
+	<div id="wrapper">
 		 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 				<jsp:include page="/resources/com/inc/header.jsp" />
 				<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
@@ -169,15 +169,17 @@
 											</select>
 										</div>
 										<div class="col-lg-2">
-										<c:if test="${not empty viewMap.APRV_TYPE_DTIL_CD }">
-											<c:if test="${params.mode eq mode_u}"><input type="hidden" name="cdList2" value="${viewMap.APRV_TYPE_DTIL_CD }"></c:if>
-											<select id="cdList2" name="cdList2" class="form-control" <c:if test="${params.mode eq mode_u}">disabled</c:if>>
+											<c:if test="${params.mode eq mode_u}">
+												<input type="hidden" name="cdList2" value="${viewMap.APRV_TYPE_DTIL_CD }">
+											</c:if>
+											<c:if test="${not (params.mode eq mode_u && empty viewMap.APRV_TYPE_DTIL_CD) }"> 
+												<select id="cdList2" name="cdList2" class="form-control" <c:if test="${params.mode eq mode_u}">disabled</c:if>>
 													<option value="" >--2차 구분 선택--</option>
-												<c:forEach var="codeList2" items="${codeList2}">
-													<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
-												</c:forEach>
-											</select>
-										</c:if>
+													<c:forEach var="codeList2" items="${codeList2}">
+														<option value="${codeList2.CD}" <c:if test="${viewMap.APRV_TYPE_DTIL_CD eq codeList2.CD }">selected</c:if>>${codeList2.CD_NM}</option>
+													</c:forEach>
+												</select>
+											</c:if>
 										</div>
 										<!--  반차여부 -->
 										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
@@ -271,27 +273,56 @@
 															</tr>
 														</c:forEach>
 													</c:when>
-													<c:otherwise>
+														<c:otherwise>
 														<!-- 등록폼일경우 -->
-														<tr class="gradeA odd" role="row">
-															<td class="sorting_1">
-																<div class="from-inline">
-																<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
-																	<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell input-sm" type="text" value="" />
+														<c:choose>
+															<c:when test="${not empty lineInfoList }"> <!-- 결재라인 정보가 디비에 등록되어 있는 경우 -->
+																<c:forEach var="lineInfo" items="${lineInfoList }" varStatus="status">
+																	<tr class="gradeA odd" role="row" onMouseOver="aprv_line.clickedRowIndex=this.rowIndex">
+																		<td>
+																			<input name="aprv_emp_no${status.count }" id="aprv_emp_no${status.count }" type="hidden" value="${lineInfo.APRV_EMP_NO }" />
+																			<input name="aprv_emp_no${status.count }_nm" id="aprv_emp_no${status.count }_nm" class="form-control table-cell input-sm" type="text" value="${lineInfo.APRV_EMP_NM }" />
+																			<input type="button" class="btn btn-default btn-sm" value="찾기" onclick="fn_ussSearch('aprv_emp_no${status.count }')" />
+																			<input type="checkbox" id="refe_yn${status.count }" name="refe_yn${status.count }" value="Y" onclick="fn_order(this)" <c:if test="${lineInfo.REFE_YN eq 'Y' }">checked</c:if>/>
+																			<label for="refe_yn${status.count }">참조인</label>
+																		</td>
+																		<td style="text-align: center;">
+																			<input name="aprv_ordr${status.count }" id="aprv_ordr${status.count }" type="text" 
+																			value="<c:choose><c:when test="${lineInfo.REFE_YN eq 'Y' }">0</c:when><c:otherwise>${lineInfo.APRV_ORDR }</c:otherwise></c:choose>" class="form-control" readonly />
+																		</td>
+																		<td style="text-align: center;">
+																			<input name="aprv_yn_cd${status.count }" id="aprv_yn_cd${status.count }" type="hidden" value="0" class="i_text"/>
+																			<span>대기</span>
+																		</td>
+																		<td>
+																			<c:if test="${status.count != 1 }">
+																				<span class="btn btn-xs btn-default" onclick="delRow()"><i class="glyphicon glyphicon-remove">삭제</i></span>
+																			</c:if>
+																		</td>
+																	</tr>
+																</c:forEach>
+															</c:when>
+															<c:otherwise> <!-- 결재라인 정보가 디비에 없는 경우 -->
+																<tr>
+																	<td>
+																		<input name="aprv_emp_no1" id="aprv_emp_no1" type="hidden" value="" />
+																		<input name="aprv_emp_no1_nm" id="aprv_emp_no1_nm" class="form-control table-cell input-sm" type="text" value="" />
 																		<input type="button" class="btn btn-default btn-sm" value="찾기" onclick="fn_ussSearch('aprv_emp_no1')" />
-																	<span style="display:none">
-																		<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
-																	</span>
-															</div>
-															</td>
-															<td>
-																<span class="form-inline">
-																	<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control input-sm" readonly />
-																</span>
-															</td>
-															<td style="text-align: center;">대기<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text"/></td>
-															<td></td>
-														</tr>
+																		<span style="display:none">
+																			<input type="checkbox" id="refe_yn1" name="refe_yn1" value="Y" onclick="fn_order(this)" /><label for="refe_yn1">참조인</label>
+																		</span>
+																	</td>
+																	<td style="text-align: center;">
+																		<input name="aprv_ordr1" id="aprv_ordr1" type="text" value="1" class="form-control" readonly />
+																	</td>
+																	<td style="text-align: center;">
+																		<input name="aprv_yn_cd1" id="aprv_yn_cd1" type="hidden" value="0" class="i_text"/>
+																		<span>대기</span>
+																	</td>
+																	<td></td>
+																</tr>
+															</c:otherwise>
+														</c:choose>
 													</c:otherwise>
 												</c:choose>
 											</tbody>
@@ -338,7 +369,6 @@
 <jsp:include page="/resources/com/inc/javascript.jsp" />
 
 <script type="text/javascript">
-
 //select box 선택 기능
 $("#cdList1").change(function(){
 	$("#cdList2").find('option').each(function(){
@@ -1013,7 +1043,7 @@ function addRow() {
 	oCell4.innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
 	
 	var cnt = 1;
-	for(var i = 1; i <= aprv_line.rows.length; i++) {
+	for(var i = 1; i < aprv_line.rows.length; i++) {
 		if($("#refe_yn"+i).is(":checked")){
 		}else{
 			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control input-sm' readonly />";
@@ -1032,14 +1062,7 @@ function delRow() {
 		if($("#refe_yn"+(i+1)).is(":checked")){			
 			checkVal = "checked='checked'";
 		}
-		/* aprv_line.rows[i].cells[0].innerHTML = "<input name='aprv_emp_no"+ i +"' id='aprv_emp_no"+ i +"' value='"+$("#aprv_emp_no"+(i+1)).val()+"' type='hidden' />"
-				+ "<input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='i_text input_size100' />&nbsp;"
-				+ "<input type='button' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />&nbsp;&nbsp;"
-				+ "<input type='checkbox' id='refe_yn"+ i +"' name='refe_yn"+ i +"' value='Y' onclick='fn_order(this)' "+checkVal+" /><label for='refe_yn"+ i +"'>참조인</label>";
-// 		aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ i +"' type='text' class='i_text input_size50' readonly />";
-		aprv_line.rows[i].cells[2].innerHTML = "대기<input name='aprv_yn_cd"+ i +"' id='aprv_yn_cd"+ i +"' type='hidden' value='0' />";
-		aprv_line.rows[i].cells[3].innerHTML = "<input type=button value='삭제' onClick='delRow()' />"; */
-		
+
 		aprv_line.rows[i].cells[0].innerHTML = "<input name='aprv_emp_no"+ i +"' id='aprv_emp_no"+ i +"' value='"+$("#aprv_emp_no"+(i+1)).val()+"' type='hidden' />"
 				+ "<input name='aprv_emp_no"+ i +"_nm' id='aprv_emp_no"+ i +"_nm' type='text' value='"+$("#aprv_emp_no"+(i+1)+"_nm").val()+"' class='form-control table-cell input-sm' />&nbsp;"
 				+ "<input type='button' class='btn btn-default btn-sm' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ i +"')\" />&nbsp;&nbsp;"
@@ -1050,7 +1073,7 @@ function delRow() {
 		aprv_line.rows[i].cells[3].innerHTML = "<span class='btn btn-xs btn-default' onClick='delRow()'><i class='glyphicon glyphicon-remove' >삭제</i></span>";
 	}
 	var cnt = 1;
-	for(var i = 1; i <= aprv_line.rows.length; i++) {
+	for(var i = 1; i < aprv_line.rows.length; i++) {
 		if($("#refe_yn"+i).is(":checked")){
 			aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='0' type='text' class='form-control input-sm' readonly />";
 		}else{
@@ -1074,7 +1097,7 @@ function fn_order(obj){
 			}
 		}
 	}else{
-		for(var i = 1; i <= aprv_line.rows.length; i++) {
+		for(var i = 1; i < aprv_line.rows.length; i++) {
 			if($("#refe_yn"+i).is(":checked")){
 			}else{
 				aprv_line.rows[i].cells[1].innerHTML = "<input name='aprv_ordr"+ i +"' id='aprv_ordr"+ i +"' value='"+ cnt +"' type='text' class='form-control input-sm' readonly />";
