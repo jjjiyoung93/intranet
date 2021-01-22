@@ -66,7 +66,7 @@
 										<tr>
 											<th class="visible-md visible-lg">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
 											<td style="text-align: left;">&nbsp;
-												<a href="#" onclick="javascript:setData('${list.USS_ID}', '${list.USS_NM }');">${list.USS_ID}</a>
+												<a href="#" onclick="javascript:setData('${list.USS_ID}', '${list.USS_NM }', '${list.USS_AUTH_NM }', '${list.DP_NM }');">${list.USS_ID}</a>
 											</td>
 											<td>${list.USS_NM}</td>
 											<td>${list.USS_AUTH_NM}</td>
@@ -111,8 +111,8 @@ function goPage(cPage){
 }
 
 
-function setData(id, nm){
-	$(opener.location).attr("href", "javascript:setUssForm('"+id+"', '"+nm+"')");
+function setData(id, nm, auth_nm, dept_nm){
+	$(opener.location).attr("href", "javascript:setUssForm('"+id+"', '"+nm+"', '"+auth_nm+"', '"+dept_nm+"')");
 	window.close();
 }
 </script>

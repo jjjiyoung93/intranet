@@ -55,7 +55,7 @@ body {
 }
 h1 {
 	text-align: center;
-	margin: 0px 0px 120px 0px;
+	margin: 0px 0px 130px 0px;
 }
 .aprv-line {
 	border: 2px solid black;
@@ -112,7 +112,7 @@ h1 {
 					<td colspan="2" class="td-ss2 td-header">담당</td>
 					<c:forEach var="line" items="${lineList }" varStatus="status">
 						<c:if test="${line.REFE_YN == 'N' }">
-							<td colspan="2" class="td-ss2 td-header">${line.APRV_AUTH_NM }</td>
+							<td colspan="2" class="td-ss2 td-header">${line.APRV_AUTH_NM }<br>(${line.USS_NM })</td>
 						</c:if>
 					</c:forEach>
 				</tr>

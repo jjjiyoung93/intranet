@@ -43,6 +43,7 @@
 													<c:when test="${params.mode eq modeType }">
 														<br/><span class="">${resultView.USS_ID }</span>
 														<input type="hidden" id="uss_id" name="uss_id" class="form-control" value="${params.uss_id }" />
+														<input type="hidden" id="emp_no" name="emp_no" class="form-control" value="${params.uss_id }" />
 													</c:when>
 													<c:otherwise>
 														<div class="input-group">
@@ -77,7 +78,7 @@
 												<option value="${authList.AUTHOR_CODE}" <c:if test="${resultView.USS_AUTH_CD eq authList.AUTHOR_CODE }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
 											</c:forEach>
 										</select>
-								</li>
+									</li>
 								</ul>
 								<ul class="col-md-6">
 									<li class="form-group">
@@ -124,10 +125,69 @@
 							</ul>
 							</div>
 						<div class="clearfix">
+						<div class="form-group">
+							<label>결재라인</label>
+							<table class="table table-bordered text-center">
+								<colgroup>
+									<col width="10%"/>
+									<col width="10%"/>
+									<col width="20%"/>
+									<col width="40%"/>
+									<col width="10%"/>
+									<col width="10%"/>
+								</colgroup>
+								<tr class="active">
+									<th class="text-center">순서</th>
+									<th class="text-center">순번</th>
+									<th class="text-center">이름</th>
+									<th class="text-center">부서명/직급</th>
+									<th class="text-center">참조인</th>
+									<th class="text-center">삭제</th>
+								</tr>
+								<c:forEach items="${lineInfoList }" var="lineInfo">
+									<tr class="lineInfoList">
+										<td>
+											<input type="hidden" class="aprv_emp_no_list" id="aprv_emp_no_${lineInfo.APRV_ORDR }" name="aprv_emp_no_${lineInfo.APRV_ORDR }" value="${lineInfo.APRV_EMP_NO }"/>
+											<input type="hidden" class="aprv_ordr_list" id="aprv_ordr_${lineInfo.APRV_ORDR }" name="aprv_ordr_${lineInfo.APRV_ORDR }" value="${lineInfo.APRV_ORDR }">
+											<button type="button" class="btn btn-default btn-xs" onClick="fn_upOrdr(this);">
+												<span class="glyphicon glyphicon-menu-up"></span>
+											</button>
+											<button type="button" class="btn btn-default btn-xs" onClick="fn_downOrdr(this);">
+												<span class="glyphicon glyphicon-menu-down"></span>
+											</button>
+										</td>
+										<td class="aprv_ordr_list_val">
+											${lineInfo.APRV_ORDR }
+										</td>
+										<td>
+											${lineInfo.APRV_EMP_NM }
+										</td>
+										<td>
+											${lineInfo.CD_NM } / ${lineInfo.AUTHOR_NM }
+										</td>
+										<td>
+											<input type="checkbox" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }"/>
+										</td>
+										<td>
+											<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">
+												<span class="glyphicon glyphicon-trash"></span> 삭제
+											</button>
+										</td>
+									</tr>
+								</c:forEach>
+								<tr id="trAddLine">
+									<td colspan="7">
+										<button type="button" class="btn btn-default btn-xs" onClick="fn_addLine();">
+											<span class="glyphicon glyphicon-plus"></span> 추가
+										</button>
+									</td>
+								</tr>
+							</table>
+						</div>
 					    <span class="pull-right">
 					    	<input  class="btn-ok btn btn btn-sm btn-info" type="button" value="저장" />
 					    	<input class="btn-cancel btn btn-sm btn-default"  type="button" value="취소" />
-							</span>
+						</span>
 						</div>	
 						</form>
 					</div>
@@ -138,7 +198,9 @@
 		</div>
 		<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
-	
+	<form id="ussFrm" name="ussFrm" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00Popup.do" >
+		<input type="hidden" id="not_uss_id" name="not_uss_id" value="" />
+	</form>
 	<!-- js파일 및 공통스크립트사용 -->
 	<jsp:include page="/resources/com/inc/javascript.jsp" />
 	<script type="text/javascript">
@@ -358,6 +420,107 @@
 			}
 			$("#frm1").attr("action", url_val);
 			$("#frm1").submit();
+		}
+		
+		// 결재라인 tr 위로 이동
+		function fn_upOrdr(clickedBtn) {
+			var clickedTr = $(clickedBtn).context.closest(".lineInfoList"); // 클릭한 tr
+			var lineInfoList = $(".lineInfoList"); // 결재라인 전체 tr 배열
+			
+			$(lineInfoList).each(function(idx, obj) { // 결재라인 전체 tr 반복문
+				if(clickedTr == obj) { // 클릭한 tr인 경우
+					if(idx == 0) { // 이미 첫번째인 경우
+						alert("첫번째 입니다.");
+					} else {
+						lineInfoList[idx - 1].before(obj);
+						fn_changeOrdr();
+					}
+				}
+			});
+		}
+		
+		// 결재라인 tr 아래로 이동
+		function fn_downOrdr(clickedBtn) {
+			var clickedTr = $(clickedBtn).context.closest(".lineInfoList"); // 클릭한 tr
+			var lineInfoList = $(".lineInfoList"); // 결재라인 전체 tr 배열
+			
+			$(lineInfoList).each(function(idx, obj) { // 결재라인 전체 tr 반복문
+				if(clickedTr == obj) { // 클릭한 tr인 경우
+					if(idx == lineInfoList.size()-1) { // 이미 첫번째인 경우
+						alert("마지막 입니다.");
+					} else {
+						lineInfoList[idx + 1].after(obj);
+						fn_changeOrdr();
+					}
+				}
+			});
+		}
+		
+		// 결재라인 추가
+		function fn_addLine() {
+			window.open("", "uss00Popup","width=1300, height=750");
+			$("#ussFrm").attr("target", "uss00Popup");
+			$("#ussFrm").attr("action", "${pageContext.request.contextPath}/search/uss00Popup.do");
+			$("#ussFrm").submit();
+		}
+		function setUssForm(id, nm, auth_nm, dept_nm){
+			var nextSeq = $(".lineInfoList").size() + 1;
+			var html = "";
+			html += '<tr class="lineInfoList">';
+			html += '	<td>';
+			html += '		<input type="hidden" class="aprv_emp_no_list" id="aprv_emp_no_' + nextSeq + '" name="aprv_emp_no_' + nextSeq + '" value="' + id + '"/>';
+			html += '		<input type="hidden" class="aprv_ordr_list" id="aprv_ordr_' + nextSeq + '" name="aprv_ordr_' + nextSeq + '" value="' + nextSeq + '">';
+			html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_upOrdr(this);">';
+			html += '			<span class="glyphicon glyphicon-menu-up"></span>';
+			html += '		</button>';
+			html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_downOrdr(this);">';
+			html += '			<span class="glyphicon glyphicon-menu-down"></span>';
+			html += '		</button>';
+			html += '	</td>';
+			html += '	<td class="aprv_ordr_list_val">';
+			html += '		' + nextSeq;
+			html += '	</td>';
+			html += '	<td>';
+			html += '		' + nm;
+			html += '	</td>';
+			html += '	<td>';
+			html += '		' + dept_nm + ' / ' + auth_nm;
+			html += '	</td>';
+			html += '	<td>';
+			html += '		<input type="checkbox" class="refe_yn_list" id="refe_yn_' + nextSeq + '" name="refe_yn_' + nextSeq + '"/>';
+			html += '	</td>';
+			html += '	<td>';
+			html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">';
+			html += '			<span class="glyphicon glyphicon-trash"></span> 삭제';
+			html += '		</button>';
+			html += '	</td>';
+			html += '</tr>';
+			$("#trAddLine").before(html);
+		}
+		
+		// 결재라인 삭제
+		function fn_deleteLine(clickedBtn) {
+			var clickedTr = $(clickedBtn).context.closest(".lineInfoList"); // 클릭한 tr
+			clickedTr.remove();
+			fn_changeOrdr();
+		}
+		
+		// 결재라인 순번 새로 매기기
+		function fn_changeOrdr() {
+			var lineInfoList = $(".lineInfoList"); // 결재라인 전체 tr 배열
+			$(lineInfoList).each(function(idx, obj) {
+				// 순번 input, td 값 변경
+				$(obj).find(".aprv_ordr_list").val(idx + 1);
+				$(obj).find(".aprv_ordr_list_val").text(idx + 1);
+				
+				// form input 값 변경
+				$(obj).find(".aprv_emp_no_list").prop("id", "aprv_emp_no_" + (idx + 1));
+				$(obj).find(".aprv_emp_no_list").prop("name", "aprv_emp_no_" + (idx + 1));
+				$(obj).find(".aprv_ordr_list").prop("id", "aprv_ordr_" + (idx + 1));
+				$(obj).find(".aprv_ordr_list").prop("name", "aprv_ordr_" + (idx + 1));
+				$(obj).find(".refe_yn_list").prop("id", "refe_yn_" + (idx + 1));
+				$(obj).find(".refe_yn_list").prop("name", "refe_yn_" + (idx + 1));
+			});
 		}
 	</script>
 </body>

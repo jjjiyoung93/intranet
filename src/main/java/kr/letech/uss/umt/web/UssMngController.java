@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.annotation.IncludedInfo;
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.ReqUtils;
@@ -28,6 +29,9 @@ public class UssMngController {
 	/** 권한 관련 */
 	@Resource(name = "roleMngService")
 	private RoleMngService roleMngService;
+	
+	@Resource(name = "aprvMngService")
+	private AprvMngService aprvMngService;
 	
 	/**
 	 * 코드 데이터를 조회위한 서비스
@@ -121,6 +125,10 @@ public class UssMngController {
 		// 부서목록
 		List departList = ussMngService.getUssDepartList(params);
 		model.addAttribute("departList", departList);
+		
+		/* 결재 라인 정보 조회 */
+		List lineInfoList = aprvMngService.aprvLineInfoList(params);
+		model.addAttribute("lineInfoList", lineInfoList);
 		
 		return "letech/uss/umt/uss00Form";
 	}

@@ -760,12 +760,19 @@
 	<!-- 결재라인정보 목록조회 -->
 	<select id="getAprvLineInfoList" resultType="HashMap" parameterType="map" >
 		SELECT A.EMP_NO
-		        , A.APRV_ORDR
-		        , A.REFE_YN
-		        , A.APRV_EMP_NO
-		        , (SELECT USS_NM FROM STD_USS_MNG WHERE USS_ID = A.APRV_EMP_NO) AS APRV_EMP_NM
-		  FROM STD_APRV_LINE_INFO A
-		 WHERE EMP_NO = #{EMP_NO, jdbcType=VARCHAR}
+			 , A.APRV_ORDR
+			 , A.REFE_YN
+			 , A.APRV_EMP_NO
+			 , B.USS_NM AS APRV_EMP_NM
+			 , B.USS_AUTH_CD
+			 , C.AUTHOR_NM
+			 , B.DP_CD
+			 , d.CD_NM
+		  FROM STD_APRV_LINE_INFO A, STD_USS_MNG B, STD_AUT_INFO C, STD_CD_MNG D
+		 WHERE A.APRV_EMP_NO = B.USS_ID
+		   AND B.USS_AUTH_CD = C.AUTHOR_CODE
+		   AND B.DP_CD = D.CD
+		   AND (EMP_NO = #{EMP_NO, jdbcType=VARCHAR} OR EMP_NO = #{uss_id, jdbcType=VARCHAR})
 		 ORDER BY REFE_YN, APRV_ORDR
 	</select>
 	

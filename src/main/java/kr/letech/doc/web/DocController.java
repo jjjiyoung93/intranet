@@ -75,6 +75,15 @@ public class DocController {
 		return "letech/doc/doc00Popup";
 	}
 	
+	/**
+	* 서버에 저장된 sign.png파일을 이미지로 반환한다. 
+	* 작성자 : JO MIN SOO
+	* 변경이력 :
+	* @param request
+	* @param response
+	* @param model
+	* @throws Exception
+	*/
 	@RequestMapping(value = "/doc/sign.do")
 	public void test(HttpServletRequest request, HttpServletResponse  response, ModelMap model) throws Exception {
 		
