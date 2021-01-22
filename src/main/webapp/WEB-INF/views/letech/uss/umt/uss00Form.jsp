@@ -166,7 +166,7 @@
 											${lineInfo.CD_NM } / ${lineInfo.AUTHOR_NM }
 										</td>
 										<td>
-											<input type="checkbox" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }"/>
+											<input type="checkbox" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }" <c:if test="${lineInfo.REFE_YN == 'Y'}">checked</c:if>/>
 										</td>
 										<td>
 											<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">
@@ -464,38 +464,47 @@
 			$("#ussFrm").submit();
 		}
 		function setUssForm(id, nm, auth_nm, dept_nm){
-			var nextSeq = $(".lineInfoList").size() + 1;
-			var html = "";
-			html += '<tr class="lineInfoList">';
-			html += '	<td>';
-			html += '		<input type="hidden" class="aprv_emp_no_list" id="aprv_emp_no_' + nextSeq + '" name="aprv_emp_no_' + nextSeq + '" value="' + id + '"/>';
-			html += '		<input type="hidden" class="aprv_ordr_list" id="aprv_ordr_' + nextSeq + '" name="aprv_ordr_' + nextSeq + '" value="' + nextSeq + '">';
-			html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_upOrdr(this);">';
-			html += '			<span class="glyphicon glyphicon-menu-up"></span>';
-			html += '		</button>';
-			html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_downOrdr(this);">';
-			html += '			<span class="glyphicon glyphicon-menu-down"></span>';
-			html += '		</button>';
-			html += '	</td>';
-			html += '	<td class="aprv_ordr_list_val">';
-			html += '		' + nextSeq;
-			html += '	</td>';
-			html += '	<td>';
-			html += '		' + nm;
-			html += '	</td>';
-			html += '	<td>';
-			html += '		' + dept_nm + ' / ' + auth_nm;
-			html += '	</td>';
-			html += '	<td>';
-			html += '		<input type="checkbox" class="refe_yn_list" id="refe_yn_' + nextSeq + '" name="refe_yn_' + nextSeq + '"/>';
-			html += '	</td>';
-			html += '	<td>';
-			html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">';
-			html += '			<span class="glyphicon glyphicon-trash"></span> 삭제';
-			html += '		</button>';
-			html += '	</td>';
-			html += '</tr>';
-			$("#trAddLine").before(html);
+			var check = true;
+			$(".lineInfoList").each(function(idx, obj) {
+				if($(obj).find(".aprv_emp_no_list").val() == id) {
+					alert("이미 결재라인에 존재합니다.");
+					check = false;
+				}
+			});
+			if(check) {
+				var nextSeq = $(".lineInfoList").size() + 1;
+				var html = "";
+				html += '<tr class="lineInfoList">';
+				html += '	<td>';
+				html += '		<input type="hidden" class="aprv_emp_no_list" id="aprv_emp_no_' + nextSeq + '" name="aprv_emp_no_' + nextSeq + '" value="' + id + '"/>';
+				html += '		<input type="hidden" class="aprv_ordr_list" id="aprv_ordr_' + nextSeq + '" name="aprv_ordr_' + nextSeq + '" value="' + nextSeq + '">';
+				html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_upOrdr(this);">';
+				html += '			<span class="glyphicon glyphicon-menu-up"></span>';
+				html += '		</button>';
+				html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_downOrdr(this);">';
+				html += '			<span class="glyphicon glyphicon-menu-down"></span>';
+				html += '		</button>';
+				html += '	</td>';
+				html += '	<td class="aprv_ordr_list_val">';
+				html += '		' + nextSeq;
+				html += '	</td>';
+				html += '	<td>';
+				html += '		' + nm;
+				html += '	</td>';
+				html += '	<td>';
+				html += '		' + dept_nm + ' / ' + auth_nm;
+				html += '	</td>';
+				html += '	<td>';
+				html += '		<input type="checkbox" class="refe_yn_list" id="refe_yn_' + nextSeq + '" name="refe_yn_' + nextSeq + '"/>';
+				html += '	</td>';
+				html += '	<td>';
+				html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">';
+				html += '			<span class="glyphicon glyphicon-trash"></span> 삭제';
+				html += '		</button>';
+				html += '	</td>';
+				html += '</tr>';
+				$("#trAddLine").before(html);
+			}
 		}
 		
 		// 결재라인 삭제
