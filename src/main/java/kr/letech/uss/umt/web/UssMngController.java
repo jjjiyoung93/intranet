@@ -1,5 +1,6 @@
 package kr.letech.uss.umt.web;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.annotation.IncludedInfo;
+import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
@@ -18,6 +20,8 @@ import kr.letech.uss.umt.service.UssMngService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Controller
 public class UssMngController {
@@ -141,9 +145,9 @@ public class UssMngController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/uss00Tran.do")
-	public String tran(HttpServletRequest request, ModelMap model) throws Exception {
+	public String tran(MultipartHttpServletRequest multiRequest, ModelMap model) throws Exception {
 		
-		Map params = ReqUtils.getParameterMap(request);
+		Map params = ReqUtils.getParameterMap(multiRequest);
 		model.addAttribute("params", params);
 		
 		String mode = (String)params.get("mode");
@@ -160,6 +164,13 @@ public class UssMngController {
 			
 			if(!uss_tel1.equals("") && !uss_tel2.equals("") && !uss_tel1.equals("")){
 				params.put("uss_tel", uss_tel1+"-"+uss_tel2+"-"+uss_tel3);
+			}
+			
+			/* 첨부파일 정보 */
+			MultipartFile mf = multiRequest.getFile("uss_sign");
+			if(!mf.isEmpty()) {
+				String path = EgovProperties.getProperty("Globals.fileStorePath") + "sign/";
+				mf.transferTo(new File(path + params.get("uss_id") + ".png"));
 			}
 			
 			if(mode.equals(VarConsts.MODE_I)){	

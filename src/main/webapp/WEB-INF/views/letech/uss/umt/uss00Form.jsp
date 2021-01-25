@@ -79,6 +79,12 @@
 											</c:forEach>
 										</select>
 									</li>
+									<li class="form-group">
+										<label>사용자 서명</label><br>
+										<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${params.uss_id }" style="width: 140px; max-height: 70px;">
+										<br>
+										<input class="input-group" name="uss_sign" id="uss_sign" accept="image/png" type="file" onChange="fileCheck(this)"/>
+									</li>
 								</ul>
 								<ul class="col-md-6">
 									<li class="form-group">
@@ -125,6 +131,7 @@
 							</ul>
 							</div>
 						<div class="clearfix">
+						<hr>
 						<div class="form-group">
 							<label>결재라인</label>
 							<table class="table table-bordered text-center">
@@ -216,12 +223,13 @@
 					}else{
 						$("#mode").val("<%=VarConsts.MODE_I%>");	
 					}
-					
 					$.ajax({
 						url: "${pageContext.request.contextPath}/uss/umt/uss00Tran.do",
 						type: "post",
-						dataType : "json", 
-						data : $("#frm1").serialize(),
+						enctype: 'multipart/form-data',
+						processData: false,
+			            contentType: false,
+						data : new FormData($("#frm1")[0]),
 						success: function(result){
 							var url_val = "";
 							fn_goPage();
@@ -530,6 +538,19 @@
 				$(obj).find(".refe_yn_list").prop("id", "refe_yn_" + (idx + 1));
 				$(obj).find(".refe_yn_list").prop("name", "refe_yn_" + (idx + 1));
 			});
+		}
+		
+		function fileCheck(obj) {
+			var pathpoint = obj.value.lastIndexOf('.');
+			var filepoint = obj.value.substring(pathpoint + 1, obj.length);
+			var filetype = filepoint.toLowerCase();
+			if(filetype != 'png') {
+				if(obj.value != "") {
+					alert("png형식의 이미지 파일만 선택하세요.");
+					$(obj).val("");
+					return false;
+				}
+			}
 		}
 	</script>
 </body>
