@@ -126,9 +126,14 @@
                               <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">기간</dt>
                                <dd class="col-md-10 col-sm-9">
-                                   <c:if test="${viewMap.TERM_ST_YM ne null }">
-                                       ${viewMap.TERM_ST_YM } ~ ${viewMap.TERM_ED_YM }
-                                   </c:if>
+                               		<c:choose>
+                               			<c:when test="${viewMap.TERM_ST_YM ne null }">
+                               				${viewMap.TERM_ST_YM} - ${viewMap.TERM_ED_YM}
+                               			</c:when>
+                               			<c:otherwise>
+                               				${viewMap.CRTN_DT } - ${viewMap.CRTN_DT }
+                               			</c:otherwise>
+                               		</c:choose>
                               </dd>
                               </dl>
                            </li>
