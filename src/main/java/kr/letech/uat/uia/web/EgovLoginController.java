@@ -1,5 +1,6 @@
 package kr.letech.uat.uia.web;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 import kr.letech.cmm.LoginVO;
 import kr.letech.cmm.annotation.IncludedInfo;
 import kr.letech.cmm.util.EgovClntInfo;
+import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.sys.rol.service.RoleMngService;
@@ -60,7 +64,7 @@ public class EgovLoginController {
 	/** 권한 관련 */
 	@Resource(name = "roleMngService")
 	private RoleMngService roleMngService;
-
+	
 //	/** EgovCmmUseService */
 //	@Resource(name = "EgovCmmUseService")
 //	private EgovCmmUseService cmmUseService;
@@ -544,9 +548,9 @@ public class EgovLoginController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uat/uia/uss00Tran.do")
-	public String tran(HttpServletRequest request, ModelMap model) throws Exception {
+	public String tran(MultipartHttpServletRequest multiRequest, ModelMap model) throws Exception {
 		
-		Map params = ReqUtils.getParameterMap(request);
+		Map params = ReqUtils.getParameterMap(multiRequest);
 		model.addAttribute("params", params);
 		
 		String viewName = "jsonView";
@@ -560,6 +564,13 @@ public class EgovLoginController {
 			params.put("uss_tel", uss_tel1+"-"+uss_tel2+"-"+uss_tel3);
 		}
 		
+		/* 첨부파일 정보 */
+		MultipartFile mf = multiRequest.getFile("uss_sign");
+		if(!mf.isEmpty()) {
+			String path = EgovProperties.getProperty("Globals.fileStorePath") + "sign/";
+			mf.transferTo(new File(path + params.get("uss_id") + ".png"));
+		}
+	    
 		ussMngService.ussUpdate(params);
 		
 		return viewName;

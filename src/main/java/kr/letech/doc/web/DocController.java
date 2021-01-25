@@ -89,10 +89,15 @@ public class DocController {
 		
 		Map params = ReqUtils.getParameterMap(request);
 		
-		String file_path = EgovProperties.getProperty("Globals.fileStorePath") + "sign/" + params.get("emp_no") + ".png";	// 기본 저장 위치
+		String filePath = EgovProperties.getProperty("Globals.fileStorePath") + "sign/";	// 기본 저장 위치
 		
 		response.setContentType("image/png");
-		File file = new File(file_path);
+		File file = new File(filePath + params.get("emp_no") + ".png");
+		
+		if(file.exists() == false) {
+			file = new File(filePath + "nosign.png");
+		}
+		
 		response.setContentLength((int) file.length());
 
 		FileInputStream in = new FileInputStream(file);

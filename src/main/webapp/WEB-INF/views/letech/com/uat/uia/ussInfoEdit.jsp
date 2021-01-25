@@ -27,7 +27,7 @@
 							</span>
 						</h2>
 					<div class="form-container">
-					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/index.do" >
+					<form name="frm1" id="frm1" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/index.do" >
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
 						<input type="hidden" name="id_check" id="id_check" value="" />
@@ -122,6 +122,18 @@
 											</dd>
 										</dl>
 									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">사용자 서명</dt>
+											<dd class="col-md-9 col-sm-9 ">
+												<div class="form-group">
+													<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${params.uss_id }" style="width: 140px; max-height: 70px;">
+													<br>
+													<input class="input-group" name="uss_sign" id="uss_sign" accept="image/png" type="file" onChange="fileCheck(this)"/>
+												</div>
+											</dd>
+										</dl>
+									</li>
 								</ul>
 								</div>
 							</div>
@@ -154,8 +166,10 @@
 						$.ajax({
 							url: "${pageContext.request.contextPath}/uat/uia/uss00Tran.do",
 							type: "post",
-							dataType : "json", 
-							data : $("#frm1").serialize(),
+							enctype: 'multipart/form-data',
+							processData: false,
+				            contentType: false,
+							data : new FormData($("#frm1")[0]),
 							success: function(result){
 								var url_val = "";
 								fn_goPage();
@@ -233,6 +247,19 @@
 				alert("정보수정이 완료되었습니다.");
 				$("#uss_pwd").val("");
 				$("#frm1").submit();
+			}
+			
+			function fileCheck(obj) {
+				var pathpoint = obj.value.lastIndexOf('.');
+				var filepoint = obj.value.substring(pathpoint + 1, obj.length);
+				var filetype = filepoint.toLowerCase();
+				if(filetype != 'png') {
+					if(obj.value != "") {
+						alert("png형식의 이미지 파일만 선택하세요.");
+						$(obj).val("");
+						return false;
+					}
+				}
 			}
 		</script>
 	</body>
