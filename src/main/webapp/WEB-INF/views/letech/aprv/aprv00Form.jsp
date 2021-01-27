@@ -391,6 +391,7 @@ $("#cdList1").change(function(){
 						data=0;
 						$("#cdList2").css("display", "none");
 						fn_getDocCode(); // 문서 양식 불러옴(2가지 경우 중 첫번째)
+						fn_getTitle($("#cdList1").val(), null); // 제목 양식 불러오기
 					} else {
 						$("#cdList2").css("display", "");
 					}
@@ -404,6 +405,7 @@ $("#cdList1").change(function(){
 
 $("#cdList2").change(function(){ 
 	fn_getDocCode(); // 문서 양식 불러옴(2가지 경우 중 두번째)
+	fn_getTitle($("#cdList1").val(), $("#cdList2").val()); // 제목 양식 불러오기
 });
 
 // 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
@@ -443,6 +445,81 @@ function fn_getDocCode(){
 		}
 	});
 };
+
+function fn_getTitle(cd1, cd2) {
+	var title = "";
+	if(cd1 == "CD0001001") { // 업무보고
+		if(cd2 == "CD0001001001") { // 주간
+			title = "00월_업무보고_주간_0주차";
+		} else if(cd2 == "CD0001001002") { // 월간
+			title = "00월_업무보고_월간";
+		}
+	} else if(cd1 == "CD0001007") { // 지출결의
+		if(cd2 == "CD0001007001") { // 법인
+			title = "";
+		} else if(cd2 == "CD0001007002") { // 일반(개인)
+			title = "";
+		} else if(cd2 == "CD0001007003") { // 송금
+			title = "";
+		}
+	} else if(cd1 == "CD0001008") { // 품의
+		if(cd2 == "CD0001008001") { // 구매
+			title = "00월_품의_OO(법인,일반,송금)_구매";
+		} else if(cd2 == "CD0001008002") { // 회식
+			title = "00월_품의_OO(법인,일반,송금)_회식";
+		}
+	} else if(cd1 == "CD0001009") { // 출장
+		if(cd2 == "CD0001009001") { // 출장정산(국내)
+			title = "00월_출장정산서(국내)_OO(일반,파견)";
+		} else if(cd2 == "CD0001009002") { // 출장계획(해외)
+			title = "00월_출장계획서(해외)_OO(일반,파견)";
+		}
+	} else if(cd1 == "CD0001010") { // 가지급금
+		title = "00월_가지급금신청_OO(송금,법인)";
+	} else if(cd1 == "CD0001011") { // 휴가신청
+		if(cd2 == "CD0001011001") { // 연차
+			title = "00월_휴가신청_연차";
+		} else if(cd2 == "CD0001011002") { // 병가
+			title = "00월_휴가신청_병가";
+		} else if(cd2 == "CD0001011003") { // 기타(경조사)
+			title = "00월_휴가신청_경조";
+		} else if(cd2 == "CD0001011004") { // 대체휴가
+			title = "00월_휴가신청_기타";
+		} else if(cd2 == "CD0001011005") { // 위로휴가
+			title = "00월_휴가신청_기타";
+		} else if(cd2 == "CD0001011006") { // 가족돌봄휴가
+			title = "00월_휴가신청_기타";
+		}
+	} else if(cd1 == "CD0001012") { // 휴직신청
+		if(cd2 == "CD0001012001") { // 남성육아휴직
+			title = "00월_휴직신청_육아휴직";
+		} else if(cd2 == "CD0001012002") { // 가족돌봄휴직
+			title = "00월_휴직신청_가족돌봄";
+		}
+	} else if(cd1 == "CD0001013") { // 유연근무제신청
+		if(cd2 == "CD0001013001") { // 시차출퇴근제
+			title = "00월_시차출퇴근신청";
+		} else if(cd2 == "CD0001013003") { // 조기퇴근제
+			title = "00월_조기퇴근신청";
+		}
+	} else if(cd1 == "CD0001014") { // 기타
+		title = "";
+	} else if(cd1 == "CD0001015") { // 도서
+		title = "00월_도서구매신청";
+	} else if(cd1 == "CD0001016") { // 교육훈련신청
+		title = "00월_교육훈련신청";
+	} 
+	
+	var date = new Date();
+	var year = date.getFullYear();
+	var month = ("0" + (1 + date.getMonth())).slice(-2);
+	var day = ("0" + date.getDate()).slice(-2);
+	var yyyymmdd = year + month + day;
+	if(title != "") {
+		title += "_" + yyyymmdd
+	};
+	$("#title").val(title);
+}
 
 $(document).ready(function() {
 	/* 저장 */	
