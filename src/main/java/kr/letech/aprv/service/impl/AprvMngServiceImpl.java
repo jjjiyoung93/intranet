@@ -739,7 +739,6 @@ public class AprvMngServiceImpl implements AprvMngService {
 		// RestTemplate을 이용하여 API 호출 및 데이터 반환
 		RestTemplate rest = new RestTemplate();
 		String result = rest.getForObject(targetUrl, String.class);
-		System.out.println(result);
 		
 		// 받아온 데이터를 Map 데이터로 변환
 		Map rtnData = JSONObject.fromObject(result);
