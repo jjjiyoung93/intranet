@@ -1,10 +1,17 @@
 package kr.letech.uss.umt.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.letech.cmm.util.EgovFileScrty;
 import kr.letech.cmm.util.ObjToConvert;
@@ -12,10 +19,6 @@ import kr.letech.cmm.util.PageNavigator;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.sys.rol.service.impl.RoleMngDAO;
 import kr.letech.uss.umt.service.UssMngService;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service("ussMngService")
 public class UssMngServiceImpl implements UssMngService {
@@ -298,4 +301,74 @@ public class UssMngServiceImpl implements UssMngService {
 		return ussMngDAO.getUssDepartList(params);
 	}
 
+	/**
+	* 결재라인 삭제 및 생성
+	* @Method : insertAprvLine
+	* @Author : JO MIN SOO
+	* @Date : 2021. 1. 26.
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	@Override
+	public void insertAprvLine(Map params) throws Exception {
+		ussMngDAO.deleteAprvLine(params); // 사용자에 등록된 결재라인 모두 삭제
+		
+		List<HashMap<String, Object>> aprvLineList = new ArrayList<HashMap<String, Object>>(); // 결재라인 결재자 리스트 
+		List<HashMap<String, Object>> aprvLineRefeList = new ArrayList<HashMap<String, Object>>(); // 결재라인 참조자 리스트
+		
+		for (Object key : params.keySet()) { // 파라미터로 넘어온 데이터 조회
+			String strKey = String.valueOf(key);
+			String strValue = String.valueOf(params.get(key));
+			if(strKey.contains("aprv_ordr_")) { // aprv_ordr_***로 seq 정보가 저장됨
+				HashMap<String, Object> map = new HashMap<String, Object>(); // 결재라인 결재자 리스트, 결재라인 참조자 리스트에 저장하기 위한 맵
+				
+				// 결재라인정보에 필요한 데이터 저장
+				map.put("emp_no", params.get("uss_id"));
+				map.put("aprv_emp_no", params.get("aprv_emp_no_" + strValue));
+				map.put("aprv_ordr", params.get("aprv_ordr_" + strValue));
+				
+				String refeYn = String.valueOf(params.get("refe_yn_" + strValue));
+				if("Y".equals(refeYn)) { // 참조자인경우
+					map.put("refe_yn", "Y");
+					aprvLineRefeList.add(map);
+				} else { // 참조자 아닌경우
+					map.put("refe_yn", "N");
+					aprvLineList.add(map);
+				}
+			}
+		}
+		
+		// 리스트를 aprv_ordr(순번)순으로 정렬
+		Collections.sort(aprvLineList, new Comparator<HashMap<String, Object>>() {
+			@Override
+			public int compare(HashMap<String, Object> o1, HashMap<String, Object> o2) {
+				String ordr1 = String.valueOf(o1.get("aprv_ordr"));
+				String ordr2 = String.valueOf(o2.get("aprv_ordr"));
+				return ordr1.compareTo(ordr2);
+			}
+		});
+		Collections.sort(aprvLineRefeList, new Comparator<HashMap<String, Object>>() {
+			@Override
+			public int compare(HashMap<String, Object> o1, HashMap<String, Object> o2) {
+				String ordr1 = String.valueOf(o1.get("aprv_ordr"));
+				String ordr2 = String.valueOf(o2.get("aprv_ordr"));
+				return ordr1.compareTo(ordr2);
+			}
+		});
+		
+		int count = 1; // 순번 새로 매기기(참조자가 중간에 껴있는 것을 없애기 위해)
+		 // 결재라인 정보 등록
+		for(int i = 0; i < aprvLineList.size(); i++) {
+			HashMap<String, Object> map = aprvLineList.get(i);
+			map.put("aprv_ordr", count++);
+				ussMngDAO.insertAprvLine(map);
+		}
+		for(int i = 0; i < aprvLineRefeList.size(); i++) {
+			HashMap<String, Object> map = aprvLineRefeList.get(i);
+			map.put("aprv_ordr", count++);
+			ussMngDAO.insertAprvLine(map);
+		}
+	}
 }

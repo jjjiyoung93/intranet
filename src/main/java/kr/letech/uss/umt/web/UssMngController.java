@@ -173,6 +173,9 @@ public class UssMngController {
 				mf.transferTo(new File(path + params.get("uss_id") + ".png"));
 			}
 			
+			/* 결재라인 삭제 및 생성 */
+			ussMngService.insertAprvLine(params);
+			
 			if(mode.equals(VarConsts.MODE_I)){	
 			/* 사용자 등록 */
 				ussMngService.ussInsert(params);

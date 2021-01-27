@@ -20,6 +20,7 @@ import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.doc.service.DocService;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
@@ -62,15 +63,20 @@ public class DocController {
 		/* 문서 데이터 조회 */
 		Map docMap = docService.getDocData(viewMap);
 		
-		// viewMap(결재정보 데이터)와 docMap(보고서 데이터)는 jsp에서 json형태로 사용하기 위해 파싱하여 Model에 저장
+		/* 첨부파일 리스트 조회 */
+		List fileList = aprvMngService.aprvFileList(params);
+		
+		// viewMap(결재정보 데이터), docMap(보고서 데이터), fileList(첨부파일 리스트)는 jsp에서 json형태로 사용하기 위해 파싱하여 Model에 저장
 		JSONObject docJson = JSONObject.fromObject(docMap);
 		JSONObject viewJson = JSONObject.fromObject(viewMap);
+		JSONArray fileJson = JSONArray.fromObject(fileList);
 		
 		model.addAttribute("viewMap", viewMap);
 		model.addAttribute("lineList", lineList);
 		model.addAttribute("docReport", codeMap.get("DOC_REPORT"));
 		model.addAttribute("docJson", docJson);
 		model.addAttribute("viewJson", viewJson);
+		model.addAttribute("fileJson", fileJson);
 		
 		return "letech/doc/doc00Popup";
 	}

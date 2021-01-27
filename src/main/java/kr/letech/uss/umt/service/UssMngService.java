@@ -38,4 +38,14 @@ public interface UssMngService {
 	 * @throws Exception
 	 */
 	public List getUssDepartList(Map params) throws Exception;
+
+	/**
+	* 결재라인 삭제 및 생성
+	* @Method : insertAprvLine
+	* @Author : JO MIN SOO
+	* @Date : 2021. 1. 26.
+	* @param params
+	* @throws Exception
+	*/
+	public void insertAprvLine(Map params) throws Exception;
 }

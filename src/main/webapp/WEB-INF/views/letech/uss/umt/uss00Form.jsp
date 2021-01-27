@@ -173,7 +173,7 @@
 											${lineInfo.CD_NM } / ${lineInfo.AUTHOR_NM }
 										</td>
 										<td>
-											<input type="checkbox" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }" <c:if test="${lineInfo.REFE_YN == 'Y'}">checked</c:if>/>
+											<input type="checkbox" value="Y" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }" <c:if test="${lineInfo.REFE_YN == 'Y'}">checked</c:if>/>
 										</td>
 										<td>
 											<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">
@@ -228,7 +228,7 @@
 						type: "post",
 						enctype: 'multipart/form-data',
 						processData: false,
-			            contentType: false,
+						contentType: false,
 						data : new FormData($("#frm1")[0]),
 						success: function(result){
 							var url_val = "";
@@ -237,9 +237,6 @@
 							alert(request.responseText);
 						} 
 					});
-					
-		// 			$("#frm1").attr("action", "${pageContext.request.contextPath}/uss/umt/uss00Tran.do");
-		// 			$("#frm1").submit();
 				}
 			});
 			
@@ -479,6 +476,10 @@
 					check = false;
 				}
 			});
+			if($("#uss_id").val() == id) {
+				alert("사용자와 결재 대상이 같습니다.");
+				check = false;
+			}
 			if(check) {
 				var nextSeq = $(".lineInfoList").size() + 1;
 				var html = "";
@@ -503,7 +504,7 @@
 				html += '		' + dept_nm + ' / ' + auth_nm;
 				html += '	</td>';
 				html += '	<td>';
-				html += '		<input type="checkbox" class="refe_yn_list" id="refe_yn_' + nextSeq + '" name="refe_yn_' + nextSeq + '"/>';
+				html += '		<input type="checkbox" value="Y" class="refe_yn_list" id="refe_yn_' + nextSeq + '" name="refe_yn_' + nextSeq + '"/>';
 				html += '	</td>';
 				html += '	<td>';
 				html += '		<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">';

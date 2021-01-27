@@ -120,4 +120,30 @@ public class UssMngDAO extends AbstractDAO {
 	public List getUssDepartList(Map params) throws Exception {
 		return getList("ussMng.getUssDepartList", params);
 	}
+	
+	/**
+	* 결재라인 삭제
+	* @Method : deleteAprvLine
+	* @Author : JO MIN SOO
+	* @Date : 2021. 1. 26.
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	public int deleteAprvLine(Map params) throws Exception {
+		return delete("ussMng.deleteAprvLine", params);
+	}
+	
+	/**
+	* 결재라인 생성
+	* @Method : insertAprvLine
+	* @Author : JO MIN SOO
+	* @Date : 2021. 1. 26.
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	public int insertAprvLine(Map params) throws Exception {
+		return (Integer) insert("ussMng.insertAprvLine", params);
+	}
 }

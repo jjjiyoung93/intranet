@@ -15,12 +15,6 @@
 .page-head {
 	height: 50px;
 }
-.page {
-	page-break-after: always;
-}
-@page {
-	margin: 10mm
-}
 @media screen { /* 화면에만 보여줄 것 */
 	.page-footer {
 		display: none;
@@ -50,7 +44,10 @@
 }
 body {
 	-webkit-print-color-adjust: exact !important;
-	margin: 10mm;
+	margin-top: 10mm;
+	margin-left: 10mm;
+	margin-right: 10mm;
+	margin-bottom: 0mm;
 	font-size: 12px;
 }
 h1 {
@@ -77,6 +74,9 @@ h1 {
 }
 .table-bordered > tbody > tr > td {
 	border: 1px solid black !important;
+}
+h4 {
+	margin-bottom: 0px;
 }
 .td-comm {vertical-align: middle !important; height: 35px; white-space: break-spaces;}
 .td-header {vertical-align: middle !important; text-align: center; background-color: #ececec !important;}
@@ -137,10 +137,19 @@ h1 {
 		</div>
 	</div>
 </body>
+<!-- 파일 다운로드 form Start -->
+<form id="downFrm" name="downFrm" method="post" action="${pageContext.request.contextPath}/cmm/FileDown.do">
+   <input type="hidden" name="file_path" id="file_path" value="" /><!-- 파일위치 -->
+   <input type="hidden" name="file_stre_nm" id="file_stre_nm" value="" /><!-- 저장된파일명 -->
+   <input type="hidden" name="file_nm" id="file_nm" value="" /><!-- 원문파일명 -->
+</form>
+<!-- 파일 다운로드 form End -->
+
 <script type="text/javascript">
 	$(function() {
 		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
 		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
+		var fileJson = ${fileJson }; // 컨트롤러에서 받아온 첨부파일에 대한 json
 		$("#emp_dp_rank").text(viewJson.REPT_DP_NM + " / " + viewJson.REPT_AUTH_NM);
 		$("#emp_nm").text(viewJson.REPT_APRV_NM);
 		var crtn_dt = viewJson.CRTN_DT.split("-");
@@ -162,6 +171,20 @@ h1 {
 				}
 			}
 		}
+		
+		if(fileJson != "") {
+			var cnt = 0;
+			var html = '<span style="margin-left: 40px;">첨부파일 : </span>';
+			for(key in fileJson) {
+				if(cnt++ != 0) {
+					html += '<span style="margin-left: 98px;"></span>';
+				}
+				html += '<a href="#" onclick="fn_downFile(\'' + fileJson[key].FILE_PATH + '\', \'' + fileJson[key].FILE_STRE_NM + '\', \'' + fileJson[key].FILE_NM + '\')">'; 
+				html += '	<span class="glyphicon glyphicon-save"></span><span> ' + fileJson[key].FILE_NM + '</span>';
+				html += '</a><br>';
+			}
+			$("#fileList").append(html);
+		}
 	});
 	
 	// 출장 항목
@@ -176,6 +199,14 @@ h1 {
 			html += '</tr>';
 			$("#tr_items").after(html);
 		};
+	}
+	
+	/* 파일 다운로드 */
+	function fn_downFile(file_path, file_stre_nm, file_nm){
+		$("#file_path").val(file_path);
+		$("#file_stre_nm").val(file_stre_nm);
+		$("#file_nm").val(file_nm);
+		$("#downFrm").submit();
 	}
 
 </script>

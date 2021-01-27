@@ -203,4 +203,25 @@
 		  CONNECT BY PRIOR cd = up_cd
 		ORDER SIBLINGS BY cd_ord ASC
 	</select>
+	
+	<!-- 결재라인 삭제 -->
+	<delete id="deleteAprvLine" parameterType="map" >
+		DELETE FROM STD_APRV_LINE_INFO 
+		 WHERE EMP_NO = #{uss_id}
+	</delete>
+	
+	<!-- 결재라인 생성 -->
+	<insert id="insertAprvLine" parameterType="map" >
+		INSERT INTO STD_APRV_LINE_INFO(
+			  EMP_NO
+			, APRV_ORDR
+			, REFE_YN
+			, APRV_EMP_NO
+		) VALUES (
+			  #{emp_no, jdbcType=VARCHAR}
+			, #{aprv_ordr, jdbcType=VARCHAR}
+			, #{refe_yn, jdbcType=VARCHAR}
+			, #{aprv_emp_no, jdbcType=VARCHAR}
+		)
+	</insert>
 </mapper>
