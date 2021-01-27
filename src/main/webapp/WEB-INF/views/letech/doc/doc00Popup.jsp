@@ -154,11 +154,15 @@ h4 {
 		$("#emp_nm").text(viewJson.REPT_APRV_NM);
 		var crtn_dt = viewJson.CRTN_DT.split("-");
 		$("#crtn_dt").text(crtn_dt[0] + "년 " + crtn_dt[1] + "월 " + crtn_dt[2] + "일");
-		if($("#term").size() == "1") {
-			var term = viewJson.TERM_ST_YM + " " + viewJson.TERM_ST_HM.slice(0, 2) + ":" + viewJson.TERM_ST_HM.slice(2, 4) + " ~ " + viewJson.TERM_ED_YM + " " + viewJson.TERM_ED_HM.slice(0, 2) + ":" + viewJson.TERM_ED_HM.slice(2, 4);
+		if($("#term").size() == "1" && docJson != null) {
+			var term = "";
+			if(viewJson.hasOwnProperty('TERM_ST_HM') && viewJson.hasOwnProperty('TERM_ED_YM')) {
+				term = viewJson.TERM_ST_YM + " " + viewJson.TERM_ST_HM.slice(0, 2) + ":" + viewJson.TERM_ST_HM.slice(2, 4) + " ~ " + viewJson.TERM_ED_YM + " " + viewJson.TERM_ED_HM.slice(0, 2) + ":" + viewJson.TERM_ED_HM.slice(2, 4);
+			} else {
+				term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;
+			}
 			$("#term").text(term);
-			if(docJson.BZTRP_NIGHT != null && docJson.BZTRP_DAYS != null) {
-				console.log("hi");
+			if(docJson.hasOwnProperty('BZTRP_NIGHT') && docJson.hasOwnProperty('BZTRP_DAYS')) {
 				$("#term").text(term + " (" + docJson.BZTRP_NIGHT + "박 " + docJson.BZTRP_DAYS + "일)");
 			}
 		}

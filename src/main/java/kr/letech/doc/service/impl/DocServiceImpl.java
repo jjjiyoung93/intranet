@@ -1,5 +1,6 @@
 package kr.letech.doc.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -63,7 +64,10 @@ public class DocServiceImpl implements DocService {
 		} else if("CD0001009".equals(cd1)) { // 출장
 			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
 				docMap = docDAO.getBztrpAdjs(params);
-				docMap.put("items", docDAO.getBztrpAdjsItem(params));
+				List itemList = docDAO.getBztrpAdjsItem(params);
+				if(!itemList.isEmpty()) {
+					docMap.put("items", itemList);
+				}
 			}
 		} else if("CD0001015".equals(cd1)) { // 도서구매신청
 			docMap = docDAO.getBksBuyAplf(params);
