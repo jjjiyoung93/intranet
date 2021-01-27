@@ -183,14 +183,17 @@ $(document).ready(function(){
 		}
 	});	
 });
-function bizplay() {
+function bizplay(st, ed) {
 		$.ajax({
 			type: 'GET',
 			url: '${pageContext.request.contextPath}/aprv/loadBizplay.do',
 			dataType: 'json',
-			data : {"START_DATE" : "20201201", "END_DATE" : "20201231"},
+			data : {"START_DATE" : st, "END_DATE" : ed},
 			success: function(rtnData) {
 				console.log(rtnData);
+			}, 
+			error:function(request,status,error){
+			    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});	
 }
