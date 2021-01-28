@@ -129,30 +129,6 @@
 									</div>
 									<!-- 직위 및 보고자 END -->
 									
-									<!-- 제목 START -->
-									<div class="col-lg-12 form-group">
-										<div class="col-lg-2 col-sm-2 text-right">
-											<label class="control-label">제목</label>
-											<span class="req-sign">*</span>
-										</div>
-										<div class="col-lg-9">
-											<input class="form-control" type="text" id="title" name="title" value="${viewMap.TITLE }"/>
-										</div>
-									</div>
-									<!-- 제목 END -->
-									
-									<!-- 보고내용 START -->
-									<div class="col-lg-12 form-group">
-										<div class="col-lg-2 col-sm-2 text-right">
-											<label class="control-label">보고내용</label>
-											<span class="req-sign">*</span>
-										</div>
-										<div class="col-lg-9">
-											<textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea>
-										</div>
-									</div>
-									<!-- 보고내용 END -->
-									
 									<!-- 결재구분 START -->
 									<div class="col-lg-12 form-group">
 										<div class="col-lg-2 col-sm-2 text-right">
@@ -185,6 +161,30 @@
 										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
 									</div>
 									<!-- 결재 구분 END -->
+									
+									<!-- 제목 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">제목</label>
+											<span class="req-sign">*</span>
+										</div>
+										<div class="col-lg-9">
+											<input class="form-control" type="text" id="title" name="title" value="${viewMap.TITLE }"/>
+										</div>
+									</div>
+									<!-- 제목 END -->
+									
+									<!-- 보고내용 START -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">보고내용</label>
+											<span class="req-sign">*</span>
+										</div>
+										<div class="col-lg-9">
+											<textarea class="form-control" name="rept_cont" id="rept_cont">${viewMap.REPT_CONT }</textarea>
+										</div>
+									</div>
+									<!-- 보고내용 END -->
 									
 									<!-- 결재 구분에 따라 폼 추가될 영역 START -->
 									<div id="docForm">${DOC_CODE }</div>
@@ -692,22 +692,6 @@ function getValidation(){
 		$("#proj_cd").closest(".form-group").addClass("has-error");
 		valid = false;
 	}
-	if($("#title").val() == ""){
-		if(valid) {
-			alert("제목을 입력해 주세요.");
-			$("#title").focus();
-		}
-		$("#title").closest(".form-group").addClass("has-error");
-		valid = false;
-	}
-	if($("#rept_cont").val() == ""){
-		if(valid) {
-			alert("보고내용을 입력해 주세요.");
-			$("#rept_cont").focus();
-		}
-		$("#rept_cont").closest(".form-group").addClass("has-error");
-		valid = false;
-	}
 	if($("#cdList1 option:selected").val() == ""){
 		if(valid) {
 			alert("결재 1차 구분을 선택해 주세요.");
@@ -722,6 +706,22 @@ function getValidation(){
 			$("#cdList2").focus();
 		}
 		$("#cdList2").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	if($("#title").val() == ""){
+		if(valid) {
+			alert("제목을 입력해 주세요.");
+			$("#title").focus();
+		}
+		$("#title").closest(".form-group").addClass("has-error");
+		valid = false;
+	}
+	if($("#rept_cont").val() == ""){
+		if(valid) {
+			alert("보고내용을 입력해 주세요.");
+			$("#rept_cont").focus();
+		}
+		$("#rept_cont").closest(".form-group").addClass("has-error");
 		valid = false;
 	}
 	/******************** 공통 부분 END ********************/
