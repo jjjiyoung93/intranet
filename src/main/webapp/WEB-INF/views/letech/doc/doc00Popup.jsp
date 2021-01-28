@@ -96,7 +96,7 @@ h4 {
 </head>
 <body class="pop">
 	<div class="page-head text-right">
-		<button type="button" class="btn btn-default" onClick="fn_print()">
+		<button type="button" class="btn btn-default" onClick="window.print();">
 			<span class="glyphicon glyphicon-print" aria-hidden="true"></span> 인쇄
 		</button>
 	</div>
@@ -150,6 +150,9 @@ h4 {
 		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
 		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
 		var fileJson = ${fileJson }; // 컨트롤러에서 받아온 첨부파일에 대한 json
+		
+		document.title = viewJson.TITLE; // 창 제목
+		
 		$("#emp_dp_rank").text(viewJson.REPT_DP_NM + " / " + viewJson.REPT_AUTH_NM);
 		$("#emp_nm").text(viewJson.REPT_APRV_NM);
 		var crtn_dt = viewJson.CRTN_DT.split("-");
@@ -211,12 +214,6 @@ h4 {
 		$("#file_stre_nm").val(file_stre_nm);
 		$("#file_nm").val(file_nm);
 		$("#downFrm").submit();
-	}
-	
-	function fn_print() {
-		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
-		document.title=viewJson.TITLE;
-		window.print();
 	}
 
 </script>
