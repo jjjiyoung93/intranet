@@ -30,8 +30,13 @@ public class CmmScheduler {
 //		mailSendService.searchMailSend();
 //	}
 	
-//	@Scheduled(cron = "0 0 17 * * *") // 매일 오후 5시에?
-//	@Scheduled(cron = "0 0/1 * * * *") // 1분마다
+
+	/**
+	* 비즈플레이 배치
+	* @Method : bizplayAPI
+	* @Author : JO MIN SOO
+	* @Date : 2021. 1. 6.
+	*/
 	@Scheduled(cron = "0 0 07 * * *") // 매일 오전 7시에 
 	public void bizplayAPI() {
 		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
@@ -44,7 +49,7 @@ public class CmmScheduler {
 		cal.add(Calendar.MONTH, -1); // 한달 전
 		String startDate = null;
 		if(("2020").equals(df.format(cal.getTime()).substring(0, 4))) { // 시작일
-			startDate = "20210101"; // 2021년 전 인경우 2021년으로 세팅
+			startDate = "20210101"; // 2021년 전 인경우 2021년으로 세팅(2020년에 테스트 데이터들이 있음)
 		} else {
 			startDate = df.format(cal.getTime());
 		}

@@ -96,7 +96,7 @@ h4 {
 </head>
 <body class="pop">
 	<div class="page-head text-right">
-		<button type="button" class="btn btn-default" onClick="window.print()">
+		<button type="button" class="btn btn-default" onClick="fn_print()">
 			<span class="glyphicon glyphicon-print" aria-hidden="true"></span> 인쇄
 		</button>
 	</div>
@@ -211,6 +211,12 @@ h4 {
 		$("#file_stre_nm").val(file_stre_nm);
 		$("#file_nm").val(file_nm);
 		$("#downFrm").submit();
+	}
+	
+	function fn_print() {
+		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
+		document.title=viewJson.TITLE;
+		window.print();
 	}
 
 </script>

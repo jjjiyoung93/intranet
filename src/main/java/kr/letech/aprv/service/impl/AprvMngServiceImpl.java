@@ -835,25 +835,12 @@ public class AprvMngServiceImpl implements AprvMngService {
 			paramMap.put("APRV_TYPE_CD", "CD0001007"); // 지출결의의 코드
 			paramMap.put("APRV_TYPE_DTIL_CD", "CD000100700" + paramMap.get("CARD_TYPE")); // 결재구분상세코드 [법인은 1, 일반(개인)은 2, 송금은 3]
 			
-//			String title = String.valueOf(paramMap.get("DRAFT_DATE")).substring(4, 6);
-//			title += "월_지출결의_" + "";
-//			if(paramMap.get("CARD_TYPE").equals("1")) {
-//				title += "법인_";
-//			} else if(paramMap.get("CARD_TYPE").equals("2")) {
-//				title += "일반_";
-//			} else {
-//				title += "송금_";
-//			}
-//			title += String.valueOf(paramMap.get("SUMMARY")).substring(0, 2) + "_";
-//			title += paramMap.get("DRAFT_DATE");
-//			paramMap.put("TITLE", title); // 제목
 			paramMap.put("TITLE", paramMap.get("APPR_SUBJ")); // 제목
 			
 			paramMap.put("PROJ_CD", paramMap.get("BIZ_UNIT_ERP_CD")); // 프로젝트 코드
 			
 			paramMap.put("REPT_CONT", paramMap.get("APPR_CONT")); // 보고내용 
 			paramMap.put("HALF_TYPE_CD", "0"); // 반차구분코드
-//			paramMap.put("PLACE", "-");
 
 			// 시작 ~ 종료 기간 설정
 			int startDate = Integer.parseInt(paramMap.get("APV_DT") + "");
@@ -889,7 +876,6 @@ public class AprvMngServiceImpl implements AprvMngService {
 				}
 					
 				aprvLineMap.put("PPP_APPR_SEQ_NO", paramMap.get("PPP_APPR_SEQ_NO"));
-				//aprvLineMap.put("APRV_NO", paramMap.get("APRV_NO"));
 				aprvLineMap.put("APRV_ORDR", Integer.parseInt((String) aprvLineMap.get("APPV_SEQ_NO")));
 				aprvLineMap.put("APRV_YN_CD", 1);
 				aprvLineMap.put("CRTN_EMP_NO", paramMap.get("USER_EMP_CD"));
