@@ -157,6 +157,9 @@
 												</select>
 											</c:if>
 										</div>
+										<div class="col-lg-2">
+											<button type="button">최근 보고서</button>
+										</div>
 										<!--  반차여부 -->
 										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
 									</div>
@@ -988,14 +991,6 @@ function getValidation(){
 			$("#pblt_dd").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
-		if($("#amt").val() == ""){
-			if(valid) {
-				alert("금액을 입력해 주세요.");
-				$("#amt").focus();
-			}
-			$("#amt").closest(".form-group").addClass("has-error");
-			valid = false;
-		}
 		if($("#isbn").val() == ""){
 			if(valid) {
 				alert("ISBN을 입력해 주세요.");
@@ -1006,10 +1001,18 @@ function getValidation(){
 		}
 		if($("#puch_hope_nmvl").val() == ""){
 			if(valid) {
-				alert("구입희망일을 입력해 주세요.");
+				alert("구입희망권수를 입력해 주세요.");
 				$("#puch_hope_nmvl").focus();
 			}
 			$("#puch_hope_nmvl").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		if($("#bks_amt").val() == ""){
+			if(valid) {
+				alert("권당금액을 입력해 주세요.");
+				$("#bks_amt").focus();
+			}
+			$("#bks_amt").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
 	}
@@ -1248,14 +1251,19 @@ function fn_deleteBztrpItem(btn) {
 	itemSum();
 }
 
-// 출장 금액 합산
+// 금액 합산
 $(function() {
+	// 출장
 	$("body").on("propertychange change keyup paste input", ".bztrp_item_amts, #plnd_amt, #corp_crd_use_amt", function() {
 		itemSum();
 	});
+	// 도서
+	$("body").on("propertychange change keyup paste input", "#puch_hope_nmvl, #bks_amt", function() {
+		itemSum2();
+	});
 });
 
-function itemSum() {
+function itemSum() { // 출장
 	var sum = 0;
 	$(".bztrp_item_amts").each(function(i, obj) {
 		if($(obj).val() != "") {
@@ -1274,7 +1282,17 @@ function itemSum() {
 	
 	$("#provd_amt").val(addCommas(sum) + "원");
 }
-// .convNum을 가진 input박스들을 숫자만 입력받게 하며 3자리마다 콤마 생성
+function itemSum2() { // 도서
+	var sum = 0;
+	if($("#puch_hope_nmvl").val() != "" && $("#bks_amt").val() != "") {
+		console.log(parseInt(removeCommas($("#puch_hope_nmvl").val())));
+		console.log(parseInt(removeCommas($("#bks_amt").val())));
+		sum = parseInt(removeCommas($("#puch_hope_nmvl").val())) * parseInt(removeCommas($("#bks_amt").val()));
+	}
+	
+	$("#bks_amt_sum").val(addCommas(sum) + "원");
+}
+// .convNum을 가진 input박스들을 숫자만 입력받게 하며 3자리마다 콤마 생성하고 원 붙이기
 $("body").on("focus", ".convNum", function() {
 	var x = $(this).val();
 	x = removeCommas(x);
@@ -1291,6 +1309,23 @@ $("body").on("focus", ".convNum", function() {
 }).on("keyup", ".convNum", function() {
 	$(this).val($(this).val().replace(/[^0-9]/g,""));
 });
+//.convNum을 가진 input박스들을 숫자만 입력받게 하며 3자리마다 콤마 생성하고 권 붙이기
+$("body").on("focus", ".convVol", function() {
+	var x = $(this).val();
+	x = removeCommas(x);
+	$(this).val(x);
+}).on("focusout", ".convVol", function() {
+	var x = $(this).val();
+	if(x && x.length > 0) {
+		if(!$.isNumeric(x)) {
+			x = x.replace(/[^0-9]/g,"");
+		}
+		x = addCommas(x);
+		$(this).val(x + "권");
+	}
+}).on("keyup", ".convVol", function() {
+	$(this).val($(this).val().replace(/[^0-9]/g,""));
+});
 // 3자리 단위마다 콤마 생성
 function addCommas(x) {
 	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1298,7 +1333,7 @@ function addCommas(x) {
 // 모든 콤마, 원 제거
 function removeCommas(x) {
 	if(!x || x.length == 0) return "";
-	else return x.split(",").join("").split("원").join("");
+	else return x.split(",").join("").split("원").join("").split("권").join("");
 }
 
 </script>

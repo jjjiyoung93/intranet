@@ -137,6 +137,7 @@
                               </dd>
                               </dl>
                            </li>
+                           <c:if test="${viewMap.PLACE ne null}">
                            <li>
                               <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">행선지</dt>
@@ -145,6 +146,7 @@
                               </dd>
                               </dl>
                            </li>
+                           </c:if>
                            <li>
                               <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">보고내용</dt>

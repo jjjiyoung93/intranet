@@ -65,7 +65,8 @@
 			 , PBCM
 			 , PBLT_DD
 			 , ISBN
-			 , AMT
+			 , BKS_AMT
+			 , BKS_AMT_SUM
 			 , PUCH_HOPE_NMVL
 			 , PUCH_HOPE_DD
 			 , RMRK
@@ -176,7 +177,8 @@
 			, PBCM
 			, PBLT_DD
 			, ISBN
-			, AMT
+			, BKS_AMT
+			, BKS_AMT_SUM
 			, PUCH_HOPE_NMVL
 			, PUCH_HOPE_DD
 			, RMRK
@@ -188,7 +190,8 @@
 			, #{pbcm, jdbcType=VARCHAR}
 			, #{pblt_dd, jdbcType=VARCHAR}
 			, #{isbn, jdbcType=VARCHAR}
-			, #{amt, jdbcType=VARCHAR}
+			, #{bks_amt, jdbcType=VARCHAR}
+			, #{bks_amt_sum, jdbcType=VARCHAR}
 			, #{puch_hope_nmvl, jdbcType=VARCHAR}
 			, #{puch_hope_dd, jdbcType=VARCHAR}
 			, #{rmrk, jdbcType=VARCHAR}
@@ -295,7 +298,8 @@
 			 , PBCM           = #{pbcm, jdbcType=VARCHAR}
 			 , PBLT_DD        = #{pblt_dd, jdbcType=VARCHAR}
 			 , ISBN           = #{isbn, jdbcType=VARCHAR}
-			 , AMT            = #{amt, jdbcType=VARCHAR}
+			 , BKS_AMT        = #{bks_amt, jdbcType=VARCHAR}
+			 , BKS_AMT_SUM    = #{bks_amt_sum, jdbcType=VARCHAR}
 			 , PUCH_HOPE_NMVL = #{puch_hope_nmvl, jdbcType=VARCHAR}
 			 , PUCH_HOPE_DD   = #{puch_hope_dd, jdbcType=VARCHAR}
 			 , RMRK           = #{rmrk, jdbcType=VARCHAR}
