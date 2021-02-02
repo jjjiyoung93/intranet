@@ -157,9 +157,6 @@
 												</select>
 											</c:if>
 										</div>
-										<div class="col-lg-2">
-											<button type="button">최근 보고서</button>
-										</div>
 										<!--  반차여부 -->
 										<input type="hidden" id="half_type_cd" name="half_type_cd" value="0" />
 									</div>
