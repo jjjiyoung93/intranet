@@ -747,7 +747,7 @@ function getValidation(){
 		}
 		if($("#frogh_rsn").val() == ""){
 			if(valid) {
-				alert("보고내용을 입력해 주세요.");
+				alert("사유를 입력해 주세요.");
 				$("#frogh_rsn").focus();
 			}
 			$("#frogh_rsn").closest(".form-group").addClass("has-error");
@@ -755,7 +755,7 @@ function getValidation(){
 		}
 		if($("#addr").val() == ""){
 			if(valid) {
-				alert("보고내용을 입력해 주세요.");
+				alert("행선지를 입력해 주세요.");
 				$("#addr").focus();
 			}
 			$("#addr").closest(".form-group").addClass("has-error");
@@ -763,7 +763,7 @@ function getValidation(){
 		}
 		if($("#cttplc").val() == ""){
 			if(valid) {
-				alert("보고내용을 입력해 주세요.");
+				alert("연락처를 입력해 주세요.");
 				$("#cttplc").focus();
 			}
 			$("#cttplc").closest(".form-group").addClass("has-error");
@@ -921,7 +921,7 @@ function getValidation(){
 		$(".tr_bztrp_items").each(function(i, obj) {
 			if($(obj).find(".bztrp_item_divs option:selected").val() == "") {
 				if(valid) {
-					alert("상세 내역의 항목을 선택해 주세요.");
+					alert("상세내역의 항목을 선택해 주세요.");
 					$($(obj).find(".bztrp_item_divs")).focus();
 				}
 				$($(obj).find(".bztrp_item_divs")).closest(".form-group").addClass("has-error");
@@ -929,7 +929,7 @@ function getValidation(){
 			}
 			if($(obj).find(".bztrp_item_ctnts").val() == "") {
 				if(valid) {
-					alert("상세 내역의 내역을 입력해 주세요.");
+					alert("상세내역의 내역을 입력해 주세요.");
 					$($(obj).find(".bztrp_item_ctnts")).focus();
 				}
 				$($(obj).find(".bztrp_item_ctnts")).closest(".form-group").addClass("has-error");
@@ -937,7 +937,7 @@ function getValidation(){
 			}
 			if($(obj).find(".bztrp_item_amts").val() == "") {
 				if(valid) {
-					alert("상세 내역의 금액을 입력해 주세요.");
+					alert("상세내역의 금액을 입력해 주세요.");
 					$($(obj).find(".bztrp_item_amts")).focus();
 				}
 				$($(obj).find(".bztrp_item_amts")).closest(".form-group").addClass("has-error");
