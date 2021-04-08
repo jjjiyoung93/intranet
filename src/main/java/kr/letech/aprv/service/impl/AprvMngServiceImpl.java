@@ -706,6 +706,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void insertBizplayData(Map params) throws Exception {
+		JSONArray receiptArray = new JSONArray(); // 영수증이 저장될 리스트
+		
 		// 입력부 데이터 입력 시작 
 		JSONObject jsonData = new JSONObject();
 		jsonData.put("API_ID", "0411A");
@@ -723,35 +725,42 @@ public class AprvMngServiceImpl implements AprvMngService {
 		reqData.put("REQ_CNT", "");
 		reqData.put("NEXT_KEY", "");
 		reqData.put("REQ_ATTIMG_YN", "Y"); // 첨부이미지포함여부
-		
-		
+				
 		jsonData.put("REQ_DATA", reqData);
 		// 입력부 데이터 입력 끝 
 		
-		// BIZPLAY API의 URL에 입력부 데이터를 추가하여 인코딩한 URL 생성
-		URI targetUrl = UriComponentsBuilder.fromUriString("https://webankapi.appplay.co.kr/")	// Build the base link
-			.path("gateway.do")					// Add path
-		    .queryParam("JSONData", jsonData)	// Add one or more query params
-		    .build()							// Build the URL
-		    .encode()							// Encode any URI items that need to be encoded
-		    .toUri();							// Convert to URI
-		
-		// RestTemplate을 이용하여 API 호출 및 데이터 반환
-		RestTemplate rest = new RestTemplate();
-		String result = rest.getForObject(targetUrl, String.class);
-		
-		// 받아온 데이터를 Map 데이터로 변환
-		Map rtnData = JSONObject.fromObject(result);
-		JSONArray resData = (JSONArray) rtnData.get("RES_DATA");
-		
-		for(int i = 0; i < resData.size(); i++) {
-			Map tempMap = (Map) resData.get(i);
-			Map paramMap = new HashMap();
+		// 비즈플레이 API에서는 한번에 50건의 영수증만 반환하며 50건을 초과하면 NEXTKEY를 반환
+		// NEXTKEY를 입력부에 추가하여 다시 API를 호출하여야 됨
+		while(true) {
+			// BIZPLAY API의 URL에 입력부 데이터를 추가하여 인코딩한 URL 생성
+			URI targetUrl = UriComponentsBuilder.fromUriString("https://webankapi.appplay.co.kr/")	// Build the base link
+				.path("gateway.do")					// Add path
+				.queryParam("JSONData", jsonData)	// Add one or more query params
+				.build()							// Build the URL
+				.encode()							// Encode any URI items that need to be encoded
+				.toUri();							// Convert to URI
 			
-			// 공통 코드 추가
-			paramMap.put("RESULT_MG", rtnData.get("RESULT_MG"));
-			paramMap.put("RESULT_CD", rtnData.get("RESULT_CD"));
-			paramMap.put("NEXT_KEY", rtnData.get("NEXT_KEY"));
+			// RestTemplate을 이용하여 API 호출 및 데이터 반환
+			RestTemplate rest = new RestTemplate();
+			String result = rest.getForObject(targetUrl, String.class);
+			
+			// 받아온 데이터를 Map 데이터로 변환
+			Map rtnData = JSONObject.fromObject(result);
+			JSONArray resData = (JSONArray) rtnData.get("RES_DATA");
+			receiptArray.addAll(resData);
+			
+			String nextKey = rtnData.get("NEXT_KEY") + "";
+			if("".equals(nextKey)) { // NEXTKEY가 없으면 API호출을 중단
+				break;
+			} else {
+				reqData.put("NEXT_KEY", nextKey);
+				jsonData.put("REQ_DATA", reqData);
+			}
+		}
+			
+		for(int i = 0; i < receiptArray.size(); i++) {
+			Map tempMap = (Map) receiptArray.get(i);
+			Map paramMap = new HashMap();
 			
 			for(Object key : tempMap.keySet()) {
 				// jsonarray에는 null이 JSONNull타입임.. 따라서 그대로 사용하면 mybatis에서 에러가 발생했음. JSONNull인 경우 저장하지 않아 null로 처리

@@ -784,9 +784,6 @@
 		     AND APV_DT = #{APV_DT})
 		WHEN MATCHED THEN
 			UPDATE SET
-			RESULT_CD = #{RESULT_CD, jdbcType=VARCHAR},
-			RESULT_MG = #{RESULT_MG, jdbcType=VARCHAR},
-			NEXT_KEY = #{NEXT_KEY, jdbcType=VARCHAR},
 			BIZ_NO = #{BIZ_NO, jdbcType=VARCHAR},
 			BANK_CD = #{BANK_CD, jdbcType=VARCHAR},
 			CARD_TYPE = #{CARD_TYPE, jdbcType=VARCHAR},
@@ -907,9 +904,6 @@
 			CAR_INFO = #{CAR_INFO, jdbcType=VARCHAR}
 		WHEN NOT MATCHED THEN
 			INSERT VALUES ( 
-			#{RESULT_CD, jdbcType=VARCHAR},
-			#{RESULT_MG, jdbcType=VARCHAR},
-			#{NEXT_KEY, jdbcType=VARCHAR},
 			#{BIZ_NO, jdbcType=VARCHAR},
 			#{BANK_CD, jdbcType=VARCHAR},
 			#{CARD_TYPE, jdbcType=VARCHAR},
