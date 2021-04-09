@@ -10,28 +10,6 @@ import kr.letech.cmm.service.impl.AbstractDAO;
 @Repository("docDAO")
 public class DocDAO extends AbstractDAO {
 
-	/**
-	 * 상위코드, 하위코드에 해당하는 문서코드를 반환
-	 * 작성자 : JO MIN SOO
-	 * @param params
-	 * @return
-	 * @throws Exception
-	 */
-	public Map getDocCode(Map params) throws Exception {
-		return (Map)getObject("doc.getDocCode", params);
-	}
-	
-	/**
-	* 보고서 양식을 반환
-	* 작성자 : JO MIN SOO
-	* @param params
-	* @return
-	* @throws Exception
-	*/
-	public Map getDocReport(Map params) throws Exception {
-		return (Map)getObject("doc.getDocReport", params);
-	}
-
 	/***** getDocData에서 사용하는 CRUD START *****/
 	public Map getFrogh(Map params) throws Exception {
 		return (Map)getObject("doc.getFrogh", params);

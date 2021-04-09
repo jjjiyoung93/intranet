@@ -1,6 +1,5 @@
 package kr.letech.doc.web;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -57,9 +55,6 @@ public class DocController {
 		/* 결재 라인 정보 조회 */
 		List lineList = aprvMngService.aprvLineList(params);
 		
-		/* 문서 코드 조회 */
-		Map codeMap = docService.getDocCode(viewMap);
-		
 		/* 문서 데이터 조회 */
 		Map docMap = docService.getDocData(viewMap);
 		
@@ -73,7 +68,6 @@ public class DocController {
 		
 		model.addAttribute("viewMap", viewMap);
 		model.addAttribute("lineList", lineList);
-		model.addAttribute("docReport", codeMap.get("DOC_REPORT"));
 		model.addAttribute("docJson", docJson);
 		model.addAttribute("viewJson", viewJson);
 		model.addAttribute("fileJson", fileJson);
@@ -91,7 +85,7 @@ public class DocController {
 	* @throws Exception
 	*/
 	@RequestMapping(value = "/doc/sign.do")
-	public void test(HttpServletRequest request, HttpServletResponse  response, ModelMap model) throws Exception {
+	public void getSignImage(HttpServletRequest request, HttpServletResponse  response, ModelMap model) throws Exception {
 		
 		Map params = ReqUtils.getParameterMap(request);
 		
@@ -118,7 +112,6 @@ public class DocController {
 		in.close();
 	}
 	
-	
 	/**
 	* 문서의 코드를 반환
 	* 작성자 : JO MIN SOO
@@ -133,12 +126,25 @@ public class DocController {
 		
 		Map params = ReqUtils.getParameterMap(request);
 		
-		String viewName = "jsonView";
+		// 상위코드, 하위코드에 해당하는 문서코드(소스코드)
+		return docService.getDocCode(params);
+	}
+	
+	/**
+	* 보고서의 코드를 반환
+	* 작성자 : JO MIN SOO
+	* 변경이력 :
+	* @param request
+	* @param model
+	* @return
+	* @throws Exception
+	*/
+	@RequestMapping(value = "/doc/doc01Ajax.do")
+	public String getReportCode(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
 		
 		// 상위코드, 하위코드에 해당하는 문서코드(소스코드)
-		Map docCode = docService.getDocCode(params);
-		model.addAttribute("DOC_CODE", docCode.get("DOC_CODE"));
-		
-		return viewName;
+		return docService.getReportCode(params);
 	}
 }

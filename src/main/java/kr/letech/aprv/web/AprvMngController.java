@@ -219,9 +219,6 @@ public class AprvMngController {
 			List codeList2 = codeMngService.getCodeList(params);
 			model.addAttribute("codeList2", codeList2);
 			
-			/* 문서 코드 조회 */
-			Map codeMap = docService.getDocCode(viewMap);
-			model.addAttribute("DOC_CODE", codeMap.get("DOC_CODE"));
 			/* 문서 데이터 조회 */
 			Map docMap = docService.getDocData(viewMap);
 			JSONObject docJson = JSONObject.fromObject(docMap);

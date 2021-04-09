@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="doc">	
-	<resultMap id="CLOB_CODE" type="hashMap">
-		<result property="DOC_CODE" column="DOC_CODE" jdbcType="CLOB" javaType="java.lang.String"/>
-		<result property="DOC_REPORT" column="DOC_REPORT" jdbcType="CLOB" javaType="java.lang.String"/>
-	</resultMap>
-	<select id="getDocCode" parameterType="map" resultMap="CLOB_CODE">
-		SELECT CASE WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR})
-		            WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR})
-		            ELSE (SELECT DOC_CODE FROM DOC_FORM WHERE APRV_TYPE_CD = 'CD0000' AND APRV_TYPE_DTIL_CD = 'CD0000')
-		       END AS DOC_CODE,
-		       CASE WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_REPORT FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_DTIL_CD, jdbcType=VARCHAR})
-		            WHEN (SELECT COUNT(*) FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}) > 0
-		                THEN (SELECT DOC_REPORT FROM DOC_FORM WHERE APRV_TYPE_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR} AND APRV_TYPE_DTIL_CD = #{APRV_TYPE_CD, jdbcType=VARCHAR})
-		            ELSE (SELECT DOC_REPORT FROM DOC_FORM WHERE APRV_TYPE_CD = 'CD0000' AND APRV_TYPE_DTIL_CD = 'CD0000')
-		       END AS DOC_REPORT
-		  FROM DUAL
-	</select>
-	
 	<select id="getFrogh" parameterType="map" resultType="HashMap">
 		SELECT APRV_NO
 			 , FROGH_RSN

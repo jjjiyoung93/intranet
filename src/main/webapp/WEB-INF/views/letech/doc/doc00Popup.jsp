@@ -132,9 +132,7 @@ h4 {
 				</tr>
 			</tbody>
 		</table>
-		<div id="docReport">
-			${docReport }
-		</div>
+		<div id="docReport"></div>
 	</div>
 </body>
 <!-- 파일 다운로드 form Start -->
@@ -146,75 +144,70 @@ h4 {
 <!-- 파일 다운로드 form End -->
 
 <script type="text/javascript">
-	$(function() {
-		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
-		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
-		var fileJson = ${fileJson }; // 컨트롤러에서 받아온 첨부파일에 대한 json
-		
-		document.title = viewJson.TITLE; // 창 제목
-		
-		$("#emp_dp_rank").text(viewJson.REPT_DP_NM + " / " + viewJson.REPT_AUTH_NM);
-		$("#emp_nm").text(viewJson.REPT_APRV_NM);
-		var crtn_dt = viewJson.CRTN_DT.split("-");
-		$("#crtn_dt").text(crtn_dt[0] + "년 " + crtn_dt[1] + "월 " + crtn_dt[2] + "일");
-		if($("#term").size() == "1" && docJson != null) {
-			var term = "";
-			if(viewJson.hasOwnProperty('TERM_ST_HM') && viewJson.hasOwnProperty('TERM_ED_YM')) {
-				term = viewJson.TERM_ST_YM + " " + viewJson.TERM_ST_HM.slice(0, 2) + ":" + viewJson.TERM_ST_HM.slice(2, 4) + " ~ " + viewJson.TERM_ED_YM + " " + viewJson.TERM_ED_HM.slice(0, 2) + ":" + viewJson.TERM_ED_HM.slice(2, 4);
-			} else {
-				term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;
-			}
-			$("#term").text(term);
-			if(docJson.hasOwnProperty('BZTRP_NIGHT') && docJson.hasOwnProperty('BZTRP_DAYS')) {
-				$("#term").text(term + " (" + docJson.BZTRP_NIGHT + "박 " + docJson.BZTRP_DAYS + "일)");
-			}
-		}
-		for(key in docJson) {
-			if(key != "items") { // 항목인지 확인
-				$("#" + key.toLowerCase()).text(docJson[key]);
-			} else {
-				if(viewJson.APRV_TYPE_CD == "CD0001009" && viewJson.APRV_TYPE_DTIL_CD == "CD0001009001") {
-					fn_addBztrpItem(docJson[key]);
-				}
-			}
-		}
-		
-		if(fileJson != "") {
-			var cnt = 0;
-			var html = '<span style="margin-left: 40px;">첨부파일 : </span>';
-			for(key in fileJson) {
-				if(cnt++ != 0) {
-					html += '<span style="margin-left: 98px;"></span>';
-				}
-				html += '<a href="#" onclick="fn_downFile(\'' + fileJson[key].FILE_PATH + '\', \'' + fileJson[key].FILE_STRE_NM + '\', \'' + fileJson[key].FILE_NM + '\')">'; 
-				html += '	<span class="glyphicon glyphicon-save"></span><span> ' + fileJson[key].FILE_NM + '</span>';
-				html += '</a><br>';
-			}
-			$("#fileList").append(html);
+$(function() {
+	var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
+	var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
+	var fileJson = ${fileJson }; // 컨트롤러에서 받아온 첨부파일에 대한 json
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/doc/doc01Ajax.do?APRV_TYPE_CD="+viewJson.APRV_TYPE_CD+"&APRV_TYPE_DTIL_CD="+viewJson.APRV_TYPE_DTIL_CD,
+		type: "get",
+		async: false,
+		success: function(data) {
+			$("#docReport").append(data);
 		}
 	});
+
+	document.title = viewJson.TITLE; // 창 제목
 	
-	// 출장 항목
-	function fn_addBztrpItem(data) {
-		for(key in data) {
-			var html = "";
-			html += '<tr>';
-			html += '	<td colspan="1" class="td-comm td-s1 text-center">' + data[key].BZTRP_ITEM_DIV + '</td>';
-			html += '	<td colspan="5" class="td-comm td-s5">' + data[key].BZTRP_ITEM_CTNT + '</td>';
-			html += '	<td colspan="2" class="td-comm td-s2 text-right">' + data[key].BZTRP_ITEM_AMT + '</td>';
-			html += '	<td colspan="2" class="td-comm td-s2 text-center">' + (data[key].BZTRP_ITEM_RMRK == null ? "" : data[key].BZTRP_ITEM_RMRK) + '</td>';
-			html += '</tr>';
-			$("#tr_items").after(html);
-		};
+	$("#emp_dp_rank").text(viewJson.REPT_DP_NM + " / " + viewJson.REPT_AUTH_NM);
+	$("#emp_nm").text(viewJson.REPT_APRV_NM);
+	var crtn_dt = viewJson.CRTN_DT.split("-");
+	$("#crtn_dt").text(crtn_dt[0] + "년 " + crtn_dt[1] + "월 " + crtn_dt[2] + "일");
+	if($("#term").size() == "1" && docJson != null) {
+		var term = "";
+		if(viewJson.hasOwnProperty('TERM_ST_HM') && viewJson.hasOwnProperty('TERM_ED_YM')) {
+			term = viewJson.TERM_ST_YM + " " + viewJson.TERM_ST_HM.slice(0, 2) + ":" + viewJson.TERM_ST_HM.slice(2, 4) + " ~ " + viewJson.TERM_ED_YM + " " + viewJson.TERM_ED_HM.slice(0, 2) + ":" + viewJson.TERM_ED_HM.slice(2, 4);
+		} else {
+			term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;
+		}
+		$("#term").text(term);
+		if(docJson.hasOwnProperty('BZTRP_NIGHT') && docJson.hasOwnProperty('BZTRP_DAYS')) {
+			$("#term").text(term + " (" + docJson.BZTRP_NIGHT + "박 " + docJson.BZTRP_DAYS + "일)");
+		}
+	}
+	for(key in docJson) {
+		if(key != "items") { // 항목인지 확인
+			$("#" + key.toLowerCase()).text(docJson[key]);
+		} else {
+			if(viewJson.APRV_TYPE_CD == "CD0001009" && viewJson.APRV_TYPE_DTIL_CD == "CD0001009001") {
+				fn_addBztrpItem(docJson[key]);
+			}
+		}
 	}
 	
-	/* 파일 다운로드 */
-	function fn_downFile(file_path, file_stre_nm, file_nm){
-		$("#file_path").val(file_path);
-		$("#file_stre_nm").val(file_stre_nm);
-		$("#file_nm").val(file_nm);
-		$("#downFrm").submit();
+	if(fileJson != "") {
+		var cnt = 0;
+		var html = '<span style="margin-left: 40px;">첨부파일 : </span>';
+		for(key in fileJson) {
+			if(cnt++ != 0) {
+				html += '<span style="margin-left: 98px;"></span>';
+			}
+			html += '<a href="#" onclick="fn_downFile(\'' + fileJson[key].FILE_PATH + '\', \'' + fileJson[key].FILE_STRE_NM + '\', \'' + fileJson[key].FILE_NM + '\')">'; 
+			html += '	<span class="glyphicon glyphicon-save"></span><span> ' + fileJson[key].FILE_NM + '</span>';
+			html += '</a><br>';
+		}
+		$("#fileList").append(html);
 	}
+});
+
+/* 파일 다운로드 */
+function fn_downFile(file_path, file_stre_nm, file_nm){
+	$("#file_path").val(file_path);
+	$("#file_stre_nm").val(file_stre_nm);
+	$("#file_nm").val(file_nm);
+	$("#downFrm").submit();
+}
 
 </script>
 </html>

@@ -16,27 +16,81 @@ public class DocServiceImpl implements DocService {
 	private DocDAO docDAO;
 	
 	/**
-	* 상위코드, 하위코드에 해당하는 문서코드를 반환
+	* 결재코드에 해당하는 문서 코드를 반환
 	* 작성자 : JO MIN SOO
 	* @param params
 	* @return
 	* @throws Exception
 	*/
 	@Override
-	public Map getDocCode(Map params) throws Exception {
-		return docDAO.getDocCode(params);
+	public String getDocCode(Map params) throws Exception {
+		String cd1 = (String) params.get("APRV_TYPE_CD");
+		String cd2 = (String) params.get("APRV_TYPE_DTIL_CD");
+		
+		String docCode = null;
+		
+		if("CD0001011".equals(cd1)) { // 휴가신청
+			docCode = "letech/doc/code/code_frogh";
+		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
+			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
+				docCode = "letech/doc/code/code_flexWrkSyst";
+			}
+		} else if("CD0001008".equals(cd1)) { // 품의서
+			docCode = "letech/doc/code/code_pttn";
+		} else if("CD0001009".equals(cd1)) { // 출장
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
+				docCode = "letech/doc/code/code_bztrpAdjs";
+			}
+		} else if("CD0001015".equals(cd1)) { // 도서구매신청
+			docCode = "letech/doc/code/code_bksBuyAplf";
+		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
+			docCode = "letech/doc/code/code_educTrain";
+		} 
+		
+		if(docCode == null) {
+			docCode = "letech/doc/code/code_default";
+		}
+		
+		return docCode;
 	}
-
+	
 	/**
-	* 보고서 양식을 반환
+	* 결재코드에 해당하는 보고서 코드를 반환
 	* 작성자 : JO MIN SOO
 	* @param params
 	* @return
 	* @throws Exception
 	*/
 	@Override
-	public Map getDocReport(Map params) throws Exception {
-		return docDAO.getDocReport(params);
+	public String getReportCode(Map params) throws Exception {
+		String cd1 = (String) params.get("APRV_TYPE_CD");
+		String cd2 = (String) params.get("APRV_TYPE_DTIL_CD");
+		
+		String reportCode = null;
+		
+		if("CD0001011".equals(cd1)) { // 휴가신청
+			reportCode = "letech/doc/report/report_frogh";
+		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
+			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
+				reportCode = "letech/doc/report/report_flexWrkSyst";
+			}
+		} else if("CD0001008".equals(cd1)) { // 품의서
+			reportCode = "letech/doc/report/report_pttn";
+		} else if("CD0001009".equals(cd1)) { // 출장
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
+				reportCode = "letech/doc/report/report_bztrpAdjs";
+			}
+		} else if("CD0001015".equals(cd1)) { // 도서구매신청
+			reportCode = "letech/doc/report/report_bksBuyAplf";
+		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
+			reportCode = "letech/doc/report/report_educTrain";
+		} 
+		
+		if(reportCode == null) {
+			reportCode = "letech/doc/report/report_default";
+		}
+		
+		return reportCode;
 	}
 	
 	/**
@@ -78,4 +132,5 @@ public class DocServiceImpl implements DocService {
 		return docMap;
 	}
 
+	
 }
