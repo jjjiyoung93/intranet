@@ -429,12 +429,13 @@ $(function() {
 	
 	// 수정
 	if($("#mode").val() == "<%=VarConsts.MODE_U%>") {
-		fn_getDocCode(); // 문서 양식 불러와서 HTML에 찍어줌
+		fn_getDocCode($("#cdList1").val(), $("#cdList2").val()); // 문서 양식 불러와서 HTML에 찍어줌
 		
 		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
 		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
 		for(key in docJson) {
 			if(key != "items") { // 항목인지 확인
+				console.log(docJson[key]);
 				$("#" + key.toLowerCase()).val(docJson[key]);
 			} else {
 				if($("#cdList1").val() == "CD0001009" && $("#cdList2").val() == "CD0001009001") {
