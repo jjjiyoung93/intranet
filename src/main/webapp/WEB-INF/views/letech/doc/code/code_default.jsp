@@ -33,3 +33,9 @@
 	</div>
 </div>
 <!-- 기간 END -->
+
+<script>
+function getValidation2(valid) {
+	return valid;
+}
+</script>
