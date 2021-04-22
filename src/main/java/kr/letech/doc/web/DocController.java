@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ReqUtils;
+import kr.letech.cmm.util.VarConsts;
 import kr.letech.doc.service.DocService;
+import kr.letech.sys.cdm.service.CodeMngService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -34,6 +36,9 @@ public class DocController {
 	
 	@Resource(name = "aprvMngService")
 	private AprvMngService aprvMngService;
+	
+	@Resource(name = "codeMngService")
+	private CodeMngService codeMngService;
 	
 	/**
 	* 보고서 팝업 출력 및 보고서 양식 반환
@@ -61,16 +66,36 @@ public class DocController {
 		/* 첨부파일 리스트 조회 */
 		List fileList = aprvMngService.aprvFileList(params);
 		
+		// 지출결의서 정보 가져오기
+		
+	    Map recMap = (Map) aprvMngService.getAprvRecList(params);
+		
+		
+		
 		// viewMap(결재정보 데이터), docMap(보고서 데이터), fileList(첨부파일 리스트)는 jsp에서 json형태로 사용하기 위해 파싱하여 Model에 저장
 		JSONObject docJson = JSONObject.fromObject(docMap);
 		JSONObject viewJson = JSONObject.fromObject(viewMap);
 		JSONArray fileJson = JSONArray.fromObject(fileList);
+		JSONArray recListJson = JSONArray.fromObject(recMap.get("recList"));
+		JSONArray recFileListJson = JSONArray.fromObject(recMap.get("recFileList"));
 		
 		model.addAttribute("viewMap", viewMap);
 		model.addAttribute("lineList", lineList);
 		model.addAttribute("docJson", docJson);
 		model.addAttribute("viewJson", viewJson);
 		model.addAttribute("fileJson", fileJson);
+		
+		
+		//프로젝트 리스트
+		params.put("up_cd", VarConsts.EAM_PROJECT_CODE);
+		List projList = codeMngService.getCodeList(params);
+		JSONArray projListJson = JSONArray.fromObject(projList);
+		model.addAttribute("projList", projListJson);
+		
+		
+		//지출결의서 정보, 결의서 영주증 첨부파일
+		model.addAttribute("recList", recListJson);
+		model.addAttribute("recFileList", recFileListJson);
 		
 		return "letech/doc/doc00Popup";
 	}

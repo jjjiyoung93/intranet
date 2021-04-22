@@ -88,7 +88,9 @@ public class DocServiceImpl implements DocService {
 			reportCode = "letech/doc/report/report_bksBuyAplf";
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
 			reportCode = "letech/doc/report/report_educTrain";
-		} 
+		} else if("CD0001007".equals(cd1)) { // 지출결의
+			reportCode = "letech/doc/report/report_bizplay";
+		}
 		
 		if(reportCode == null) {
 			reportCode = "letech/doc/report/report_default";
