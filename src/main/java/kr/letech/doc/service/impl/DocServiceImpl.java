@@ -38,8 +38,10 @@ public class DocServiceImpl implements DocService {
 		} else if("CD0001008".equals(cd1)) { // 품의서
 			docCode = "letech/doc/code/code_pttn";
 		} else if("CD0001009".equals(cd1)) { // 출장
-			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
-				docCode = "letech/doc/code/code_bztrpAdjs";
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내_법인)
+				docCode = "letech/doc/code/code_bztrpAdjsCpr";
+			} else if("CD0001009002".equals(cd2)) { // 출장정산(국내_일반)
+				docCode = "letech/doc/code/code_bztrpAdjsGnrl";
 			}
 		} else if("CD0001015".equals(cd1)) { // 도서구매신청
 			docCode = "letech/doc/code/code_bksBuyAplf";
@@ -77,8 +79,10 @@ public class DocServiceImpl implements DocService {
 		} else if("CD0001008".equals(cd1)) { // 품의서
 			reportCode = "letech/doc/report/report_pttn";
 		} else if("CD0001009".equals(cd1)) { // 출장
-			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
-				reportCode = "letech/doc/report/report_bztrpAdjs";
+			if("CD0001009001".equals(cd2)) { // 출장정산(국내_법인)
+				reportCode = "letech/doc/report/report_bztrpAdjsCpr";
+			} else if("CD0001009002".equals(cd2)) { // 출장정산(국내_일반)
+				reportCode = "letech/doc/report/report_bztrpAdjsGnrl";
 			}
 		} else if("CD0001015".equals(cd1)) { // 도서구매신청
 			reportCode = "letech/doc/report/report_bksBuyAplf";
@@ -116,7 +120,7 @@ public class DocServiceImpl implements DocService {
 		} else if("CD0001008".equals(cd1)) { // 품의서
 			docMap = docDAO.getPttn(params);
 		} else if("CD0001009".equals(cd1)) { // 출장
-			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
+			if("CD0001009001".equals(cd2) || "CD0001009002".equals(cd2)) { // 출장정산(국내)-법인,일반
 				docMap = docDAO.getBztrpAdjs(params);
 				List itemList = docDAO.getBztrpAdjsItem(params);
 				if(!itemList.isEmpty()) {

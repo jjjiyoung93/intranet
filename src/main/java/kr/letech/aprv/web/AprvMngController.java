@@ -181,11 +181,11 @@ public class AprvMngController {
 		model.addAttribute("params", params);
 		
 		/*코드리스트 조회를 위한 상위코드입력*/
-		params.put("up_cd", VarConsts.EAM_MASTER_CODE);
+		params.put("up_cd", VarConsts.EAM_MASTER_CODE); // 결재상위코드
 		List codeList = codeMngService.getCodeList(params);
 		model.addAttribute("codeList", codeList);
 		
-		params.put("up_cd", VarConsts.EAM_PROJECT_CODE);
+		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
 		List projList = codeMngService.getCodeList(params);
 		model.addAttribute("projList", projList);
 		
@@ -406,6 +406,45 @@ public class AprvMngController {
 		model.addAttribute("aprvCount3", aprvCount3);
 		
 		return viewName;
+	}
+	
+	/**
+	 * 지역코드, 출장구분코드, 여비 불러오기
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "aprv/aprv03Ajax.do")
+	public String getBztrpCodeList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		model.addAttribute("params", params);
+		
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		params.put("auth_cd", loginVO.getAuthCd());
+		
+		// 지역코드
+		params.put("up_cd", VarConsts.PLC_CODE); // 결재상위코드
+		List plcCodeList = codeMngService.getCodeList(params);
+		model.addAttribute("plcCodeList", plcCodeList);
+		// 출장구분코드
+		if("CD0001009001".equals(params.get("cdList2"))) { // 법인 
+			params.put("up_cd", VarConsts.BZTRP_DIV_CODE_CPR); // 결재상위코드
+		} else if("CD0001009002".equals(params.get("cdList2"))) { // 일반
+			params.put("up_cd", VarConsts.BZTRP_DIV_CODE_GNRL); // 결재상위코드
+		}
+		List bztrpDivCodeList = codeMngService.getCodeList(params);
+		model.addAttribute("bztrpDivCodeList", bztrpDivCodeList);
+		// 출장비
+		List trcsList = aprvMngService.getTrcsList();
+		model.addAttribute("trcsList", trcsList);
+		// 여비
+		List trvctInfo = aprvMngService.getTrvctInfo(params);
+		model.addAttribute("trvctInfo", trvctInfo);
+		
+		return "jsonView";
 	}
 	
 	/**

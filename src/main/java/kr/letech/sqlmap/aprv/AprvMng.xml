@@ -1210,4 +1210,24 @@
 		   AND SEQ = #{SEQ, jdbcType=VARCHAR}
 		   AND APV_DT = #{APV_DT, jdbcType=VARCHAR}
 	</select>
+	
+	<select id="getTrcsList" resultType="HashMap">
+		SELECT REGN_CD1
+			 , REGN_CD2
+			 , DSTNC
+			 , TRCS
+		  FROM STD_TRCS
+	</select>
+	
+	<select id="getTrvctInfo" resultType="HashMap" parameterType="map">
+		SELECT A.AUTHOR_NM /* 직위 */
+		     , C.CD_NM     /* 급수 */
+		     , D.TRVCT     /* 여비 */
+		  FROM STD_AUT_INFO A, STD_TRVCT_GROUP_AUT B, STD_CD_MNG C, STD_TRVCT_GROUP D
+		 WHERE A.AUTHOR_CODE = #{auth_cd}
+		   AND A.AUTHOR_CODE = B.AUTHOR_CODE
+		   AND B.GROUP_CD = C.CD
+		   AND D.GROUP_CD = C.CD
+	</select>
+	
 </mapper>

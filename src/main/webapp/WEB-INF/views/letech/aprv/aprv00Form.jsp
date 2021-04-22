@@ -435,13 +435,15 @@ $(function() {
 		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
 		for(key in docJson) {
 			if(key != "items") { // 항목인지 확인
-				console.log(docJson[key]);
 				$("#" + key.toLowerCase()).val(docJson[key]);
 			} else {
-				if($("#cdList1").val() == "CD0001009" && $("#cdList2").val() == "CD0001009001") {
+				if($("#cdList1").val() == "CD0001009" && ($("#cdList2").val() == "CD0001009001" || $("#cdList2").val() == "CD0001009002")) {
 					fn_addBztrpItem2(docJson[key]);
 				}
 			}
+		}
+		if($("#place").size() == "1") { // 행선지 이용하는 양식인지 확인
+			$("#place").val(viewJson["PLACE"]);
 		}
 		if($("#term_st").size() == "1") { // 기간을 사용하지 않는 양식인지 확인
 			var term_st_ym;
@@ -471,6 +473,7 @@ $(function() {
 					minuteStep: 10
 				}
 			});
+			$("#term_ed").attr("disabled", false);
 		}
 	}
 	
@@ -553,80 +556,82 @@ function fn_getDocCode(cd1, cd2) {
 			}
 			
 			// 문서 양식에 따라 title 양식 설정(경영지원실 요청사항)
-			var title = "";
-			if(cd1 == "CD0001001") { // 업무보고
-				if(cd2 == "CD0001001001") { // 주간
-					title = "00월_업무보고_주간_0주차";
-				} else if(cd2 == "CD0001001002") { // 월간
-					title = "00월_업무보고_월간";
-				}
-			} else if(cd1 == "CD0001007") { // 지출결의
-				if(cd2 == "CD0001007001") { // 법인
+			if(!($("#mode").val() == '<%=VarConsts.MODE_U%>')) {
+				var title = "";
+				if(cd1 == "CD0001001") { // 업무보고
+					if(cd2 == "CD0001001001") { // 주간
+						title = "00월_업무보고_주간_0주차";
+					} else if(cd2 == "CD0001001002") { // 월간
+						title = "00월_업무보고_월간";
+					}
+				} else if(cd1 == "CD0001007") { // 지출결의
+					if(cd2 == "CD0001007001") { // 법인
+						title = "";
+					} else if(cd2 == "CD0001007002") { // 일반(개인)
+						title = "";
+					} else if(cd2 == "CD0001007003") { // 송금
+						title = "";
+					}
+				} else if(cd1 == "CD0001008") { // 품의
+					if(cd2 == "CD0001008001") { // 구매
+						title = "00월_품의_OO(법인,일반,송금)_구매";
+					} else if(cd2 == "CD0001008002") { // 회식
+						title = "00월_품의_OO(법인,일반,송금)_회식";
+					}
+				} else if(cd1 == "CD0001009") { // 출장
+					if(cd2 == "CD0001009001") { // 출장정산(국내)
+						title = "00월_출장정산서(국내)_법인";
+					} else if(cd2 == "CD0001009002") { // 출장정산(국내)
+						title = "00월_출장정산서(국내)_일반";
+					} else if(cd2 == "CD0001009003") { // 출장계획(해외)
+						title = "00월_출장계획서(해외)_OO(법인,송금)";
+					}
+				} else if(cd1 == "CD0001010") { // 가지급금
+					title = "00월_가지급금신청_OO(송금,법인)";
+				} else if(cd1 == "CD0001011") { // 휴가신청
+					if(cd2 == "CD0001011001") { // 연차
+						title = "00월_휴가신청_연차";
+					} else if(cd2 == "CD0001011002") { // 병가
+						title = "00월_휴가신청_병가";
+					} else if(cd2 == "CD0001011003") { // 기타(경조사)
+						title = "00월_휴가신청_경조";
+					} else if(cd2 == "CD0001011004") { // 대체휴가
+						title = "00월_휴가신청_기타";
+					} else if(cd2 == "CD0001011005") { // 위로휴가
+						title = "00월_휴가신청_기타";
+					} else if(cd2 == "CD0001011006") { // 가족돌봄휴가
+						title = "00월_휴가신청_기타";
+					}
+				} else if(cd1 == "CD0001012") { // 휴직신청
+					if(cd2 == "CD0001012001") { // 남성육아휴직
+						title = "00월_휴직신청_육아휴직";
+					} else if(cd2 == "CD0001012002") { // 가족돌봄휴직
+						title = "00월_휴직신청_가족돌봄";
+					}
+				} else if(cd1 == "CD0001013") { // 유연근무제신청
+					if(cd2 == "CD0001013001") { // 시차출퇴근제
+						title = "00월_시차출퇴근신청";
+					} else if(cd2 == "CD0001013003") { // 조기퇴근제
+						title = "00월_조기퇴근신청";
+					}
+				} else if(cd1 == "CD0001014") { // 기타
 					title = "";
-				} else if(cd2 == "CD0001007002") { // 일반(개인)
-					title = "";
-				} else if(cd2 == "CD0001007003") { // 송금
-					title = "";
-				}
-			} else if(cd1 == "CD0001008") { // 품의
-				if(cd2 == "CD0001008001") { // 구매
-					title = "00월_품의_OO(법인,일반,송금)_구매";
-				} else if(cd2 == "CD0001008002") { // 회식
-					title = "00월_품의_OO(법인,일반,송금)_회식";
-				}
-			} else if(cd1 == "CD0001009") { // 출장
-				if(cd2 == "CD0001009001") { // 출장정산(국내)
-					title = "00월_출장정산서(국내)_법인";
-				} else if(cd2 == "CD0001009002") { // 출장정산(국내)
-					title = "00월_출장정산서(국내)_일반";
-				} else if(cd2 == "CD0001009003") { // 출장계획(해외)
-					title = "00월_출장계획서(해외)_OO(법인,송금)";
-				}
-			} else if(cd1 == "CD0001010") { // 가지급금
-				title = "00월_가지급금신청_OO(송금,법인)";
-			} else if(cd1 == "CD0001011") { // 휴가신청
-				if(cd2 == "CD0001011001") { // 연차
-					title = "00월_휴가신청_연차";
-				} else if(cd2 == "CD0001011002") { // 병가
-					title = "00월_휴가신청_병가";
-				} else if(cd2 == "CD0001011003") { // 기타(경조사)
-					title = "00월_휴가신청_경조";
-				} else if(cd2 == "CD0001011004") { // 대체휴가
-					title = "00월_휴가신청_기타";
-				} else if(cd2 == "CD0001011005") { // 위로휴가
-					title = "00월_휴가신청_기타";
-				} else if(cd2 == "CD0001011006") { // 가족돌봄휴가
-					title = "00월_휴가신청_기타";
-				}
-			} else if(cd1 == "CD0001012") { // 휴직신청
-				if(cd2 == "CD0001012001") { // 남성육아휴직
-					title = "00월_휴직신청_육아휴직";
-				} else if(cd2 == "CD0001012002") { // 가족돌봄휴직
-					title = "00월_휴직신청_가족돌봄";
-				}
-			} else if(cd1 == "CD0001013") { // 유연근무제신청
-				if(cd2 == "CD0001013001") { // 시차출퇴근제
-					title = "00월_시차출퇴근신청";
-				} else if(cd2 == "CD0001013003") { // 조기퇴근제
-					title = "00월_조기퇴근신청";
-				}
-			} else if(cd1 == "CD0001014") { // 기타
-				title = "";
-			} else if(cd1 == "CD0001015") { // 도서
-				title = "00월_도서구매신청";
-			} else if(cd1 == "CD0001016") { // 교육훈련신청
-				title = "00월_교육훈련신청";
-			} 
-			
-			var date = new Date();
-			var year = date.getFullYear();
-			var month = ("0" + (1 + date.getMonth())).slice(-2);
-			var day = ("0" + date.getDate()).slice(-2);
-			var yyyymmdd = year + month + day;
-			if(title != "") {
-				title += "_" + yyyymmdd
-			};
-			$("#title").val(title);
+				} else if(cd1 == "CD0001015") { // 도서
+					title = "00월_도서구매신청";
+				} else if(cd1 == "CD0001016") { // 교육훈련신청
+					title = "00월_교육훈련신청";
+				} 
+				
+				var date = new Date();
+				var year = date.getFullYear();
+				var month = ("0" + (1 + date.getMonth())).slice(-2);
+				var day = ("0" + date.getDate()).slice(-2);
+				var yyyymmdd = year + month + day;
+				if(title != "") {
+					title += "_" + yyyymmdd
+				};
+				$("#title").val(title);
+			}
 		}
 	});
 };
@@ -787,7 +792,7 @@ $("body").on("focus", ".convNum", function() {
 }).on("keyup", ".convNum", function() {
 	$(this).val($(this).val().replace(/[^0-9]/g,""));
 });
-//.convNum을 가진 input박스들을 숫자만 입력받게 하며 3자리마다 콤마 생성하고 권 붙이기
+//.convVol을 가진 input박스들을 숫자만 입력받게 하며 3자리마다 콤마 생성하고 권 붙이기
 $("body").on("focus", ".convVol", function() {
 	var x = $(this).val();
 	x = removeCommas(x);

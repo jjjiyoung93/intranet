@@ -31,14 +31,14 @@
 
 		</tr>
 		<tr>
-			<td colspan="2" class="td-comm td-s2 td-header">구입희망권수</td>
-			<td colspan="3" class="td-comm td-s3 text-right" id="puch_hope_nmvl"></td>
+			<td colspan="2" class="td-comm td-s2 td-header">구입희망일</td>
+			<td colspan="3" class="td-comm td-s3" id="puch_hope_dd"></td>
 			<td colspan="2" class="td-comm td-s2 td-header">권당금액</td>
 			<td colspan="3" class="td-comm td-s3 text-right" id="bks_amt"></td>
 		</tr>
 		<tr>
-			<td colspan="2" class="td-comm td-s2 td-header">구입희망일</td>
-			<td colspan="3" class="td-comm td-s3" id="puch_hope_dd"></td>
+			<td colspan="2" class="td-comm td-s2 td-header">구입희망권수</td>
+			<td colspan="3" class="td-comm td-s3 text-right" id="puch_hope_nmvl"></td>
 			<td colspan="2" class="td-comm td-s2 td-header">총금액</td>
 			<td colspan="3" class="td-comm td-s3 text-right" id="bks_amt_sum"></td>
 		</tr>
@@ -55,3 +55,15 @@
 	<br>
 	<h4 id="crtn_dt"></h4>
 </div>
+<script>
+//3자리 단위마다 콤마 생성
+function addCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+$(function() {
+	// 금액 부분 콤마, 원, 권 추가
+	$("#bks_amt").text(addCommas($("#bks_amt").text()) + "원");
+	$("#bks_amt_sum").text(addCommas($("#bks_amt_sum").text()) + "원");
+	$("#puch_hope_nmvl").text(addCommas($("#puch_hope_nmvl").text()) + "권");
+});
+</script>

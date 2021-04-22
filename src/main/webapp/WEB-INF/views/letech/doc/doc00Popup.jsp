@@ -180,7 +180,7 @@ $(function() {
 		if(key != "items") { // 항목인지 확인
 			$("#" + key.toLowerCase()).text(docJson[key]);
 		} else {
-			if(viewJson.APRV_TYPE_CD == "CD0001009" && viewJson.APRV_TYPE_DTIL_CD == "CD0001009001") {
+			if(viewJson.APRV_TYPE_CD == "CD0001009" && (viewJson.APRV_TYPE_DTIL_CD == "CD0001009001" || viewJson.APRV_TYPE_DTIL_CD == "CD0001009002")) {
 				fn_addBztrpItem(docJson[key]);
 			}
 		}

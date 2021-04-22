@@ -141,6 +141,27 @@ public class VarConsts {
 	 */
 	public static final String SYS_BBS_LAYOUT_TY = "CD0007";
 	
+	/** 
+	 * 종류 = 지역코드<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0009'<br>
+	 */
+	public static final String PLC_CODE = "CD0009";
+	
+	/** 
+	 * 종류 = 출장구분코드_법인<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0010'<br>
+	 */
+	public static final String BZTRP_DIV_CODE_CPR = "CD0010";
+	
+	/** 
+	 * 종류 = 출장구분코드_일반<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0010'<br>
+	 */
+	public static final String BZTRP_DIV_CODE_GNRL = "CD0011";
+	
 	/* 에러 메일 발송 코드 */
 	
 	/** 

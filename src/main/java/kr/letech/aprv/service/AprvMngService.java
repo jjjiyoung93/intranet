@@ -145,4 +145,21 @@ public interface AprvMngService {
 	*/
 	public Map getAprvRecList(Map params) throws Exception;
 
+	/**
+	* 지역별 출장비 리스트 반환
+	* 작성자 : JO MIN SOO
+	* @return
+	* @throws Exception
+	*/
+	public List getTrcsList() throws Exception;
+
+	/**
+	* 유저의 여비 정보를 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	public List getTrvctInfo(Map params) throws Exception;
+
 }

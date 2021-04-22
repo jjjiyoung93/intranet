@@ -234,10 +234,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 		} else if("CD0001008".equals(cd1)) { // 품의서
 			docDAO.insertPttn(params);
 		} else if("CD0001009".equals(cd1)) { // 출장
-			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
-				// DOC_BZTRP_ADJS
+			if("CD0001009001".equals(cd2) || "CD0001009002".equals(cd2)) { // 출장정산(국내)-법인,일반
 				docDAO.insertBztrpAdjs(params);
-				// DOC_BZTRP_ADJS_ITEM
 				for(Object i : params.keySet()) {
 					String key = String.valueOf(i);
 					String value = String.valueOf(params.get(key));
@@ -250,6 +248,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 						itemMap.put("bztrp_item_ctnt", params.get("bztrp_item_ctnt_" + num));
 						itemMap.put("bztrp_item_amt", params.get("bztrp_item_amt_" + num));
 						itemMap.put("bztrp_item_rmrk", params.get("bztrp_item_rmrk_" + num));
+						itemMap.put("bztrp_item_st_plc", params.get("bztrp_item_st_plc_" + num));
+						itemMap.put("bztrp_item_ed_plc", params.get("bztrp_item_ed_plc_" + num));
 						docDAO.insertBztrpAdjsItem(itemMap);
 					} 
 				}
@@ -288,8 +288,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			aprvLineMap.put("aprv_ordr", params.get("aprv_ordr" + i));
 			aprvLineMap.put("aprv_ym", params.get("aprv_ym" + i));
 			aprvLineMap.put("aprv_yn_cd", params.get("aprv_yn_cd" + i));
-			aprvLineMap.put("refe_yn", params.get("refe_yn" + i) == null ? "N"
-					: params.get("refe_yn" + i));
+			aprvLineMap.put("refe_yn", params.get("refe_yn" + i) == null ? "N" : params.get("refe_yn" + i));
 			aprvLineMap.put("conf_yn", "N");
 			aprvLineMap.put("line_chk", "Y");
 
@@ -419,8 +418,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 		} else if("CD0001008".equals(cd1)) { // 품의서
 			docDAO.updatePttn(params);
 		} else if("CD0001009".equals(cd1)) { // 출장
-			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
-				// DOC_BZTRP_ADJS_ITEM
+			if("CD0001009001".equals(cd2) || "CD0001009002".equals(cd2)) { // 출장정산(국내)-법인,일반
 				docDAO.deleteBztrpAdjsItem(params);
 				for(Object i : params.keySet()) {
 					String key = String.valueOf(i);
@@ -434,10 +432,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 						itemMap.put("bztrp_item_ctnt", params.get("bztrp_item_ctnt_" + num));
 						itemMap.put("bztrp_item_amt", params.get("bztrp_item_amt_" + num));
 						itemMap.put("bztrp_item_rmrk", params.get("bztrp_item_rmrk_" + num));
+						itemMap.put("bztrp_item_st_plc", params.get("bztrp_item_st_plc_" + num));
+						itemMap.put("bztrp_item_ed_plc", params.get("bztrp_item_ed_plc_" + num));
 						docDAO.insertBztrpAdjsItem(itemMap);
 					} 
 				}
-				// DOC_BZTRP_ADJS
 				docDAO.updateBztrpAdjs(params);
 			}
 		} else if("CD0001015".equals(cd1)) { // 도서구매신청
@@ -471,10 +470,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 		} else if("CD0001008".equals(cd1)) { // 품의서
 			docDAO.deletePttn(params);
 		} else if("CD0001009".equals(cd1)) { // 출장
-			if("CD0001009001".equals(cd2)) { // 출장정산(국내)
-				// DOC_BZTRP_ADJS_ITEM
+			if("CD0001009001".equals(cd2) || "CD0001009002".equals(cd2)) { // 출장정산(국내)
 				docDAO.deleteBztrpAdjsItem(params);
-				// DOC_BZTRP_ADJS
 				docDAO.deleteBztrpAdjs(params);
 			}
 		} else if("CD0001015".equals(cd1)) { // 도서구매신청
@@ -924,6 +921,29 @@ public class AprvMngServiceImpl implements AprvMngService {
 		params.put("recFileList", fileList);
 		
 		return params;
+	}
+
+	/**
+	* 지역별 출장비 리스트 반환
+	* 작성자 : JO MIN SOO
+	* @return
+	* @throws Exception
+	*/
+	@Override
+	public List getTrcsList() throws Exception {
+		return aprvMngDAO.getTrcsList();
+	}
+
+	/**
+	* 유저의 여비 정보를 반환
+	* 작성자 : JO MIN SOO
+	* @param params
+	* @return
+	* @throws Exception
+	*/
+	@Override
+	public List getTrvctInfo(Map params) throws Exception {
+		return aprvMngDAO.getTrvctInfo(params);
 	}
 
 }

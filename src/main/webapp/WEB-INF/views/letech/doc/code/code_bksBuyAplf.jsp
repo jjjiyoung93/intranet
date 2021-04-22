@@ -115,7 +115,17 @@ $(function() {
 	$("body").on("propertychange change keyup paste input", "#puch_hope_nmvl, #bks_amt", function() {
 		itemSum();
 	});
+	
+	// 금액 부분 콤마, 원, 권 추가
+	$("#bks_amt").val(addCommas($("#bks_amt").val()) + "원");
+	$("#bks_amt_sum").val(addCommas($("#bks_amt_sum").val()) + "원");
+	$("#puch_hope_nmvl").val(addCommas($("#puch_hope_nmvl").val()) + "권");
 });
+
+//3자리 단위마다 콤마 생성
+function addCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 //금액의 합산
 function itemSum() {

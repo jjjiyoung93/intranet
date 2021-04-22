@@ -1,20 +1,5 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 
-<!-- 출장구분 START -->
-<div class="col-lg-6 form-group">
-	<div class="col-lg-4 col-sm-2 text-right">
-		<label class="control-label">출장구분</label> <span class="req-sign">*</span>
-	</div>
-	<div class="col-lg-6">
-		<select id="bztrp_div" name="bztrp_div" class="form-control">
-			<option value="">--선택--</option>
-			<option value="법인">법인</option>
-			<option value="일반">일반</option>
-		</select>
-	</div>
-</div>
-<!-- 출장구분 END -->
-
 <!-- 기간 및 일수 START -->
 <div class="col-lg-12 form-group">
 	<div class="col-lg-2 col-sm-2 text-right">
@@ -106,26 +91,6 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr id="tr_bztrp_item_1" class="tr_bztrp_items">
-					<td class="form-group">
-						<select id="bztrp_item_div_1" name="bztrp_item_div_1" class="form-control bztrp_item_divs">
-							<option value="">--선택--</option>
-							<option value="교통비">교통비</option>
-							<option value="여비">여비</option>
-							<option value="기타">기타</option>
-						</select>
-					</td>
-					<td class="form-group">
-						<input type="text" class="form-control bztrp_item_ctnts" id="bztrp_item_ctnt_1" name="bztrp_item_ctnt_1">
-					</td>
-					<td class="form-group">
-						<input type="text" class="form-control bztrp_item_amts text-right convNum" id="bztrp_item_amt_1" name="bztrp_item_amt_1">
-					</td>
-					<td class="form-group">
-						<input type="text" class="form-control bztrp_item_rmrks" id="bztrp_item_rmrk_1" name="bztrp_item_rmrk_1">
-					</td>
-					<td></td>
-				</tr>
 				<tr id="tr_bztrp_item_sum">
 					<td colspan="2" class="text-center" style="border-bottom-width: 2px;">
 						<label class="form-label">합계</label>
@@ -134,55 +99,44 @@
 						<input type="text" class="form-control text-right" id="bztrp_item_sum" name="bztrp_item_sum" readonly>
 					</td>
 				</tr>
-				<tr>
-					<td colspan="2" class="text-center">
-						<label class="form-label">전도금</label>
-					</td>
-					<td colspan="3" class="text-right">
-						<input type="text" class="form-control text-right convNum" id="plnd_amt" name="plnd_amt">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" class="text-center">
-						<label class="form-label">기업카드사용금액</label>
-					</td>
-					<td colspan="3" class="text-right">
-						<input type="text" class="form-control text-right convNum" id="corp_crd_use_amt" name="corp_crd_use_amt">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2" class="text-center">
-						<label class="form-label">지급액(차액)</label>
-					</td>
-					<td colspan="3" class="text-right">
-						<input type="text" class="form-control text-right" id="provd_amt" name="provd_amt" readonly>
-					</td>
-				</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
 <!-- 항목 END -->
 
-<!-- 비고 START -->
-<div class="col-lg-12 form-group">
-	<div class="col-lg-2 col-sm-2 text-right">
-		<label class="control-label">비고<br> (계좌번호)
-		</label>
-	</div>
-	<div class="col-lg-9">
-		<textarea class="form-control" name="bztrp_rmrk" id="bztrp_rmrk"></textarea>
-	</div>
-</div>
-<!-- 비고 END -->
-
 <script>
+var bztrpDivCodeList;
+
 $(function() {
 	// 금액이 들어가는 항목
 	$("body").on("propertychange change keyup paste input", ".bztrp_item_amts, #plnd_amt, #corp_crd_use_amt", function() {
 		itemSum();
 	});
+
+	// 공통코드 불러오기(출장항목코드)
+	$.ajax({
+		type: 'get',
+		url: '${pageContext.request.contextPath}/aprv/aprv03Ajax.do',
+		async: false,
+		data: $("#frm1").serialize(),
+		success: function(data){
+			bztrpDivCodeList = data.bztrpDivCodeList;
+			if($("#mode").val() != "UPDATE") {
+				// 항목 1개 추가
+				fn_addBztrpItem();
+			} 
+		}
+	});
+
+	// 금액 부분 콤마, 원 추가
+	$("#bztrp_item_sum").val(addCommas($("#bztrp_item_sum").val() == "" ? 0 : $("#bztrp_item_sum").val()) + "원");
 });
+
+//3자리 단위마다 콤마 생성
+function addCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 // 금액의 합산
 function itemSum() {
@@ -194,15 +148,6 @@ function itemSum() {
 	});
 	
 	$("#bztrp_item_sum").val(addCommas(sum) + "원");
-	
-	if($("#plnd_amt").val() != "") {
-		sum -= parseInt(removeCommas($("#plnd_amt").val()));
-	}
-	if($("#corp_crd_use_amt").val() != "") {
-		sum -= parseInt(removeCommas($("#corp_crd_use_amt").val()));
-	}
-	
-	$("#provd_amt").val(addCommas(sum) + "원");
 }
 
 //출장 항목 추가
@@ -223,10 +168,10 @@ function fn_addBztrpItem() {
 	html += '<tr id="tr_bztrp_item_' + bztrpCount + '" class="tr_bztrp_items">';
 	html += '	<td class="form-group">';
 	html += '		<select id="bztrp_item_div_' + bztrpCount + '" name="bztrp_item_div_' + bztrpCount + '" class="form-control bztrp_item_divs">';
-	html += '			<option value="">--선택--</option>';
-	html += '			<option value="교통비">교통비</option>';
-	html += '			<option value="여비">여비</option>';
-	html += '			<option value="기타">기타</option>';
+	html += '			<option value="" selected disabled>--선택--</option>';
+	bztrpDivCodeList.forEach(function(item) {
+		html += '<option value="' + item.CD + '">' + item.CD_NM + '</option>'
+	});
 	html += '		</select>';
 	html += '	</td>';
 	html += '	<td class="form-group"><input id="bztrp_item_ctnt_' + bztrpCount + '" name="bztrp_item_ctnt_' + bztrpCount + '" type="text" class="form-control bztrp_item_ctnts"></td>';
@@ -239,27 +184,38 @@ function fn_addBztrpItem() {
 
 // 출장 항목 추가(업데이트인 경우)
 function fn_addBztrpItem2(data) {
-	$("#tr_bztrp_item_1").remove();
-	for(key in data) {
-		html = '';
-		html += '<tr id="tr_bztrp_item_' + data[key].BZTRP_ITEM_SEQ + '" class="tr_bztrp_items">';
-		html += '	<td class="form-group">';
-		html += '		<select id="bztrp_item_div_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_div_' + data[key].BZTRP_ITEM_SEQ + '" class="form-control bztrp_item_divs">';
-		html += '			<option value="">--선택--</option>';
-		html += '			<option value="교통비"' + (data[key].BZTRP_ITEM_DIV == "교통비" ? " selected" : "") + '>교통비</option>';
-		html += '			<option value="여비"' + (data[key].BZTRP_ITEM_DIV == "여비" ? " selected" : "") + '>여비</option>';
-		html += '			<option value="기타"' + (data[key].BZTRP_ITEM_DIV == "기타" ? " selected" : "") + '>기타</option>';
-		html += '		</select>';
-		html += '	</td>';
-		html += '	<td class="form-group"><input id="bztrp_item_ctnt_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_ctnt_' + data[key].BZTRP_ITEM_SEQ + '" type="text" class="form-control bztrp_item_ctnts" value="' + (data[key].BZTRP_ITEM_CTNT == null ? "" : data[key].BZTRP_ITEM_CTNT) + '"></td>';
-		html += '	<td class="form-group"><input id="bztrp_item_amt_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_amt_' + data[key].BZTRP_ITEM_SEQ + '" type="text" class="form-control bztrp_item_amts text-right convNum" value="' + (data[key].BZTRP_ITEM_AMT == null ? "" : data[key].BZTRP_ITEM_AMT) + '"></td>';
-		html += '	<td class="form-group"><input id="bztrp_item_rmrk_' + data[key].BZTRP_ITEM_SEQ + '" name="bztrp_item_rmrk_' + data[key].BZTRP_ITEM_SEQ + '" type="text" class="form-control bztrp_item_rmrks" value="' + (data[key].BZTRP_ITEM_RMRK == null ? "" : data[key].BZTRP_ITEM_RMRK) + '"></td>';
-		if(data[key].BZTRP_ITEM_SEQ != "1") {
-			html += '	<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_deleteBztrpItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>';
+	// 공통코드 불러오기(지역코드, 출장항목코드, 여비)
+	$.ajax({
+		type: 'get',
+		url: '${pageContext.request.contextPath}/aprv/aprv03Ajax.do',
+		async: false,
+		data: $("#frm1").serialize(),
+		success: function(data2){
+			var divList = data2.bztrpDivCodeList;
+			for(key in data) {
+				var bztrpSeq = data[key].BZTRP_ITEM_SEQ;
+				var bztrpDivCd = data[key].BZTRP_ITEM_DIV;
+				var bztrpDivNm = data[key].BZTRP_ITEM_DIV_NM;
+				html = '';
+				html += '<tr id="tr_bztrp_item_' + bztrpSeq + '" class="tr_bztrp_items">';
+				html += '	<td class="form-group">';
+				html += '		<select id="bztrp_item_div_' + bztrpSeq + '" name="bztrp_item_div_' + bztrpSeq + '" class="form-control bztrp_item_divs">';
+				html += '			<option value="" disabled>--선택--</option>';
+				divList.forEach(item => {
+					html += '<option value="' + item.CD + '" ' + (item.CD == bztrpDivCd ? "selected" : "") + '>' + item.CD_NM + '</option>'
+				});
+				html += '		</select>';
+				html += '	</td>';
+				html += '	<td class="form-group"><input id="bztrp_item_ctnt_' + bztrpSeq + '" name="bztrp_item_ctnt_' + bztrpSeq + '" type="text" class="form-control bztrp_item_ctnts" value="' + (data[key].BZTRP_ITEM_CTNT == null ? "" : data[key].BZTRP_ITEM_CTNT) + '"></td>';
+				html += '	<td class="form-group"><input id="bztrp_item_amt_' + bztrpSeq + '" name="bztrp_item_amt_' + bztrpSeq + '" type="text" class="form-control bztrp_item_amts text-right convNum" value="' + (data[key].BZTRP_ITEM_AMT == null ? "" : addCommas(data[key].BZTRP_ITEM_AMT)) + '원"></td>';
+				html += '	<td class="form-group"><input id="bztrp_item_rmrk_' + bztrpSeq + '" name="bztrp_item_rmrk_' + bztrpSeq + '" type="text" class="form-control bztrp_item_rmrks" value="' + (data[key].BZTRP_ITEM_RMRK == null ? "" : data[key].BZTRP_ITEM_RMRK) + '"></td>';
+				html += '	<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_deleteBztrpItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>';
+				html += '</tr>';
+				$("#tr_bztrp_item_sum").before(html);
+			};
 		}
-		html += '</tr>';
-		$("#tr_bztrp_item_sum").before(html);
-	};
+	});
+	
 }
 
 // 출장 항목 제거
@@ -270,14 +226,6 @@ function fn_deleteBztrpItem(btn) {
 
 function getValidation2(valid) {
 	if($("#cdList1").val() == "CD0001009" && $("#cdList2").val() == "CD0001009001") {
-		if($("#bztrp_div option:selected").val() == ""){
-			if(valid) {
-				alert("출장구분을 선택해 주세요.");
-				$("#bztrp_div").focus();
-			}
-			$("#bztrp_div").closest(".form-group").addClass("has-error");
-			valid = false;
-		}
 		if($("#term_st").val() == ""){
 			if(valid) {
 				alert("시작 날짜를 선택해 주세요.");

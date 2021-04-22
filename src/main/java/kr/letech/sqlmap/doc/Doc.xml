@@ -69,7 +69,6 @@
 	
 	<select id = "getBztrpAdjs" parameterType="map" resultType="HashMap">
 		SELECT APRV_NO
-			 , BZTRP_DIV
 			 , BZTRP_PURP
 			 , BZTRP_PER
 			 , BZTRP_NIGHT
@@ -87,13 +86,18 @@
 	</select>
 	
 	<select id = "getBztrpAdjsItem" parameterType="map" resultType="HashMap">
-		SELECT APRV_NO
+ 		SELECT APRV_NO
 			 , BZTRP_ITEM_SEQ
 			 , BZTRP_ITEM_DIV
+			 , (SELECT B.CD_NM FROM STD_CD_MNG B WHERE A.BZTRP_ITEM_DIV = B.CD) AS BZTRP_ITEM_DIV_NM
 			 , BZTRP_ITEM_CTNT
 			 , BZTRP_ITEM_AMT
 			 , BZTRP_ITEM_RMRK
-		  FROM DOC_BZTRP_ADJS_ITEM
+			 , BZTRP_ITEM_ST_PLC
+			 , BZTRP_ITEM_ED_PLC
+			 , (SELECT B.CD_NM FROM STD_CD_MNG B WHERE A.BZTRP_ITEM_ST_PLC = B.CD) AS BZTRP_ITEM_ST_PLC_NM 
+			 , (SELECT B.CD_NM FROM STD_CD_MNG B WHERE A.BZTRP_ITEM_ED_PLC = B.CD) AS BZTRP_ITEM_ED_PLC_NM 
+		  FROM DOC_BZTRP_ADJS_ITEM A
 		 WHERE APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
 		 ORDER BY BZTRP_ITEM_SEQ
 	</select>
@@ -170,9 +174,9 @@
 			, #{pbcm, jdbcType=VARCHAR}
 			, #{pblt_dd, jdbcType=VARCHAR}
 			, #{isbn, jdbcType=VARCHAR}
-			, #{bks_amt, jdbcType=VARCHAR}
-			, #{bks_amt_sum, jdbcType=VARCHAR}
-			, #{puch_hope_nmvl, jdbcType=VARCHAR}
+			, replace(replace(#{bks_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
+			, replace(replace(#{bks_amt_sum, jdbcType=NUMERIC}, '원', ''), ',', '')
+			, replace(replace(#{puch_hope_nmvl, jdbcType=NUMERIC}, '권', ''), ',', '')
 			, #{puch_hope_dd, jdbcType=VARCHAR}
 			, #{rmrk, jdbcType=VARCHAR}
 		)
@@ -193,7 +197,6 @@
 	<insert id="insertBztrpAdjs" parameterType="map">
 		INSERT INTO DOC_BZTRP_ADJS (
 			  APRV_NO
-			, BZTRP_DIV
 			, BZTRP_PURP
 			, BZTRP_PER
 			, BZTRP_NIGHT
@@ -208,7 +211,6 @@
 			, BZTRP_RMRK
 		) VALUES (
 			  #{aprv_no, jdbcType=VARCHAR}
-			, #{bztrp_div, jdbcType=VARCHAR}
 			, #{bztrp_purp, jdbcType=VARCHAR}
 			, #{bztrp_per, jdbcType=VARCHAR}
 			, #{bztrp_night, jdbcType=VARCHAR}
@@ -216,10 +218,10 @@
 			, #{bztrp_plc, jdbcType=VARCHAR}
 			, #{dpar_area, jdbcType=VARCHAR}
 			, #{aryl_area, jdbcType=VARCHAR}
-			, #{plnd_amt, jdbcType=VARCHAR}
-			, #{corp_crd_use_amt, jdbcType=VARCHAR}
-			, #{bztrp_item_sum, jdbcType=VARCHAR}
-			, #{provd_amt, jdbcType=VARCHAR}
+			, replace(replace(#{plnd_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
+			, replace(replace(#{corp_crd_use_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
+			, replace(replace(#{bztrp_item_sum, jdbcType=NUMERIC}, '원', ''), ',', '')
+			, replace(replace(#{provd_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
 			, #{bztrp_rmrk, jdbcType=VARCHAR}
 		)
 	</insert>
@@ -232,13 +234,17 @@
 			, BZTRP_ITEM_CTNT
 			, BZTRP_ITEM_AMT
 			, BZTRP_ITEM_RMRK
+			, BZTRP_ITEM_ST_PLC
+			, BZTRP_ITEM_ED_PLC
 		) VALUES (
 			  #{aprv_no, jdbcType=VARCHAR}
 			, #{bztrp_item_seq, jdbcType=VARCHAR}
 			, #{bztrp_item_div, jdbcType=VARCHAR}
 			, #{bztrp_item_ctnt, jdbcType=VARCHAR}
-			, #{bztrp_item_amt, jdbcType=VARCHAR}
+			, replace(replace(#{bztrp_item_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
 			, #{bztrp_item_rmrk, jdbcType=VARCHAR}
+			, #{bztrp_item_st_plc, jdbcType=VARCHAR}
+			, #{bztrp_item_ed_plc, jdbcType=VARCHAR}
 		)
 	</insert>	
 	
@@ -278,9 +284,9 @@
 			 , PBCM           = #{pbcm, jdbcType=VARCHAR}
 			 , PBLT_DD        = #{pblt_dd, jdbcType=VARCHAR}
 			 , ISBN           = #{isbn, jdbcType=VARCHAR}
-			 , BKS_AMT        = #{bks_amt, jdbcType=VARCHAR}
-			 , BKS_AMT_SUM    = #{bks_amt_sum, jdbcType=VARCHAR}
-			 , PUCH_HOPE_NMVL = #{puch_hope_nmvl, jdbcType=VARCHAR}
+			 , BKS_AMT        = replace(replace(#{bks_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
+			 , BKS_AMT_SUM    = replace(replace(#{bks_amt_sum, jdbcType=NUMERIC}, '원', ''), ',', '')
+			 , PUCH_HOPE_NMVL = replace(replace(#{puch_hope_nmvl, jdbcType=NUMERIC}, '권', ''), ',', '')
 			 , PUCH_HOPE_DD   = #{puch_hope_dd, jdbcType=VARCHAR}
 			 , RMRK           = #{rmrk, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
@@ -295,18 +301,17 @@
 	
 	<update id="updateBztrpAdjs" parameterType="map">
 		UPDATE DOC_BZTRP_ADJS
-		   SET BZTRP_DIV        = #{bztrp_div, jdbcType=VARCHAR}
-			 , BZTRP_PURP       = #{bztrp_purp, jdbcType=VARCHAR}
+		   SET BZTRP_PURP       = #{bztrp_purp, jdbcType=VARCHAR}
 			 , BZTRP_PER        = #{bztrp_per, jdbcType=VARCHAR}
 			 , BZTRP_NIGHT      = #{bztrp_night, jdbcType=VARCHAR}
 			 , BZTRP_DAYS       = #{bztrp_days, jdbcType=VARCHAR}
 			 , BZTRP_PLC        = #{bztrp_plc, jdbcType=VARCHAR}
 			 , DPAR_AREA        = #{dpar_area, jdbcType=VARCHAR}
 			 , ARYL_AREA        = #{aryl_area, jdbcType=VARCHAR}
-			 , PLND_AMT         = #{plnd_amt, jdbcType=VARCHAR}
-			 , CORP_CRD_USE_AMT = #{corp_crd_use_amt, jdbcType=VARCHAR}
-			 , BZTRP_ITEM_SUM   = #{bztrp_item_sum, jdbcType=VARCHAR}
-			 , PROVD_AMT        = #{provd_amt, jdbcType=VARCHAR}
+			 , PLND_AMT         = replace(replace(#{plnd_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
+			 , CORP_CRD_USE_AMT = replace(replace(#{corp_crd_use_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
+			 , BZTRP_ITEM_SUM   = replace(replace(#{bztrp_item_sum, jdbcType=NUMERIC}, '원', ''), ',', '')
+			 , PROVD_AMT        = replace(replace(#{provd_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
 			 , BZTRP_RMRK       = #{bztrp_rmrk, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</update>
@@ -315,8 +320,10 @@
 		UPDATE DOC_BZTRP_ADJS_ITEM
 		   SET BZTRP_ITEM_DIV  = #{bztrp_item_div, jdbcType=VARCHAR}
 			 , BZTRP_ITEM_CTNT = #{bztrp_item_ctnt, jdbcType=VARCHAR}
-			 , BZTRP_ITEM_AMT  = #{bztrp_item_amt, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_AMT  = replace(replace(#{bztrp_item_amt, jdbcType=NUMERIC}, '원', ''), ',', '')
 			 , BZTRP_ITEM_RMRK = #{bztrp_item_rmrk, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_ST_PLC = #{bztrp_item_st_plc, jdbcType=VARCHAR}
+			 , BZTRP_ITEM_ED_PLC = #{bztrp_item_ed_plc, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 		   AND BZTRP_ITEM_SEQ = #{bztrp_item_seq, jdbcType=VARCHAR}
 	</update>
