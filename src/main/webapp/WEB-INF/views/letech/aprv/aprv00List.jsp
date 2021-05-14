@@ -18,6 +18,13 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <%-- <script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script> --%>
+
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-code-snippet.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-dom.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.js"></script>
+<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
+<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
 </head>
 
 <body>
@@ -49,58 +56,195 @@
 					<div class="clearfix search-box">
 						<div class="search-container2 row">
 							<div class="col-md-12">
-								<span class="search-select-wrap">
-									<label>구분코드</label>
-									<select id="searchCdList1" name="searchCdList1" class="form-control table-cell">
+								<div class="col-md-6 mt10 text-right">
+								<span class="search-select-wrap" style="margin: 0px;">
+									<label style="font-size: 14px; padding: 0px;">구분코드</label>
+									<select id="searchCdList1" style=" font-size: 12px; width: 100px;" name="searchCdList1" class="form-control table-cell">
 											<option value="" >--전체--</option>
 										<c:forEach var="codeList" items="${codeList}">
 											<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
 										</c:forEach>
 									</select>
-									<label>확인</label>
-									<select id="searchCdList2" name="searchCdList2" class="form-control table-cell">
+									<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;확인</label>
+									<select id="searchCdList2" style="width: 100px;" name="searchCdList2" class="form-control table-cell">
 											<option value="" >--전체--</option>
 											<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
 											<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
 									</select>
-									<label>상태</label>
-									<select id="searchCdList3" name="searchCdList3" class="form-control table-cell">
+									<label style="font-size: 14px; padding: 0px;">상태</label>
+									<select id="searchCdList3" style="width: 100px;" name="searchCdList3" class="form-control table-cell">
 											<option value="" >--전체--</option>
 											<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
 											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
 											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
 											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
-									</select>
+									</select>								
 								</span>
-							</div>
-						<div class="col-md-7 mt10 pull-right">
-							<div class="">
-								<div class="col-xs-4 un-style">
-									<span class="inline-element">
-										<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-											<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-											제목
-											</option>
-											<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>
-											내용
-											</option>
-										</select>
+								</div>
+								<div class="col-md-6 mt10 text-right">
+									<span class="search-select-wrap" style="margin: 0px;">
+										<label style="font-size: 14px; padding: 0px;">소속</label>
+										<select id="searchCdList4" style="width: 100px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control">
+													<option value="" >--전체--</option>
+													<c:forEach var="dp" items="${dpList}">
+														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
+													</c:forEach>
+										</select>					
+										<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;보고자</label>
+										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" />
+										<label style="font-size: 14px; padding: 0px;">결재자</label>
+										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField3" id="searchField3" value="${params.searchField3}" title="검색어 입력" />
 									</span>
 								</div>
-							
-								<div class="col-xs-8 un-style">
-									<div class="input-group">
-									<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-										<span class="input-group-btn">
-											<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
-										</span>
+<!-- 								<div class="col-lg-6 mt10 text-right" style="display:inline-block;"> -->
+<!-- 									<div class="search-select-wrap"> -->
+<!-- 										<label style="font-size: 14px;">보고일</label> -->
+<!-- 										<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;"> -->
+<!-- 												<div style="width: 130px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus"> -->
+<!-- 													<input id="st_dt"  name="st_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span> -->
+<!-- 													<div id="startpicker-container" style="margin-left: -1px;"></div> -->
+<!-- 												</div> -->
+<!-- 												~ -->
+<!-- 												<div style="width: 130px;" -->
+<!-- 													class="form-control tui-datepicker-input tui-datetime-input tui-has-focus"> -->
+<!-- 													<input id="ed_dt" name="ed_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span> -->
+<!-- 													<div id="endpicker-container" style="margin-left: -1px;"></div> -->
+<!-- 												</div> -->
+<!-- 												<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-sm btn-default" onclick="fn_delDate()">지우기</button></div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+							</div>
+<!-- 						<div class="col-md-12 mt10 pull-left"> -->
+<!-- 							<div class="col-md-12"> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+						<div class="col-md-12">
+<!-- 							<div class="col-lg-6 mt10 text-right"> -->
+<!-- 								<span class="search-select-wrap" style="margin: 0px;"> -->
+<!-- 									<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;보고자</label> -->
+<%-- 									<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" /> --%>
+<!-- 									<label style="font-size: 14px; padding: 0px;">결재자</label> -->
+<%-- 									<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField3" id="searchField3" value="${params.searchField3}" title="검색어 입력" /> --%>
+<!-- 									<label style="font-size: 14px; padding: 0px;">소속</label> -->
+<!-- 									<select id="searchCdList4" style="width: 100px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control"> -->
+<!-- 												<option value="" >--전체--</option> -->
+<%-- 												<c:forEach var="dp" items="${dpList}"> --%>
+<%-- 													<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option> --%>
+<%-- 												</c:forEach> --%>
+<!-- 									</select>					 -->
+<!-- 								</span> -->
+<!-- 							</div> -->
+							<div class="col-md-6 mt10 text-right" style="display:inline-block;">
+								<div class="search-select-wrap">
+									<label style="font-size: 14px;">보고일</label>
+									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
+											<div style="width: 135px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+												<input id="st_dt"  name="st_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+												<div id="startpicker-container" style="margin-left: -1px;"></div>
+											</div>
+											~
+											<div style="width: 135px;"
+												class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+												<input id="ed_dt"name="ed_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+												<div id="endpicker-container" style="margin-left: -1px;"></div>
+											</div>
+											<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
 									</div>
 								</div>
 							</div>
+							
+<!-- 							<div class="col-md-6 mt10 pull-right"> -->
+<!-- 								<div class="" style="max-width: 430px;"> -->
+<!-- 									<div class="col-md-3 un-style"> -->
+<!-- 										<span class="inline-element"> -->
+<!-- 											<select name="searchGubun" id="searchGubun" class="form-control" title="search" > -->
+<!-- 												<option value="01" > -->
+<!-- 												제목 -->
+<!-- 												</option> -->
+<!-- 												<option value="02" > -->
+<!-- 												내용 -->
+<!-- 												</option> -->
+<!-- 											</select> -->
+<!-- 										</span> -->
+<!-- 									</div> -->
+								
+<!-- 									<div class="col-md-9 un-style"> -->
+<!-- 										<div class="input-group" style="width: 95%;"> -->
+<!-- 										<input class="form-control" type="text" name="searchField" id="searchField" value="" title="검색어 입력" /> -->
+<!-- 											<span class="input-group-btn"> -->
+<!-- 												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button> -->
+<!-- 											</span> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+							
+							
+							
+							
+							<div class="col-md-6 mt10">
+								<div class="" style="max-width: 430px;">
+									<div class="col-lg-4 un-style">
+										<span class="inline-element">
+											<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
+												제목
+												</option>
+												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if> >
+												내용
+												</option>
+											</select>
+										</span>
+									</div>
+								
+									<div class="col-lg-8 un-style">
+										<div class="input-group">
+										<input class="form-control" type="text" name="searchField" id="searchField" value="${parmas.searchField}" title="검색어 입력" />
+											<span class="input-group-btn">
+												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							
+<!-- 							<div class="col-lg-6 mt10 text-right"> -->
+<!-- 								<div class="text-right search-select-wrap"> -->
+<!-- 									<div class="col-lg-2" style="display: inline-block; vertical-alignment: middle; width: 80px; padding: 0px;"> -->
+<!-- 												<select name="searchGubun" id="searchGubun" class="form-control" title="search" > -->
+<%-- 													<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>> --%>
+<!-- 													제목 -->
+<!-- 													</option> -->
+<%-- 													<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>> --%>
+<!-- 													내용 -->
+<!-- 													</option> -->
+<!-- 												</select>											 -->
+<!-- 									</div> -->
+								
+<!-- 									<div class="col-lg-4 text-right" style="display: inline-block; width: 320px;  padding: 0px;"> -->
+<!-- 										<div class="input-group"> -->
+<%-- 										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" /> --%>
+<!-- 											<span class="input-group-btn"> -->
+<!-- 												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button> -->
+<!-- 											</span> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 						</div>
 					</div>
 					</div>
 					<p class="clearfix board-top">
+						<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="30">30</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+						</select>
 						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
 					</p>
 						<table class="table table-bordered reactive" >
@@ -247,6 +391,8 @@ $(document).ready(function(){
 		$("#frm1").submit();
 	});
 
+	//$("#listCnt").val("${params.listCnt}");
+
 	//select box 선택 기능
 // 	$("#cdList1").change(function(){
 // 		optionCreate($(this).val());
@@ -299,6 +445,48 @@ function goPage(cPage){
 	$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");
 	$("#frm1").submit();
 	
+}
+
+var picker = tui.DatePicker.createRangePicker({
+	language: 'ko',
+	startpicker: {
+		input: '#st_dt',
+		container: '#startpicker-container'
+	},
+	endpicker: {
+		input: '#ed_dt',
+		container: '#endpicker-container'
+	},
+	type: 'date',
+	format: 'yyyy-MM-dd'
+});
+
+$("#listCnt").val("<c:out value='${params.listCnt}'/>");
+
+var stDt = "<c:out value='${params.st_dt}'/>";
+var edDt = "<c:out value='${params.ed_dt}'/>";
+if(stDt != null && stDt != ''){
+	var stDtStr = stDt.split("-");
+	var stYear = stDtStr[0];
+	var stMon = stDtStr[1] - 1;
+	var stDay = stDtStr[2];
+	var stDate = new Date(stYear ,stMon ,stDay);
+	picker.setStartDate(stDate);
+	
+}
+
+if(edDt != null && edDt != ''){
+	var edDtStr = edDt.split("-");
+	var edYear = edDtStr[0];
+	var edMon = edDtStr[1] - 1;
+	var edDay = edDtStr[2];
+	var edDate = new Date(edYear, edMon, edDay);
+	picker.setEndDate(edDate);	
+}
+
+function fn_delDate(){
+	picker.setStartDate(null);
+	picker.setEndDate(null);
 }
 
 </script>

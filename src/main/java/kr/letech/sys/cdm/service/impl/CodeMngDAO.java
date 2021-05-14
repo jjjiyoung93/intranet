@@ -45,5 +45,9 @@ public class CodeMngDAO extends AbstractDAO {
 	public void deleteAll(Map params) throws Exception{
 		delete("codeMng.deleteAll", params);
 	}
+	
+	public Map getCodeCnt(Map params) throws Exception{
+		return (Map)getObject("codeMng.getCodeCnt", params);
+	}
 
 }

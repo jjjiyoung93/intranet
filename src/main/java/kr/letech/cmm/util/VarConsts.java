@@ -83,6 +83,12 @@ public class VarConsts {
 	 */
 //	public static final String EAM_VACATION_CODE = "CD0001002";
 	
+	/**
+	 * 종류 = 부서코드<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0008001'<br>
+	 */
+	public static final String DP_CODE = "CD0008001";
 	
 	
 	/**
@@ -158,9 +164,58 @@ public class VarConsts {
 	/** 
 	 * 종류 = 출장구분코드_일반<br>
 	 * 타입 = String<br>
-	 * 값 = 'CD0010'<br>
+	 * 값 = 'CD0011'<br>
 	 */
 	public static final String BZTRP_DIV_CODE_GNRL = "CD0011";
+	/** 
+	 * 종류 = 여비그룹코드<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0012'<br>
+	 */
+	public static final String TRVCT_GROUP = "CD0012";
+	/** 
+	 * 종류 = 가지급금구분코드<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0013'<br>
+	 */
+	public static final String TMP_PAY = "CD0013";
+	/** 
+	 * 종류 = 가지급금_교통<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0014'<br>
+	 */
+	public static final String TMP_PAY_TRF = "CD0014";
+	/** 
+	 * 종류 = 가지급금_식사<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0015'<br>
+	 */
+	public static final String TMP_PAY_FOOD = "CD0015";
+	/** 
+	 * 종류 = 가지급금_기타<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0016'<br>
+	 */
+	public static final String TMP_PAY_ETC = "CD0016";
+	/** 
+	 * 종류 = 가지급금_구매<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0019'<br>
+	 */
+	public static final String TMP_PAY_PRCHS = "CD0019";
+	/** 
+	 * 종류 = 가지급금_목적<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0017'<br>
+	 */
+	public static final String TMP_PAY_PRPS = "CD0017";
+	/** 
+	 * 종류 = 가지급금_목적_상세<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0018'<br>
+	 */
+	public static final String TMP_PAY_PRPS_DTIL = "CD0018";
+	
 	
 	/* 에러 메일 발송 코드 */
 	

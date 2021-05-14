@@ -71,5 +71,13 @@ public interface CodeMngService {
 	 * @throws Exception
 	 */
 	void deleteAll(Map params)throws Exception;
+	
+	/**
+	 * 코드 갯수 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	Map getCodeCnt(Map params) throws Exception;
 
 }

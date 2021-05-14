@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import kr.letech.aprv.TmpPayItemVO;
 import kr.letech.cmm.service.impl.AbstractDAO;
 
 @Repository("docDAO")
@@ -95,5 +96,44 @@ public class DocDAO extends AbstractDAO {
 	public int deleteBztrpAdjsItem(Map params) throws Exception {
 		return (Integer) delete("doc.deleteBztrpAdjsItem", params);
 	}
+	
 	/***** getDocData에서 사용하는 CRUD END *****/
+	// 가지급금 crud
+	public int insertTmpPay(Map params) throws Exception {
+		return (Integer) insert("doc.insertTmpPay", params);
+	}
+	//문서 템플릿 가져오기
+	public String getDocTemplate(Map params) throws Exception {
+		return (String) getObject("doc.getDocTemplate", params);
+	}
+	//가지급금 문서 데이터 가져오기
+	public Map getTmpPay(Map params) throws Exception {
+		return (Map) getObject("doc.getTmpPay", params);
+	}
+	//가지급금 문서 데이터 수정하기
+	public int  updateTmpPay(Map params) throws Exception {
+		return (Integer) update("doc.updateTmpPay", params);
+	}
+	//가지금금 문서 정보 삭제
+	public int deleteTmpPay(Map params) throws Exception {
+		return (Integer) delete("doc.deleteTmpPay", params);
+	}
+	//가지급금 상세 사항 입력
+	public int insertTmpPayItem(TmpPayItemVO tmpPayItemVO) throws Exception {
+		return (Integer) insert("doc.insertTmpPayItem", tmpPayItemVO);
+		
+	}
+	//가지급금 상세 데이터 수정
+	public int updateTmpPayItem(TmpPayItemVO tmpPayItemVO) throws Exception {
+		return (Integer) update("doc.updateTmpPayItem", tmpPayItemVO);
+	}
+	//가지급금 상세 데이터 삭제
+	public int deleteTmpPayItem(Map params) throws Exception {
+		return (Integer) delete("doc.deleteTmpPayItem", params);
+	}
+	//가지급금 상세 데이터 가져오기
+	public List getTmpPayItem(Map params) throws Exception {
+		return (List) getList("doc.getTmpPayItem", params);
+	}
+		
 }

@@ -362,4 +362,154 @@
 		DELETE FROM DOC_BZTRP_ADJS_ITEM
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</delete>
+	
+	<!-- 가지급금 CRUD  -->
+	<insert id="insertTmpPay" parameterType="map">
+		INSERT INTO DOC_TMPPAY (
+			  APRV_NO
+			, PAY_DT
+			, PAY_PRPS
+			, PAY_AMT
+			, PAY_RMK
+			, PAY_ACNT
+		) VALUES (
+			  #{aprv_no, jdbcType=VARCHAR}
+			, TO_DATE(#{pay_dt}, 'YYYY-MM-DD')  
+			, #{pay_prps, jdbcType=VARCHAR}
+			, #{pay_amt, jdbcType=VARCHAR}
+			, #{pay_rmk, jdbcType=VARCHAR}
+			, #{pay_acnt, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateTmpPay" parameterType="map">
+		UPDATE DOC_TMPPAY
+		   SET PAY_DT = #{pay_dt, jdbcType=VARCHAR}
+		     , PAY_PRPS = #{pay_prps, jdbcType=VARCHAR}
+		     , PAY_AMT = #{pay_amt, jdbcType=VARCHAR}
+		     , PAY_RMK = #{pay_rmk, jdbcType=VARCHAR}
+		     , PAY_ACNT = #{pay_acnt, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}    
+	</update>
+	
+	<delete id="deleteTmpPay" parameterType="map">
+		DELETE FROM DOC_TMPPAY
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="getTmpPay" parameterType="map" resultType="HashMap">
+		SELECT A.APRV_NO
+		     , A.PAY_PRPS
+		     , A.PAY_AMT
+		     , A.PAY_RMK
+		     , A.PAY_ACNT
+		     , TO_CHAR(A.PAY_DT, 'YYYY-MM-DD') AS PAY_DT
+		     , B.CD_NM AS PAY_PRPS_NM
+		  FROM DOC_TMPPAY A
+		  LEFT OUTER JOIN STD_CD_MNG B ON (B.CD = A.PAY_PRPS)
+		 WHERE A.APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 가지급금 상세 항목 CRUD  -->
+	<select id="getTmpPayItem" parameterType="map" resultType="HashMap">
+		SELECT A.APRV_NO
+		     , A.ITEM_NO
+		     , A.CD1
+		     , A.CD2
+		     , A.CNT
+		     , TO_CHAR(A.ST_DT, 'YYYY-MM-DD') AS ST_DT
+		     , TO_CHAR(A.ED_DT, 'YYYY-MM-DD') AS ED_DT
+		     , A.PRICE
+		     , A.AMT
+		     , A.RMK1
+		     , A.RMK2
+		     , A.RMK3
+		     , A.RMK4
+		     , B.CD_NM AS CD1_NM
+		     , C.CD_NM AS CD2_NM
+		  FROM DOC_TMPPAY_ITEM A
+		  LEFT OUTER JOIN STD_CD_MNG B ON B.CD = A.CD1
+		  LEFT OUTER JOIN STD_CD_MNG C ON C.CD = A.CD2
+		 WHERE A.APRV_NO = #{APRV_NO, jdbcType=VARCHAR}
+		 ORDER BY A.CD1
+		       , A.ITEM_NO
+	</select>
+	
+	<insert id="insertTmpPayItem" parameterType="kr.letech.aprv.TmpPayItemVO">
+		<selectKey keyProperty="itemNoAdd" resultType="String" order="BEFORE">
+			SELECT NVL(MAX(TO_NUMBER(ITEM_NO)),0) +1 as itemNoAdd
+			  FROM DOC_TMPPAY_ITEM
+		</selectKey>
+		MERGE INTO DOC_TMPPAY_ITEM
+		USING DUAL
+		   ON (
+		   	  APRV_NO = #{aprvNo, jdbcType=VARCHAR}
+		  AND ITEM_NO = #{itemNo, jdbcType=VARCHAR})
+		WHEN MATCHED THEN
+			 UPDATE SET
+		       CD1 = #{cd1, jdbcType=VARCHAR} 
+	         , CD2 = #{cd2, jdbcType=VARCHAR}
+	         , CNT = #{cnt, jdbcType=VARCHAR}
+	         , ST_DT = TO_DATE(#{stDt, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+	         , ED_DT = TO_DATE(#{edDt, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+	         , PRICE = #{price, jdbcType=VARCHAR}
+	         , AMT = #{amt, jdbcType=VARCHAR}
+	         , RMK1 = #{rmk1, jdbcType=VARCHAR}
+	         , RMK2 = #{rmk2, jdbcType=VARCHAR}
+	         , RMK3 = #{rmk3, jdbcType=VARCHAR}
+	         , RMK4 = #{rmk4, jdbcType=VARCHAR}
+	    WHEN NOT MATCHED THEN
+	         INSERT VALUES (
+			   #{aprvNo, jdbcType=VARCHAR}
+			 , #{itemNoAdd, jdbcType=VARCHAR}
+			 , #{cd1, jdbcType=VARCHAR}
+			 , #{cd2, jdbcType=VARCHAR}
+			 , #{cnt, jdbcType=VARCHAR}
+			 , TO_DATE(#{stDt, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+			 , TO_DATE(#{edDt, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+			 , #{price, jdbcType=VARCHAR}
+			 , #{amt, jdbcType=VARCHAR}
+			 , #{rmk1, jdbcType=VARCHAR}
+			 , #{rmk2, jdbcType=VARCHAR}
+			 , #{rmk3, jdbcType=VARCHAR}
+			 , #{rmk4, jdbcType=VARCHAR}
+		)
+				
+	</insert>
+	
+	<update id="updateTmpPayItem" parameterType="kr.letech.aprv.TmpPayItemVO">
+		UPDATE DOC_TMPPAY_ITEM
+		   SET CD1 = #{cd1, jdbcType=VARCHAR} 
+	         , CD2 = #{cd2, jdbcType=VARCHAR}
+	         , CNT = #{cnt, jdbcType=VARCHAR}
+	         , ST_DT = TO_DATE(#{st_dt, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+	         , ED_DT = TO_DATE(#{ed_dt, jdbcType=VARCHAR}, 'YYYY-MM-DD')
+	         , PRICE = #{price, jdbcType=VARCHAR}
+	         , AMT = #{amt, jdbcType=VARCHAR}
+	         , RMK1 = #{rmk1, jdbcType=VARCHAR}
+	         , RMK2 = #{rmk2, jdbcType=VARCHAR}
+	         , RMK3 = #{rmk3, jdbcType=VARCHAR}
+	         , RMK4 = #{rmk4, jdbcType=VARCHAR}
+	     WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	       AND ITEM_NO = #{item_no, jdbcType=VARCHAR}    
+	</update>
+	
+	<delete id="deleteTmpPayItem" parameterType="map">
+		DELETE FROM DOC_TMPPAY_ITEM
+	     WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	     <if test="item_no != null and item_no != ''">
+	       AND ITEM_NO = #{item_no, jdbcType=VARCHAR}    	     
+	     </if>
+	</delete>
+	
+	
+	<!-- 문서 템플릿 가져오기  -->
+	<select id="getDocTemplate" parameterType="map" resultType="java.lang.String">
+		SELECT TMPLT
+		  FROM DOC_TMPLT
+		 WHERE CD = #{APRV_TYPE_CD, jdbcType=VARCHAR}
+	</select>
+	
+	
+	
 </mapper>

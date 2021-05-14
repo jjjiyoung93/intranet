@@ -30,6 +30,8 @@
 <style>
 	.form-group{padding-left: 0px; padding-right: 0px;}
 	.req-sign{color: red; font-size: 18px;}
+	.tmp-pay-tb-header{font-size: 12px;}
+	.req-sign-tb{color: red; font-size: 15px;}
 </style>
 <body>
 	<div id="wrapper">
@@ -428,7 +430,7 @@ $(function() {
 	});
 	
 	// 수정
-	if($("#mode").val() == "<%=VarConsts.MODE_U%>") {
+	if($("#mode").val() == "<%=VarConsts.MODE_U%>" ) {
 		fn_getDocCode($("#cdList1").val(), $("#cdList2").val()); // 문서 양식 불러와서 HTML에 찍어줌
 		
 		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
@@ -442,6 +444,7 @@ $(function() {
 				}
 			}
 		}
+		
 		if($("#place").size() == "1") { // 행선지 이용하는 양식인지 확인
 			$("#place").val(viewJson["PLACE"]);
 		}
@@ -475,6 +478,11 @@ $(function() {
 			});
 			$("#term_ed").attr("disabled", false);
 		}
+		//가지급금 상세 불러오기
+		if($("#cdList1").val() == "CD0001010") {
+			console.log("가지급금");
+			fn_addTmpPayItem(docJson, viewJson);
+		}
 	}
 	
 	// validation으로 error class가 추가된 div에 내용이 변경되면 error class를 지워줌
@@ -484,6 +492,17 @@ $(function() {
 	$("body").on("click", "#term_st, #term_ed", function() {
 		$(this).closest(".form-group").removeClass("has-error")
 	});
+	$("body").on("click", ".st-dt, .ed-dt", function() {
+		$(this).closest(".form-group").removeClass("has-error")
+	});
+	$("body").on("click", "#pay_dt", function() {
+		$(this).closest(".form-group").removeClass("has-error");		
+	})
+	$("body").on("change", ".cd2", function() {
+		$(this).parents("tr").find(".rmk4").closest(".form-group").removeClass("has-error");
+		//$(this).closest(".form-group").removeClass("has-error");		
+		
+	})
 });
 
 // 1차 코드 선택
@@ -521,6 +540,8 @@ $("#cdList2").change(function() {
 	fn_getDocCode($("#cdList1").val(), $("#cdList2").val()); // 문서 양식 불러옴(2가지 경우 중 두번째)
 });
 
+
+
 // 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
 function fn_getDocCode(cd1, cd2) {
 	$.ajax({
@@ -554,7 +575,18 @@ function fn_getDocCode(cd1, cd2) {
 					}
 				});
 			}
-			
+			//가지급금 지급희망일자 datepicker
+			if($("#pay_dt").length > 0) {
+				//tui.date-picker
+				var picker = new tui.DatePicker("#startpicker-container2", {
+					language: 'ko',
+					input : {
+						element: '#pay_dt',
+						format : 'yyyy-MM-dd'
+					}
+				});
+			}
+
 			// 문서 양식에 따라 title 양식 설정(경영지원실 요청사항)
 			if(!($("#mode").val() == '<%=VarConsts.MODE_U%>')) {
 				var title = "";
@@ -630,7 +662,13 @@ function fn_getDocCode(cd1, cd2) {
 				if(title != "") {
 					title += "_" + yyyymmdd
 				};
+
 				$("#title").val(title);
+				//가지급금 양식 로드
+// 				if("CD0001010" == cd1){
+// 					fn_getDocTmplt(cd1, null);
+// 				}
+				
 			}
 		}
 	});
@@ -865,6 +903,23 @@ function getValidation1(){
 	
 	return valid;
 }
+
+//결재 문서 템플릿 로드
+function fn_getDocTmplt(cd1, cd2){
+	$.ajax({
+		type:'get',
+		async: false,
+		url: '${pageContext.request.contextPath}/doc/doc02Ajax.do?APRV_TYPE_CD='+cd1+'&APRV_TYPE_DTIL_CD='+cd2,
+		success: function(json){
+			$("#pay_dtl").val(json);
+			// 가지급금
+			//$("#pay_dtl").empty();
+			//$("#pay_dtl").append(json);
+		}
+	});			
+}
+
+
 </script>
 </body>
 </html>

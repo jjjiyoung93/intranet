@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="stdMng">	
+	
+	<!-- 여비정보 리스트 조회  -->
+	<select id="get00List" resultType="HashMap" parameterType="map" >
+		SELECT A.GROUP_CD
+			 , A.TRVCT
+       		 , B.CD_NM AS GROUP_NM
+		  FROM STD_TRVCT_GROUP A
+	      LEFT OUTER JOIN
+	      STD_CD_MNG B
+	      ON(A.GROUP_CD = B.CD)
+	      ORDER BY A.GROUP_CD
+	</select>
+	
+	<!-- 여비정보 정보 상세보기  -->
+	<select id="getView" resultType="HashMap" parameterType="map" >
+		SELECT  A.GROUP_CD
+			 , A.TRVCT
+       		 , B.CD_NM AS GROUP_NM
+		  FROM STD_TRVCT_GROUP A
+		  LEFT OUTER JOIN
+	      STD_CD_MNG B
+	      ON(A.GROUP_CD = B.CD)
+		  where group_cd = #{group_cd}
+	</select>
+	
+	<!-- 여비정보 등록 -->
+	<insert id="insertGrp" parameterType="map">
+		INSERT INTO STD_TRVCT_GROUP (
+			    GROUP_CD
+			  , TRVCT
+			)VALUES(
+			    #{grp_cd}
+			  , #{trvct}
+			)
+	</insert>
+	
+	<!-- 여비정보 수정 -->
+	<update id="updateGrp"  parameterType="map">
+		UPDATE  STD_TRVCT_GROUP
+		   SET  TRVCT        = #{trvct}   
+		 WHERE GROUP_CD = #{group_cd}
+	</update>
+	
+	<!-- 여비 정보 삭제 -->
+	<delete id="deleteGrp" parameterType="map">
+		DELETE FROM STD_TRVCT_GROUP WHERE GROUP_CD = #{std_id}
+	</delete>
+	
+	<!-- 급수별 여비 개수 조회  -->
+	<select id="getCnt00" parameterType="map" resultType="HashMap">
+		SELECT COUNT(GROUP_CD) AS CNT FROM STD_TRVCT_GROUP WHERE GROUP_CD = #{cd}
+	</select>
+	
+	
+	
+	<!-- 그룹별급수 리스트 조회  -->
+	<select id="get01List" resultType="HashMap" parameterType="map" >
+		SELECT A.AUTHOR_CODE
+			 , A.GROUP_CD
+       		 , B.AUTHOR_NM AS AUT_NM
+       		 , D.CD_NM AS GROUP_NM
+		  FROM STD_TRVCT_GROUP_AUT A
+	      LEFT OUTER JOIN
+	      STD_AUT_INFO B
+	      ON(A.AUTHOR_CODE = B.AUTHOR_CODE)
+	      LEFT OUTER JOIN
+	      STD_TRVCT_GROUP C
+	      ON(A.GROUP_CD = C.GROUP_CD)
+	      LEFT OUTER JOIN
+	      STD_CD_MNG D
+	      ON(C.GROUP_CD = D.CD)
+	      ORDER BY A.GROUP_CD, A.AUTHOR_CODE
+	</select>
+	
+	<!-- 그룹별급수 정보 상세보기  -->
+	<select id="getView2" resultType="HashMap" parameterType="map" >
+		SELECT A.AUTHOR_CODE
+			 , A.GROUP_CD
+		  FROM STD_TRVCT_GROUP_AUT A
+		  where AUTHOR_CODE = #{aut_cd}
+	</select>
+	
+	<!-- 그룹별급수 등록 -->
+	<insert id="insertAut" parameterType="map">
+		INSERT INTO STD_TRVCT_GROUP_AUT (
+			    AUTHOR_CODE
+			  , GROUP_CD
+			)VALUES(
+			    #{author_cd}
+			  , #{group_cd}
+			)
+	</insert>
+	
+	<!-- 그룹별급수 수정 -->
+	<update id="updateAut"  parameterType="map">
+		UPDATE  STD_TRVCT_GROUP_AUT
+		   SET  GROUP_CD        = #{group_cd}   
+		 WHERE AUTHOR_CODE = #{aut_cd}
+	</update>
+	
+	<!-- 그룹별급수 삭제 -->
+	<delete id="deleteAut" parameterType="map">
+		DELETE FROM STD_TRVCT_GROUP_AUT WHERE AUTHOR_CODE = #{std_id}
+	</delete>
+	
+	<!-- 그룹별급수 갯수 조회  -->
+	<select id="getCnt01" parameterType="map" resultType="HashMap">
+		SELECT COUNT(AUTHOR_CODE) AS CNT FROM STD_TRVCT_GROUP_AUT WHERE AUTHOR_CODE = #{cd}
+	</select>
+	
+	
+	
+	<!-- 교통비 리스트 조회  -->
+	<select id="get02List" resultType="HashMap" parameterType="map" >
+		SELECT A.REGN_CD1
+			 , A.REGN_CD2
+       		 , B.CD_NM AS REGN_NM1
+       		 , C.CD_NM AS REGN_NM2
+       		 , A.DSTNC
+       		 , A.TRCS
+       		 , TO_CHAR(A.DSTNC, '999,999,999,999,999') AS DSTNC_FORM
+       		 , TO_CHAR(A.TRCS, '999,999,999,999,999') AS TRCS_FORM
+		  FROM STD_TRCS A
+	      LEFT OUTER JOIN
+	      STD_CD_MNG B
+	      ON(A.REGN_CD1 = B.CD)
+	      LEFT OUTER JOIN
+	      STD_CD_MNG C
+	      ON(A.REGN_CD2 = C.CD)
+	   WHERE 1=1
+	   <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(regnCd)" >
+		 AND A.REGN_CD1 = #{regnCd}
+	   </if>
+	      
+	      ORDER BY A.REGN_CD1, A.REGN_CD2
+	</select>
+	
+	<!-- 교통비 정보 상세보기  -->
+	<select id="getView3" resultType="HashMap" parameterType="map" >
+		SELECT  A.REGN_CD1
+			 , A.REGN_CD2
+       		 , A.DSTNC
+       		 , A.TRCS
+       		 , B.CD_NM AS REGN_NM1
+       		 , C.CD_NM AS REGN_NM2
+		  FROM STD_TRCS A
+		  LEFT OUTER JOIN
+	      STD_CD_MNG B
+	      ON(A.REGN_CD1 = B.CD)
+	      LEFT OUTER JOIN
+	      STD_CD_MNG C
+	      ON(A.REGN_CD2 = C.CD)
+	    WHERE A.REGN_CD1 = #{regn_cd1}
+		  AND A.REGN_CD2 = #{regn_cd2}
+	</select>
+	
+	<!-- 교통비 등록 -->
+	<insert id="insertTrcs" parameterType="map">
+		INSERT INTO STD_TRCS (
+			    REGN_CD1
+			  , REGN_CD2
+			  , DSTNC
+			  , TRCS
+			)VALUES(
+			    #{trvctVO.regnCd1}
+			  , #{trvctVO.regnCd2}
+			  , #{trvctVO.dstnc}
+			  , #{trvctVO.trcs}
+			)
+	</insert>
+	
+	<!-- 교통비 수정 -->
+	<update id="updateTrcs"  parameterType="map">
+		UPDATE  STD_TRCS
+		   SET  DSTNC        = #{trvctVO.dstnc}
+		     , 	TRCS		 = #{trvctVO.trcs}   
+		 WHERE REGN_CD1 = #{trvctVO.regnCd1}
+		   AND REGN_CD2 = #{trvctVO.regnCd2}
+	</update>
+	
+	<!-- 교통비 삭제 -->
+	<delete id="deleteTrcs" parameterType="map">
+		DELETE FROM STD_TRCS WHERE REGN_CD1 = #{std_id} OR REGN_CD2 = #{std_id}
+	</delete>
+	
+	<!-- 권한 그룹 조회  -->
+	<select id="getAuthorList" parameterType="map" resultType="HashMap">
+		SELECT AUTHOR_CODE AS CD
+		     , AUTHOR_NM AS CD_NM
+		     , AUTHOR_DC
+		     , AUTHOR_CREAT_DE
+		     , CD_MAP
+		  FROM STD_AUT_INFO
+		 WHERE AUTHOR_CODE LIKE #{author_code} || '%'
+	</select>
+	
+	
+</mapper>

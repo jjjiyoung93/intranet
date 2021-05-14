@@ -155,9 +155,13 @@
 		    LEFT OUTER JOIN STD_USS_MNG B ON B.USS_ID = A.REPT_APRV_NO
 		    LEFT OUTER JOIN STD_CD_MNG C ON C.UP_CD = 'CD0001' AND C.CD = A.APRV_TYPE_CD
 		    LEFT OUTER JOIN VW_APRV_LINE E ON E.APRV_NO = A.APRV_NO
-		    LEFT OUTER JOIN VW_STD_LINE F ON F.APRV_NO = A.APRV_NO
+		    LEFT OUTER JOIN VW_STD_LINE F ON F.APRV_NO = A.APRV_NO 
 			LEFT OUTER JOIN VW_STD_CONF G ON G.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_STD_CONF_Y H ON H.APRV_NO = A.APRV_NO
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >
+			LEFT OUTER JOIN STD_APRV_LINE I ON I.APRV_NO = E.APRV_NO
+			LEFT OUTER JOIN STD_USS_MNG J ON J.USS_ID = I.APRV_EMP_NO
+			</if> 
 		WHERE 1=1
 		<if test='uss_auth_cd != "ROLE_ADMIN"'>
 			AND ( A.REPT_APRV_NO = #{uss_id}
@@ -177,10 +181,25 @@
 			AND A.APRV_TYPE_CD = UPPER(#{searchCdList1})
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList2)" >	<!-- 확인유무 -->
-			AND (F.CONF_YN = #{searchCdList2} OR G.CONF_YN = #{searchCdList2} ) 
+			AND  (G.CONF_YN = #{searchCdList2} OR F.CONF_YN = #{searchCdList2})
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList3)" >	<!-- 결재상태 -->
 			AND E.APRV_YN_TP = #{searchCdList3} 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField2)" >	<!-- 보고자 -->
+			AND B.USS_NM LIKE '%' || #{searchField2} || '%' 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >	<!-- 결재자 -->
+			AND J.USS_NM LIKE '%' || #{searchField3} || '%' 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(st_dt)" >	<!-- 기간 시작날짜 -->
+			AND A.CRTN_DT >= TO_DATE(#{st_dt}, 'YYYY-MM-DD') 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ed_dt)" >	<!-- 기간 끝날짜 -->
+			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{ed_dt}, 'YYYY-MM-DD') 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
+			AND B.DP_CD = #{searchCdList4}
 		</if>
 		ORDER BY E.SORT_ORDR DESC, A.CRTN_DT DESC
 <!-- 		           A.CRTN_DT DESC, A.TERM_ST_YM ASC, TO_NUMBER(A.APRV_NO) ASC -->
@@ -278,6 +297,13 @@
 		    LEFT OUTER JOIN VW_STD_LINE F ON F.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_STD_CONF G ON G.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_APRV_LINE E ON E.APRV_NO = A.APRV_NO
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField2) or @kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)" >
+			LEFT OUTER JOIN STD_USS_MNG H ON H.USS_ID = A.REPT_APRV_NO
+			</if>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >
+			LEFT OUTER JOIN STD_APRV_LINE I ON I.APRV_NO = E.APRV_NO
+			LEFT OUTER JOIN STD_USS_MNG J ON J.USS_ID = I.APRV_EMP_NO
+			</if>
 		WHERE 1=1
 		<if test='uss_auth_cd != "ROLE_ADMIN"'>
 			AND( A.REPT_APRV_NO = #{uss_id}
@@ -298,11 +324,27 @@
 			AND A.APRV_TYPE_CD = UPPER(#{searchCdList1})
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList2)" >	<!-- 확인유무 -->
-			AND (F.CONF_YN = #{searchCdList2} OR G.CONF_YN = #{searchCdList2} )
+			AND  (G.CONF_YN = #{searchCdList2} OR F.CONF_YN = #{searchCdList2})
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList3)" >	<!-- 결재상태 -->
 			AND E.APRV_YN_TP = #{searchCdList3} 
 		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField2)" >	<!-- 보고자 -->
+			AND H.USS_NM LIKE '%' || #{searchField2} || '%' 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >	<!-- 결재자 -->
+			AND J.USS_NM LIKE '%' || #{searchField3} || '%' 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(st_dt)" >	<!-- 기간 시작날짜 -->
+			AND A.CRTN_DT >= TO_DATE(#{st_dt}, 'YYYY-MM-DD') 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ed_dt)" >	<!-- 기간 끝날짜 -->
+			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{ed_dt}, 'YYYY-MM-DD') 
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
+			AND H.DP_CD = #{searchCdList4}
+		</if>
+		
 	</select>
 	
 	<!-- 결재정보 상세조회 -->

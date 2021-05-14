@@ -44,6 +44,19 @@
 	.no-print-page { /*인쇄 제외 페이지*/
 		display: none;
 	}
+	.theader-tmppay {
+		border: 1px solid black;
+	}
+	body .page .td-header-tmppay {
+		vertical-align: middle !important; 
+		text-align: center; 
+		background-color: #ececec !important;
+		-webkit-print-color-adjust: exact; 
+	}
+	body .page .theader-tmppay{
+		border: 1px solid black !important;
+		-webkit-print-color-adjust: exact !important;
+	}
 }
 body {
 	-webkit-print-color-adjust: exact !important;
@@ -82,7 +95,8 @@ h4 {
 	margin-bottom: 0px;
 }
 .td-comm {vertical-align: middle !important; height: 35px; white-space: break-spaces;}
-.td-header {vertical-align: middle !important; text-align: left; padding-left:10px !important; background-color: #ececec !important;}
+.td-header {vertical-align: middle !important; text-align: left; background-color: #ececec !important;}
+.td-header-tmppay {vertical-align: middle !important; text-align: center; background-color: #ececec !important;}
 .td-ss1 {width: 0.5cm;}
 .td-ss2 {width: 1.0cm;}
 .td-s1 {width: 1.7cm;}
@@ -103,6 +117,9 @@ h4 {
 	width: 400px;
 	height: 400px;
 	z-index: 999;
+}
+.theader-tmppay{
+	border: 1px solid black;
 }
 
 </style>
@@ -207,10 +224,14 @@ $(function() {
 				}
 				//로케일 정보에 맞게 금액 정보 포맷 수정
 				fn_amtFormat($("#docReport"), 'ko-KR');
-			}else{
+			} else if ("CD0001010" == viewJson.APRV_TYPE_CD) {
+				$("#docReport").append(data);
+				fn_drawRptDetail(docJson, viewJson);
+			} else{
 				//지출결의서 외 나머지 문서
 				$("#docReport").append(data);
 			}
+			
 		}
 	});
 
@@ -274,6 +295,12 @@ $(function() {
 			html += '</a><br>'; 
 		}
 		$("#fileList").append(html);
+	}
+	//가지급금 보고서의 경우 금액 요소에 화폐단위(원) 추가
+	var amtCompoList = $(".amt-compo");
+	for(var m=0; m < amtCompoList.length; m++){
+		var amtCompo = amtCompoList[m];
+		$(amtCompo).append("원");
 	}
 });
 
@@ -474,6 +501,16 @@ function fn_receiptPopup(source, event){
 	event.preventDefault();
 	var url = source.href;
 	window.open(url, '영수증');
+}
+
+//3자리 단위마다 콤마 생성
+function addCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+// 모든 콤마, 원 제거
+function removeCommas(x) {
+	if(!x || x.length == 0) return "";
+	else return x.split(",").join("").split("원").join("").split("권").join("");
 }
 
 //지출결의서에서 첨부파일 마우스 오버시 미리보기 출력 마우스 아웃시 숨김

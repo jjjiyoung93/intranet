@@ -1,5 +1,7 @@
 package kr.letech.aprv.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +11,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.letech.aprv.TmpPayItemListVO;
+import kr.letech.aprv.TmpPayItemVO;
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.LoginVO;
 import kr.letech.cmm.annotation.IncludedInfo;
@@ -101,6 +106,12 @@ public class AprvMngController {
 		params.put("up_cd", VarConsts.EAM_MASTER_CODE);
 		List codeList = codeMngService.getCodeList(params);
 		model.addAttribute("codeList", codeList);
+		
+		//소속 리스트 가져오기
+		params.put("code", VarConsts.DP_CODE);
+		params.put("up_cd", VarConsts.DP_CODE);
+		List dpList = codeMngService.getCodeList(params);
+		model.addAttribute("dpList", dpList);
 		
 		// 현재 날짜 구하기
 		DateUtil dt = new DateUtil();
@@ -210,6 +221,13 @@ public class AprvMngController {
 			/* 결재 첨부파일정보 조회 */
 			List fileList = aprvMngService.aprvFileList(params);
 			
+			String aprvTypeCd = (String)viewMap.get("APRV_TYPE_CD");
+			
+			//가지급금 목적 코드 로드
+			params.put("up_cd", VarConsts.TMP_PAY_PRPS);
+			List tmpPrpsList = codeMngService.getCodeList(params);
+			model.addAttribute("tmpPrpsList", tmpPrpsList);
+				
 			model.addAttribute("viewMap", viewMap);
 			model.addAttribute("lineList", lineList);
 			model.addAttribute("fileList", fileList);
@@ -267,9 +285,13 @@ public class AprvMngController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/aprv/aprv00Tran.do")
-	public String basicTran(final MultipartHttpServletRequest multiRequest, ModelMap model, HttpServletRequest request) throws Exception {
+	public String basicTran(final MultipartHttpServletRequest multiRequest, ModelMap model, HttpServletRequest request 
+			, TmpPayItemListVO tmpPayItemList) throws Exception {
 		
 		Map params = ReqUtils.getParameterMap3(multiRequest);
+		if(tmpPayItemList != null && !tmpPayItemList.getTmpPayItemList().isEmpty()) {
+			params.put("tmpPayItemList", tmpPayItemList.getTmpPayItemList());
+		}
 		model.addAttribute("params", params);
 		
 		// 사용자 정보 넣기

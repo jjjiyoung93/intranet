@@ -47,7 +47,9 @@ public class DocServiceImpl implements DocService {
 			docCode = "letech/doc/code/code_bksBuyAplf";
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
 			docCode = "letech/doc/code/code_educTrain";
-		} 
+		} else if("CD0001010".equals(cd1)) {
+			docCode = "letech/doc/code/code_tmpPay"; // 가지급금
+		}
 		
 		if(docCode == null) {
 			docCode = "letech/doc/code/code_default";
@@ -90,6 +92,8 @@ public class DocServiceImpl implements DocService {
 			reportCode = "letech/doc/report/report_educTrain";
 		} else if("CD0001007".equals(cd1)) { // 지출결의
 			reportCode = "letech/doc/report/report_bizplay";
+		} else if("CD0001010".equals(cd1)) { // 가지급금
+			reportCode = "letech/doc/report/report_tmppay";
 		}
 		
 		if(reportCode == null) {
@@ -133,9 +137,29 @@ public class DocServiceImpl implements DocService {
 			docMap = docDAO.getBksBuyAplf(params);
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
 			docMap = docDAO.getEducTrain(params);
+		} else if("CD0001010".equals(cd1)) { // 가지급금
+			docMap = docDAO.getTmpPay(params);
+			List itemList = docDAO.getTmpPayItem(params);
+			if(itemList != null && !itemList.isEmpty()) {
+				docMap.put("tmpPayItemList", itemList);
+			}
 		}
 		
 		return docMap;
+	}
+
+	@Override
+	public String getDocTemplate(Map params) throws Exception {
+		String cd1 = (String) params.get("APRV_TYPE_CD");
+		String cd2 = (String) params.get("APRV_TYPE_DTIL_CD");
+		
+		String docTemplate = null;
+		
+		if("CD0001010".equals(cd1)) { //가지급금
+			docTemplate = docDAO.getDocTemplate(params);
+		}
+			
+		return docTemplate;
 	}
 
 	

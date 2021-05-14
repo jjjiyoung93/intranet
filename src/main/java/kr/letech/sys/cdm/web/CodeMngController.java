@@ -189,7 +189,28 @@ public class CodeMngController {
 		pamMap.put("cd_val", cd_val);
 		
 		List codeList = codeMngService.getCodeList(pamMap);
+		System.out.println("codelist : "+ codeList.toString());
 		model.addAttribute("codeList", codeList);
+		
+		return "jsonView";
+	}
+	
+	
+	/**
+	 * 코드 상세 반환
+	 * @param request
+	 * @param model
+	 * @return 페이지 정보
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sys/cdm/getCode.do")
+	public String getCode(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		Map getCodeView = codeMngService.getCodeView(params);
+		model.addAttribute("getCodeView", getCodeView);
+		model.addAttribute("params", params);
 		
 		return "jsonView";
 	}

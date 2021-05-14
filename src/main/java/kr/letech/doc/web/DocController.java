@@ -10,9 +10,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.util.EgovProperties;
@@ -172,4 +175,25 @@ public class DocController {
 		// 상위코드, 하위코드에 해당하는 문서코드(소스코드)
 		return docService.getReportCode(params);
 	}
+	
+	
+	/**
+	 * 문서의 템플릿을 반환
+	 * 작성자 : 김 윤 환
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/doc/doc02Ajax.do", produces = "application/text; charset=UTF-8")
+	@ResponseBody
+	public String getDocTemplate(HttpServletRequest request, ModelMap model) throws Exception {
+		Map params = ReqUtils.getParameterMap(request);
+		String temp = docService.getDocTemplate(params);
+		return temp;
+	}
+	
+	
+	
+	
 }

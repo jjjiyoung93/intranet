@@ -32,7 +32,10 @@
 		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cd_val)" >
 		  AND CD_VAL = #{cd_val}
 		  </if>
-		  ORDER BY  cd_ord
+		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(code)" >
+		  OR CD = #{code, javaType=String ,jdbcType=VARCHAR}
+		  </if>
+		  ORDER BY  levl, cd_ord
 	 </select>
 	 
 	 <!-- 코드상세정보 가져오기  -->
@@ -107,8 +110,10 @@
 	<!-- 수정 -->
 	<update id="updateNm"  parameterType="map">
 		UPDATE STD_CD_MNG
-		SET cd_nm = #{cd_nm},
-		cd_val = #{cd_val}
+		SET cd_nm = #{cd_nm}
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cd_val)" >
+		,cd_val = #{cd_val}
+		</if>
 		WHERE cd = #{cd}
 	</update>
 	
@@ -129,6 +134,22 @@
 				STD_CD_MNG 
 				WHERE up_cd = #{up_cd}
 				AND cd_val = #{cd_val}
+	</select>
+	
+	<!-- 갯수  -->
+	<select id="getCodeCnt" parameterType="map" resultType="HashMap">
+		SELECT COUNT(CD) as CNT
+		  FROM STD_CD_MNG
+		 WHERE 1=1
+		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cd)" >
+		  	AND CD = #{cd} 
+		  </if>
+		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cd_nm)" >
+		  	AND CD_NM = #{cd_nm}
+		  </if>
+		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(up_cd)" >
+		  	AND UP_CD = #{up_cd}
+		  </if>
 	</select>
 	
 </mapper>

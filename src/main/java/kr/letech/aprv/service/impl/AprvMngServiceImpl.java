@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.reflection.wrapper.MapWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import kr.letech.app.service.AppPushService;
+import kr.letech.aprv.TmpPayItemVO;
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cal.service.impl.CalMngDAO;
 import kr.letech.cmm.util.EgovFileTool;
@@ -66,7 +68,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 		String listCnt = ReqUtils.getEmptyResult2((String)params.get("listCnt"), "10");
 		String searchGubun = ReqUtils.getEmptyResult2((String)params.get("searchGubun"), "");	
 		String searchField = ReqUtils.getEmptyResult2((String)params.get("searchField"), "");
-		
+
+		String searchField2 = ReqUtils.getEmptyResult2((String)params.get("searchField2"), "");
+		String searchField3 = ReqUtils.getEmptyResult2((String)params.get("searchField3"), "");
+		String stDt = ReqUtils.getEmptyResult2((String)params.get("st_dt"), "");
+		String edDt = ReqUtils.getEmptyResult2((String)params.get("ed_dt"), "");
 		
 		int intPage = Integer.parseInt(cPage);			/* 현재페이지 */
 		int intListCnt = Integer.parseInt(listCnt);		/* 세로페이징(게시글수)*/
@@ -258,6 +264,16 @@ public class AprvMngServiceImpl implements AprvMngService {
 			docDAO.insertBksBuyAplf(params);
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
 			docDAO.insertEducTrain(params);
+		} else if("CD0001010".equals(cd1)) { // 가지급금
+			//가지급금 공통부
+			docDAO.insertTmpPay(params);
+			//가지급금 상세
+			List<TmpPayItemVO> tmpPayItemList = (List<TmpPayItemVO> )params.get("tmpPayItemList");
+			
+			for (TmpPayItemVO tmpPayItemVO : tmpPayItemList) {
+				tmpPayItemVO.setAprvNo((String) params.get("aprv_no"));
+				docDAO.insertTmpPayItem(tmpPayItemVO);				
+			}
 		}
 
 		return procResultVal;
@@ -443,6 +459,27 @@ public class AprvMngServiceImpl implements AprvMngService {
 			docDAO.updateBksBuyAplf(params);
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
 			docDAO.updateEducTrain(params);
+		} else if("CD0001010".equals(cd1)) { // 가지급금
+			//가지급금 공통부
+			docDAO.updateTmpPay(params);
+			//가지급금 상세
+			List<TmpPayItemVO> tmpPayItemList = (List<TmpPayItemVO> )params.get("tmpPayItemList");
+			String delList = (String)params.get("delList");
+			String[] delArr = delList.split(",");
+
+			//기존 정보 삭제
+			for(String delNo : delArr) {
+				params.put("item_no", delNo);
+				docDAO.deleteTmpPayItem(params);
+			}
+			// 기존 정보 : 수정 / 신규 정보 : 추가
+			for (TmpPayItemVO tmpPayItemVO : tmpPayItemList) {
+				if(tmpPayItemVO.getCd1() != null && !"".equals(tmpPayItemVO.getCd1())) {
+					tmpPayItemVO.setAprvNo((String) params.get("aprv_no"));
+					docDAO.insertTmpPayItem(tmpPayItemVO);									
+				}
+			}
+			
 		}
 		
 		return procResultVal;
@@ -478,6 +515,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 			docDAO.deleteBksBuyAplf(params);
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청
 			docDAO.deleteEducTrain(params);
+		} else if("CD0001010".equals(cd1)) { // 가지급금
+			//가지급금 상세 정보 삭제
+			docDAO.deleteTmpPayItem(params);
+			//가지급금 공통 정보 삭제
+			docDAO.deleteTmpPay(params);
 		}
 		
 		// 결재 라인 삭제

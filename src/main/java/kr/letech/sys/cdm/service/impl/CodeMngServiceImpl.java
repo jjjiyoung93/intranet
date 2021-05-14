@@ -61,4 +61,9 @@ public class CodeMngServiceImpl implements CodeMngService {
 		codeMngDAO.deleteAll(params);
 	}
 
+	@Override
+	public Map getCodeCnt(Map params) throws Exception {
+		return codeMngDAO.getCodeCnt(params);
+	}
+
 }

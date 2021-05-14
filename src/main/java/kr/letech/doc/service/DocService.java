@@ -30,4 +30,13 @@ public interface DocService {
 	* @throws Exception
 	*/
 	public Map getDocData(Map params) throws Exception;
+
+	/**
+	 * 문서코드에 해당하는 문서의 템플릿을 반환
+	 * 작성자 : 김 윤 환
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public String getDocTemplate(Map params) throws Exception;
 }
