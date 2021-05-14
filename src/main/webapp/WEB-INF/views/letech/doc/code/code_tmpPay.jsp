@@ -353,7 +353,7 @@ function fn_getCdList(param){
 	var cd = param;
 	var codeList;
 	$.ajax({
-		url : "${pageContext.request.contextPath}/sys/cdm/getCodeList.do?cd="+cd,
+		url : "${pageContext.request.contextPath}/option/getCodeList.do?cd="+cd,
 		method : 'get',
 		async : false,
 		dataType : 'json',
@@ -368,7 +368,7 @@ function fn_getCode(param){
 	var cd = param;
 	var getCodeView;
 	$.ajax({
-		url : "${pageContext.request.contextPath}/sys/cdm/getCode.do?cd="+cd,
+		url : "${pageContext.request.contextPath}/option/getCode.do?cd="+cd,
 		method : 'get',
 		async : false,
 		dataType : 'json',

@@ -551,7 +551,9 @@ function fn_getDocCode(cd1, cd2) {
 		success: function(json){
 			// cd1, cd2에 해당하는 문서 양식을 화면에 찍어줌
 			$("#docForm").empty();
+			//console.log("화명:"+json);
 			$("#docForm").append(json);
+			//console.log("화명end:");
 
 			// 화면에 찍은 양식에서 date picker를 사용할 때 라이브러리를 초기화 시킴 
 			if($("#term_st").length > 0) {

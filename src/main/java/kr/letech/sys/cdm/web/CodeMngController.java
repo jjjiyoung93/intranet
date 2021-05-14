@@ -215,6 +215,25 @@ public class CodeMngController {
 		return "jsonView";
 	}
 	
+	/**
+	 * 코드 상세 반환
+	 * @param request
+	 * @param model
+	 * @return 페이지 정보
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/option/getCode.do")
+	public String getCodeOption(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		Map getCodeView = codeMngService.getCodeView(params);
+		model.addAttribute("getCodeView", getCodeView);
+		model.addAttribute("params", params);
+		
+		return "jsonView";
+	}
+	
 
 	
 	/**
