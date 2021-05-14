@@ -57,7 +57,7 @@
 				'CD' ||
 				SUBSTR('0000' || TO_CHAR(NVL(MAX(TO_NUMBER(SUBSTR(cd,-4))),0)+1),-4)
 			FROM STD_CD_MNG WHERE up_cd = #{up_cd}
-		</selectKey>
+		</selectKey>/* codeMng.insert */
 		INSERT INTO STD_CD_MNG (
 			 cd
 			,cd_nm

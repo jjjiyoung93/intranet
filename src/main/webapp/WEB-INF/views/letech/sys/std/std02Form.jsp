@@ -17,6 +17,7 @@
  	 	<div class="pop-contents">
  	 <fieldset>
  	 		<input type="hidden" id="mode" name="mode" />
+ 	 		<input type="hidden" id="cd_val" name="cd_val" />
 			<input type="hidden" id="flag" name="flag" value="${params.flag }" />
 			<input type="hidden" id="regn_cd1" name="regn_cd1" value="${params.regn_cd1}" />
 			<input type="hidden" id="regn_cd2" name="regn_cd2" value="${params.regn_cd2}" />
