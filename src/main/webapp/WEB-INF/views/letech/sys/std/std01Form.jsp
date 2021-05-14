@@ -56,20 +56,20 @@
 <script type="text/javascript">
 
 function fnSubmit(flag){
+	var grp1 = $("#author_cd").val();
 	if(flag == '3'){
 		document.form2.mode.value = '<%=VarConsts.MODE_U%>';
 	}else{
 		document.form2.mode.value = '<%=VarConsts.MODE_I%>';
+		var ovlap = fn_ovlapChk(grp1);
+	
+		if(ovlap){
+			alert("이미 등록된 그룹입니다. \r\n 중복되지 않는 그룹을 선택해주세요.");
+			return
+		}
 	}
 
-	var grp1 = $("#author_cd").val();
 
-	var ovlap = fn_ovlapChk(grp1);
-
-	if(ovlap){
-		alert("이미 등록된 그룹입니다. \r\n 중복되지 않는 그룹을 선택해주세요.");
-		return
-	}
 
 	$.ajax({
 		url: "<%=request.getContextPath()%>/sys/std/std01Tran.do",
