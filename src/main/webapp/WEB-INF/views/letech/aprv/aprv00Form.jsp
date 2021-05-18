@@ -65,6 +65,8 @@
 							<input type="hidden" id="term_st_hm" name="term_st_hm" value="${viewMap.TERM_ST_HM}" />
 							<input type="hidden" id="term_ed_hm" name="term_ed_hm" value="${viewMap.TERM_ED_HM}" />
 							
+							<input type="hidden" name="tmpPayItemList[0].cd1" value="" />
+							
 							<h2 class="page-title clearfix">
 								${titleNaviMap.MN_NM }
 								<span class="pull-right site-map">

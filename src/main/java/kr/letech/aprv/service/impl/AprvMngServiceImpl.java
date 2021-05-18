@@ -271,8 +271,10 @@ public class AprvMngServiceImpl implements AprvMngService {
 			List<TmpPayItemVO> tmpPayItemList = (List<TmpPayItemVO> )params.get("tmpPayItemList");
 			
 			for (TmpPayItemVO tmpPayItemVO : tmpPayItemList) {
-				tmpPayItemVO.setAprvNo((String) params.get("aprv_no"));
-				docDAO.insertTmpPayItem(tmpPayItemVO);				
+				if(tmpPayItemVO.getCd1() != null && !"".equals(tmpPayItemVO.getCd1())) {
+					tmpPayItemVO.setAprvNo((String) params.get("aprv_no"));
+					docDAO.insertTmpPayItem(tmpPayItemVO);									
+				}
 			}
 		}
 

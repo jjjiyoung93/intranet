@@ -122,7 +122,7 @@
 <script>
 
 //item 갯수 현황
-var itemIdx = 0;
+var itemIdx = 1;
 var curritemIdx = 0;
 var delList = [];
 var pickerList = [];
@@ -869,10 +869,10 @@ function fn_addTmpPayItem(data, data2){
 	$("#pay_prps").val(prps);
 	var tmpPayItemList = data.tmpPayItemList;
 	console.log(tmpPayItemList);
-	itemIdx = tmpPayItemList.length;
+	itemIdx = tmpPayItemList.length +1;
 	if(tmpPayItemList.length > 0) {
-		for(var j=0; j < tmpPayItemList.length; j++) {
-			var item = tmpPayItemList[j];
+		for(var j=1; j < tmpPayItemList.length +1; j++) {
+			var item = tmpPayItemList[j-1];
 			var upCd = item.CD1;
 			console.log(upCd);
 			var codeView = fn_getCode(upCd);
