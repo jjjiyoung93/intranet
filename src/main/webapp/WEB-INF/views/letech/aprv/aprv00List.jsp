@@ -46,6 +46,8 @@
 					<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
 					<input type="hidden" name="conf_yn" id="conf_yn" value="" />
 					<input type="hidden" name="conf_y_cnt" id="conf_y_cnt" value="" />
+					
+					
 					<h2 class="page-title clearfix">
 						${titleNaviMap.MN_NM }
 						<span class="pull-right site-map">

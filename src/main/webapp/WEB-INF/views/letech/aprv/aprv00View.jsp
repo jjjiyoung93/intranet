@@ -51,6 +51,7 @@
                <input type="hidden" id="searchCdList1" name="searchCdList1" value="${param.searchCdList1}" />
                <input type="hidden" id="searchCdList2" name="searchCdList2" value="${param.searchCdList2}" />
                <input type="hidden" id="searchCdList3" name="searchCdList3" value="${param.searchCdList3}" />
+               <input type="hidden" id="searchCdList4" name="searchCdList4" value="${params.searchCdList4}" />
                <input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
                <input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
                <!-- 검색 정보 End -->
