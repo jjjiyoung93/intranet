@@ -192,11 +192,11 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >	<!-- 결재자 -->
 			AND J.USS_NM LIKE '%' || #{searchField3} || '%' 
 		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(st_dt)" >	<!-- 기간 시작날짜 -->
-			AND A.CRTN_DT >= TO_DATE(#{st_dt}, 'YYYY-MM-DD') 
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stDtSrch)" >	<!-- 기간 시작날짜 -->
+			AND A.CRTN_DT >= TO_DATE(#{stDtSrch}, 'YYYY-MM-DD') 
 		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ed_dt)" >	<!-- 기간 끝날짜 -->
-			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{ed_dt}, 'YYYY-MM-DD') 
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(edDtSrch)" >	<!-- 기간 끝날짜 -->
+			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{edDtSrch}, 'YYYY-MM-DD') 
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
 			AND B.DP_CD = #{searchCdList4}
@@ -335,11 +335,11 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >	<!-- 결재자 -->
 			AND J.USS_NM LIKE '%' || #{searchField3} || '%' 
 		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(st_dt)" >	<!-- 기간 시작날짜 -->
-			AND A.CRTN_DT >= TO_DATE(#{st_dt}, 'YYYY-MM-DD') 
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stDtSrch)" >	<!-- 기간 시작날짜 -->
+			AND A.CRTN_DT >= TO_DATE(#{stDtSrch}, 'YYYY-MM-DD') 
 		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ed_dt)" >	<!-- 기간 끝날짜 -->
-			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{ed_dt}, 'YYYY-MM-DD') 
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(edDtSrch)" >	<!-- 기간 끝날짜 -->
+			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{edDtSrch}, 'YYYY-MM-DD') 
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
 			AND H.DP_CD = #{searchCdList4}

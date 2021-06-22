@@ -24,7 +24,7 @@
 				<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10">
 					<!-- page -->
-					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00List.do" >
+					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/bbs/bbs00List.do">
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" name="bbs_id" id="bbs_id" value="${params.bbs_id }" />
@@ -71,6 +71,7 @@
 									</div>
 									<div class="col-xs-7 un-style">
 										<div class="input-group">
+											<input type="hidden"/>
 											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
 											<span class="input-group-btn">
 												<button class="fnSearch btn btn-info" type="button">
@@ -161,24 +162,38 @@
 	<script src="${pageContext.request.contextPath}/resources/js/dataTables.responsive.js"></script>
 	<script type="text/javascript">
 
+
+
+
+		//엔터 입력 시 폼 전송 방지	
+		$('input[type="text"]').keydown(function() {
+		    if (event.keyCode === 13) {
+		        event.preventDefault();
+		    }
+		});
+
 		/* 등록 */
 			
 		$( ".fnJoin" ).click(function() {
+			//alert("엔터");
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00Form.do");
 			$("#frm1").submit();
 		});
 		/* 검색 */
 		$( ".fnSearch" ).click(function() {
+			//alert("엔터");
 			goPage("1");
 		});
 		/* 상세조회 */
 		function fnView(bbs_seq){
+			//alert("엔터");
 			$("#bbs_seq").val(bbs_seq);
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00View.do");
 			$("#frm1").submit();
 		}
 		
 		function goPage(cPage){
+			//alert('엔터');
 			$("#cPage").val(cPage);
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/bbs/bbs00List.do");
 			$("#frm1").submit();
@@ -189,6 +204,7 @@
 		* function기능 : 탭이동
 		**********************************************************************************/
 		function fnTabMove(href,pm1){
+			//alert("엔터");
 			$("#bbs_id").val(pm1);
 			$("#searchGubun").val("");
 			$("#searchField").val("");
@@ -198,6 +214,7 @@
 		
 		/*sub_menu 탭*/
 		$(function(){
+			//alert("엔터");
 			$("article.sub_contents:not("+$("ul.tab_gnb li a.sub_nav_on").attr("href")+")").hide()
 			$("ul.tab_gnb li a").click(function(){
 				$("ul.tab_gnb li a").removeClass("sub_nav_on");

@@ -46,8 +46,6 @@
 					<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
 					<input type="hidden" name="conf_yn" id="conf_yn" value="" />
 					<input type="hidden" name="conf_y_cnt" id="conf_y_cnt" value="" />
-					
-					
 					<h2 class="page-title clearfix">
 						${titleNaviMap.MN_NM }
 						<span class="pull-right site-map">
@@ -142,13 +140,13 @@
 									<label style="font-size: 14px;">보고일</label>
 									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
 											<div style="width: 135px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-												<input id="st_dt"  name="st_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+												<input id="st_dt"  name="stDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
 												<div id="startpicker-container" style="margin-left: -1px;"></div>
 											</div>
 											~
 											<div style="width: 135px;"
 												class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-												<input id="ed_dt"name="ed_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+												<input id="ed_dt"name="edDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
 												<div id="endpicker-container" style="margin-left: -1px;"></div>
 											</div>
 											<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
@@ -202,7 +200,7 @@
 								
 									<div class="col-lg-8 un-style">
 										<div class="input-group">
-										<input class="form-control" type="text" name="searchField" id="searchField" value="${parmas.searchField}" title="검색어 입력" />
+										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
 											<span class="input-group-btn">
 												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
 											</span>
@@ -380,7 +378,10 @@ $(document).ready(function(){
 // 	if(optVal != ""){
 // 		optionCreate(optVal);
 // 	}
-
+	
+	//console.log($("#aprv_no").val());
+	//console.log($("#mode").val());
+	
 	/* 등록 */
 	$("#fnJoin").click(function(){
 		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");
@@ -465,8 +466,8 @@ var picker = tui.DatePicker.createRangePicker({
 
 $("#listCnt").val("<c:out value='${params.listCnt}'/>");
 
-var stDt = "<c:out value='${params.st_dt}'/>";
-var edDt = "<c:out value='${params.ed_dt}'/>";
+var stDt = "<c:out value='${params.stDtSrch}'/>";
+var edDt = "<c:out value='${params.edDtSrch}'/>";
 if(stDt != null && stDt != ''){
 	var stDtStr = stDt.split("-");
 	var stYear = stDtStr[0];

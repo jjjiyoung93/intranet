@@ -58,6 +58,10 @@
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="p_seq" name="p_seq" value="" />
 							
+							<input type="hidden" name="cPage" id="cPage" value="${params.cPage }"/>
+							<input type="hidden" name="searchGubun" id="searchGubun" value="${params.searchGubun}"/>
+							<input type="hidden" name="searchField" id="searchField" value="${params.searchField}"/>
+							
 							<h4 class="board_title">
 								${resultView.TITLE }
 								<span class="pull-right site-map">

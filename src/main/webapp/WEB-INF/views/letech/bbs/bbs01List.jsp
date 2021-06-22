@@ -29,7 +29,7 @@
 				<!-- 내용부분(작업할 부분 클래스 col-lg-10안에 넣음 됨) -->
 				<div class="col-lg-10">
 				<!-- page -->
-					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/uss/umt/uss00List.do" >
+					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/bbs/bbs00List.do" >
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" name="bbs_id" id="bbs_id" value="${params.bbs_id }" />

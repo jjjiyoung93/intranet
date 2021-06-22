@@ -50,12 +50,16 @@
 							<input type="hidden" id="line_chk" name="line_chk" value="${params.line_chk }" />
 							<input type="hidden" id="aprv_line_cd" name="aprv_line_cd" value="${viewMap.APRV_LINE_CD }" />
 							<!-- 검색 정보 Start -->
-							<input type="hidden" name="cPage" id="cPage" value="${param.cPage }" />
-							<input type="hidden" id="searchCdList1" name="searchCdList1" value="${param.searchCdList1}" />
-							<input type="hidden" id="searchCdList2" name="searchCdList2" value="${param.searchCdList2}" />
-							<input type="hidden" id="searchCdList3" name="searchCdList3" value="${param.searchCdList3}" />
-							<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
-							<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
+							<input type="hidden" name="cPage" id="cPage" value="${params.cPage }" />
+							<input type="hidden" id="searchCdList1" name="searchCdList1" value="${params.searchCdList1}" />
+							<input type="hidden" id="searchCdList2" name="searchCdList2" value="${params.searchCdList2}" />
+							<input type="hidden" id="searchCdList3" name="searchCdList3" value="${params.searchCdList3}" />
+							<input type="hidden" id="searchCdList4" name="searchCdList4" value="${params.searchCdList4}" />
+							<input type="hidden" id="searchGubun" name="searchGubun" value="${params.searchGubun}" />
+							<input type="hidden" id="searchField" name="searchField" value="${params.searchField}" />
+							<input type="hidden" id="searchField2" name="searchField2" value="${params.searchField2}" />
+							<input type="hidden" id="searchField3" name="searchField3" value="${params.searchField3}" />
+							<input type="hidden" id="listCnt" name="listCnt" value="${params.listCnt}" />
 							<!-- 검색 정보 End -->
 							
 							<input type="hidden" id="cal_no" name="cal_no" value="${viewMap.CAL_NO}" />
@@ -64,6 +68,9 @@
 							<input type="hidden" id="term_ed_ym" name="term_ed_ym" value="${viewMap.TERM_ED_YM}" />
 							<input type="hidden" id="term_st_hm" name="term_st_hm" value="${viewMap.TERM_ST_HM}" />
 							<input type="hidden" id="term_ed_hm" name="term_ed_hm" value="${viewMap.TERM_ED_HM}" />
+							
+					       	<input type="hidden" name="stDtSrch" value="${params.stDtSrch}"/>
+               				<input type="hidden" name="edDtSrch" value="${params.edDtSrch}"/>
 							
 							<input type="hidden" name="tmpPayItemList[0].cd1" value="" />
 							
@@ -482,7 +489,7 @@ $(function() {
 		}
 		//가지급금 상세 불러오기
 		if($("#cdList1").val() == "CD0001010") {
-			console.log("가지급금");
+			//console.log("가지급금");
 			fn_addTmpPayItem(docJson, viewJson);
 		}
 	}

@@ -61,6 +61,11 @@
 							<input type="hidden" id="p_seq" name="p_seq" value="${params.p_seq }" />
 							<input type="hidden" name="bbs_seq" id="bbs_seq" value="${resultView.BBS_SEQ }" />
 							
+							<input type="hidden" name="cPage" id="cPage" value="${params.cPage }"/>
+							<input type="hidden" name="searchGubun" id="searchGubun" value="${params.searchGubun}"/>
+							<input type="hidden" name="searchField" id="searchField" value="${params.searchField}"/>
+							
+							
 							<ul class="form-write row">
 								<li>
 									<dl class="clearfix form-group form-horizontal">

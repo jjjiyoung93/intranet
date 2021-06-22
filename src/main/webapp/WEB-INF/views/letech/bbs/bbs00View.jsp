@@ -56,6 +56,9 @@
 							<input type="hidden" name="bbs_seq" id="bbs_seq" value="${params.bbs_seq }" />
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="p_seq" name="p_seq" value="" />
+							<input type="hidden" name="cPage" id="cPage" value="${params.cPage }"/>
+							<input type="hidden" name="searchGubun" id="searchGubun" value="${params.searchGubun}"/>
+							<input type="hidden" name="searchField" id="searchField" value="${params.searchField}"/>
 					
 							<h4 class="board_title">${resultView.TITLE }<span class="pull-right site-map">${resultView.REG_DT }</span></h4>
 							<ul class="form-view">
