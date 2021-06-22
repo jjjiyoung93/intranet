@@ -24,8 +24,17 @@ public class StdMngDAO extends AbstractDAO{
 	 * @param params
 	 * @throws Exception
 	 */
-	public void insertGrp(Map params) throws Exception {
-		insert("stdMng.insertGrp", params);
+	public int insertGrp(Map params) throws Exception {
+		return (Integer)insert("stdMng.insertGrp", params);
+	}
+	
+	/**
+	 * 여비정보 코드 등록
+	 * @param params
+	 * @throws Exception
+	 */
+	public void insertGrpCd(Map params) throws Exception {
+		insert("stdMng.insertGrpCd", params);
 	}
 
 	/**
@@ -44,6 +53,15 @@ public class StdMngDAO extends AbstractDAO{
 	 */
 	public void deleteGrp(Map params) throws Exception {
 		insert("stdMng.deleteGrp", params);		
+	}
+	
+	/**
+	 * 여비정보 코드 삭제
+	 * @param params
+	 * @throws Exception
+	 */
+	public void deleteGrpCd(Map params) throws Exception {
+		insert("stdMng.deleteGrpCd", params);		
 	}
 
 	/**
@@ -167,7 +185,7 @@ public class StdMngDAO extends AbstractDAO{
 	 * @throws Exception
 	 */
 	public Map getCnt00(Map params) throws Exception {
-		return (Map) getObject("stdMng.getCnt00", params);
+		return (Map) getObject("stdMng.getGrpCnt", params);
 	}
 
 	/**
@@ -179,5 +197,144 @@ public class StdMngDAO extends AbstractDAO{
 	public Map getCnt01(Map params) throws Exception {
 		return (Map) getObject("stdMng.getCnt01", params);
 	}
+
+	/**
+	 * 수정시 새로 추가할 지역 코드 목록
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public List getAddList(Map params) throws Exception {
+		return getList("stdMng.getAddList", params);
+	}
+
+	/**
+	 * 권한구분코드 추가
+	 * @param params
+	 * @throws Exception
+	 */
+	public void insertAutCd(Map params) throws Exception {
+		insert("stdMng.insertAutCd", params);
+		
+	}
+
+	/**
+	 * 권한 정보 추가
+	 * @param params
+	 * @throws Exception
+	 */
+	public void insertAutInfo(Map params) throws Exception {
+		insert("stdMng.insertAutInfo", params);
+		
+	}
+
+	/**
+	 * 권한 코드 - 권한 정보 연결
+	 * @param params
+	 * @throws Exception
+	 */
+	public void updateAutCd(Map params) throws Exception {
+		update("stdMng.updateAutCd", params);
+	}
+
+	/**
+	 * 권한 상속 관계 삽입
+	 * @param params
+	 * @throws Exception
+	 */
+	public void insertRoleHic(Map params) throws Exception {
+		insert("stdMng.insertRoleHic", params);
+		
+	}
+
+	/**
+	 * 권한 구분 코드 가져오기
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getAutCdView(Map params) throws Exception {
+		return (Map) getObject("stdMng.getAutCdView", params);
+	}
+
+	/**
+	 * 권한 정보 가져오기
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getAuthInfoView(Map params) throws Exception {
+		return (Map) getObject("stdMng.getAuthInfoView", params);
+	}
+
+	/**
+	 * 급수 정보 가져오기
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getGrpCdView(Map params) throws Exception {
+		return (Map) getObject("stdMng.getGrpCdView", params);
+	}
+
+	/**
+	 * 권한 정보 테이블 연구직 명 변경
+	 * @param params
+	 * @throws Exception
+	 */
+	public void updateRsrChNm(Map params) throws Exception {
+		update("stdMng.updateRsrchNm", params);
+	}
+
+	/**
+	 * 급수 코드를 이용하여 그룹별 급수 삭제
+	 * @param params
+	 * @throws Exception
+	 */
+	public void deleteTrvctGrupAut(Map params) throws Exception {
+		delete("stdMng.deleteTrvctGrupAut", params);
+	}
+
+	/**
+	 * 출장 지역 공통코드 등록
+	 * @param params
+	 * @throws Exception
+	 */
+	public void insertTrcsCd(Map params) throws Exception {
+		insert("stdMng.insertTrcsCd", params);
+		
+	}
+
+	/**
+	 * 출장 지역 공통 코드 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map selectTrcsCd(Map params) throws Exception {
+		return (Map)getObject("stdMng.getTrcsCdView", params);
+	}
+
+	/**
+	 * 교통비 정보 갯수 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getRegnCnt(Map params) throws Exception {
+		return (Map)getObject("stdMng.getRegnCnt", params);
+	}
+
+	/**
+	 * 지역 코드 목록 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public List getTrcsCdList(Map params) throws Exception {
+		return getList("stdMng.getTrcsCdList", params);
+	}
+	
+	
 
 }

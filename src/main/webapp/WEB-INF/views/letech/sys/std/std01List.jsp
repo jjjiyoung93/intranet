@@ -44,14 +44,16 @@
 			<table class="table table-bordered">
 				<caption>그룹별급수 정보관리</caption>
 				<colgroup>
-					<col width="30%"  />
-					<col width="30%"  />
-					<col width="20%"  />
+					<col width="25%"  />
+					<col width="25%"  />
+					<col width="25%"  />
+					<col width="25%"  />
 				</colgroup>
 				<thead>
 					<tr>
 						<th>급수코드[급수명]</th>
-						<th>그룹코드[그룹명]</th>
+						<th>그룹코드</th>
+						<th>직급[연구직급]</th>
 						<th>수정</th>
 					</tr>
 				</thead>
@@ -67,13 +69,17 @@
 						<c:otherwise>
 							<c:forEach var="highList" items="${highList }">
 								<tr>
-									<td>
+									<td align="center">
 										<c:out value="${highList.GROUP_CD }"/>[<c:out value="${highList.GROUP_NM}"/>]
 									</td>									
-									<td>
-										<c:out value="${highList.AUTHOR_CODE}"/>[<c:out value="${highList.AUT_NM}"/>]
+									<td align="center">
+										<c:out value="${highList.AUTHOR_CODE}"/>
 									</td>								
-									<td >
+									<td>
+										<c:out value="${highList.AUT_NM}"/>
+										<c:if test="${highList.RSRCH_NM != null and highList.RSRCH_NM != ''}">[<c:out value="${highList.RSRCH_NM}"/>]</c:if>
+									</td>								
+									<td align="center">
 											<a href="#" class="btn btn-xs btn-default" onclick="fnModify('${highList.AUTHOR_CODE}');">수정</a>
 											<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.AUTHOR_CODE}');">삭제</a>
 									</td>

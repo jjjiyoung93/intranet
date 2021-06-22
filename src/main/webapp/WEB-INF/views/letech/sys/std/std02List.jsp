@@ -21,6 +21,7 @@
 				<input type="hidden" id="mode" name="mode" />
 				<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}"/>
 				<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
+				<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}"/>
 				<input type="hidden" id="std_id" name="std_id" value="" /> 
 				<input type="hidden" id="std_id2" name="std_id2" value="" /> 
 				<input type="hidden" id="flag" name="flag" value="" /> 
@@ -45,11 +46,11 @@
 			<table class="table table-bordered">
 				<caption>교통비 정보관리</caption>
 				<colgroup>
-					<col width="30%"  />
-					<col width="30%"  />
-					<col width="10%"  />
-					<col width="10%"  />
-					<col width="10%"  />
+					<col width="20%"  />
+					<col width="20%"  />
+					<col width="20%"  />
+					<col width="20%"  />
+					<col width="20%"  />
 				</colgroup>
 				<thead>
 					<tr>
@@ -71,10 +72,10 @@
 						</c:when>
 						<c:otherwise>
 							<c:forEach var="code" items="${codeList }" varStatus="status">
-								<tr id="code-${status.index}">
+								<tr id="code-${status.index}" data-cnt="${code.CNT}">
 									<td onclick="fn_addHighList(this, '${code.CD}')">
 										<font class="glyphicon glyphicon-plus-sign plus">
-											<c:out value="${code.CD_NM }"/>[<c:out value="${code.CD}"/>]
+											<span class = "code_nm"><c:out value="${code.CD_NM }"/></span>[<c:out value="${code.CD}"/>]
 										</font>
 									</td>								
 									<td>
@@ -89,8 +90,8 @@
 										<%-- <fmt:formatNumber value="${highList.TRCS}" pattern="#,### 원"/> --%>
 									</td>									
 									<td class="text-center">
-											<a href="#" class="btn btn-xs btn-default" onclick="fnModify('${code.CD}', '');">수정</a>
-											<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_D%>','${code.CD}', '');">삭제</a>
+											<a class="btn btn-xs btn-default modifyBtn" onclick="fnModify('${code.CD}', '', this);">수정</a>
+											<a class="btn btn-xs btn-default delBtn" onclick="fnDelete('<%=VarConsts.MODE_D%>','${code.CD}', '', this);">삭제</a>
 									</td>
 								</tr>	
 							</c:forEach>					
@@ -181,38 +182,70 @@ function fnInsert(){
 * function명   : fnModify(코드)
 * function기능 : 코드 수정 
 **********************************************************************************/
-function fnModify(cd, cd2){
+function fnModify(cd, cd2, src){
 	
 	/* $(document).ready(function() {
 		self.scrollTo(0,0);
 	}); */
 	//jQuery( ".pop_bg" ).fadeIn('slow');
 	//jQuery( "#iframe" ).attr("src","<%=request.getContextPath() %>/mng/sysMng/cmmCdMng/cmmCdMng00U.do?flag=3&cd="+cd);
-	window.open('std02Form.do?flag=3&regn_cd1='+cd+'&regn_cd2='+cd2,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=300,left=0,top=0');
+	var tr = $(src).parents("tr");
+	var cnt = $(tr).data("cnt") * 1;	
+	//alert(parents.length);
+	
+	if($(src).hasClass("modifyBtn")){
+		if(cnt > 0){
+			window.open('std02Form.do?flag=3&regn_cd1='+cd+'&regn_cd2='+cd2,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=300,left=0,top=0');
+		}else{
+			alert("해당 지역코드에 등록된 교통비 정보가 없습니다. 교통비 정보를 먼저 등록해주세요");
+		}
+	}else {
+		window.open('std02Form.do?flag=3&regn_cd1='+cd+'&regn_cd2='+cd2,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=300,left=0,top=0');
+	}
+
+	
 }
 
 /*********************************************************************************
 * function명   : fnDelete(코드)
 * function기능 : 코드 삭제 
 **********************************************************************************/
-function fnDelete(mode,cd, cd2){
+function fnDelete(mode,cd, cd2, src){
 	document.form1.std_id.value = cd;
 	document.form1.std_id2.value = cd2;
 	document.form1.mode.value = mode;
-	if(confirm('연관된 자료가 모두 삭제됩니다. \r\n 삭제는 신중히 확인 후 하세요. \r\n 삭제하시겠습니까?')){
-		document.form1.action = "<%=request.getContextPath() %>/sys/std/std02Tran.do";
-		document.form1.submit();
+	//alert(trcsList.length);
+	var tr = $(src).parents("tr");
+	var cnt = $(tr).data("cnt") * 1;
+
+	if($(src).hasClass("delBtn")){
+		if(cnt > 0){
+			if(confirm('연관된 자료가 모두 삭제됩니다. \r\n 삭제는 신중히 확인 후 하세요. \r\n 삭제하시겠습니까?')){
+				document.form1.action = "<%=request.getContextPath() %>/sys/std/std02Tran.do";
+				document.form1.submit();
+			}
+		}else{
+			alert("해당 지역코드에 등록된 교통비 정보가 없습니다. 교통비 정보를 먼저 등록해주세요");
+		}
+	}else {
+		if(confirm('연관된 자료가 모두 삭제됩니다. \r\n 삭제는 신중히 확인 후 하세요. \r\n 삭제하시겠습니까?')){
+			document.form1.action = "<%=request.getContextPath() %>/sys/std/std02Tran.do";
+			document.form1.submit();
+		}
 	}
 }
 
 //하위리스트 추가
 function fn_addHighList(src, upCd){
-	var dest = $(src).parent();
+	var codeNm = $(src).find(".code_nm");
+	var codeNmStr = $(codeNm).text();
+	var dest = $(src).parent(); // tr
+	var cnt = $(dest).data("cnt") * 1;
 	var tbody = $(src).parents("tbody"); 
 	var icon = $(dest).find(".glyphicon");
 	//console.log($(icon));
 	var trcsList = $(document).find(".trcsList");
-	console.log($(trcsList));
+	//console.log($(trcsList));
 	$(trcsList).remove();
 	
 	if($(icon).hasClass("minus") == true){
@@ -229,29 +262,41 @@ function fn_addHighList(src, upCd){
 			success : function(data){
 				var highList = data.highList;
 				var html = "";
-				for(var i = 0; i< highList.length; i++){
-					var regn = highList[i];
-					//console.log(regn);
+
+				if(highList.length == 0){
+					var	cResult = false;
+					cResult = confirm("해당 지역코드에 등록된 교통비 정보가 없습니다. 추가하시겠습니까?");
+					if(cResult){
+						window.open('std02Form.do?flag=1&code_nm='+codeNmStr,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=450,left=0,top=0');
+					}
 					
-				html +=	'<tr class="trcsList">'
-				html +=	'<td style="padding-left: 50px;">'
-				html +=			regn.REGN_NM1+'['+regn.REGN_CD1+']'
-				html +=	'</td>'								
-				html +=	'<td style="padding-left: 20px;">'
-				html += regn.REGN_NM2+'['+regn.REGN_CD2+']'		
-				html +=	'</td>'
-				html +=	'<td style="text-align: right; vertical-align: middle; padding-right: 20px;">'
-				html += regn.DSTNC_FORM+'km';		
-				html +=	'</td>'
-				html +=	'<td style="text-align: right; vertical-align: middle; padding-right: 20px;">'
-				html += regn.TRCS_FORM+'원';		
-				html +=	'</td>'
-				html +=	'<td class="text-center">'
-				html += '<a href="#" class="btn btn-xs btn-default" onclick="fnModify(\''+regn.REGN_CD1+'\', \''+regn.REGN_CD2+'\');">수정</a>'		
-				html +=	'</td>'
-				html += '</tr>'
-				}		
-				$(dest).after(html);
+				}else{
+					for(var i = 0; i< highList.length; i++){
+						var regn = highList[i];
+						//console.log(regn);
+						
+						html +=	'<tr class="trcsList">'
+						html +=	'<td style="padding-left: 50px;">'
+						html +=			regn.REGN_NM1+'['+regn.REGN_CD1+']'
+						html +=	'</td>'								
+						html +=	'<td style="padding-left: 20px;">'
+						html += regn.REGN_NM2+'['+regn.REGN_CD2+']'		
+						html +=	'</td>'
+						html +=	'<td style="text-align: right; vertical-align: middle; padding-right: 20px;">'
+						html += regn.DSTNC_FORM+'km';		
+						html +=	'</td>'
+						html +=	'<td style="text-align: right; vertical-align: middle; padding-right: 20px;">'
+						html += regn.TRCS_FORM+'원';		
+						html +=	'</td>'
+						html +=	'<td class="text-center">'
+						html += '<a href="#" class="btn btn-xs btn-default" onclick="fnModify(\''+regn.REGN_CD1+'\', \''+regn.REGN_CD2+'\', this);">수정</a>'		
+						html +=	'</td>'
+						html += '</tr>'
+					}		
+					$(dest).after(html);
+
+				}
+				
 			}
 		})
 	}

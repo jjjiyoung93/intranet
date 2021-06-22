@@ -6,7 +6,7 @@ public class TrvctVO {
 	private String regnCd1Nm;
 	private String regnCd2;
 	private String regnCd2Nm;
-	private Integer dstnc;
+	private Double dstnc;
 	private Integer trcs;
 	public String getRegnCd1() {
 		return regnCd1;
@@ -32,10 +32,10 @@ public class TrvctVO {
 	public void setRegnCd2Nm(String regnCd2Nm) {
 		this.regnCd2Nm = regnCd2Nm;
 	}
-	public Integer getDstnc() {
+	public Double getDstnc() {
 		return dstnc;
 	}
-	public void setDstnc(Integer dstnc) {
+	public void setDstnc(Double dstnc) {
 		this.dstnc = dstnc;
 	}
 	public Integer getTrcs() {

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -184,21 +185,21 @@ public class StdMngController {
 		
 		Map params = ReqUtils.getParameterMap(request);
 		
-		model.addAttribute("params", params);
 		
 		String mode = (String)params.get("mode");
 		String viewName = "jsonView";
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("reg_id", loginVO.getId());
-		if(mode.equals(VarConsts.MODE_I)){	/* 코드추가 */
-			stdMngService.insertAut(params);	/* 상위코드추가 */
-		}else if(mode.equals(VarConsts.MODE_U)){		 /* 코드수정 */
+		if(mode.equals(VarConsts.MODE_I)){	
+			stdMngService.insertAut(params);	
+		}else if(mode.equals(VarConsts.MODE_U)){		 
 			stdMngService.updateAut(params);
-		}else if(mode.equals(VarConsts.MODE_D)){		/* 하위코드삭제 */
+		}else if(mode.equals(VarConsts.MODE_D)){		
 			stdMngService.deleteAut(params);
 			viewName = "redirect:/sys/std/std01List.do";
 		}
+		model.addAttribute("params", params);
 		
 		return viewName;
 	}
@@ -216,7 +217,8 @@ public class StdMngController {
 		
 		Map params = ReqUtils.getParameterMap(request);
 		params.put("up_cd", VarConsts.PLC_CODE);
-		List codeList = codeMngService.getCodeList(params);
+		//List codeList = codeMngService.getCodeList(params);
+		List codeList = stdMngService.getTrcsCdList(params);
 		List highList = null;
 		model.addAttribute("params", params);
 		model.addAttribute("codeList", codeList);
@@ -244,6 +246,7 @@ public class StdMngController {
 		Map params = ReqUtils.getParameterMap(request);
 		
 		String regnCd2 = (String)params.get("regn_cd2");
+		params.put("up_cd", VarConsts.PLC_CODE);
 		
 		/*지역 조회*/
 		//목록수정
@@ -255,14 +258,21 @@ public class StdMngController {
 			List highList = stdMngService.get02List(params);
 			model.addAttribute("codeView", codeView);
 			model.addAttribute("highList", highList);
+			
+			if(StringUtils.isNotEmpty((String)params.get("cd"))) {
+				List addList = stdMngService.getAddList(params);
+				model.addAttribute("addList", addList);
+			}
+				
 		//개별수정
 		}else if(!"".equals(regnCd2) && ObjToConvert.isNotEmpty(params.get("regn_cd1"))){
 			Map getView = stdMngService.getView3(params);
 			model.addAttribute("getView", getView);			
 		}
 		
-		params.put("up_cd", VarConsts.PLC_CODE);
 		List regnList = codeMngService.getCodeList(params);
+		
+		
 		
 //		if(ObjToConvert.isNotEmpty(params.get("regn_cd1"))
 //		 && ObjToConvert.isNotEmpty(params.get("regn_cd2"))){
@@ -328,7 +338,8 @@ public class StdMngController {
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("reg_id", loginVO.getId());
 		
-		Map result = codeMngService.getCodeCnt(params);
+		Map result = stdMngService.getRegnCnt(params);
+		
 		model.addAttribute("result", result);
 		
 		return "jsonView";

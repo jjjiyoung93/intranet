@@ -44,15 +44,15 @@
 			<table class="table table-bordered">
 				<caption>여비정보관리</caption>
 				<colgroup>
-					<col width="30%"  />
-					<col width="30%"  />
-					<col width="20%"  />
-					<col width="10%"  />
+					<col width="25%"  />
+					<col width="25%"  />
+					<col width="25%"  />
+					<col width="25%"  />
 				</colgroup>
 				<thead>
 					<tr>
-						<th>여비그룹코드</th>
-						<th>여비그룹코드명</th>
+						<th>그룹명</th>
+						<th>그룹코드</th>
 						<th>금액</th>
 						<th>수정</th>
 					</tr>
@@ -68,19 +68,19 @@
 						</c:when>
 						<c:otherwise>
 							<c:forEach var="highList" items="${highList }">
-								<tr>
-									<td>
-										${highList.GROUP_CD }
-									</td>								
-									<td>
+								<tr id="${highList.GROUP_CD}">
+									<td align="left">
 										${highList.GROUP_NM }
 									</td>								
-									<td>
+									<td align="center">
+										${highList.GROUP_CD }
+									</td>								
+									<td align="right">
 										<fmt:formatNumber value="${highList.TRVCT}" pattern="#,###원"/>
 									</td>	
-									<td >
-											<a href="#" class="btn btn-xs btn-default" onclick="fnModify('${highList.GROUP_CD}');">수정</a>
-											<a href="#" class="btn btn-xs btn-default" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.GROUP_CD}');">삭제</a>
+									<td align="center" >
+											<a href="#" class="btn btn-xs btn-default btn-modify" onclick="fnModify('${highList.GROUP_CD}');">수정</a>
+											<a href="#" class="btn btn-xs btn-default btn-delete" onclick="fnDelete('<%=VarConsts.MODE_D%>','${highList.GROUP_CD}');">삭제</a>
 									</td>
 								</tr>
 							</c:forEach>					
@@ -116,6 +116,19 @@
 
 //코드폼 레이어 닫기(x)버튼 클릭시
 jQuery(function() {	
+
+	var target = "${params.target}";
+	var groupCd = "${params.group_cd}";
+
+	
+	
+	if(target == '1'){
+		if(groupCd != null && '' != groupCd) {
+			$("#"+groupCd).find(".btn-modify").click();
+		}
+	}
+
+	
 	jQuery( ".close" ).click(
 			function() {
 			jQuery( ".pop_bg" ).fadeOut('slow');
@@ -188,7 +201,7 @@ function fnModify(cd){
 function fnDelete(mode,cd){
 	document.form1.std_id.value = cd;
 	document.form1.mode.value = mode;
-	if(confirm('삭제는 신중히 확인 후 하세요. \r\n 삭제하시겠습니까?')){
+	if(confirm('연결된 데이터도 모두 삭제됩니다. \r\n삭제하시겠습니까?')){
 		document.form1.action = "<%=request.getContextPath() %>/sys/std/std00Tran.do";
 		document.form1.submit();
 	}

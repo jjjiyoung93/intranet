@@ -141,4 +141,28 @@ public interface StdMngService {
 	 */
 	List getAuthorList(Map params) throws Exception;
 
+	/**
+	 * 수정시 새로 추가할  지역 코드 목록
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	List getAddList(Map params) throws Exception;
+
+	/**
+	 * 교통비 정보 갯수 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	Map getRegnCnt(Map params) throws Exception;
+
+	/**
+	 * 지역 코드 목록 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	List getTrcsCdList(Map params) throws Exception;
+
 }

@@ -85,11 +85,11 @@
 																				<a href="#" class="<c:if test="${params.menu_id2 eq list.MN}">act_on</c:if>" >
 																					${list3.MN_NM}
 																				</a>
-																				<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}" >&#45; ${list3.MN_NM}</a>
+																				<a href="${pageContext.request.contextPath}/${list2.MN_HREF}&menu_id1=${list.MN}&menu_id2=${list2.MN}&menu_id3=${list3.MN}" >&#45; ${list3.MN_NM}</a>
 																			</c:if>
 																			<!-- 하위 메뉴가 없음 -->
 																			<c:if test="${list3.MN_TYPE ne 'CD0003001'}">
-																				<a href="${pageContext.request.contextPath}/${list3.MN_HREF}?menu_id1=${list.MN}&menu_id2=${list2.MN}" >&#45; ${list3.MN_NM}</a>
+																				<a href="${pageContext.request.contextPath}/${list3.MN_HREF}?menu_id1=${list.MN}&menu_id2=${list2.MN}&menu_id3=${list3.MN}" >&#45; ${list3.MN_NM}</a>
 																			</c:if>
 																		</li>
 																	</c:if>
