@@ -21,6 +21,7 @@
 	}
 }
 @media print { /* 인쇄할 때만 보여줄 것, 인쇄시만 적용되는 css */
+	
 	body {
 		margin: 0;
 	}
@@ -44,9 +45,7 @@
 	.no-print-page { /*인쇄 제외 페이지*/
 		display: none;
 	}
-	.theader-tmppay {
-		border: 1px solid black;
-	}
+
 	body .page .td-header-tmppay {
 		vertical-align: middle !important; 
 		text-align: center; 
@@ -57,6 +56,7 @@
 		border: 1px solid black !important;
 		-webkit-print-color-adjust: exact !important;
 	}
+	
 }
 body {
 	-webkit-print-color-adjust: exact !important;
@@ -118,10 +118,6 @@ h4 {
 	height: 400px;
 	z-index: 999;
 }
-.theader-tmppay{
-	border: 1px solid black;
-}
-
 </style>
 </head>
 <body class="pop">

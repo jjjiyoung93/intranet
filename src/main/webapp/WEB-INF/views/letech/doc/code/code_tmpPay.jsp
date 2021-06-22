@@ -65,7 +65,7 @@
 		<label class="control-label">계좌번호</label> <span class="req-sign">*</span>
 	</div>
 	<div class="col-lg-6">
-		<input type="text" name="pay_acnt" id="pay_acnt" class="form-control" placeholder="입력형식 : 성명,은행,계좌번호" onchange="fn_accntFormat(this.value);" />
+		<input type="text" name="pay_acnt" id="pay_acnt" class="form-control" placeholder="입력예시 : 홍길동,하나,66092250802" onchange="fn_accntFormat(this.value);" />
 	</div>
 </div>
 <!--  계좌번호 END  -->
@@ -92,7 +92,7 @@
 			<!-- <label class="control-label label-trps">합계</label> -->
 			<table class="table table-bordered" id="tb-trps">
 				<colgroup>
-					<col width="52%"></col>
+					<col width="53%"></col>
 					<col width="40%"></col
 				</colgroup>
 				<thead>
@@ -204,9 +204,9 @@ function getValidation2(valid) {
 
 		var tr = trList[i];
 		var classList = tr.classList;
-		console.log(classList);
+		//console.log(classList);
 		var cd =  classList[classList.length-1];
-		console.log(cd);
+		//console.log(cd);
 		
 		//구분
 		if($(tr).find(".cd2").length != 0) {
@@ -285,7 +285,7 @@ function getValidation2(valid) {
 					if(cd == "CD0013001"){
 						alert("도착지를 입력해 주세요.");
 					} else if(cd == "CD0013005"){
-						alert("품목을 입력해 주세요.");
+						alert("품목을 선택해주세요.");
 					}
 					$(tr).find(".rmk2").focus();
 				}
@@ -400,7 +400,7 @@ function fn_drawPrps(){
 
 //가지급금 상세 내역 화면 출력
 function fn_drawTmpPayDetail(){
-	console.log("draw!!");
+	//console.log("draw!!");
 	var cdList = fn_getCdList("CD0013");
 	
 	for(var i= 0; i < cdList.length; i++){
@@ -457,8 +457,8 @@ function fn_drawTmpPayDetail(){
 			
 		} else if(code == "CD0013005") {
 			//구매비용
-			html += 				'<col width="18%;"/>'
-			html += 				'<col width="12%;"/>'
+			html += 				'<col width="10%;"/>'
+			html += 				'<col width="20%;"/>'
 			html += 				'<col width="7%;"/>'
 			html += 				'<col width="12%;"/>'
 			html +=					'<col width="12%;"/>'
@@ -563,7 +563,7 @@ function fn_drawTmpPayDetail(){
 	
 		$("#details").append(html);
 		//$("#tbody-summary").append(summHtml);
-		console.log("draw end!!");
+		//console.log("draw end!!");
 	}
 
 
@@ -601,16 +601,26 @@ function fn_addItem(src, cdVal, cd1){
 		}
 	    html +=							'</select>'
 	    html +=						'</td>'
-    	html +=						'<td class="form-group" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" />회</td>'				
+    	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')" />회</td>'				
 // 		if(upCd == "CD0013005"){
 // 			//구매비
 // 		} else {
 // 			//그 외
 // 		}    				
     }else if(upCd == "CD0013005") {
-    	html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" class="form-control input-sm rmk2" id="tmpPayItemList['+idx+'].RMK2" name="tmpPayItemList['+idx+'].rmk2" placeholder="장비,설비,소모품,기타"></td>'; 
+    	html +=						'<td class="form-group" style="font-size: 10px;">'
+		html +=							'<select style="margin: 0px; padding: 0px;" class="form-control input-sm cd2" name="tmpPayItemList['+idx+'].cd2">'
+	    html += 							'<option value="">선택</option>'
+			for(var i=0; i < cd2List.length; i++){
+				var cd = cd2List[i].CD;
+				var name = cd2List[i].CD_NM;
+				html += '<option value="'+cd+'">'+name+'</option>';
+			}
+	    html +=							'</select>'
+	    html +=						'</td>'
+    	//html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" class="form-control input-sm rmk2" id="tmpPayItemList['+idx+'].RMK2" name="tmpPayItemList['+idx+'].rmk2" placeholder="장비,설비,소모품,기타"></td>'; 
 		html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" class="form-control input-sm rmk1" id="tmpPayItemList['+idx+'].RMK1" name="tmpPayItemList['+idx+'].rmk1"></td>';
-    	html +=						'<td class="form-group" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" />개</td>'				
+    	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')" />개</td>'				
     }
 	//구매비 이외의 항목에 기간 추가
 	if(upCd != "CD0013005") {
@@ -644,7 +654,7 @@ function fn_addItem(src, cdVal, cd1){
 		html += 						'</select>'
 		html +=						'</td>'
 	} 
-	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 75%;" class="form-control input-sm text-right price calc-comp amt-comp" id="tmpPayItemList['+idx+'].PRICE" name="tmpPayItemList['+idx+'].price" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" >원</td>'
+	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 75%;" class="form-control input-sm text-right price calc-comp amt-comp" id="tmpPayItemList['+idx+'].PRICE" name="tmpPayItemList['+idx+'].price" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')" >원</td>'
 	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 75%;" class="form-control input-sm text-right amt amt-comp" id="tmpPayItemList['+idx+'].AMT" name="tmpPayItemList['+idx+'].amt" value="0" readonly>원</td>'
 	html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" style="padding: 0px; margin: 0px;" class="form-control input-sm rmk4" id="tmpPayItemList['+idx+'].RMK4" name="tmpPayItemList['+idx+'].rmk4" value="" placeholder="&nbsp;&nbsp;기타시 필수"></td>'
 	html += 					'<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_delItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>';							
@@ -862,19 +872,19 @@ function fn_delItem(src) {
 
 //저장된 데이터 불러오기
 function fn_addTmpPayItem(data, data2){
-	console.log("additem start");
+	//console.log("additem start");
 	//console.log(data);
 	//목적코드 설정
 	var prps = data.PAY_PRPS;
 	$("#pay_prps").val(prps);
 	var tmpPayItemList = data.tmpPayItemList;
-	console.log(tmpPayItemList);
+	//console.log(tmpPayItemList);
 	itemIdx = tmpPayItemList.length +1;
 	if(tmpPayItemList.length > 0) {
 		for(var j=1; j < tmpPayItemList.length +1; j++) {
 			var item = tmpPayItemList[j-1];
 			var upCd = item.CD1;
-			console.log(upCd);
+			//console.log(upCd);
 			var codeView = fn_getCode(upCd);
 			var cd2List = fn_getCdList(codeView.CD_VAL);
 			var cd2 = item.CD2;
@@ -891,7 +901,7 @@ function fn_addTmpPayItem(data, data2){
 			var idx = j;
 			var tb = $("#tb-"+upCd);
 			var dest = $("#tbody-"+upCd);
-			console.log(dest);
+			//console.log(dest);
 			var html = "";
 			   	html +=					'<tr id="tmpPayItemList['+idx+']" class="tmpPayItemList '+upCd+'">'
 			   	html +=						'<input type="hidden" name="tmpPayItemList['+idx+'].cd1" id="tmpPayItemList['+idx+'].CD1" class="cd1" value="'+upCd+'">'
@@ -909,15 +919,30 @@ function fn_addTmpPayItem(data, data2){
 					}
 				    html +=							'</select>'
 				    html +=						'</td>'
-			    	html +=						'<td class="form-group" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="'+cnt+'" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" />회</td>'				
+			    	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="'+cnt+'" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')" />회</td>'				
 
 // 				    if(upCd == "CD0013005"){
 // 					} else {
 // 					}    	    				
 			    } else if(upCd == "CD0013005") {
-						html +=                     '<td class="form-group" style="font-size: 10px;"><input type="text" class="form-control input-sm rmk2" id="tmpPayItemList['+idx+'].RMK2" name="tmpPayItemList['+idx+'].rmk2" value="'+rmk2+'" placeholder="장비,설비,소모품,기타"></td>'
+					    html +=						'<td class="form-group">'
+					    html +=							'<select style="margin: 0px; padding: 0px; font-size:10px;" class="form-control input-sm cd2" name="tmpPayItemList['+idx+'].cd2" id="cd2-'+idx+'">'
+					    html += 							'<option value="">선택</option>'
+						
+
+						for(var i=0; i < cd2List.length; i++){
+							var cd = cd2List[i].CD;
+							var name = cd2List[i].CD_NM;
+							html += '<option value="'+cd+'">'+name+'</option>';
+						}
+
+						
+					    html +=							'</select>'
+					    html +=						'</td>'
+				    	
+						//html +=                     '<td class="form-group" style="font-size: 10px;"><input type="text" class="form-control input-sm rmk2" id="tmpPayItemList['+idx+'].RMK2" name="tmpPayItemList['+idx+'].rmk2" value="'+rmk2+'" placeholder="장비,설비,소모품,기타"></td>'
 						html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" class="form-control input-sm rmk1" id="tmpPayItemList['+idx+'].RMK1" name="tmpPayItemList['+idx+'].rmk1" value="'+rmk1+'"></td>'
-				    	html +=						'<td class="form-group" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="'+cnt+'" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" />개</td>'				
+				    	html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="number" min="0" style="display: inline-block; width: 75%; padding: 0px; margin: 0px;" name="tmpPayItemList['+idx+'].cnt" class="form-control input-sm cnt calc-comp text-right" value="'+cnt+'" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')" />개</td>'				
 				}
 		
 			    if(upCd != "CD0013005"){
@@ -950,8 +975,8 @@ function fn_addTmpPayItem(data, data2){
 					html += 						'</select>'
 					html +=						'</td>'
 				} 
-				html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 80%;" class="form-control input-sm text-right price calc-comp amt-comp" id="tmpPayItemList['+idx+'].PRICE" name="tmpPayItemList['+idx+'].price" value="'+price+'" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\')" >원</td>'
-				html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 80%;" class="form-control input-sm text-right amt amt-comp" id="amt-'+idx+'" name="tmpPayItemList['+idx+'].amt" value="'+amt+'" readonly>원</td>'
+				html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 75%;" class="form-control input-sm text-right price calc-comp amt-comp" id="tmpPayItemList['+idx+'].PRICE" name="tmpPayItemList['+idx+'].price" value="'+price+'" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')" >원</td>'
+				html +=						'<td class="form-group text-right" style="font-size: 10px;"><input type="text" style="display: inline-block; width: 75%;" class="form-control input-sm text-right amt amt-comp" id="amt-'+idx+'" name="tmpPayItemList['+idx+'].amt" value="'+amt+'" readonly>원</td>'
 				html +=						'<td class="form-group" style="font-size: 10px;"><input type="text" style="padding: 0px; margin: 0px;" class="form-control input-sm rmk4" id="tmpPayItemList['+idx+'].RMK4" name="tmpPayItemList['+idx+'].rmk4" value="'+rmk4+'" placeholder="&nbsp;&nbsp;기타시 필수"></td>'
 				html += 					'<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_delItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>'							
 			    html +=					'</tr>'			
@@ -962,7 +987,7 @@ function fn_addTmpPayItem(data, data2){
 			    var rmk3Sel = $("#rmk3-"+idx);
 			    var cd2Sel = $("#cd2-"+idx);  
 				var amtInput = $("#amt-"+idx);
-				console.log(amtInput);
+				//console.log(amtInput);
 				
 				$(rmk3Sel).val(rmk3);
 			    $(cd2Sel).val(cd2);
@@ -995,22 +1020,24 @@ function fn_addTmpPayItem(data, data2){
 function fn_accntFormat(accnt){
 
 	//계좌번호 입력 항목 붙여쓰기
-	var accntList = accnt.split(",");
+	var repl = accnt.toString().replace(/[\.\/_\\\-\*\s]/g, "-");
+	//alert(repl);
+	var accntList = repl.split("-");
 	//console.log(accntList);
 	var resultString = "";
 	for(var i=0; i< accntList.length; i++){
 		var value = accntList[i].trim();
 		accntList[i] = value;
 	}
-	resultString = accntList.join();
-	
+	resultString = accntList.join("");
+	//alert(resultString);
 	//계좌번호 '-' 구분자 삭제 후 붙여쓰기
-	var accnNum = resultString.split("-");
+	/* var accnNum = resultString.split(",");
 	for(var j=0; j<accnNum.length; j++){
 		var num = accnNum[j].trim();
 		accnNum[j] = num;
 	}
-	resultString = accnNum.join("");
+	resultString = accnNum.join(""); */
 	//console.log(resultString);
  	$("#pay_acnt").val(resultString);
 }
@@ -1044,7 +1071,7 @@ $("#tb-CD0013003").on('click', ".tui-calendar-date", function(){
 
 //숙박일수 계산
 function fn_setAccomCnt(src){
-	console.log("setAccomCnt");
+	//console.log("setAccomCnt");
 	var tr = $(src).parents("tr");
 	var cd1 = $(tr).find(".cd1").val();
 
@@ -1052,8 +1079,8 @@ function fn_setAccomCnt(src){
 		var stDt = $(tr).find(".st-dt").val();
 		var edDt = $(tr).find(".ed-dt").val();
 		
-		console.log(stDt);
-		console.log(edDt);
+		//console.log(stDt);
+		//console.log(edDt);
 
 	}
 	

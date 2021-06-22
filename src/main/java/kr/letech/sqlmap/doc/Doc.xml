@@ -437,7 +437,7 @@
 	
 	<insert id="insertTmpPayItem" parameterType="kr.letech.aprv.TmpPayItemVO">
 		<selectKey keyProperty="itemNoAdd" resultType="String" order="BEFORE">
-			SELECT NVL(MAX(TO_NUMBER(ITEM_NO)),0) +1 as itemNoAdd
+			SELECT MAX(NVL(TO_NUMBER(ITEM_NO),0)) +1 as itemNoAdd
 			  FROM DOC_TMPPAY_ITEM
 		</selectKey>
 		MERGE INTO DOC_TMPPAY_ITEM

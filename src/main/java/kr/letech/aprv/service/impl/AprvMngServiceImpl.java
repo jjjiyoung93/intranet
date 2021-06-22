@@ -471,8 +471,10 @@ public class AprvMngServiceImpl implements AprvMngService {
 
 			//기존 정보 삭제
 			for(String delNo : delArr) {
-				params.put("item_no", delNo);
-				docDAO.deleteTmpPayItem(params);
+				if(StringUtils.isNotEmpty(delNo)) {
+					params.put("item_no", delNo);
+					docDAO.deleteTmpPayItem(params);					
+				}
 			}
 			// 기존 정보 : 수정 / 신규 정보 : 추가
 			for (TmpPayItemVO tmpPayItemVO : tmpPayItemList) {

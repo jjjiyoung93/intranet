@@ -67,6 +67,7 @@
 		</tr>
 	</tbody>
 </table>
+
 <div id="fileList"></div>
 <div id="footer" class="text-center">
 	<br>
@@ -76,8 +77,8 @@
 </div>
 <script>
 	function fn_drawRptDetail(docJson, viewJson){
-		console.log(docJson);
-		console.log(viewJson);
+		//console.log(docJson);
+		//console.log(viewJson);
 		var tmpPayItemList = docJson.tmpPayItemList;
 		var sum = 0;
 		//항목별 소계
@@ -87,6 +88,7 @@
 		var etcSum = 0;
 		var prchsSum = 0; 
 		//상세 내역 전체 틀잡기
+		//구분 기타 이외
 		for(var i=0; i < tmpPayItemList.length; i++){
 			var item = tmpPayItemList[i];
 			var html = "";
@@ -97,45 +99,91 @@
 			var cd1Nm = item.CD1_NM;
 			var trList = $("#detail-tbody").find(".tr-"+cd1);
 			if(trList.length == 0){
-				html += '<tr class="tr-'+cd1+'">';
-				html += '<td class="td-comm td-s1 td-header-tmppay">'+cd1Nm+'</td>';
-				html += '<td class="td-comm td-s5" style="padding: 0;">';
-				html += '<table class="table" style="width:100%; height: 100%; margin: 0;">';
-				html += '<tbody id="tbody-'+cd1+'">';
-				html += '</tbody>';
-				html += '<tfoot id="tfoot-'+cd1+'">';
-				html += '<tr><td class="td-header-tmppay">소계</td></tr>';
-				html += '</tfoot>';
-				html += '</table>';
-				html += '</td>';
-				html += '<td class="td-comm td-s5" style="padding: 0;">';
-				html += '<table class="table" style="width:100%; height: 100%; border:none; margin: 0;">';
-				html += '<tbody id="tbody-amt-'+cd1+'">';
-				//html += '<tr><td><span id="span-amt-'+cd1+'" class="span-amt amt-compo"></span></td></tr>'
-				html += '</tbody>';
-				html += '<tfoot id="tfoot-amt-'+cd1+'">';
-				html += '<tr><td class="text-right"><span id="span-amt-sum-'+cd1+'" class="span-amt amt-compo"></span></td></tr>';
-				html += '</tfoot>';
-				html += '</table>';
-				html += '</td>';
-// 				html += '<td class="td-comm td-s5" style="padding: 0;">';
-// 				html += '<table class="table" style="width:100%; height: 100%; border:none; margin: 0;">';
-// 				html += '<tbody id="tbody-rmk4-'+cd1+'">';
-// 				html += '</tbody>';
-// 				html += '<tfoot id="tfoot-rmk4-'+cd1+'">';
-// 				html += '<tr><td><span style="visibility: hidden;">공란</span></td></tr>';
-// 				html += '</tfoot>';
-// 				html += '</table>';
-// 				html += '</td>';
-				html += '</tr>';
-				
-				$("#detail-tbody").append(html);			
+				if(cd1 != 'CD0013004'){
+					html += '<tr class="tr-'+cd1+'">';
+					html += '<td class="td-comm td-s1 td-header-tmppay">'+cd1Nm+'</td>';
+					html += '<td class="td-comm td-s5" style="padding: 0;">';
+					html += '<table class="table" style="width:100%; height: 100%; margin: 0;">';
+					html += '<tbody class="tbody-cont" id="tbody-'+cd1+'">';
+					html += '</tbody>';
+					html += '<tfoot id="tfoot-'+cd1+'">';
+					html += '<tr><td class="td-header-tmppay">소계</td></tr>';
+					html += '</tfoot>';
+					html += '</table>';
+					html += '</td>';
+					html += '<td class="td-comm td-s5" style="padding: 0;">';
+					html += '<table class="table" style="width:100%; height: 100%; border:none; margin: 0;">';
+					html += '<tbody id="tbody-amt-'+cd1+'">';
+					//html += '<tr><td><span id="span-amt-'+cd1+'" class="span-amt amt-compo"></span></td></tr>'
+					html += '</tbody>';
+					html += '<tfoot id="tfoot-amt-'+cd1+'">';
+					html += '<tr><td class="text-right"><span id="span-amt-sum-'+cd1+'" class="span-amt amt-compo"></span></td></tr>';
+					html += '</tfoot>';
+					html += '</table>';
+					html += '</td>';
+	// 				html += '<td class="td-comm td-s5" style="padding: 0;">';
+	// 				html += '<table class="table" style="width:100%; height: 100%; border:none; margin: 0;">';
+	// 				html += '<tbody id="tbody-rmk4-'+cd1+'">';
+	// 				html += '</tbody>';
+	// 				html += '<tfoot id="tfoot-rmk4-'+cd1+'">';
+	// 				html += '<tr><td><span style="visibility: hidden;">공란</span></td></tr>';
+	// 				html += '</tfoot>';
+	// 				html += '</table>';
+	// 				html += '</td>';
+					html += '</tr>';
+					
+					$("#detail-tbody").append(html);			
+
+				}
 			}
 
 		}
+		
+		// 기타
+		for(var i=0; i < tmpPayItemList.length; i++){
+			var item = tmpPayItemList[i];
+			var html = "";
+			var cd1 = item.CD1;
+			var cd2 = item.CD2;
+			var amt = item.AMT * 1;
+			sum += amt;
+			var cd1Nm = item.CD1_NM;
+			var trList = $("#detail-tbody").find(".tr-"+cd1);
+			if(trList.length == 0){
+				if(cd1 == 'CD0013004'){
+					html += '<tr class="tr-'+cd1+'">';
+					html += '<td class="td-comm td-s1 td-header-tmppay">'+cd1Nm+'</td>';
+					html += '<td class="td-comm td-s5" style="padding: 0;">';
+					html += '<table class="table" style="width:100%; height: 100%; margin: 0;">';
+					html += '<tbody class="tbody-cont" id="tbody-'+cd1+'">';
+					html += '</tbody>';
+					html += '<tfoot id="tfoot-'+cd1+'">';
+					html += '<tr><td class="td-header-tmppay">소계</td></tr>';
+					html += '</tfoot>';
+					html += '</table>';
+					html += '</td>';
+					html += '<td class="td-comm td-s5" style="padding: 0;">';
+					html += '<table class="table" style="width:100%; height: 100%; border:none; margin: 0;">';
+					html += '<tbody id="tbody-amt-'+cd1+'">';
+					//html += '<tr><td><span id="span-amt-'+cd1+'" class="span-amt amt-compo"></span></td></tr>'
+					html += '</tbody>';
+					html += '<tfoot id="tfoot-amt-'+cd1+'">';
+					html += '<tr><td class="text-right"><span id="span-amt-sum-'+cd1+'" class="span-amt amt-compo"></span></td></tr>';
+					html += '</tfoot>';
+					html += '</table>';
+					html += '</td>';
+					html += '</tr>';
+					
+					$("#detail-tbody").append(html);			
+
+				}
+			}
+
+		}
+		
 
 		//상세 내역 데이터 입력
-		for(var j=0; j<tmpPayItemList.length ;j++){
+		for(var j=0; j<tmpPayItemList.length ;j++){			
 			var item = tmpPayItemList[j];
 			var cd1 = item.CD1;
 			var cd2 = item.CD2;
@@ -154,7 +202,7 @@
 			var rmk4Html = "";
 
 			if(cd1 == "CD0013001"){
-				detailHtml += '<tr>';
+				detailHtml += '<tr class="tr-cont">';
 				detailHtml += '<td style="height: 30px;">';
 				detailHtml += '<span>'+cd2Nm+' ('+stDt+' ~ '+edDt+', '+rmk1
 				if(rmk3 == "1") {
@@ -177,7 +225,7 @@
 				detailHtml += '</tr>';
 				trfSum += removeCommas(amt) * 1;	
 			}else if(cd1 == "CD0013002"){
-				detailHtml += '<tr>';
+				detailHtml += '<tr class="tr-cont">';
 				detailHtml += '<td style="height: 30px;">';
 				detailHtml += '<span>'+cd2Nm+' ('+stDt+' ~ '+edDt+') X '+cnt+'회 X '+price+'원</span>'
 				if(rmk4 != null && rmk4 != ''){
@@ -188,7 +236,7 @@
 				detailHtml += '</tr>';
 				foodSum += removeCommas(amt) * 1;	
 			}else if(cd1 == "CD0013003"){
-				detailHtml += '<tr>';
+				detailHtml += '<tr class="tr-cont">';
 				detailHtml += '<td style="height: 30px;">';
 				detailHtml += '<span>숙박 ('+stDt+' ~ '+edDt+') X '+cnt+'박 X '+price+'원</span>'
 				if(rmk4 != null && rmk4 != ''){
@@ -198,7 +246,7 @@
 				detailHtml += '</tr>';
 				accomSum += removeCommas(amt) * 1;	
 			}else if(cd1 == "CD0013004") {
-				detailHtml += '<tr>';
+				detailHtml += '<tr class="tr-cont">';
 				detailHtml += '<td style="height: 30px;">';
 				detailHtml += '<span>'+cd2Nm+' ('+stDt+' ~ '+edDt+') X '+cnt+'회 X '+price+'원</span>'
 				if(rmk4 != null && rmk4 != ''){
@@ -208,9 +256,9 @@
 				detailHtml += '</tr>';
 				etcSum += removeCommas(amt) * 1;	
 			}else if(cd1 == "CD0013005") {
-				detailHtml += '<tr>';
+				detailHtml += '<tr class="tr-cont">';
 				detailHtml += '<td style="height: 30px;">';
-				detailHtml += '<span>'+rmk2+' ('+rmk1+') X '+cnt+'개 X '+price+'원</span>'
+				detailHtml += '<span>'+cd2Nm+' ('+rmk1+') X '+cnt+'개 X '+price+'원</span>'
 				if(rmk4 != null && rmk4 != ''){
 					detailHtml += '<br> => 비고 : ' +rmk4;
 				}
