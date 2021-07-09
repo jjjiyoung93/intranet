@@ -42,7 +42,7 @@ public class ConnectionFactory {
 
 //		GenericObjectPool<PoolableConnection> pool = new GenericObjectPool<PoolableConnection>();
 		GenericObjectPool pool = new GenericObjectPool();
-		DriverManagerConnectionFactory conntionFactory = new DriverManagerConnectionFactory("jdbc:oracle:thin:@10.10.250.200:1521:orcl", properties);
+		DriverManagerConnectionFactory conntionFactory = new DriverManagerConnectionFactory("jdbc:oracle:thin:@10.10.250.200:1521:xe", properties);
 //		DriverManagerConnectionFactory conntionFactory = new DriverManagerConnectionFactory("jdbc:oracle:thin:@10.10.250.200:1521:orcl", EgovProperties.getProperty("Globals.UserName"), EgovProperties.getProperty("Globals.Password"));
 		
 		new PoolableConnectionFactory(conntionFactory, pool, null, "SELECT 1", 3, false, false, Connection.TRANSACTION_READ_COMMITTED);
