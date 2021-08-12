@@ -404,16 +404,25 @@ function fn_renderRecView(recSrc) {
 	//가맹점 종류
 	var mestTypeInfo = rec.MEST_TAXT_TYP_INFO;
 	console.log(mestTypeInfo);
+	//20210812 비즈플레이 과세유형코드 변경 관련 명칭 변경
+	//관련 메일 참조 'RE: [엘이테크] 과세유형 명칭 변경에 따른 Bizplay API 변동사항에 관하여 문의드립니다.'
 	if('00' == mestTypeInfo){
 		mestType.text('미등록');
 	} else if('01' == mestTypeInfo){
 		mestType.text("일반");
 	} else if('02' == mestTypeInfo){
-		mestType.text("간이");
+// 		mestType.text("간이");
+		mestType.text("간이미발급");
 	} else if('03' == mestTypeInfo){
 		mestType.text("면세");
 	} else if('04' == mestTypeInfo){
 		mestType.text("비영리");
+	} else if('05' == mestTypeInfo){
+		mestType.text("기타사업자");	
+	} else if('06' == mestTypeInfo){ 
+		mestType.text("고유단체");
+	} else if('07' == mestTypeInfo){
+		mestType.text("간이발급");
 	} else if('09' == mestTypeInfo){
 		mestType.text("휴업");
 	} else if('10' == mestTypeInfo){
