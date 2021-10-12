@@ -71,9 +71,14 @@
                      </span>
                   </h2>
                   <div class="form-container">
+                  <!-- 첨부파일로 결재를 올리던 시스템이 2021년 1월부터 첨부파일 없이 웹에서 작성하도록 시스템이 변경되었음, 따라서 이전 데이터는 보고서 버튼이 안보이도록 함 -->
+                  <fmt:parseDate var="CNG_DATE" value="2021-01-01" pattern="yyyy-MM-dd" />
+                  <fmt:parseDate var="CRTN_DATE" value="${viewMap.CRTN_DT }" pattern="yyyy-MM-dd" />
+                  <c:if test="${CNG_DATE < CRTN_DATE}">
                   	<button type="button" class="btn btn-primary" style="position: absolute; right: 40px; z-index: 999;" onclick="fn_docPopup()">
                   		<span class="glyphicon glyphicon-file" aria-hidden="true"></span> 보고서
                   	</button>
+                  </c:if>
                   <div class="board-view">       
                   <ul class="payment-form">
                         <li>
