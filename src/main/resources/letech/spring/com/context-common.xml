@@ -54,7 +54,8 @@
     <!-- MULTIPART RESOLVERS -->
     <!-- regular spring resolver -->
     <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="600000000" />
+    	<!-- 조달청 파일 반입 이용으로 인해 용량 증가 20211010 jwchoi -->
+        <property name="maxUploadSize" value="3048576000" />
         <property name="maxInMemorySize" value="100000000" />
     </bean>
 
