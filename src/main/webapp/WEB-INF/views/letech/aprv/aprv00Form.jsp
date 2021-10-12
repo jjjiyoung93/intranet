@@ -90,7 +90,17 @@
 											<label class="control-label">소속</label>
 										</div>
 										<div class="col-lg-6">
-											<input class="form-control" type="text" value="${loginVO.orgnztNm }" readonly/>
+											<c:choose>
+												<c:when test="${params.mode eq mode_u }">
+													<c:set var="rept_dp_cd" value="${viewMap.REPT_DP_CD }"/>
+													<input type="text" class="form-control" value="${viewMap.REPT_DP_NM }" readonly/>
+												</c:when>
+												<c:otherwise>
+													<c:set var="rept_dp_cd" value="${loginVO.orgnztId }"/>
+													<input type="text" class="form-control" value="${loginVO.orgnztNm }" readonly/>
+												</c:otherwise>
+											</c:choose>
+											<input type="hidden" id="rept_dp_cd" name="rept_dp_cd" value="${rept_dp_cd }" />
 										</div>
 									</div>
 									<div class="col-lg-6 form-group">
@@ -115,7 +125,17 @@
 											<label class="control-label">직위</label>
 										</div>
 										<div class="col-lg-6">
-											<input class="form-control" type="text" value="${loginVO.authNm }" readonly/>
+											<c:choose>
+												<c:when test="${params.mode eq mode_u }">
+													<c:set var="rept_auth_cd" value="${viewMap.REPT_AUTH_CD }"/>
+													<input type="text" class="form-control" value="${viewMap.REPT_AUTH_CD }" readonly/>
+												</c:when>
+												<c:otherwise>
+													<c:set var="rept_auth_cd" value="${loginVO.authCd }"/>
+													<input type="text" class="form-control" value="${loginVO.authNm }" readonly/>
+												</c:otherwise>
+											</c:choose>
+											<input type="hidden" id="rept_auth_cd" name="rept_auth_cd" value="${rept_auth_cd }" />
 										</div>
 									</div>
 									<div class="col-lg-6 form-group">

@@ -441,8 +441,10 @@
 		SELECT A.APRV_NO					/* 결재번호 */
 			, A.REPT_APRV_NO				/* 보고자사원번호 */
 			, B.USS_NM AS REPT_APRV_NM
-			, (SELECT AUTHOR_NM FROM STD_AUT_INFO WHERE AUTHOR_CODE = B.USS_AUTH_CD) AS REPT_AUTH_NM /* 보고자 직급 */
-			, (SELECT CD_NM FROM STD_CD_MNG WHERE CD = B.DP_CD) AS REPT_DP_NM /* 보고자 부서 */
+			, A.REPT_AUTH_CD AS REPT_AUTH_CD /* 보고자 직급 코드 */
+			, (SELECT AUTHOR_NM FROM STD_AUT_INFO WHERE AUTHOR_CODE = A.REPT_AUTH_CD) AS REPT_AUTH_NM /* 보고자 직급 명 */
+			, A.REPT_DP_CD AS REPT_DP_CD /* 보고자 부서 코드 */
+			, (SELECT CD_NM FROM STD_CD_MNG WHERE CD = A.REPT_DP_CD) AS REPT_DP_NM /* 보고자 부서 명 */
 			, A.APRV_TYPE_CD				/* 결재구분코드(UP_CD=VarConsts.EAM_MASTER_CODE) */
 			, A.APRV_TYPE_DTIL_CD				/* 결재구분상세코드 */
 			, A.TITLE					/* 제목 */
@@ -496,6 +498,8 @@
 			  , MODI_DT
 			  , TERM_ST_HM
 			  , TERM_ED_HM
+			  , REPT_DP_CD
+			  , REPT_AUTH_CD
 			) VALUES
 			(
 				#{aprv_no}
@@ -515,6 +519,8 @@
 			  , SYSDATE
 			  , #{term_st_hm, jdbcType=VARCHAR}
 			  , #{term_ed_hm, jdbcType=VARCHAR}
+			  , #{rept_dp_cd, jdbcType=VARCHAR}
+			  , #{rept_auth_cd, jdbcType=VARCHAR}
 			)
 	</insert>
 	
@@ -535,6 +541,8 @@
 		          , CAL_NO = #{cal_no, jdbcType=VARCHAR}
 		          , TERM_ST_HM = #{term_st_hm, jdbcType=VARCHAR}
 			      , TERM_ED_HM = #{term_ed_hm, jdbcType=VARCHAR}
+			      , REPT_DP_CD = #{rept_dp_cd, jdbcType=VARCHAR}
+			      , REPT_AUTH_CD = #{rept_auth_cd, jdbcType=VARCHAR}
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</update>
 	
@@ -560,6 +568,7 @@
 			  , MODI_DT
 			  , CONF_YN
 			  , REFE_YN
+			  , APRV_EMP_AUTH_CD
 			) VALUES
 			(
 				#{aprv_no, jdbcType=VARCHAR}
@@ -574,6 +583,7 @@
 			  , SYSDATE
 			  , 'N'
 			  , #{refe_yn, jdbcType=VARCHAR}
+			  , (SELECT USS_AUTH_CD FROM STD_USS_MNG WHERE USS_ID = #{aprv_emp_no, jdbcType=VARCHAR})
 			)
 	</insert>
 	
@@ -587,7 +597,7 @@
 		SELECT
 		  A.APRV_NO
 		  , A.APRV_EMP_NO
-		  , (SELECT AUTHOR_NM FROM STD_AUT_INFO WHERE AUTHOR_CODE = B.USS_AUTH_CD) AS APRV_AUTH_NM
+		  , (SELECT AUTHOR_NM FROM STD_AUT_INFO WHERE AUTHOR_CODE = A.APRV_EMP_AUTH_CD) AS APRV_AUTH_NM
 		  , A.APRV_ORDR
 		  , A.APRV_YN_CD
 		  , A.APRV_CONT
@@ -809,7 +819,7 @@
 			 , B.USS_AUTH_CD
 			 , C.AUTHOR_NM
 			 , B.DP_CD
-			 , d.CD_NM
+			 , D.CD_NM
 		  FROM STD_APRV_LINE_INFO A, STD_USS_MNG B, STD_AUT_INFO C, STD_CD_MNG D
 		 WHERE A.APRV_EMP_NO = B.USS_ID
 		   AND B.USS_AUTH_CD = C.AUTHOR_CODE
@@ -1167,6 +1177,8 @@
 		  , MODI_EMP_NO
 		  , MODI_DT
 		  , PPP_APPR_SEQ_NO
+		  , REPT_DP_CD
+		  , REPT_AUTH_CD
 		) 
 		VALUES (
 			#{APRV_NO}
@@ -1185,6 +1197,8 @@
 		  , #{REPT_APRV_NO, jdbcType=VARCHAR}
 		  , TO_DATE(#{DRAFT_DATE},'YYYYMMDDHH24MISS')
 		  , #{PPP_APPR_SEQ_NO, jdbcType=VARCHAR}
+		  , #{LST_USER_DEPT_ERP_CD, jdbcType=VARCHAR}
+		  , (SELECT USS_AUTH_CD FROM STD_USS_MNG WHERE USS_ID = #{REPT_APRV_NO, jdbcType=VARCHAR})
 		)
 	</insert>
 	
@@ -1207,6 +1221,7 @@
 			  , MODI_DT
 			  , CONF_YN
 			  , REFE_YN
+			  , APRV_EMP_AUTH_CD
 			) VALUES
 			(
 				#{APRV_NO, jdbcType=VARCHAR}
@@ -1221,6 +1236,7 @@
 			  , TO_DATE(#{MODI_DT},'YYYYMMDDHH24MISS')
 			  , #{CONF_YN, jdbcType=VARCHAR}
 			  , #{REFE_YN, jdbcType=VARCHAR}
+			  , (SELECT USS_AUTH_CD FROM STD_USS_MNG WHERE USS_ID = #{APRV_EMP_CD, jdbcType=VARCHAR})
 			)
 	</insert>
 	

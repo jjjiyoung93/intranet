@@ -334,7 +334,8 @@ function fn_renderRecComm(commData){
 	docNo.text("문서번호 : "+recList[0].DOC_NO);
 
 	//발의자
-	var reptAprvEmpHtml = viewJson.REPT_APRV_NM +"/"+ viewJson.DPNM + " ( ";
+// 	var reptAprvEmpHtml = viewJson.REPT_APRV_NM +"/"+ viewJson.DPNM + " ( ";
+	var reptAprvEmpHtml = viewJson.REPT_APRV_NM +" / "+ viewJson.REPT_DP_NM + " ( ";
 	for(var i=0; i < projList.length; i++){
 		if(projList[i].CD == viewJson.PROJ_CD){
 			reptAprvEmpHtml += projList[i].CD_NM + " )";
