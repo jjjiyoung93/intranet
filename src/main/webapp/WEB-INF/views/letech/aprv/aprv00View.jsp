@@ -495,7 +495,7 @@ function aprvOk(){
       }
    function cardNoReplace(){
       var card_No = $("#recList.card_no").val();
-      return card_No.toString().replace(/\B(?=\d{4})+(?!\d))/g, '-')
+      return card_No.toString().replace(/\B(?=\d{4})+(?!\d))/g, '-');
 
       }
    
