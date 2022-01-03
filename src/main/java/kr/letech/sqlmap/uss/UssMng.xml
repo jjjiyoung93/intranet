@@ -65,9 +65,16 @@
 	</select>
 	<!-- 사용자 등록 -->
 	<insert id="ussInsert" parameterType="map" >
-		INSERT INTO STD_USS_MNG(USS_ID, USS_PWD, USS_NM, USS_SEX, USS_BIRTH, USS_EMAIL, USS_TEL, USS_AUTH_CD, REG_DT, USS_EM_NO, DP_CD)
+		INSERT INTO STD_USS_MNG(USS_ID, USS_PWD, USS_NM, USS_SEX, USS_BIRTH, USS_EMAIL, USS_TEL, USS_AUTH_CD, REG_DT, USS_EM_NO, DP_CD, 
+		
+  		<!--컬럼 추가에 따른 쿼리 변경 - 2022.01.03  -->
+		JOIN_DT, RTR_YN, USS_BIRTY_DAY, USS_BIRTH_DAY_TYPE, WORK_YR_CNT, EMP_TYPE )
+
 		  VALUES(#{uss_id}, #{uss_pwd}, #{uss_nm}, #{uss_sex}, #{uss_birth, jdbcType=VARCHAR}, #{uss_email, jdbcType=VARCHAR}
-		  		, #{uss_tel, jdbcType=VARCHAR}, #{uss_auth_cd, jdbcType=VARCHAR}, SYSDATE, #{uss_em_no, jdbcType=VARCHAR}, #{dp_cd, jdbcType=VARCHAR})
+		  		, #{uss_tel, jdbcType=VARCHAR}, #{uss_auth_cd, jdbcType=VARCHAR}, SYSDATE, #{uss_em_no, jdbcType=VARCHAR}, #{dp_cd, jdbcType=VARCHAR}, 
+		  		
+		  		<!--컬럼 추가에 따른 쿼리 변경 - 2022.01.03  -->
+		  		#{join_dt, jdbcType=VARCHAR}, #{rtr_yn}, #{uss_birth_day}, #{uss_birth_day_type}, #{work_yr_cnt, jdbyType=NUMBER}, #{emp_type})
 	</insert>
 	
 	<!-- 사용자 상세조회 -->
@@ -90,6 +97,15 @@
 		  , C.CD_NM AS USS_AUTH_NM	<!-- 권한 매핑 테이블 사용시 -->
 		  , A.DP_CD
 		  , D.DP_NM
+		  <!-- 컬럼 추가에 따른 쿼리 변경 - 2022.01.03  -->
+		  , A.JOIN_DT /*입사일*/
+		  , A.RTR_DT  /*퇴사일*/
+		  , A.RTR_YN  /*퇴사여부*/
+		  , A.USS_BIRTH_DAY /*생일(월-일)*/
+		  , A.USS_BIRTH_DAY_TYPE /*생일 음/양력 구분*/
+		  , A.WORK_YR_CNT /*근속년수*/
+		  , A.EMP_TYPE /*고용구분*/
+		  , E.CD_NM /*고용구분 명칭*/ AS EMP_TYPE_NM
 		FROM
 		  	STD_USS_MNG A
 			<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
@@ -103,6 +119,7 @@
 				  CONNECT BY PRIOR CD = UP_CD
 				ORDER SIBLINGS BY CD_ORD ASC
 			) D ON D.DP_CD = A.DP_CD
+			LEFT OUTER JOIN STD_CD_MNG E ON (E.CD = A.EMP_TYPE)
         WHERE
 			A.USS_ID = #{uss_id}
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
@@ -121,6 +138,14 @@
 			, uss_em_no = #{uss_em_no, jdbcType=VARCHAR}
 			, uss_auth_cd = #{uss_auth_cd, jdbcType=VARCHAR}
 			, dp_cd = #{dp_cd, jdbcType=VARCHAR}
+			<!-- 컬럼 추가에 따른 쿼리 변경 - 2022.01.03  -->
+			, join_dt = #{join_dt, jdbcType=VARCHAR}
+			, rtr_yn = #{rtr_yn}
+			, rtr_dt = #{rtr_dt, jdbcType=VARCHAR}
+			, uss_birth_day = #{uss_birth_day, jdbcType=VARCHAR}
+			, uss_birth_day_type = #{uss_birth_day_type, jdbcType=VARCHAR}
+			, work_yr_cnt = #{work_yr_cnt}
+			, emp_type = #{emp_type, jdbcType=VARCHAR}
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
 			, uss_pwd = #{uss_pwd}
 		</if>

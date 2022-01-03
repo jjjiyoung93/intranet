@@ -127,6 +127,117 @@
 										<label>이메일</label>
 											<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="form-control" />
 									</li>
+									<!-- 20220103 항목 추가 : BEGIN  -->
+									<!-- 입사일  -->
+									<li class="form-group">
+										<label>입사일</label>
+											<input name="join_dt" id="join_dt" type="text" value="${resultView.JOIN_DT }" class="form-control" />
+									</li>
+									
+									<!-- 퇴사구분 : 수정에서만 보일 수 있게   -->
+									
+									<c:if test="${params.mode eq VarConsts.MODE_U}">
+										<li class="form-group" id="rtr_yn_select">
+											<label>재직구분</label>
+												<select id="rtr_yn" name="rtr_yn" class="form-control" onchange="javascript:fn_showRtrDt(this.value)" >
+													<option value="N" <c:if test="${empty resultView.RTR_YN || 'N' eq resultView.RTR_YN }">selected="selected"</c:if>>재직중</option>
+													<option value="Y" <c:if test="${'Y' eq resultView.RTR_YN }">selected="selected"</c:if>>퇴사</option>
+													<%-- <c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach> --%>
+												</select>
+										</li>
+										<!-- 퇴사일 : 수정 화면에서 퇴사구분을 퇴사로 선택했을 시 표시  -->
+										<li class="form-group">
+											<label>퇴사일</label>
+												<input name="rtr_dt" id="rtr_dt" type="text" value="${resultView.RTR_DT }" class="form-control" disabled />
+										</li>									
+									</c:if>
+									<!-- 생일 : 월 , 일 , 음/양력 구분  -->
+									<li class="form-group">
+											<label>생일</label>
+												<select id="uss_birth_day_mon" name="uss_birth_day_mon" class="form-control table-cell">
+													<option value="" >--선택--</option>
+													<option value="01" >01</option>
+													<option value="02" >02</option>
+													<option value="03" >03</option>
+													<option value="04" >04</option>
+													<option value="05" >05</option>
+													<option value="06" >06</option>
+													<option value="07" >07</option>
+													<option value="08" >08</option>
+													<option value="09" >09</option>
+													<option value="10" >10</option>
+													<option value="11" >11</option>
+													<option value="12" >12</option>
+													<option value="12" >12</option>
+												<%-- 	<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach> --%>
+												</select>
+												<label>월</label>
+												<select id="uss_birth_day_date" name="uss_birth_day_date" class="form-control table-cell">
+													<option value="" >--선택--</option>
+													<option value="01" >01</option>
+													<option value="02" >02</option>
+													<option value="03" >03</option>
+													<option value="04" >04</option>
+													<option value="05" >05</option>
+													<option value="06" >06</option>
+													<option value="07" >07</option>
+													<option value="08" >08</option>
+													<option value="09" >09</option>
+													<option value="10" >10</option>
+													<option value="11" >11</option>
+													<option value="12" >12</option>
+													<option value="13" >13</option>
+													<option value="14" >14</option>
+													<option value="15" >15</option>
+													<option value="16" >16</option>
+													<option value="17" >17</option>
+													<option value="18" >18</option>
+													<option value="19" >19</option>
+													<option value="20" >20</option>
+													<option value="21" >21</option>
+													<option value="22" >22</option>
+													<option value="23" >23</option>
+													<option value="24" >24</option>
+													<option value="25" >25</option>
+													<option value="26" >26</option>
+													<option value="27" >27</option>
+													<option value="28" >28</option>
+													<option value="29" >29</option>
+													<option value="30" >30</option>
+													<option value="31" >31</option>
+												<%-- 	<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach> --%>
+												</select>
+												<label>일</label>
+												<span>
+													<input class="col_md_2" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if>>
+													양력
+													<input class="col_md_2"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> >
+													음력
+												</span>
+												
+									</li>
+									<!-- 고용구분  -->
+									<li class="form-group">
+										<label>고용구분</label>
+											<select id="emp_type" name="emp_type" class="form-control">
+												<option value="" >--선택--</option>
+												<c:forEach var="empType" items="${empTypeList}">
+													<option value="${empType.CD}" <c:if test="${empType.CD eq resultView.EMP_TYPE }">selected="selected"</c:if> >${empType.CD_NM}</option>
+												</c:forEach>
+											</select>
+									</li>
+									<!-- 근속년수  -->
+									<li class="form-group">
+										<label>근속년수</label>
+											<input name="work_yr_cnt" id="work_yr_cnt" type="number" min="0" value="${resultView.WORK_YR_CNT }" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+									</li>	
+									<!-- 20220103 항목 추가 : END  -->
 									
 							</ul>
 							</div>
@@ -213,6 +324,24 @@
 	<script type="text/javascript">
 		$(function() {
 			$("#uss_birth").datepicker();
+			$("#join_dt").datepicker();
+			var birthday = null;
+			var mon = "";
+			var day = "";
+			var birthDayArr = null;
+			
+			birthday = "${resultView.USS_BIRTH_DAY}";
+
+			if(birthday != null && "" != birthday){
+				birthDayArr = birthday.split("-");
+				mon = birthDayArr[0];
+				day = birthDayArr[1];		
+			}
+			
+			$("#uss_birth_day_mon").val(mon).prop("selected", true);
+			
+			$("#uss_birth_day_date").val(day).prop("selected", true);
+			
 		});
 		
 		$(document).ready(function() {
@@ -553,6 +682,22 @@
 				}
 			}
 		}
+		
+		//재직구분 선택에 따라 퇴사일 옵션 활성/비활성화
+		function fn_showRtrDt(val) {
+			var value = val;
+			//퇴사 선택 시
+			if(value == "Y"){
+				$("#rtr_dt").prop("disabled", false);
+				$("#rtr_dt").datepicker();
+			}else if(value = "N"){ // 재직 선택 시
+				$("#rtr_dt").val("");
+				$("#rtr_dt").prop("disabled", true);
+						
+			}	
+			
+		}
+		
 	</script>
 </body>
 </html>

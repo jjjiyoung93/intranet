@@ -130,6 +130,12 @@ public class UssMngController {
 		List departList = ussMngService.getUssDepartList(params);
 		model.addAttribute("departList", departList);
 		
+		// 고용구분목록 - 2022.01.03
+		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+		List empTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("empTypeList", empTypeList);
+		
+		
 		/* 결재 라인 정보 조회 */
 		List lineInfoList = aprvMngService.aprvLineInfoList(params);
 		model.addAttribute("lineInfoList", lineInfoList);
@@ -166,6 +172,18 @@ public class UssMngController {
 				params.put("uss_tel", uss_tel1+"-"+uss_tel2+"-"+uss_tel3);
 			}
 			
+			//생일합치기 - 2022.01.03
+			String mon = params.get("uss_birth_day_mon") == null ? "" : (String)params.get("uss_birth_day_mon");
+			String day = params.get("uss_birth_day_date") == null ? "" : (String)params.get("uss_birth_day_date");
+			
+			String birthday = mon + "-" + day;
+			params.put("uss_birth_day", birthday);
+			
+			//근속년수 숫자 타입으로 변환 - 2022.01.03
+			String workYrStr = params.get("work_yr_cnt") == null? "0":(String)params.get("work_yr_cnt");
+			int workYr = Integer.valueOf(workYrStr);
+			params.put("work_yr_cnt", workYr);
+			
 			/* 첨부파일 정보 */
 			MultipartFile mf = multiRequest.getFile("uss_sign");
 			if(!mf.isEmpty()) {
@@ -178,6 +196,8 @@ public class UssMngController {
 			
 			if(mode.equals(VarConsts.MODE_I)){	
 			/* 사용자 등록 */
+				//퇴사여부 기본값 'N' 설정 - 2022.01.03
+				params.put("rtr_yn", "N");
 				ussMngService.ussInsert(params);
 			}else if(mode.equals(VarConsts.MODE_U)){
 			/* 사용자 수정 */
