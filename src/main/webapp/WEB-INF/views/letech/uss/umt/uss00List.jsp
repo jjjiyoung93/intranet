@@ -32,45 +32,79 @@
 							<div class="form-container">
 								<div class="clearfix search-box">
 									<input type="hidden" name="uss_id" id="uss_id" value=""/>
-									<div class="search-container ">
-										<div class ="col-xs-5 un-style">
+									<div class="row">
+										<div class ="col-xs-6 un-style">
 											<span class="inline-element">
-												<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-													<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-													<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+												<label>고용구분</label>
+												<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
+													<option value="" >전체</option>
+													<c:forEach var="empType" items="${empTypeList}">
+														<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
+													</c:forEach>
 												</select>
 											</span>
 										</div>
-										<div class="col-xs-7 un-style">
-											<div class="input-group">
-												<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-												<span class="input-group-btn">
-													<button type="button" class="fnSearch btn-info btn"  >
-														<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
-													</button>
-												</span>
+										<div class ="col-xs-6 un-style">
+											<span class="inline-element">
+												<label >재직구분</label>
+												<select name="searchGubun2" id="searchGubun2" class="form-control" title="search" >
+													<option value="" >전체</option>
+													<option value="N" <c:if test="${params.searchGubun2 == 'N'}">selected = "selected "</c:if>>재직중</option>
+													<option value="Y" <c:if test="${params.searchGubun2 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
+												</select>
+											</span>
+										</div>
+										
+									</div>
+									<div class="row">
+										<div class ="col-xs-6 un-style">
+											<span class="inline-element">
+												<label>부서</label>
+												<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" >
+													<option value="" >전체</option>
+													<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach>
+												</select>
+											</span>
+										</div>
+										<div class ="col-xs-6 un-style">
+											<span class="inline-element">
+												<label>직급</label>
+												<select name="searchGubun5" id="searchGubun5" class="form-control" title="search" >
+													<option value="" >전체</option>
+													<c:forEach var="authList" items="${authList}">
+														<option value="${authList.AUTHOR_CODE}" <c:if test="${authList.AUTHOR_CODE eq params.searchGubun5 }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
+													</c:forEach>
+												</select>
+											</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class ="col-xs-12 un-style">
+											<div class="col-xs-12">
+												<label>ID/성명</label><br>
+												<div class ="col-xs-3 un-style">
+													<span class="inline-element">
+														<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+															<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+															<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+														</select>
+													</span>
+												</div>
+												<div class="col-xs-9 un-style">
+													<div class="input-group">
+														<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+														<span class="input-group-btn">
+															<button type="button" class="fnSearch btn-info btn"  >
+																<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+															</button>
+														</span>
+													</div>
+												</div>
 											</div>
 										</div>
-								</div>
-								
-								<%-- <div class="search-container ">
-										<div class ="col-xs-5 un-style">
-											<span class="inline-element">
-												<select name="searchGubun2" id="searchGubun2" class="form-control" title="search" >
-													<option value="N" <c:if test="${params.searchGubun2 == 'N'}">selected = "selected"</c:if>>재직중</option>
-													<option value="Y" <c:if test="${params.searchGubun2 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
-												</select>
-											</span>
-										</div>
-										<div class ="col-xs-5 un-style">
-											<span class="inline-element">
-												<select name="searchGubun2" id="searchGubun2" class="form-control" title="search" >
-													<option value="N" <c:if test="${params.searchGubun2 == 'N'}">selected = "selected"</c:if>>재직중</option>
-													<option value="Y" <c:if test="${params.searchGubun2 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
-												</select>
-											</span>
-										</div>
-								</div> --%>
+									</div>
 							</div>
 							<p class="clearfix board-top">
 								<span class="pull-right">
@@ -81,7 +115,7 @@
 						<div class="table-responsive">
 						<table class="table table-bordered" summary="사용자관리 목록">
 							<colgroup>
-								<col width="10%" />
+								<col width="5%" />
 								<col width="15%" />
 								<col width="15%" />
 								<col width="15%" />
@@ -95,9 +129,12 @@
 									<th>ID</th>
 									<th>부서</th>
 									<th>성명</th>
+									<th>고용구분</th>
 									<th>권한</th>
 									<th class="visible-md visible-lg">이메일</th>
 									<th class="visible-md visible-lg">전화번호</th>
+									<th>재직구분</th>
+									
 								</tr>
 							</thead>
 							<tbody>
@@ -116,9 +153,11 @@
 												</td>
 												<td>${list.DP_NM}</td>
 												<td>${list.USS_NM}</td>
+												<td>${list.EMP_TYPE_NM }</td>
 												<td>${list.USS_AUTH_NM}</td>
 												<td class="visible-md visible-lg">${list.USS_EMAIL}</td>
 												<td class="visible-md visible-lg">${list.USS_TEL}</td>
+												<td>${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
 											</tr>
 										</c:forEach>
 									</c:otherwise>

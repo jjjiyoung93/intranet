@@ -16,6 +16,9 @@
 				, C.AUTHOR_NM AS USS_AUTH_NM	<!-- 권한 매핑 테이블 사용시 -->
 				, A.DP_CD
 				, D.CD_NM AS DP_NM
+				, A.EMP_TYPE
+				, (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM /*고용구분명칭*/
+				, A.RTR_YN /*재직구분*/
 			FROM
 				STD_USS_MNG A
 				<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
@@ -23,15 +26,32 @@
 				LEFT OUTER JOIN STD_AUT_INFO C ON C.AUTHOR_CODE = B.AUTHOR_CODE
 				LEFT OUTER JOIN STD_CD_MNG D ON D.CD = A.DP_CD
 		<where>
+			1=1
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 				<choose>
 					<when test='searchGubun == "01"' >
-				A.USS_ID LIKE '%' || #{searchField} || '%'
+				AND A.USS_ID LIKE '%' || #{searchField} || '%'
 					</when>
 					<when test='searchGubun == "02"' >
-				A.USS_NM LIKE '%' || #{searchField} || '%'	
+				AND A.USS_NM LIKE '%' || #{searchField} || '%'	
 					</when>
 				</choose>
+			</if>
+			<!-- 재직구분 -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun2)" >
+				AND A.RTR_YN = #{searchGubun2}
+			</if>
+			<!-- 고용구분 -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)" >
+				AND A.EMP_TYPE = #{searchGubun3} 
+			</if>
+			<!-- 부서코드  -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun4)" >
+				AND A.DP_CD = #{searchGubun4}
+			</if>
+			<!-- 직급(권한)코드  -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)" >
+				AND A.USS_AUTH_CD = #{searchGubun5}
 			</if>
 		</where>
 		ORDER BY REG_DT DESC
@@ -43,15 +63,32 @@
 			FROM
 				STD_USS_MNG
 		<where>
+			1=1
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 				<choose>
 					<when test='searchGubun == "01"' >
-				USS_ID LIKE '%' || #{searchField} || '%'
+				AND USS_ID LIKE '%' || #{searchField} || '%'
 					</when>
 					<when test='searchGubun == "02"' >
-				USS_NM LIKE '%' || #{searchField} || '%'	
+				AND USS_NM LIKE '%' || #{searchField} || '%'	
 					</when>
 				</choose>
+			</if>
+			<!-- 재직구분 -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun2)" >
+				AND RTR_YN = #{searchGubun2}
+			</if>
+			<!-- 고용구분 -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)" >
+				AND EMP_TYPE = #{searchGubun3} 
+			</if>
+			<!-- 부서코드  -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun4)" >
+				AND DP_CD = #{searchGubun4}
+			</if>
+			<!-- 직급(권한)코드  -->
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)" >
+				AND USS_AUTH_CD = #{searchGubun5}
 			</if>
 		</where>
 	</select>
@@ -106,6 +143,8 @@
 		  , A.WORK_YR_CNT /*근속년수*/
 		  , A.EMP_TYPE /*고용구분*/
 		  , E.CD_NM /*고용구분 명칭*/ AS EMP_TYPE_NM
+		  , A.RTR_RSN /*퇴사사유코드*/
+		  , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.RTR_RSN) /*퇴사사유 명칭*/ AS RTR_RSN_NM
 		FROM
 		  	STD_USS_MNG A
 			<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
@@ -146,6 +185,7 @@
 			, uss_birth_day_type = #{uss_birth_day_type, jdbcType=VARCHAR}
 			, work_yr_cnt = #{work_yr_cnt}
 			, emp_type = #{emp_type, jdbcType=VARCHAR}
+			, rtr_rsn = #{rtr_rsn, jdbcType=VARCHAR}
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
 			, uss_pwd = #{uss_pwd}
 		</if>
@@ -193,6 +233,7 @@
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(not_uss_id)" >
 				AND A.USS_ID != #{not_uss_id}
 			</if>
+			
 		</where>
 		ORDER BY REG_DT DESC
 	</select>

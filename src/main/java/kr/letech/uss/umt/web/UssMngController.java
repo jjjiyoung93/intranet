@@ -59,6 +59,22 @@ public class UssMngController {
 		model.addAttribute("pageNavigator", bbsObject.get("pageNavigator"));	// 페이징
 		model.addAttribute("params", params);
 		
+		
+		/*검색조건 코드 목록 로드 - 2022.01.04 : BEGIN*/
+		//고용구분코드
+		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+		List empTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("empTypeList", empTypeList);
+		//부서코드
+		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+		List departList = ussMngService.getUssDepartList(params);
+		model.addAttribute("departList", departList);
+		//직급(권한)코드
+		
+		List authList = roleMngService.getAuthList(params);
+		model.addAttribute("authList", authList);
+		/*검색조건 코드 목록 로드 - 2022.01.04 : END*/
+				
 		return "letech/uss/umt/uss00List";
 	}
 	
@@ -134,6 +150,11 @@ public class UssMngController {
 		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
 		List empTypeList = codeMngService.getCodeList(params);
 		model.addAttribute("empTypeList", empTypeList);
+		
+		//퇴사사유코드목록 - 2022.01.04
+		params.put("up_cd", (String)VarConsts.RTR_RSN_CODE);
+		List rtrRsnList = codeMngService.getCodeList(params);
+		model.addAttribute("rtrRsnList", rtrRsnList);
 		
 		
 		/* 결재 라인 정보 조회 */
