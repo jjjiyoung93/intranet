@@ -34,86 +34,43 @@
 							<input type="hidden" name="id_check" id="id_check" value="" />
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
-							
 							<div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
-											<label>사용자 ID</label>
-																							<c:set var="modeType" value="<%=VarConsts.MODE_U%>"/>
-													<c:choose>
-														<c:when test="${params.mode eq modeType }">
-															<br/><span class="">${resultView.USS_ID }</span>
-															<input type="hidden" id="uss_id" name="uss_id" class="form-control" value="${params.uss_id }" />
-															<input type="hidden" id="emp_no" name="emp_no" class="form-control" value="${params.uss_id }" />
-														</c:when>
-														<c:otherwise>
-															<div class="input-group">
-																<input name="uss_id" id="uss_id" type="text" value="" class="form-control" />
-																<a href="#" class="btn_usrChk input-group-addon">중복체크</a>
-															</div>
-															<span class="clearfix" id="id_check_text"></span>
-														</c:otherwise>
-													</c:choose>
-										</li>
-										<li class="form-group col-md-6">
-												<label>성명</label>
-													<input name="uss_nm" id="uss_nm" type="text" value="${resultView.USS_NM }" class="form-control" />
-										</li>
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-								
-								</ul>
-							</div>
-							
-							<div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
+							<ul class="col-md-6">
+								<li class="form-group">
+										<label>사용자 ID</label>
+																						<c:set var="modeType" value="<%=VarConsts.MODE_U%>"/>
+												<c:choose>
+													<c:when test="${params.mode eq modeType }">
+														<br/><span class="">${resultView.USS_ID }</span>
+														<input type="hidden" id="uss_id" name="uss_id" class="form-control" value="${params.uss_id }" />
+														<input type="hidden" id="emp_no" name="emp_no" class="form-control" value="${params.uss_id }" />
+													</c:when>
+													<c:otherwise>
+														<div class="input-group">
+															<input name="uss_id" id="uss_id" type="text" value="" class="form-control" />
+															<a href="#" class="btn_usrChk input-group-addon">중복체크</a>
+														</div>
+														<span class="clearfix" id="id_check_text"></span>
+													</c:otherwise>
+												</c:choose>
+									</li>
+									<li class="form-group">
 										<label>비밀번호</label>
 										<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
 									</li>
-									<li class="form-group col-md-6">
+									<li class="form-group">
 										<label class=" ">비밀번호확인</label>
 											<input name="uss_pwd_conf" id="uss_pwd_conf" type="password" value=""  class="form-control" />
-									</li>								
-								</ul>
-							</div>
-							
-							<div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
-										<label>부서</label>
-										<select id="dp_cd" name="dp_cd" class="form-control">
-											<option value="" >--선택--</option>
-											<c:forEach var="departList" items="${departList}">
-												<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
-											</c:forEach>
-										</select>
 									</li>
-									<li class="form-group col-md-6">
+									<li class="form-group">
 										<label>사원번호</label>
 										<div class="input-group">
 											<input name="uss_em_no" id="uss_em_no" type="text" value="" class="form-control" />
 											<a class="btn_emnoChk input-group-addon" href="#">중복체크</a>
-										</div>
-										<span id="emno_check_text" ></span>
+									</div>
+									<span id="emno_check_text" ></span>
 									</li>
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-									<!-- 고용구분  -->
-									<li class="form-group col-md-6">
-										<label>고용구분</label>
-										<select id="emp_type" name="emp_type" class="form-control">
-											<option value="" >--선택--</option>
-											<c:forEach var="empType" items="${empTypeList}">
-												<option value="${empType.CD}" <c:if test="${empType.CD eq resultView.EMP_TYPE }">selected="selected"</c:if> >${empType.CD_NM}</option>
-											</c:forEach>
-										</select>
-									</li>
-									<li class="form-group col-md-6">
+									<li class="form-group">
 										<label>권한</label>
 										<select id="uss_auth_cd" name="uss_auth_cd" class="form-control">
 						          			<option value="" >--선택--</option>
@@ -122,327 +79,234 @@
 											</c:forEach>
 										</select>
 									</li>
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
-										<label>전화번호</label><br/>
-										<span class="form-inline">
-										<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="form-control table-cell"/>
-										-
-										<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="form-control table-cell"/>
-										-
-										<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="form-control table-cell"/>
-										</span>
-									</li>
-									<li class="form-group col-md-6">
-										<label>이메일</label>
-										<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="form-control" />
-									</li>
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-									<!-- 입사일  -->
-									<li class="form-group col-md-6">
-										<label>입사일</label>
-										<input name="join_dt" id="join_dt" type="text" value="${resultView.JOIN_DT }" class="form-control" />
-									</li>
-									<li class="form-group col-md-6">
-										<label>생년월일</label>
-										<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control" />
-									</li>
-								</ul>
-							</div>
-							<%-- <div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
-										<label>성별</label><br/>
-										<span class="col-md-12">
-											<input class="col_md_2" name="uss_sex" id="uss_sex_m" type="radio" value="M" <c:if test="${empty resultView.USS_SEX || resultView.USS_SEX eq 'M' }">checked="checked"</c:if>>
-											남자
-											<input class="col_md_2"  name="uss_sex" id="uss_sex_w" type="radio" value="W" <c:if test="${resultView.USS_SEX eq 'W' }">checked="checked"</c:if> >
-											여자
-										</span>
-									</li>
-									<!-- 생일 : 월 , 일 , 음/양력 구분  -->
-									<li class="form-group col-md-6">
-										<label>생일</label>
-										<br/>
-										<span class="col-md-12">
-											<input class="col_md_2 table-cell" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if>>
-											양력
-											<input class="col_md_2 table-cell"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> >
-											음력
-										</span>
-										<span class="col-md-12">
-										<select id="uss_birth_day_mon" name="uss_birth_day_mon" class="form-control table-cell">
-											<option value="" >--선택--</option>
-											<option value="01" >01</option>
-											<option value="02" >02</option>
-											<option value="03" >03</option>
-											<option value="04" >04</option>
-											<option value="05" >05</option>
-											<option value="06" >06</option>
-											<option value="07" >07</option>
-											<option value="08" >08</option>
-											<option value="09" >09</option>
-											<option value="10" >10</option>
-											<option value="11" >11</option>
-											<option value="12" >12</option>
-											<option value="12" >12</option>
-										</select>
-										<label>월</label>
-										<select id="uss_birth_day_date" name="uss_birth_day_date" class="form-control table-cell">
-											<option value="" >--선택--</option>
-											<option value="01" >01</option>
-											<option value="02" >02</option>
-											<option value="03" >03</option>
-											<option value="04" >04</option>
-											<option value="05" >05</option>
-											<option value="06" >06</option>
-											<option value="07" >07</option>
-											<option value="08" >08</option>
-											<option value="09" >09</option>
-											<option value="10" >10</option>
-											<option value="11" >11</option>
-											<option value="12" >12</option>
-											<option value="13" >13</option>
-											<option value="14" >14</option>
-											<option value="15" >15</option>
-											<option value="16" >16</option>
-											<option value="17" >17</option>
-											<option value="18" >18</option>
-											<option value="19" >19</option>
-											<option value="20" >20</option>
-											<option value="21" >21</option>
-											<option value="22" >22</option>
-											<option value="23" >23</option>
-											<option value="24" >24</option>
-											<option value="25" >25</option>
-											<option value="26" >26</option>
-											<option value="27" >27</option>
-											<option value="28" >28</option>
-											<option value="29" >29</option>
-											<option value="30" >30</option>
-											<option value="31" >31</option>
-										</select>
-										<label>일</label>
-										</span>
-									</li>
-								</ul>
-							</div> --%>
-							<%-- <div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
-										<label>전화번호</label><br/>
-										<span class="form-inline">
-										<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="form-control table-cell"/>
-										-
-										<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="form-control table-cell"/>
-										-
-										<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="form-control table-cell"/>
-										</span>
-									</li>
-									<li class="form-group col-md-6">
-										<label>이메일</label>
-										<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="form-control" />
-									</li>
-								</ul>
-							</div> --%>
-							<div class="row">
-								<ul class="col-md-12">
-									<!-- 근속년수  -->
-									<li class="form-group col-md-6">
-										<label>근속년수</label>
-										<input name="work_yr_cnt" id="work_yr_cnt" type="number" min="0" value="${resultView.WORK_YR_CNT }" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-									</li>
-									<c:if test="${params.mode eq VarConsts.MODE_U}">
-										<li class="form-group col-md-6" id="rtr_yn_select">
-											<label>재직구분</label>
-											<select id="rtr_yn" name="rtr_yn" class="form-control" onchange="javascript:fn_showRtrDt(this.value)" >
-												<option value="N" <c:if test="${empty resultView.RTR_YN || 'N' eq resultView.RTR_YN }">selected="selected"</c:if>>재직중</option>
-												<option value="Y" <c:if test="${'Y' eq resultView.RTR_YN }">selected="selected"</c:if>>퇴사</option>
-											</select>
-										</li>
-									</c:if>
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-								<c:if test="${params.mode eq VarConsts.MODE_U}">
-									<li class="form-group col-md-6">
-										<label>퇴사일</label>
-										<input name="rtr_dt" id="rtr_dt" type="text" value="${resultView.RTR_DT }" class="form-control" disabled />
-									</li>
-									<!-- 퇴사사유 : 수정 화면에서 퇴사구분을 퇴사로 선택했을 시 표시  -->
-									<li class="form-group col-md-6">
-										<label>퇴사사유</label>
-										<select id="rtr_rsn" name="rtr_rsn" class="form-control" disabled>
-											<option value="" >--선택--</option>
-											<c:forEach var="rtrRsn" items="${rtrRsnList}">
-												<option value="${rtrRsn.CD}" <c:if test="${rtrRsn.CD eq resultView.RTR_RSN }">selected="selected"</c:if> >${rtrRsn.CD_NM}</option>
-											</c:forEach>
-										</select>
-									</li>
-								</c:if>	
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-6">
-										<label>성별</label><br/>
-										<span class="col-md-12">
-											<input class="col_md_2" name="uss_sex" id="uss_sex_m" type="radio" value="M" <c:if test="${empty resultView.USS_SEX || resultView.USS_SEX eq 'M' }">checked="checked"</c:if>>
-											남자
-											<input class="col_md_2"  name="uss_sex" id="uss_sex_w" type="radio" value="W" <c:if test="${resultView.USS_SEX eq 'W' }">checked="checked"</c:if> >
-											여자
-										</span>
-									</li>
-									<!-- 생일 : 월 , 일 , 음/양력 구분  -->
-									<li class="form-group col-md-6">
-										<label>생일</label>
-										<br/>
-										<span class="col-md-12">
-											<input class="col_md_2 table-cell" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if>>
-											양력
-											<input class="col_md_2 table-cell"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> >
-											음력
-										</span>
-										<span class="col-md-12">
-										<select id="uss_birth_day_mon" name="uss_birth_day_mon" class="form-control table-cell">
-											<option value="" >--선택--</option>
-											<option value="01" >01</option>
-											<option value="02" >02</option>
-											<option value="03" >03</option>
-											<option value="04" >04</option>
-											<option value="05" >05</option>
-											<option value="06" >06</option>
-											<option value="07" >07</option>
-											<option value="08" >08</option>
-											<option value="09" >09</option>
-											<option value="10" >10</option>
-											<option value="11" >11</option>
-											<option value="12" >12</option>
-											<option value="12" >12</option>
-										</select>
-										<label>월</label>
-										<select id="uss_birth_day_date" name="uss_birth_day_date" class="form-control table-cell">
-											<option value="" >--선택--</option>
-											<option value="01" >01</option>
-											<option value="02" >02</option>
-											<option value="03" >03</option>
-											<option value="04" >04</option>
-											<option value="05" >05</option>
-											<option value="06" >06</option>
-											<option value="07" >07</option>
-											<option value="08" >08</option>
-											<option value="09" >09</option>
-											<option value="10" >10</option>
-											<option value="11" >11</option>
-											<option value="12" >12</option>
-											<option value="13" >13</option>
-											<option value="14" >14</option>
-											<option value="15" >15</option>
-											<option value="16" >16</option>
-											<option value="17" >17</option>
-											<option value="18" >18</option>
-											<option value="19" >19</option>
-											<option value="20" >20</option>
-											<option value="21" >21</option>
-											<option value="22" >22</option>
-											<option value="23" >23</option>
-											<option value="24" >24</option>
-											<option value="25" >25</option>
-											<option value="26" >26</option>
-											<option value="27" >27</option>
-											<option value="28" >28</option>
-											<option value="29" >29</option>
-											<option value="30" >30</option>
-											<option value="31" >31</option>
-										</select>
-										<label>일</label>
-										</span>
-									</li>
-								</ul>
-							</div>
-							<div class="row">
-								<ul class="col-md-12">
-									<li class="form-group col-md-12">
+									<li class="form-group">
 										<label>사용자 서명</label><br>
 										<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${params.uss_id }" style="width: 140px; max-height: 70px;">
 										<br>
 										<input class="input-group" name="uss_sign" id="uss_sign" accept="image/png" type="file" onChange="fileCheck(this)"/>
 									</li>
 								</ul>
+								<ul class="col-md-6">
+									<li class="form-group">
+											<label>성명</label>
+												<input name="uss_nm" id="uss_nm" type="text" value="${resultView.USS_NM }" class="form-control" />
+									</li>
+									<li class="form-group">
+											<label>부서</label>
+												<select id="dp_cd" name="dp_cd" class="form-control">
+													<option value="" >--선택--</option>
+													<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach>
+												</select>
+									</li>
+									<li class="form-group">
+										<label>생년월일</label>
+											<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control" />
+									</li>
+									<li class="form-group">
+										<label>성별</label><br/>
+										<span>
+											<input class="col_md_2" name="uss_sex" id="uss_sex_m" type="radio" value="M" <c:if test="${empty resultView.USS_SEX || resultView.USS_SEX eq 'M' }">checked="checked"</c:if>>
+											남자
+											<input class="col_md_2"  name="uss_sex" id="uss_sex_w" type="radio" value="W" <c:if test="${resultView.USS_SEX eq 'W' }">checked="checked"</c:if> >
+											여자
+										</span>
+									</li>
+									<li class="form-group">
+										<label>전화번호</label><br/>
+											<span class="form-inline">
+											<input name="uss_tel1" id="uss_tel1" type="text" value="${resultView.USS_TEL1 }"  class="form-control table-cell"/>
+											-
+											<input name="uss_tel2" id="uss_tel2" type="text" value="${resultView.USS_TEL2 }"  class="form-control table-cell"/>
+											-
+											<input name="uss_tel3" id="uss_tel3" type="text" value="${resultView.USS_TEL3 }" class="form-control table-cell"/>
+											</span>
+									</li>
+									<li class="form-group">
+										<label>이메일</label>
+											<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }"  class="form-control" />
+									</li>
+									<!-- 20220103 항목 추가 : BEGIN  -->
+									<!-- 입사일  -->
+									<li class="form-group">
+										<label>입사일</label>
+											<input name="join_dt" id="join_dt" type="text" value="${resultView.JOIN_DT }" class="form-control" />
+									</li>
+									
+									<!-- 퇴사구분 : 수정에서만 보일 수 있게   -->
+									
+									<c:if test="${params.mode eq VarConsts.MODE_U}">
+										<li class="form-group" id="rtr_yn_select">
+											<label>재직구분</label>
+												<select id="rtr_yn" name="rtr_yn" class="form-control" onchange="javascript:fn_showRtrDt(this.value)" >
+													<option value="N" <c:if test="${empty resultView.RTR_YN || 'N' eq resultView.RTR_YN }">selected="selected"</c:if>>재직중</option>
+													<option value="Y" <c:if test="${'Y' eq resultView.RTR_YN }">selected="selected"</c:if>>퇴사</option>
+													<%-- <c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach> --%>
+												</select>
+										</li>
+										<!-- 퇴사일 : 수정 화면에서 퇴사구분을 퇴사로 선택했을 시 표시  -->
+										<li class="form-group">
+											<label>퇴사일</label>
+												<input name="rtr_dt" id="rtr_dt" type="text" value="${resultView.RTR_DT }" class="form-control" disabled />
+										</li>									
+									</c:if>
+									<!-- 생일 : 월 , 일 , 음/양력 구분  -->
+									<li class="form-group">
+											<label>생일</label>
+												<select id="uss_birth_day_mon" name="uss_birth_day_mon" class="form-control table-cell">
+													<option value="" >--선택--</option>
+													<option value="01" >01</option>
+													<option value="02" >02</option>
+													<option value="03" >03</option>
+													<option value="04" >04</option>
+													<option value="05" >05</option>
+													<option value="06" >06</option>
+													<option value="07" >07</option>
+													<option value="08" >08</option>
+													<option value="09" >09</option>
+													<option value="10" >10</option>
+													<option value="11" >11</option>
+													<option value="12" >12</option>
+													<option value="12" >12</option>
+												<%-- 	<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach> --%>
+												</select>
+												<label>월</label>
+												<select id="uss_birth_day_date" name="uss_birth_day_date" class="form-control table-cell">
+													<option value="" >--선택--</option>
+													<option value="01" >01</option>
+													<option value="02" >02</option>
+													<option value="03" >03</option>
+													<option value="04" >04</option>
+													<option value="05" >05</option>
+													<option value="06" >06</option>
+													<option value="07" >07</option>
+													<option value="08" >08</option>
+													<option value="09" >09</option>
+													<option value="10" >10</option>
+													<option value="11" >11</option>
+													<option value="12" >12</option>
+													<option value="13" >13</option>
+													<option value="14" >14</option>
+													<option value="15" >15</option>
+													<option value="16" >16</option>
+													<option value="17" >17</option>
+													<option value="18" >18</option>
+													<option value="19" >19</option>
+													<option value="20" >20</option>
+													<option value="21" >21</option>
+													<option value="22" >22</option>
+													<option value="23" >23</option>
+													<option value="24" >24</option>
+													<option value="25" >25</option>
+													<option value="26" >26</option>
+													<option value="27" >27</option>
+													<option value="28" >28</option>
+													<option value="29" >29</option>
+													<option value="30" >30</option>
+													<option value="31" >31</option>
+												<%-- 	<c:forEach var="departList" items="${departList}">
+														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq resultView.DP_CD }">selected="selected"</c:if> >${departList.DP_NM}</option>
+													</c:forEach> --%>
+												</select>
+												<label>일</label>
+												<span>
+													<input class="col_md_2" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if>>
+													양력
+													<input class="col_md_2"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> >
+													음력
+												</span>
+												
+									</li>
+									<!-- 고용구분  -->
+									<li class="form-group">
+										<label>고용구분</label>
+											<select id="emp_type" name="emp_type" class="form-control">
+												<option value="" >--선택--</option>
+												<c:forEach var="empType" items="${empTypeList}">
+													<option value="${empType.CD}" <c:if test="${empType.CD eq resultView.EMP_TYPE }">selected="selected"</c:if> >${empType.CD_NM}</option>
+												</c:forEach>
+											</select>
+									</li>
+									<!-- 근속년수  -->
+									<li class="form-group">
+										<label>근속년수</label>
+											<input name="work_yr_cnt" id="work_yr_cnt" type="number" min="0" value="${resultView.WORK_YR_CNT }" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+									</li>	
+									<!-- 20220103 항목 추가 : END  -->
+									
+							</ul>
 							</div>
-							<div class="clearfix">
-								<hr>
-								<div class="form-group">
-									<label>결재라인</label>
-									<table class="table table-bordered text-center">
-										<colgroup>
-											<col width="10%"/>
-											<col width="10%"/>
-											<col width="20%"/>
-											<col width="40%"/>
-											<col width="10%"/>
-											<col width="10%"/>
-										</colgroup>
-										<tr class="active">
-											<th class="text-center">순서</th>
-											<th class="text-center">순번</th>
-											<th class="text-center">이름</th>
-											<th class="text-center">부서명/직급</th>
-											<th class="text-center">참조인</th>
-											<th class="text-center">삭제</th>
-										</tr>
-										<c:forEach items="${lineInfoList }" var="lineInfo">
-											<tr class="lineInfoList">
-												<td>
-													<input type="hidden" class="aprv_emp_no_list" id="aprv_emp_no_${lineInfo.APRV_ORDR }" name="aprv_emp_no_${lineInfo.APRV_ORDR }" value="${lineInfo.APRV_EMP_NO }"/>
-													<input type="hidden" class="aprv_ordr_list" id="aprv_ordr_${lineInfo.APRV_ORDR }" name="aprv_ordr_${lineInfo.APRV_ORDR }" value="${lineInfo.APRV_ORDR }">
-													<button type="button" class="btn btn-default btn-xs" onClick="fn_upOrdr(this);">
-														<span class="glyphicon glyphicon-menu-up"></span>
-													</button>
-													<button type="button" class="btn btn-default btn-xs" onClick="fn_downOrdr(this);">
-														<span class="glyphicon glyphicon-menu-down"></span>
-													</button>
-												</td>
-												<td class="aprv_ordr_list_val">
-													${lineInfo.APRV_ORDR }
-												</td>
-												<td>
-													${lineInfo.APRV_EMP_NM }
-												</td>
-												<td>
-													${lineInfo.CD_NM } / ${lineInfo.AUTHOR_NM }
-												</td>
-												<td>
-													<input type="checkbox" value="Y" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }" <c:if test="${lineInfo.REFE_YN == 'Y'}">checked</c:if>/>
-												</td>
-												<td>
-													<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">
-														<span class="glyphicon glyphicon-trash"></span> 삭제
-													</button>
-												</td>
-											</tr>
-										</c:forEach>
-										<tr id="trAddLine">
-											<td colspan="7">
-												<button type="button" class="btn btn-default btn-xs" onClick="fn_addLine();">
-													<span class="glyphicon glyphicon-plus"></span> 추가
-												</button>
-											</td>
-										</tr>
-									</table>
-								</div>
-							    <span class="pull-right">
-							    	<input  class="btn-ok btn btn btn-sm btn-info" type="button" value="저장" />
-							    	<input class="btn-cancel btn btn-sm btn-default"  type="button" value="취소" />
-								</span>
-							</div>	
+						<div class="clearfix">
+						<hr>
+						<div class="form-group">
+							<label>결재라인</label>
+							<table class="table table-bordered text-center">
+								<colgroup>
+									<col width="10%"/>
+									<col width="10%"/>
+									<col width="20%"/>
+									<col width="40%"/>
+									<col width="10%"/>
+									<col width="10%"/>
+								</colgroup>
+								<tr class="active">
+									<th class="text-center">순서</th>
+									<th class="text-center">순번</th>
+									<th class="text-center">이름</th>
+									<th class="text-center">부서명/직급</th>
+									<th class="text-center">참조인</th>
+									<th class="text-center">삭제</th>
+								</tr>
+								<c:forEach items="${lineInfoList }" var="lineInfo">
+									<tr class="lineInfoList">
+										<td>
+											<input type="hidden" class="aprv_emp_no_list" id="aprv_emp_no_${lineInfo.APRV_ORDR }" name="aprv_emp_no_${lineInfo.APRV_ORDR }" value="${lineInfo.APRV_EMP_NO }"/>
+											<input type="hidden" class="aprv_ordr_list" id="aprv_ordr_${lineInfo.APRV_ORDR }" name="aprv_ordr_${lineInfo.APRV_ORDR }" value="${lineInfo.APRV_ORDR }">
+											<button type="button" class="btn btn-default btn-xs" onClick="fn_upOrdr(this);">
+												<span class="glyphicon glyphicon-menu-up"></span>
+											</button>
+											<button type="button" class="btn btn-default btn-xs" onClick="fn_downOrdr(this);">
+												<span class="glyphicon glyphicon-menu-down"></span>
+											</button>
+										</td>
+										<td class="aprv_ordr_list_val">
+											${lineInfo.APRV_ORDR }
+										</td>
+										<td>
+											${lineInfo.APRV_EMP_NM }
+										</td>
+										<td>
+											${lineInfo.CD_NM } / ${lineInfo.AUTHOR_NM }
+										</td>
+										<td>
+											<input type="checkbox" value="Y" class="refe_yn_list" id="refe_yn_${lineInfo.APRV_ORDR }" name="refe_yn_${lineInfo.APRV_ORDR }" <c:if test="${lineInfo.REFE_YN == 'Y'}">checked</c:if>/>
+										</td>
+										<td>
+											<button type="button" class="btn btn-default btn-xs" onClick="fn_deleteLine(this);">
+												<span class="glyphicon glyphicon-trash"></span> 삭제
+											</button>
+										</td>
+									</tr>
+								</c:forEach>
+								<tr id="trAddLine">
+									<td colspan="7">
+										<button type="button" class="btn btn-default btn-xs" onClick="fn_addLine();">
+											<span class="glyphicon glyphicon-plus"></span> 추가
+										</button>
+									</td>
+								</tr>
+							</table>
+						</div>
+					    <span class="pull-right">
+					    	<input  class="btn-ok btn btn btn-sm btn-info" type="button" value="저장" />
+					    	<input class="btn-cancel btn btn-sm btn-default"  type="button" value="취소" />
+						</span>
+						</div>	
 						</form>
 					</div>
 					</div>
@@ -477,15 +341,6 @@
 			$("#uss_birth_day_mon").val(mon).prop("selected", true);
 			
 			$("#uss_birth_day_date").val(day).prop("selected", true);
-			
-			//재직구분이 퇴사 일 경우 퇴사일, 퇴사사유 항목 활성화 
-			var rtrYn = null;
-			rtrYn = "${resultView.RTR_YN}";
-			if(rtrYn != null && rtrYn == "Y"){
-				$("#rtr_dt").prop("disabled", false);
-				$("#rtr_rsn").prop("disabled", false);
-				$("#rtr_dt").datepicker();
-			}
 			
 		});
 		
@@ -828,19 +683,17 @@
 			}
 		}
 		
-		//재직구분 선택에 따라 퇴사일, 퇴사사유 옵션 활성/비활성화
+		//재직구분 선택에 따라 퇴사일 옵션 활성/비활성화
 		function fn_showRtrDt(val) {
 			var value = val;
 			//퇴사 선택 시
 			if(value == "Y"){
 				$("#rtr_dt").prop("disabled", false);
-				$("#rtr_rsn").prop("disabled", false);
 				$("#rtr_dt").datepicker();
 			}else if(value = "N"){ // 재직 선택 시
 				$("#rtr_dt").val("");
-				$("#rtr_rsn").val("");
 				$("#rtr_dt").prop("disabled", true);
-				$("#rtr_rsn").prop("disabled", true);
+						
 			}	
 			
 		}

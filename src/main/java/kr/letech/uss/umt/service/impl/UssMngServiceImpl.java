@@ -45,13 +45,6 @@ public class UssMngServiceImpl implements UssMngService {
 		String searchGubun = ReqUtils.getEmptyResult2((String)params.get("searchGubun"), "");	
 		String searchField = ReqUtils.getEmptyResult2((String)params.get("searchField"), "");
 		
-		/*검색조건 추가 - 2022.01.04 :BEGIN*/
-		String searchGubun2 = ReqUtils.getEmptyResult2((String)params.get("searchGubun2"), "");
-		String searchGubun3 = ReqUtils.getEmptyResult2((String)params.get("searchGubun3"), "");
-		String searchGubun4 = ReqUtils.getEmptyResult2((String)params.get("searchGubun4"), "");
-		String searchGubun5 = ReqUtils.getEmptyResult2((String)params.get("searchGubun5"), "");
-		String searchGubun6 = ReqUtils.getEmptyResult2((String)params.get("searchGubun6"), "");
-		/*검색조건 추가 - 2022.01.04 :END*/
 		
 		int intPage = Integer.parseInt(cPage);			/* 현재페이지 */
 		int intListCnt = Integer.parseInt(listCnt);		/* 세로페이징(게시글수)*/

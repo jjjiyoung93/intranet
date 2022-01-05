@@ -227,12 +227,6 @@ public class VarConsts {
 	 * 값 = 'CD0022'<br>
 	 */
 	public static final String EMP_TYPE_CODE = "CD0022";
-	/** 
-	 * 종류 = 퇴사사유코드<br>
-	 * 타입 = String<br>
-	 * 값 = 'CD0023'<br>
-	 */
-	public static final String RTR_RSN_CODE = "CD0023";
 	
 	
 	/* 에러 메일 발송 코드 */
