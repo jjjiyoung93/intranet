@@ -30,31 +30,39 @@
 		</JDBC>
 	</Appenders>
 	<Loggers>
-		<Root level="info">
+		<Root level="INFO">
 			<AppenderRef ref="Console" />
 			<!-- <AppenderRef ref="RollingFile" /> -->
 		</Root>
-		<Logger name="java.sql" level="info" additivity="false">
-            <AppenderRef ref="console" />
+		<Logger name="java.sql" level="OFF" additivity="false">
+            <AppenderRef ref="Console" />
         </Logger>
-        <Logger name="egovframework" level="info" additivity="false">
-            <AppenderRef ref="console" />
+        <Logger name="egovframework" level="OFF" additivity="false">
+            <AppenderRef ref="Console" />
         </Logger>
-          <!-- log SQL with timing information, post execution -->
-        <Logger name="jdbc.sqltiming" level="info" additivity="false">
-            <AppenderRef ref="console" />
+         <!--  log SQL with timing information, post execution -->
+        <Logger name="jdbc.sqltiming" level="WARN" additivity="false">
+            <AppenderRef ref="Console" />
 		</Logger>
-		<logger name="jdbc.sqlonly" additivity="false"> 
-			<level value="info"/> 
-			<appender-ref ref="console"/> 
-		</logger>
+		<Logger name="jdbc.sqlonly" level="INFO" additivity="false"> 
+			<AppenderRef ref="Console"/> 
+		</Logger>
+		<Logger name="jdbc.resultset" level="INFO" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+		<Logger name="jdbc.resultsettable" level="OFF" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+		<Logger name="jdbc.audit" level="OFF" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
 
 
 
 		
 		<!-- 최초작성일 		2017. 1. 20 -->
-		<Logger name="kr.letech" level="warn">
-			<AppenderRef ref="console" />
+		<Logger name="kr.letech" level="WARN">
+			<AppenderRef ref="Console" />
 			<AppenderRef ref="databaseAppender" />
 		</Logger>
 		<!-- 최초작성자		김중원 -->
