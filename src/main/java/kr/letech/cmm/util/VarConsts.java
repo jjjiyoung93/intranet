@@ -215,6 +215,24 @@ public class VarConsts {
 	 * 값 = 'CD0018'<br>
 	 */
 	public static final String TMP_PAY_PRPS_DTIL = "CD0018";
+	/** 
+	 * 종류 = 휴가구분코드(종일, 오전반차, 오후반차, 오전반반차, 오후반반차)<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0021'<br>
+	 */
+	public static final String VAC_TYPE_CODE = "CD0021";
+	/** 
+	 * 종류 = 고용구분코드<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0022'<br>
+	 */
+	public static final String EMP_TYPE_CODE = "CD0022";
+	/** 
+	 * 종류 = 퇴사사유코드<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0023'<br>
+	 */
+	public static final String RTR_RSN_CODE = "CD0023";
 	
 	
 	/* 에러 메일 발송 코드 */
@@ -300,4 +318,10 @@ public class VarConsts {
 	 */
 	public static final String APRV_COND_RETR = "3";
 	
+	/** 
+	 * 종류 = 결재 진행중 상태 코드<br>
+	 * 타입 = String<br>
+	 * 값 = '4'<br>
+	 */
+	public static final String APRV_COND_ONGO = "4";
 }

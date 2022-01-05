@@ -75,6 +75,7 @@
 									<select id="searchCdList3" style="width: 100px;" name="searchCdList3" class="form-control table-cell">
 											<option value="" >--전체--</option>
 											<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
+											<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '4' }">selected="selected"</c:if>>진행중</option>
 											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
 											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
 											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>

@@ -27,6 +27,10 @@
 				) dp ON dp.dp_cd = uss.dp_cd
 		 WHERE uss.uss_id = #{id}
 		   AND uss.uss_pwd = #{password}
+		   <!-- 퇴사 사원 로그인 방지 - 2022.01.05 : BEGIN  -->
+		   AND (uss.rtr_yn is NULL 
+		     OR uss.rtr_yn != 'Y')
+		   <!-- 퇴사 사원 로그인 방지 - 2022.01.05 : END  -->
 	</select>	
 	<select id="actionLogin2" resultType="kr.letech.cmm.LoginVO" parameterType="map" >
 		SELECT mber_id AS id

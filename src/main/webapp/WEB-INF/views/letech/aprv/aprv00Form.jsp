@@ -505,6 +505,9 @@ $(function() {
 					minuteStep: 10
 				}
 			});
+			//휴가일경우 
+			
+			
 			$("#term_ed").attr("disabled", false);
 		}
 		//가지급금 상세 불러오기
@@ -606,6 +609,16 @@ function fn_getDocCode(cd1, cd2) {
 					}
 				});
 			}
+			
+			//kyh - startpicker에 엘레먼트 추가
+			/*var html = '<span>'
+				html +='<input class="col_md_2" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S">';
+				html +='양력'
+				html +='<input class="col_md_2"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L">'
+				html += '음력'
+			    html += '</span>';
+			$("#startpicker-container .tui-rangepicker").append(html);*/
+			
 			//가지급금 지급희망일자 datepicker
 			if($("#pay_dt").length > 0) {
 				//tui.date-picker

@@ -48,6 +48,14 @@
 								</li>
 								<li class="">
 									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">성명</dt>
+										<dd class="col-md-10 col-sm-9">
+											${resultView.USS_NM }
+										</dd>
+									</dl>
+								</li>
+								<li class="">
+									<dl class="clearfix ">
 										<dt class="col-md-2 col-sm-3">부서</dt>
 										<dd class="col-md-10 col-sm-9">
 											${resultView.DP_NM }
@@ -56,9 +64,25 @@
 								</li>
 								<li class="">
 									<dl class="clearfix ">
-										<dt class="col-md-2 col-sm-3">성명</dt>
+										<dt class="col-md-2 col-sm-3">고용구분</dt>
 										<dd class="col-md-10 col-sm-9">
-											${resultView.USS_NM }
+											${resultView.EMP_TYPE_NM}
+										</dd>
+									</dl>
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">권한</dt>
+										<dd class="col-md-10 col-sm-9">
+											${resultView.USS_AUTH_NM }
+										</dd>
+									</dl>
+								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">입사일</dt>
+										<dd class="col-md-10 col-sm-9">
+											${resultView.JOIN_DT }
 										</dd>
 									</dl>
 								</li>
@@ -80,6 +104,16 @@
 								</li>
 								<li class="">
 									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">생일</dt>
+										<dd class="col-md-10 col-sm-9">
+											${empty resultView.USS_BIRTH_DAY ? '' : resultView.USS_BIRTH_DAY.split('-')[0] } 월
+											${empty resultView.USS_BIRTH_DAY ? '' : resultView.USS_BIRTH_DAY.split('-')[1] } 일
+											${resultView.USS_BIRTH_DAY_TYPE == 'L' ? '음력' : '양력'}
+										</dd>
+									</dl>
+								</li>
+								<li class="">
+									<dl class="clearfix ">
 										<dt class="col-md-2 col-sm-3">전화번호</dt>
 										<dd class="col-md-10 col-sm-9">
 											${resultView.USS_TEL }
@@ -94,14 +128,44 @@
 										</dd>
 									</dl>
 								</li>
+								<!-- 출력 항목 추가(입사일, 퇴사일, 재직구분, 생일, 음/양력 구분, 근속년수, 고용구분) - 2022.01.03 : BEGIN  -->
 								<li class="">
 									<dl class="clearfix ">
-										<dt class="col-md-2 col-sm-3">권한</dt>
+										<dt class="col-md-2 col-sm-3">근속년수</dt>
 										<dd class="col-md-10 col-sm-9">
-											${resultView.USS_AUTH_NM }
+											${resultView.WORK_YR_CNT } 년
 										</dd>
 									</dl>
 								</li>
+								<li class="">
+									<dl class="clearfix ">
+										<dt class="col-md-2 col-sm-3">재직구분</dt>
+										<dd class="col-md-10 col-sm-9">
+											${resultView.RTR_YN == 'Y' ? '퇴사' : '재직중'}
+										</dd>
+									</dl>
+								</li>
+								<c:if test="${resultView.RTR_YN == 'Y'}">
+									<li class="">
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">퇴사일</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.RTR_DT }
+											</dd>
+										</dl>
+									</li>
+									<li class="">
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-sm-3">퇴사사유</dt>
+											<dd class="col-md-10 col-sm-9">
+												${resultView.RTR_RSN_NM }
+											</dd>
+										</dl>
+									</li>
+								</c:if>
+								
+								<!-- 출력 항목 추가(입사일, 퇴사일, 재직구분, 생일, 음/양력 구분, 근속년수, 고용구분) - 2022.01.03 : END  -->
+								
 							</ul>
 							<p class="clearfix">
 									<input class="btn btn-default btn-list"  type="button" value="목록" />
