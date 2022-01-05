@@ -314,6 +314,13 @@
 		    <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
 		    <version>1.16</version>
 		</dependency>
+		<!-- icu4j - 음/양력 변환  -->
+		<!-- https://mvnrepository.com/artifact/com.ibm.icu/icu4j -->
+		<dependency>
+		    <groupId>com.ibm.icu</groupId>
+		    <artifactId>icu4j</artifactId>
+		    <version>66.1</version>
+		</dependency>
 	</dependencies>
 	
     <build>
