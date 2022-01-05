@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.ibm.icu.util.ChineseCalendar;
-
 import kr.letech.app.service.AppPushService;
 import kr.letech.aprv.TmpPayItemVO;
 import kr.letech.aprv.service.AprvMngService;
@@ -56,7 +54,6 @@ public class AprvMngServiceImpl implements AprvMngService {
 	
 	@Resource(name="docDAO")
 	private DocDAO docDAO;
-		
 	
 	/**
 	 * 페이징 처리, 목록정보

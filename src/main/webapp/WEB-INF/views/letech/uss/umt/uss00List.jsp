@@ -52,25 +52,6 @@
 											</div>
 										</div>
 								</div>
-								
-								<%-- <div class="search-container ">
-										<div class ="col-xs-5 un-style">
-											<span class="inline-element">
-												<select name="searchGubun2" id="searchGubun2" class="form-control" title="search" >
-													<option value="N" <c:if test="${params.searchGubun2 == 'N'}">selected = "selected"</c:if>>재직중</option>
-													<option value="Y" <c:if test="${params.searchGubun2 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
-												</select>
-											</span>
-										</div>
-										<div class ="col-xs-5 un-style">
-											<span class="inline-element">
-												<select name="searchGubun2" id="searchGubun2" class="form-control" title="search" >
-													<option value="N" <c:if test="${params.searchGubun2 == 'N'}">selected = "selected"</c:if>>재직중</option>
-													<option value="Y" <c:if test="${params.searchGubun2 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
-												</select>
-											</span>
-										</div>
-								</div> --%>
 							</div>
 							<p class="clearfix board-top">
 								<span class="pull-right">
