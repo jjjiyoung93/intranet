@@ -1,7 +1,9 @@
 package kr.letech.sample.pkg.service;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+
 import kr.letech.cmm.util.EgovDateUtil;
 
 public class DateUtilTest {
@@ -10,12 +12,17 @@ public class DateUtilTest {
 		System.out.println("=========================날짜번환 테스트 시작=================================");
 		EgovDateUtil cal  = new EgovDateUtil();
 		
-		int year = 0;
+		String year = "";
 		String dayMon = "0101";
 		
-		LocalDate now = LocalDate.now();
+		Date today = new Date();
+		SimpleDateFormat datForm = new SimpleDateFormat("yyyy");
+		year = datForm.format(today);
 		
-		year = now.getYear(); 
+		System.out.println("today : " + today.toString());
+		
+		
+		
 		
 		dayMon = year + dayMon;
 		

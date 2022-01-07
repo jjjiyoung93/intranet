@@ -16,6 +16,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.letech.cmm.util.ReqUtils;
+import kr.letech.cmm.util.VarConsts;
+import kr.letech.sys.cdm.service.CodeMngService;
+import kr.letech.sys.rol.service.RoleMngService;
 import kr.letech.vct.service.VctMngService;
 
 @Controller
@@ -24,6 +27,16 @@ public class VctMngController {
 	/** vctMngService */
 	@Resource(name = "vctMngService")
 	private VctMngService vctMngService;
+	
+	/**
+	 * 코드 데이터를 조회위한 서비스
+	 */
+	@Resource(name = "codeMngService")
+	private CodeMngService codeMngService;
+	
+	/** 권한 관련 */
+	@Resource(name = "roleMngService")
+	private RoleMngService roleMngService;
 	
 	/**
 	 * 휴가부여일수 조회
@@ -98,6 +111,52 @@ public class VctMngController {
 		model.addAttribute("params", params);
 		
 		return "letech/vct/day/vctDay00Tran";
+	}
+	
+	/**
+	 * 휴가현황조회 목록 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "vct/vctInf00List.do")
+	public String getVctInfList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		// searchGubun2 파라미터 값이 없으면 기본값으로 빈 값 추가
+		if(StringUtils.isEmpty((String)params.get("searchGubun2"))) {
+			params.put("searchGubun2", "");
+		}
+		
+		//목록 및 총건수, 페이징
+		Map vctDayObject = vctMngService.getVctDayPageingList(params);
+		
+		
+		model.addAttribute("cPage", vctDayObject.get("cPage"));					// 페이지수
+		model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
+		model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
+		model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
+		model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
+		model.addAttribute("params", params);
+		
+		//고용구분 코드 목록 조회
+		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+		List empTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("empTypeList", empTypeList);
+		
+		//직급(권한) 코드 목록 조회
+		List authList = roleMngService.getAuthList(params);
+		model.addAttribute("authList", authList);
+		
+		//프로젝트 목록 조회
+		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
+		List projList = codeMngService.getCodeList(params);
+		model.addAttribute("projList", projList);
+		
+		
+		return "letech/vct/inf/vctInf00List";
 	}
 	
 	

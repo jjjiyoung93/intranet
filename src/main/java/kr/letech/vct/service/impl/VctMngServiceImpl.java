@@ -102,6 +102,72 @@ public class VctMngServiceImpl implements VctMngService {
 		return result;
 		
 	}
+
+	/**작성 일자 : 2022-01-07*/
+	@Override
+	public Map getVctInfPageingList(Map params) throws Exception {
+		String cPage = ReqUtils.getEmptyResult2((String)params.get("cPage"), "1");
+		String listCnt = ReqUtils.getEmptyResult2((String)params.get("listCnt"), "10");
+		//검색 구분
+		String searchGubun = ReqUtils.getEmptyResult2((String)params.get("searchGubun"), "");
+		//검색 키워드
+		String searchField = ReqUtils.getEmptyResult2((String)params.get("searchField"), "");
+		
+		
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+		String yearStr = formatter.format(now);
+		//기준년도
+		String searchGubun2 = ReqUtils.getEmptyResult2((String)params.get("searchGubun2"), yearStr);
+		
+		//기준년도 값이 없을 경우 금년도 값으로 설정
+		if(StringUtils.isEmpty((String)params.get("searchGubun2"))) {
+			params.put("searchGubun2", searchGubun2);
+		}
+		
+		//재직구분
+		String searchGubun3 = ReqUtils.getEmptyResult2((String)params.get("searchGubun3"), "");
+		//고용구분
+		String searchGubun4 = ReqUtils.getEmptyResult2((String)params.get("searchGubun4"), "");
+		//직급(권한)
+		String searchGubun5 = ReqUtils.getEmptyResult2((String)params.get("searchGubun5"), "");
+		//프로젝트
+		String searchGubun6 = ReqUtils.getEmptyResult2((String)params.get("searchGubun6"), "");
+		
+		
+		int intPage = Integer.parseInt(cPage);			/* 현재페이지 */
+		int intListCnt = Integer.parseInt(listCnt);		/* 세로페이징(게시글수)*/
+		int pageCnt = 10;								/* 가로페이징(페이지수) */
+		int totalCnt = 0;								/* 총 건수  */
+		
+		//총 건수 조회
+		totalCnt = vctMngDAO.getVctInfTotCount(params);
+		
+		int offSet = intListCnt * (ObjToConvert.strToint(cPage)-1);
+		int limit = intListCnt; //ObjToConvert.strToint(cPage)*intListCnt;
+		
+		// 페이지 네비게이터 생성
+		PageNavigator pageNavigator = new PageNavigator(
+				intPage		
+			   ,""
+			   ,pageCnt		
+			   ,intListCnt	
+			   ,totalCnt	
+			   ,""); // 검색 파라미터
+		
+		List list = vctMngDAO.getVctInfPageList(params, offSet, limit);
+		
+		Map objectMap = new HashMap();
+		
+		objectMap.put("resultList", list);
+		objectMap.put("cPage", cPage);
+		objectMap.put("intListCnt", intListCnt);
+		objectMap.put("totalCnt", totalCnt);
+		objectMap.put("pageNavigator", pageNavigator.getMakePageScript());
+		
+		
+		return objectMap;
+	}
 	
 	
 }

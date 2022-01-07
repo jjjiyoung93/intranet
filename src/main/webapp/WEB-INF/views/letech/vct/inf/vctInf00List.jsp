@@ -47,23 +47,17 @@
 									<div class="row">
 										<div class ="col-xs-6 un-style">
 											<!-- 기준년도(년도 선택), 재직구분  -->
-											<div class="col-xs-6 un-style">
+											<!-- <div class="col-xs-6 un-style"> -->
 												<div class="inline-element col-xs-11">
 													<label>기준년도</label><br>
 													<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
 														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">
 														<span class="tui-ico-date"></span>
-														<%-- <select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-															<option value="" >전체</option>
-															<c:forEach var="empType" items="${empTypeList}">
-																<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
-															</c:forEach>
-														</select> --%>
 													</div>
 													<div class="datepicker-cell" id="datepicker-year-ko"></div>
 												</div>
-											</div>
-											<div class ="col-xs-6 un-style">
+											<!-- </div> -->
+											<%-- <div class ="col-xs-6 un-style">
 												<span class="inline-element col-xs-11">
 													<label >재직구분</label>
 													<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
@@ -72,48 +66,123 @@
 														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
 													</select>
 												</span>
-											</div>
+											</div> --%>
 										</div>
 										<div class ="col-xs-6 un-style">
 											<!-- ID/성명 검색  -->
-											<div class="col-xs-12">
-												<label>ID/성명</label><br>
-												<div class ="col-xs-3 un-style">
-													<span class="inline-element">
-														<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-															<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-															<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-														</select>
-													</span>
-												</div>
-												<div class="col-xs-8 un-style">
-													<div class="input-group">
-														<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-														<span class="input-group-btn">
-															<button type="button" class="fnSearch btn-info btn"  >
-																<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
-															</button>
+											<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+												<%-- <li>
+													<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="" role="button">정보수정</a>
+												</li> --%>
+												<div class="col-xs-12">
+													<label>ID/성명</label><br>
+													<div class ="col-xs-3 un-style">
+														<span class="inline-element">
+															<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+																<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+																<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+															</select>
 														</span>
 													</div>
+													<div class="col-xs-8 un-style">
+														<div class="input-group">
+															<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+															<span class="input-group-btn">
+																<button type="button" class="fnSearch btn-info btn"  >
+																	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+																</button>
+															</span>
+														</div>
+													</div>
 												</div>
-											</div>
+											</sec:authorize>
 										</div>
 									</div>
+									<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+										<%-- <li>
+											<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="" role="button">정보수정</a>
+										</li> --%>
+										<div class="row">
+											<div class ="col-xs-6 un-style">
+												<span class="inline-element col-xs-11">
+													<label>고용구분</label>
+													<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" >
+														<option value="" >전체</option>
+														<c:forEach var="empType" items="${empTypeList}">
+															<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun4 }">selected="selected"</c:if> >${empType.CD_NM}</option>
+														</c:forEach>
+													</select>
+												</span>
+											</div>
+											<div class ="col-xs-6 un-style">
+												<span class="inline-element col-xs-11">
+													<label >재직구분</label>
+													<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
+														<option value="" >전체</option>
+														<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
+														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
+													</select>
+												</span>
+											</div>
+											
+										</div>
+										<div class="row">
+											<div class ="col-xs-6 un-style">
+												<span class="inline-element col-xs-11">
+													<%-- <label>부서</label>
+													<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" >
+														<option value="" >전체</option>
+														<c:forEach var="departList" items="${departList}">
+															<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option>
+														</c:forEach>
+													</select> --%>
+													<label>프로젝트</label>
+													<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" >
+														<option value="" >전체</option>
+														<c:forEach var="proj" items="${projList}" varStatus="status">
+															<option value="${proj.CD}" <c:if test="${proj.CD eq params.searchGubun6 }">selected="selected"</c:if> >${proj.CD_NM}</option>
+														</c:forEach>
+														<%-- <select id="proj_cd" name="proj_cd" class="form-control">
+															<option value="">선택</option>
+															<c:forEach var="proj" items="${projList }" varStatus="status">
+															<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
+															</c:forEach>
+														</select> --%>
+													</select>
+													
+												</span>
+											</div>
+											<div class ="col-xs-6 un-style">
+												<span class="inline-element col-xs-11">
+													<label>권한</label>
+													<select name="searchGubun5" id="searchGubun5" class="form-control" title="search" >
+														<option value="" >전체</option>
+														<c:forEach var="authList" items="${authList}">
+															<option value="${authList.AUTHOR_CODE}" <c:if test="${authList.AUTHOR_CODE eq params.searchGubun5 }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
+														</c:forEach>
+													</select>
+												</span>
+											</div>
+										</div>
+									</sec:authorize>
 									
 							</div>
 							<p class="clearfix board-top">
-								<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
-									<option value="10" <c:if test="${params.listCnt == '10'}">selected = "selected"</c:if>>10</option>
-									<option value="20" <c:if test="${params.listCnt == '20'}">selected = "selected"</c:if>>20</option>
-									<option value="30" <c:if test="${params.listCnt == '30'}">selected = "selected"</c:if>>30</option>
-									<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
-									<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
-								</select>
-								<br>
-								<span class="pull-right">
-									<button class="fnJoin btn btn-sm btn-default" >저 장</button>
-								</span>
-								<strong class="list_count" >Total : ${totalCnt} 건</strong>
+								<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+									<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
+										<option value="10" <c:if test="${params.listCnt == '10'}">selected = "selected"</c:if>>10</option>
+										<option value="20" <c:if test="${params.listCnt == '20'}">selected = "selected"</c:if>>20</option>
+										<option value="30" <c:if test="${params.listCnt == '30'}">selected = "selected"</c:if>>30</option>
+										<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
+										<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
+									</select>
+									<br>
+									<span class="pull-right">
+										<button class="fnJoin btn btn-sm btn-default" >저 장</button>
+									</span>
+									
+									<strong class="list_count" >Total : ${totalCnt} 건</strong>
+								</sec:authorize>
 							</p>
 						<div class="table-responsive">
 						<table class="table table-bordered" summary="사용자관리 목록">
@@ -132,13 +201,15 @@
 								<tr>
 									<th class="visible-md visible-lg">번호</th>
 									<th>기준년도</th>
-									<th>ID</th>
 									<th>성명</th>
+									<th>고용구분</th>
+									<th>프로젝트</th>
+									<th>직급</th>
 									<th class="visible-md visible-lg">재직구분</th>
 									<th>입사일</th>
 									<th>근속년수(년)</th>
-									<th class="visible-md visible-lg">휴가부여일수(일)</th>
-									<th>퇴사일</th>
+									<!-- <th class="visible-md visible-lg">휴가부여일수(일)</th>
+									<th>퇴사일</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -150,18 +221,20 @@
 									</c:when>
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
-											<tr>
+											<tr data-id="${list.USS_ID}">
 												<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
 												<td align="center">${list.STDD_YR} </td>
-												<td>${list.USS_ID} </td>
 												<td>${list.USS_NM}</td>
+												<td>${list.USS_EMP_TYPE_NM}</td>
+												<td>${list.PROJ_NM} </td>
+												<td>${list.AUT_NM} </td>
 												<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
 												<td align="center">${list.JOIN_DT}</td>
 												<td align="right">${list.WORK_YR_CNT }</td>
-												<td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
+												<%-- <td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
 													<c:if test="${empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
 												</td>
-												<td align="center">${list.RTR_DT}</td>
+												<td align="center">${list.RTR_DT}</td> --%>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
@@ -220,11 +293,8 @@
 	
 		/*sub_menu 탭*/
 		$(function(){
-			
-			
-			
-			
-			//년도 캘린더 만들기
+			//년도 캘린더 만들기 - 관리자일 경우 시작년도가 2015년 , 사용자일 경우 사용자의 입사년도
+			//스프링 시큐리티를 이용해서 c:set 을 이용하여 변수 생성하고 그 값으로 세팅
 			var calYearKo = new tui.DatePicker('#datepicker-year-ko',{
 				date : new Date(),
 				language : 'ko',

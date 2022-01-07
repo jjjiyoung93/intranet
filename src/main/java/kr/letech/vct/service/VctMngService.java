@@ -19,5 +19,13 @@ public interface VctMngService {
 	 * @throws Exception
 	 */
 	public int mergeVctDay(Map params) throws Exception;
+	
+	/**
+	 * 휴가현황조회 사용자 목록 조회 (총건수, 페이징 조회)
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getVctInfPageingList(Map params) throws Exception;
 
 }
