@@ -99,58 +99,17 @@
 											</div>
 										</div>
 									</div>
-									<%-- <div class="row">
-										<div class ="col-xs-6 un-style">
-											<span class="inline-element col-xs-11">
-												<label>부서</label>
-												<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" >
-													<option value="" >전체</option>
-													<c:forEach var="departList" items="${departList}">
-														<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option>
-													</c:forEach>
-												</select>
-											</span>
-										</div>
-										<div class ="col-xs-6 un-style">
-											<span class="inline-element col-xs-11">
-												<label>권한</label>
-												<select name="searchGubun5" id="searchGubun5" class="form-control" title="search" >
-													<option value="" >전체</option>
-													<c:forEach var="authList" items="${authList}">
-														<option value="${authList.AUTHOR_CODE}" <c:if test="${authList.AUTHOR_CODE eq params.searchGubun5 }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
-													</c:forEach>
-												</select>
-											</span>
-										</div>
-									</div>
 									
-									<div class="row">
-										<div class ="col-xs-6 un-style">
-											<div class="col-xs-12">
-												<label>ID/성명</label><br>
-												<div class ="col-xs-3 un-style">
-													<span class="inline-element">
-														<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-															<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-															<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-														</select>
-													</span>
-												</div>
-												<div class="col-xs-8 un-style">
-													<div class="input-group">
-														<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-														<span class="input-group-btn">
-															<button type="button" class="fnSearch btn-info btn"  >
-																<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
-															</button>
-														</span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div> --%>
 							</div>
 							<p class="clearfix board-top">
+								<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
+									<option value="10">10</option>
+									<option value="20">20</option>
+									<option value="30">30</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select>
+								<br>
 								<span class="pull-right">
 									<button class="fnJoin btn btn-sm btn-default" >저 장</button>
 								</span>
@@ -160,12 +119,14 @@
 						<table class="table table-bordered" summary="사용자관리 목록">
 							<colgroup>
 								<col width="5%" />
-								<col width="15%" />
-								<col width="15%" />
-								<col width="15%" />
+								<col width="5%" />
 								<col width="10%" />
-								<col width="15%" />
-								<col width="*" />
+								<col width="10%" />
+								<col width="10%" />
+								<col width="10%" />
+								<col width="10%" />
+								<col width="8%" />
+								<col width="10%" />
 							</colgroup>
 							<thead>
 								<tr>
@@ -173,11 +134,11 @@
 									<th>기준년도</th>
 									<th>ID</th>
 									<th>성명</th>
-									<th>입사일</th>
-									<th>근속년수</th>
-									<th>퇴사일</th>
 									<th class="visible-md visible-lg">재직구분</th>
-									<th class="visible-md visible-lg">휴가부여일수</th>
+									<th>입사일</th>
+									<th>근속년수(년)</th>
+									<th class="visible-md visible-lg">휴가부여일수(일)</th>
+									<th>퇴사일</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -190,17 +151,17 @@
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
 											<tr>
-												<th class="visible-md visible-lg">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-												<td>${list.STDD_YR} </td>
+												<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+												<td align="center">${list.STDD_YR} </td>
 												<td>${list.USS_ID} </td>
 												<td>${list.USS_NM}</td>
-												<td>${list.JOIN_DT}</td>
-												<td>${list.WORK_YR_CNT }</td>
-												<td>${list.RTR_DT}</td>
-												<td>${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
-												<td><input id="vct_grnt_day" type="number" class="form-control"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
-														   name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR}">readonly</c:if>>
+												<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
+												<td align="center">${list.JOIN_DT}</td>
+												<td align="right">${list.WORK_YR_CNT }</td>
+												<td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
+													<c:if test="${empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR}">readonly</c:if>>
 												</td>
+												<td align="center">${list.RTR_DT}</td>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
@@ -260,27 +221,22 @@
 		/*sub_menu 탭*/
 		$(function(){
 			
-			/* var resultCnt = "${resultCnt}";
-			var resultMsg = "${resultMsg}";
 			
-			var msg = "";
-			if(resultMsg == "0000"){
-				msg = "휴가부여일수 " + resultCnt +"개 가 변경되었습니다.";
-				alert(msg);
-			}else if(resultMsg == "9999"{
-				msg = "휴가부여일수 변경중 오류가 발생했습니다."
-				alert(msg);
-			} */
+			
 			
 			//년도 캘린더 만들기
 			var calYearKo = new tui.DatePicker('#datepicker-year-ko',{
 				date : new Date(),
 				language : 'ko',
+				date : "${params.searchGubun2}",
 				type: 'year',
 				input : {
 					element : '#datepicker-input-ko',
 					format : 'yyyy'
-				}
+				},
+				selectableRanges: [
+					[new Date(2015, 1, 1), new Date(9999, 12, 31)]
+				]
 			});
 			
 			$("article.sub_contents:not("+$("ul.tab_gnb li a.sub_nav_on").attr("href")+")").hide()

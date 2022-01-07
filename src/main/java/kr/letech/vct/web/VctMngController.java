@@ -85,22 +85,19 @@ public class VctMngController {
 		
 		int resultCnt = 0;
 		String msg = null;
-		resultCnt = vctMngService.mergeVctDay(params);
+		try {
+			resultCnt = vctMngService.mergeVctDay(params);
+			msg = "0000";
+			
+		} catch (Exception e) {
+			msg = "9999";
+		}
 
-		//목록 및 총건수, 페이징
-		Map vctDayObject = vctMngService.getVctDayPageingList(params);
-		
-		
-		model.addAttribute("cPage", vctDayObject.get("cPage"));					// 페이지수
-		model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
-		model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
-		model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
-		model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
 		model.addAttribute("resultCnt", resultCnt);
 		model.addAttribute("resultMsg", msg);
 		model.addAttribute("params", params);
 		
-		return "jsonView";
+		return "letech/vct/day/vctDay00Tran";
 	}
 	
 	

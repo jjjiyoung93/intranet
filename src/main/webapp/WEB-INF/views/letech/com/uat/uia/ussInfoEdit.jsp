@@ -60,10 +60,10 @@
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-3 col-sm-3">생년월일</dt>
-											<dd class="col-md-9 col-sm-9">
+											<dt class="col-md-3 col-sm-3">비밀번호</dt>
+											<dd class="col-md-9 col-sm-9 ">
 												<div class="form-group">
-													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control " />
+													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
 												</div>
 											</dd>
 										</dl>
@@ -84,14 +84,38 @@
 									</li>
 									<li>
 										<dl class="row ">
-											<dt class="col-md-3 col-sm-3">이메일</dt>
+											<dt class="col-md-3 col-sm-3">입사일</dt>
 											<dd class="col-md-9 col-sm-9">
-												<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }" class="form-control form-group" />
+												<input name="join_dt" id="join_dt" type="text" value="${resultView.JOIN_DT }" class="form-control form-group" readonly />
 											</dd>
 										</dl>
 									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">생년월일</dt>
+											<dd class="col-md-9 col-sm-9">
+												<div class="form-group">
+													<span class="col-md-12">
+														<input class="col_md_2" name="uss_sex" id="uss_sex_m" type="radio" value="M" <c:if test="${empty resultView.USS_SEX || resultView.USS_SEX eq 'M' }">checked="checked"</c:if> disabled>
+														남자
+														<input class="col_md_2"  name="uss_sex" id="uss_sex_w" type="radio" value="W" <c:if test="${resultView.USS_SEX eq 'W' }">checked="checked"</c:if> disabled>
+														여자
+													</span>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									
 								</ul>
 								<ul class="col-md-6">
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">직급(권한)</dt>
+											<dd class="col-md-9 col-sm-9">
+												<input name="uss_auth_cd" id="uss_auth_cd" type="text" class="form-control form-group" value="${resultView.USS_AUTH_NM }" readonly/>
+											</dd>
+										</dl>
+									</li>
 									<li>
 										<dl class="row">
 											<dt class="col-md-3 col-sm-3">사용자 ID</dt>
@@ -99,16 +123,6 @@
 												<input type="text" value="${resultView.USS_ID }" class="form-control form-group" readonly/>
 												<input type="hidden" id="uss_id" name="uss_id" value="${params.uss_id }" />
 												<input name="uss_sex" id="uss_sex" type="hidden" value="${resultView.USS_SEX }"/>
-											</dd>
-										</dl>
-									</li>
-									<li>
-										<dl class="row ">
-											<dt class="col-md-3 col-sm-3">비밀번호</dt>
-											<dd class="col-md-9 col-sm-9 ">
-												<div class="form-group">
-													<input name="uss_pwd" id="uss_pwd" type="password" value="" class="form-control" />
-												</div>
 											</dd>
 										</dl>
 									</li>
@@ -124,6 +138,53 @@
 									</li>
 									<li>
 										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">이메일</dt>
+											<dd class="col-md-9 col-sm-9">
+												<input name="uss_email" id="uss_email" type="text" value="${resultView.USS_EMAIL }" class="form-control form-group" />
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">근속년수</dt>
+											<dd class="col-md-9 col-sm-9">
+												<div class="form-group">
+													<input name="work_yr_cnt" id="work_yr_cnt" type="number" min="0" value="${resultView.WORK_YR_CNT }" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')" readonly />
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">생년월일</dt>
+											<dd class="col-md-9 col-sm-9">
+												<div class="form-group">
+													<input name="uss_birth" id="uss_birth" type="text" value="${resultView.USS_BIRTH }" class="form-control " />
+												</div>
+											</dd>
+										</dl>
+									</li>
+									<li>
+										<dl class="row ">
+											<dt class="col-md-3 col-sm-3">생일</dt>
+											<dd class="col-md-9 col-sm-9">
+												<div class="form-group">
+													<span class="col-md-12">
+														<input class="col_md_2 table-cell" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if> disabled>
+														양력
+														<input class="col_md_2 table-cell"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> disabled>
+														음력
+													</span>
+													<span class="col-md-12">
+														<input name="uss_birth_day_mon" id="uss_birth_day_mon" type="text" value="${resultView.USS_BIRTH_DAY }" class="form-control " readonly />
+													</span>
+												</div>
+											</dd>
+										</dl>
+									</li>
+									
+									<%-- <li>
+										<dl class="row ">
 											<dt class="col-md-3 col-sm-3">사용자 서명</dt>
 											<dd class="col-md-9 col-sm-9 ">
 												<div class="form-group">
@@ -133,8 +194,24 @@
 												</div>
 											</dd>
 										</dl>
-									</li>
+									</li> --%>
 								</ul>
+								</div>
+								<div class="row">
+									<ul class="col-md-12">
+										<li>
+											<dl class="row ">
+												<dt class="col-md-3 col-sm-3">사용자 서명</dt>
+												<dd class="col-md-9 col-sm-9 ">
+													<div class="form-group">
+														<img src="${pageContext.request.contextPath}/doc/sign.do?emp_no=${params.uss_id }" style="width: 140px; max-height: 70px;">
+														<br>
+														<input class="input-group" name="uss_sign" id="uss_sign" accept="image/png" type="file" onChange="fileCheck(this)"/>
+													</div>
+												</dd>
+											</dl>
+										</li>
+									</ul>
 								</div>
 							</div>
 						</form>

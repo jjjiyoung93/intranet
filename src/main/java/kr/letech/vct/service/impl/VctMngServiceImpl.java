@@ -1,6 +1,6 @@
 package kr.letech.vct.service.impl;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +10,8 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.PageNavigator;
@@ -33,9 +35,11 @@ public class VctMngServiceImpl implements VctMngService {
 		String searchField = ReqUtils.getEmptyResult2((String)params.get("searchField"), "");
 		
 		/*검색조건 추가 - 2022.01.05 :BEGIN*/
-		LocalDate now = LocalDate.now();
-		String yearStr = String.valueOf(now.getYear());
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+		String yearStr = formatter.format(now);
 		//기준년도
+		
 		String searchGubun2 = ReqUtils.getEmptyResult2((String)params.get("searchGubun2"), yearStr);
 		
 		//기준년도 값이 없을 경우 금년도 값으로 설정
@@ -87,10 +91,10 @@ public class VctMngServiceImpl implements VctMngService {
 
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int mergeVctDay(Map params) throws Exception {
 		
 		int result = 0;
-		String resultStr = "";
 		/* 휴가부여일수 등록/수정 : MERGE 처리 */
 		
 		result = vctMngDAO.mergeVctDay(params);
