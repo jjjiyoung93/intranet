@@ -128,7 +128,7 @@
 		<where>
 			1=1
 			<!-- 입사일 이나 등록일자가 기준년도보다 크거나 같은 직원 조회  -->
-			AND ( SUBSTR(TO_CHAR(A.REG_DT, 'YYYY-MM-DD'), 1, 4) <![CDATA[<=]]> #{searchGubun2} 
+			AND ( TO_CHAR(A.REG_DT, 'YYYY') <![CDATA[<=]]> #{searchGubun2} 
 			      OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> #{searchGubun2} )  
 			<!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
 		  	<choose>
@@ -155,55 +155,83 @@
 	
 	<!-- 휴가현황조회 사용자 목록 조회   -->
 	<select id="getVctInfList" resultType="hashMap" parameterType="map">
-		SELECT
-		       A.USS_ID						/*사원ID*/
-		     , A.USS_NM						/*사원명*/
-		     , A.EMP_TYPE					/*고용구분*/
-		     , ( SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.EMP_TYPE ) AS EMP_TYPE_NM		/*고용구분 명칭*/
-		     , B.PROJ_CD AS PROJ_CD			/*프로젝트코드*/
-		     , ( SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.PROJ_CD ) AS PROJ_NM		/*프로젝트명칭*/
-		     , B.AUT_CD AS AUT_CD 			/*직급(권한)코드*/
-		     , ( SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.AUT_CD ) AS AUT_NM			/*직급(권한)명칭*/
-		     , A.JOIN_DT					/*입사일*/
-		     , A.WORK_YR_CNT				/*근속년수*/
-		     , #{searchGubun2} AS STDD_YR	/*기준년도*/
-		  FROM STD_USS_MNG A
-		  LEFT OUTER JOIN (
-		  					/* VCT INF MNG 데이터의 MAX 값을 조회 할 것 */
-		                    SELECT STDD_YR
-		                         , USS_ID
-		                         , VCT_GRNT_DAY
-		                      FROM VCT_INF_MNG
-		                     WHERE STDD_YR = #{searchGubun2}
-		                      
-		                  ) B ON (B.USS_ID = A.USS_ID)
+		  SELECT
+		           A.USS_ID
+		         , A.USS_NM
+		         , A.JOIN_DT
+		         , A.REG_DT
+		         , A.RTR_YN
+		         , A.RTR_DT
+		         , A.WORK_YR_CNT - ( TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY')) - TO_NUMBER(#{searchGubun2}) ) AS WORK_YR_CNT
+		         , A.EMP_TYPE
+		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM
+		         , B.APRV_NO
+		         , B.PROJ_CD
+		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.PROJ_CD) AS PROJ_NM
+		         , B.REPT_DP_CD AS DP_CD
+		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.REPT_DP_CD) AS DP_NM
+		         , B.REPT_AUTH_CD  AS AUTH_CD
+		         , (SELECT S.AUTHOR_NM FROM STD_AUT_INFO S WHERE S.AUTHOR_CODE = B.REPT_AUTH_CD) AS AUTH_NM
+		         , #{searchGubun2} AS STDD_YR
+		      FROM STD_USS_MNG A
+		      LEFT OUTER JOIN (
+		      
+		                          SELECT
+		                                C.APRV_NO
+		                              , C.REPT_APRV_NO
+		                              , C.PROJ_CD
+		                              , C.REPT_DP_CD
+		                              , C.REPT_AUTH_CD
+		                           FROM STD_APRV_MNG C
+		                           INNER JOIN ( SELECT
+		                                              REPT_APRV_NO
+		                                            , MAX(TO_NUMBER(APRV_NO)) AS MAX_APRV_NO
+		                                        FROM STD_APRV_MNG
+		                                        WHERE TO_CHAR(MODI_DT, 'YYYY') = #{searchGubun2}
+		                                        GROUP BY REPT_APRV_NO
+		                                        ORDER BY MAX(TO_NUMBER(APRV_NO)) DESC ) D ON (C.APRV_NO = D.MAX_APRV_NO) 
+		                                        
+		                     ) B ON  (A.USS_ID = B.REPT_APRV_NO)
+		        <where>
+		              1=1
+		          AND ( TO_CHAR(A.REG_DT, 'YYYY') <![CDATA[<=]]> #{searchGubun2}
+		                OR SUBSTR(A.JOIN_DT, 1, 4)<![CDATA[<=]]> #{searchGubun2} ) /*입사년도*/
+		          <!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
+				  	<choose>
+				  		<when test='searchGubun3 == "Y"'>
+				  			AND A.RTR_YN = #{searchGubun3}
+				  		</when>
+				  		<otherwise>
+				  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+				  		</otherwise>
+				  	</choose>
+				  	<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+						<choose>
+							<when test='searchGubun == "01"' >
+						AND A.USS_ID LIKE '%' || #{searchField} || '%'
+							</when>
+							<when test='searchGubun == "02"' >
+						AND A.USS_NM LIKE '%' || #{searchField} || '%'	
+							</when>
+						</choose>
+					</if>
+					<!-- 고용구분  -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun4)">
+						AND A.EMP_TYPE = #{searchGubun4}
+					</if>
+					<!-- 직급(권한)  -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
+						AND B.REPT_AUTH_CD = #{searchGubun5}
+					</if>
+					
+					<!-- 프로젝트  -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
+						AND B.PROJ_CD = #{searchGubun6}
+					</if>
+		        
+		        </where> 
 		                  
-		 <where>
-		  	1=1
-		  	<!-- 입사일 이나 등록일자가 기준년도보다 크거나 같은 직원 조회  -->
-		  	AND ( SUBSTR(TO_CHAR(A.REG_DT, 'YYYY-MM-DD'), 1, 4) <![CDATA[<=]]> #{searchGubun2} 
-			      OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> #{searchGubun2} )  
-		  	<!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
-		  	<choose>
-		  		<when test='searchGubun3 == "Y"'>
-		  			AND A.RTR_YN = #{searchGubun3}
-		  		</when>
-		  		<otherwise>
-		  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
-		  		</otherwise>
-		  	</choose>
-		  	<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
-			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
-				<choose>
-					<when test='searchGubun == "01"' >
-				AND A.USS_ID LIKE '%' || #{searchField} || '%'
-					</when>
-					<when test='searchGubun == "02"' >
-				AND A.USS_NM LIKE '%' || #{searchField} || '%'	
-					</when>
-				</choose>
-			</if>
-		  </where>
 		  
 		  ORDER BY A.USS_NM ASC	  
 		

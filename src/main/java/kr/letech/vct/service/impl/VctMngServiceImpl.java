@@ -107,7 +107,6 @@ public class VctMngServiceImpl implements VctMngService {
 	@Override
 	public Map getVctInfPageingList(Map params) throws Exception {
 		String cPage = ReqUtils.getEmptyResult2((String)params.get("cPage"), "1");
-		String listCnt = ReqUtils.getEmptyResult2((String)params.get("listCnt"), "10");
 		//검색 구분
 		String searchGubun = ReqUtils.getEmptyResult2((String)params.get("searchGubun"), "");
 		//검색 키워드
@@ -134,14 +133,18 @@ public class VctMngServiceImpl implements VctMngService {
 		//프로젝트
 		String searchGubun6 = ReqUtils.getEmptyResult2((String)params.get("searchGubun6"), "");
 		
+		int totalCnt = 0;								/* 총 건수  */
+		//총 건수 조회
+		totalCnt = vctMngDAO.getVctInfTotCount(params);
+		String totalCntStr = ""+totalCnt;
+		String listCnt = ReqUtils.getEmptyResult2((String)params.get("listCnt"), totalCntStr);
 		
 		int intPage = Integer.parseInt(cPage);			/* 현재페이지 */
 		int intListCnt = Integer.parseInt(listCnt);		/* 세로페이징(게시글수)*/
 		int pageCnt = 10;								/* 가로페이징(페이지수) */
-		int totalCnt = 0;								/* 총 건수  */
 		
-		//총 건수 조회
-		totalCnt = vctMngDAO.getVctInfTotCount(params);
+		
+		
 		
 		int offSet = intListCnt * (ObjToConvert.strToint(cPage)-1);
 		int limit = intListCnt; //ObjToConvert.strToint(cPage)*intListCnt;
@@ -163,7 +166,7 @@ public class VctMngServiceImpl implements VctMngService {
 		objectMap.put("cPage", cPage);
 		objectMap.put("intListCnt", intListCnt);
 		objectMap.put("totalCnt", totalCnt);
-		objectMap.put("pageNavigator", pageNavigator.getMakePageScript());
+		//objectMap.put("pageNavigator", pageNavigator.getMakePageScript());
 		
 		
 		return objectMap;

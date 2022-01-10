@@ -131,14 +131,14 @@ public class VctMngController {
 		}
 		
 		//목록 및 총건수, 페이징
-		Map vctDayObject = vctMngService.getVctDayPageingList(params);
+		Map vctDayObject = vctMngService.getVctInfPageingList(params);
 		
 		
 		model.addAttribute("cPage", vctDayObject.get("cPage"));					// 페이지수
 		model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
 		model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
 		model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
-		model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
+		//model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
 		model.addAttribute("params", params);
 		
 		//고용구분 코드 목록 조회
@@ -157,6 +157,17 @@ public class VctMngController {
 		
 		
 		return "letech/vct/inf/vctInf00List";
+	}
+	
+	/**
+	 * 휴가현황조회 상세 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	public String getVctDtilView(HttpServletRequest request, ModelMap model) throws Exception {
+		return null;
 	}
 	
 	

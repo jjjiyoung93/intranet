@@ -169,13 +169,13 @@
 							</div>
 							<p class="clearfix board-top">
 								<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-									<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
+									<%-- <select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
 										<option value="10" <c:if test="${params.listCnt == '10'}">selected = "selected"</c:if>>10</option>
 										<option value="20" <c:if test="${params.listCnt == '20'}">selected = "selected"</c:if>>20</option>
 										<option value="30" <c:if test="${params.listCnt == '30'}">selected = "selected"</c:if>>30</option>
 										<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
 										<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
-									</select>
+									</select> --%>
 									<br>
 									<span class="pull-right">
 										<button class="fnJoin btn btn-sm btn-default" >저 장</button>
@@ -184,7 +184,7 @@
 									<strong class="list_count" >Total : ${totalCnt} 건</strong>
 								</sec:authorize>
 							</p>
-						<div class="table-responsive">
+						<div class="table-responsive" id="uss-list" style=" height: 200px; overflow-y:scroll;">
 						<table class="table table-bordered" summary="사용자관리 목록">
 							<colgroup>
 								<col width="5%" />
@@ -224,10 +224,14 @@
 											<tr data-id="${list.USS_ID}">
 												<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
 												<td align="center">${list.STDD_YR} </td>
-												<td>${list.USS_NM}</td>
-												<td>${list.USS_EMP_TYPE_NM}</td>
+												<td>
+													<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}');">
+														<span class="ellip ellip-line">${list.USS_NM}</span>
+													</a>
+												</td>
+												<td>${list.EMP_TYPE_NM}</td>
 												<td>${list.PROJ_NM} </td>
-												<td>${list.AUT_NM} </td>
+												<td>${list.AUTH_NM} </td>
 												<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
 												<td align="center">${list.JOIN_DT}</td>
 												<td align="right">${list.WORK_YR_CNT }</td>
@@ -242,16 +246,19 @@
 						</tbody>
 					</table>
 					</div>
+					<div class="table-responsive" id="uss-vct" style=" height: 200px; overflow-y:scroll;">
+						
+					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
 						<div class="text-center">
 						<br/>
-							<ul class="pagination pagination-sm">
+							<%-- <ul class="pagination pagination-sm">
 								${pageNavigator }
-							</ul>
-							<span class="pull-right">
+							</ul> --%>
+							<!-- <span class="pull-right">
 								<button class="fnJoin btn btn-sm btn-default" >저 장</button>
-							</span>
+							</span> -->
 						</div>
 					</div>
 					<div>
@@ -278,15 +285,42 @@
 			goPage(1);
 		});
 		/* 상세조회 */
-		/* function fnView(uss_id){
+		function fnView(uss_id, stdd_yr){
+			var ussId = uss_id;
+			var stddYr = stdd_yr;
+			$.ajax({
+				type: 'post',
+				data : {
+					uss_id : ussId,
+					stddYr : stdd_yr
+				},
+				url : "${pageContext.request.contextPath}/vct/vct00View.do",
+				dataType : 'json',
+				success : function (data){
+					
+					/*상세항목 테이블 추가*/
+					
+				}
+				
+				
+				
+				
+			});
+			
+			
+			
+			
+			
+			
+			
 			$("#uss_id").val(uss_id);
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/uss/umt/uss00View.do");
 			$("#frm1").submit();
-		} */
+		}
 		
 		function goPage(cPage){
 			$("#cPage").val(cPage);
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vctDay00List.do");
+			$("#frm1").attr("action", "${pageContext.request.contextPath}/vct/vctInf00List.do");
 			$("#frm1").submit();
 		}
 		
