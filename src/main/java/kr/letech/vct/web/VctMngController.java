@@ -166,8 +166,36 @@ public class VctMngController {
 	 * @return
 	 * @throws Exception
 	 */
+	@RequestMapping(value =  "vct/vct00View.do")
 	public String getVctDtilView(HttpServletRequest request, ModelMap model) throws Exception {
-		return null;
+		Map params = ReqUtils.getParameterMap(request);
+		
+		String viewName = "jsonView";
+		
+		List resultList = vctMngService.getVctViewList(params);
+		model.addAttribute("params", params);
+		model.addAttribute("resultList", resultList);
+		return viewName;
+	}
+	
+	/**
+	 * 휴가현황조회 상세 팝업 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/vct/vct00Popup.do")
+	public String getVctPopup(HttpServletRequest request, ModelMap model) throws Exception {
+		Map params = ReqUtils.getParameterMap(request);
+		//파라미터 - 기준년도, 사용자
+		
+		//결재 리스트 정보 가져올 것
+		
+		
+		
+		
+		return "letech/vct/inf/vctInf00Popup";
 	}
 	
 	

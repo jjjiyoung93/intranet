@@ -171,6 +171,12 @@ public class VctMngServiceImpl implements VctMngService {
 		
 		return objectMap;
 	}
+
+	/**작성 일자 : 2022-01-11*/
+	@Override
+	public List getVctViewList(Map params) throws Exception {
+		return vctMngDAO.getVctViewList(params);
+	}
 	
 	
 }

@@ -178,7 +178,7 @@
 									</select> --%>
 									<br>
 									<span class="pull-right">
-										<button class="fnJoin btn btn-sm btn-default" >저 장</button>
+										<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>
 									</span>
 									
 									<strong class="list_count" >Total : ${totalCnt} 건</strong>
@@ -246,8 +246,77 @@
 						</tbody>
 					</table>
 					</div>
-					<div class="table-responsive" id="uss-vct" style=" height: 200px; overflow-y:scroll;">
-						
+					<div class="table-responsive" id="uss-vct">
+						<table class="table table-bordered" summary="휴가현황 목록">
+							<colgroup>
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="visible-md visible-lg">휴가구분</th>
+									<th>휴가부여일수</th>
+									<th>사용일수</th>
+									<th>잔여일수</th>
+									<th>활용률</th>
+									<th>1월</th>
+									<th>2월</th>
+									<th>3월</th>
+									<th>4월</th>
+									<th>5월</th>
+									<th>6월</th>
+									<th>7월</th>
+									<th>8월</th>
+									<th>9월</th>
+									<th>10월</th>
+									<th>11월</th>
+									<th>12월</th>
+									<!-- <th class="visible-md visible-lg">재직구분</th>
+									<th>입사일</th>
+									<th>근속년수(년)</th> -->
+									<!-- <th class="visible-md visible-lg">휴가부여일수(일)</th>
+									<th>퇴사일</th> -->
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="list" items="${resultList}" varStatus="status">
+									<tr data-id="${list.USS_ID}">
+										<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+										<td align="center">${list.STDD_YR} </td>
+										<td>
+											<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}');">
+												<span class="ellip ellip-line">${list.USS_NM}</span>
+											</a>
+										</td>
+										<td>${list.EMP_TYPE_NM}</td>
+										<td>${list.PROJ_NM} </td>
+										<td>${list.AUTH_NM} </td>
+										<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
+										<td align="center">${list.JOIN_DT}</td>
+										<td align="right">${list.WORK_YR_CNT }</td>
+										<%-- <td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
+											<c:if test="${empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
+										</td>
+										<td align="center">${list.RTR_DT}</td> --%>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
 					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
@@ -266,6 +335,11 @@
 					</div>
 				</form>
 			</div>
+			<!-- 결재 정보 상세 팝업  -->
+			<form id="dtilFrm" name="dtilFrm" method="post" action="${pageContext.request.contextPath}/vct/vct00Popup.do" >
+				<input type="hidden" id="stdd_yr" name="stddYr" value="" />
+				<input type="hidden" id="uss_id" name="ussId" value="" />
+			</form>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 	</div>
@@ -274,48 +348,136 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript">
 
-		/* 저장 */
-			
-		$( ".fnJoin" ).click(function() {
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
-			$("#frm1").submit();
+		/* 엑셀Down */
+		$( ".fnExcl" ).click(function() {
+			/* $("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
+			$("#frm1").submit(); */
 		});
+		
 		/* 검색 */
 		$( ".fnSearch" ).click(function() {
 			goPage(1);
 		});
-		/* 상세조회 */
+		
+		/* 상세보기 팝업 */
+		$( ".fnDtil" ).click(function() {
+			
+			window.open("", "vct00Popup","width=720, height=750");
+			$("#dtilFrm").attr("target", "vct00Popup");
+//	 		$("#not_uss_id").val($("#rept_aprv_no").val());
+			$("#dtilFrm").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");
+			$("#dtilFrm").submit();
+			//$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
+			//$("#frm1").submit();
+		});
+		
+		/* 휴가현황목록조회 */
 		function fnView(uss_id, stdd_yr){
 			var ussId = uss_id;
 			var stddYr = stdd_yr;
+			var table = "";
+			table += '<span class="pull-right">';
+			table += '<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>';
+			table += '</span>';
 			$.ajax({
 				type: 'post',
 				data : {
 					uss_id : ussId,
-					stddYr : stdd_yr
+					stdd_yr : stddYr
 				},
 				url : "${pageContext.request.contextPath}/vct/vct00View.do",
 				dataType : 'json',
 				success : function (data){
-					
+					var stddYr = data.params.stdd_yr;
+					var ussId = data.params.uss_id;
+					var resultList = data.resultList;
+					    table = '<table class="table table-bordered" summary="휴가현황 목록">'
+					    table += '<colgroup>'
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+						table += '<col width="5%" />';
+					    table += '</colgroup>'
+					    table += '<thead>';
+						table += '<tr>';'
+						table += '	<th class="visible-md visible-lg">휴가구분</th>';
+						table += '	<th>휴가부여일수</th>';
+						table += '	<th>사용일수</th>';
+						table += '	<th>잔여일수</th>';
+						table += '	<th>활용률</th>';
+						table += '	<th>1월</th>';
+						table += '	<th>2월</th>';
+						table += '	<th>3월</th>';
+						table += '	<th>4월</th>';
+						table += '	<th>5월</th>';
+						table += '	<th>6월</th>';
+						table += '	<th>7월</th>';
+						table += '	<th>8월</th>';
+						table += '	<th>9월</th>';
+						table += '	<th>10월</th>';
+						table += '	<th>11월</th>';
+						table += '	<th>12월</th>';
+						table += '</tr>';
+					    table += '</thead>';
+					    tab;e += '<tbody>';
+						<c:forEach var="list" items="${resultList}" varStatus="status">
+						for (var i = 0; i < resultList.length ; i++){
+							var result = resultList[i];
+							table += '<tr data-id="'+result.USS_ID+'">';
+							table += '<th class="visible-md visible-lg text-right">'+result.VCT_TYPE_NM+'</th>';
+							table += '<td align="center">'+result.VCT_GRNT_DAY+'</td>';
+							table += '<td>'+result.VCT_TOT_USE_CNT+'</td>';
+							table += '<td>'+result.VCT_LEFT_DAY+'</td>';
+							table += '<td>'+result.VCT_USE_RATE+'</td>';
+							table += '<td>'+result.JAN_CNT+'</td>';
+							table += '<td>'+result.FEB_CNT+'</td>';
+							table += '<td>'+result.MAR_CNT+'</td>';
+							//table += '<td>'+result.FIR_QRTR_CNT+'</td>';
+							table += '<td>'+result.APR_CNT+'</td>';
+							table += '<td>'+result.MAY_CNT+'</td>';
+							table += '<td>'+result.JUN_CNT+'</td>';
+							table += '<td>'+result.SEC_QRTR_CNT+'</td>';
+							table += '<td>'+result.JUL_CNT+'</td>';
+							table += '<td>'+result.AUG_CNT+'</td>';
+							table += '<td>'+result.SEP_CNT+'</td>';
+							//table += '<td>'+result.THR_QRTR_CNT+'</td>';
+							table += '<td>'+result.OCT_CNT+'</td>';
+							table += '<td>'+result.NOV_CNT+'</td>';
+							table += '<td>'+result.DEC_CNT+'</td>';
+							//table += '<td>'+result.FRT_QRTR_CNT+'</td>';
+							
+							table += '</tr>;
+							
+						}
+							
+						table += '</tbody>';
+						table += '</table>';
+						table += '<span class="pull-right">';
+						table += '<button class="fnDtil btn btn-sm btn-default" >상세보기</button>';
+						table += '</span>';
+						
+						$("#stdd_yr").val(stddYr);
+						$("#uss_id").val(ussId);
+						
+						$("#uss-vct").html(table);
 					/*상세항목 테이블 추가*/
-					
-				}
-				
-				
-				
-				
+				},error: function (request, status, error) {
+			         alert(request.responseText);
+			    } 
 			});
-			
-			
-			
-			
-			
-			
-			
-			$("#uss_id").val(uss_id);
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/uss/umt/uss00View.do");
-			$("#frm1").submit();
 		}
 		
 		function goPage(cPage){

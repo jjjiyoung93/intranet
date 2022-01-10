@@ -1,5 +1,6 @@
 package kr.letech.vct.service;
 
+import java.util.List;
 import java.util.Map;
 
 public interface VctMngService {
@@ -27,5 +28,13 @@ public interface VctMngService {
 	 * @throws Exception
 	 */
 	public Map getVctInfPageingList(Map params) throws Exception;
+
+	/**
+	 * 휴가현황조회 휴가현황 목록 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public List getVctViewList(Map params) throws Exception;
 
 }
