@@ -10,14 +10,14 @@
 <link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resources/css/dataTables.responsive.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
+<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css"> --%>
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
 <link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<%-- <script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script> --%>
+<script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-code-snippet.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-dom.js"></script>
@@ -27,14 +27,14 @@
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
 </head>
 
-<body>
-<div id="wrapper">
- 	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+<body style="zoom: 1; background-color: white;">
+<div id="wrapper1">
+ 	<%-- <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 		<jsp:include page="/resources/com/inc/header.jsp" />
 		<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
-	</nav>
+	</nav> --%>
 
-	<div id="page-wrapper">
+	<div id="page-wrapper1">
 		<div class="row">
 			<div class="col-lg-10">
 				<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
@@ -46,16 +46,120 @@
 					<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
 					<input type="hidden" name="conf_yn" id="conf_yn" value="" />
 					<input type="hidden" name="conf_y_cnt" id="conf_y_cnt" value="" />
-					<h2 class="page-title clearfix">
+					<input type="hidden" name="uss_id" id="uss_id" value="${params.uss_id}" />
+					<%-- <h2 class="page-title clearfix">
 						${titleNaviMap.MN_NM }
 						<span class="pull-right site-map">
 							HOME > ${titleNaviMap.NAVI_NM }
 						</span>
-					</h2>
+					</h2> --%>
 					<div class="form-container">
 					<div class="clearfix search-box">
-						<div class="search-container2 row">
-							<div class="col-md-12">
+						<div class="search-container2">
+							<div class="row">
+								<div class ="col-xs-5 un-style">
+									<!-- 기준년도(년도 선택), 재직구분  -->
+									<!-- <div class="col-xs-6 un-style"> -->
+										<div class="inline-element col-xs-12">
+											<label>기준년도</label>
+											<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="width: 100px; vertical-align: middle;">
+												<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
+												<span class="tui-ico-date"></span>
+											</div>
+											<div class="datepicker-cell" id="datepicker-year-ko"></div>
+										</div>
+								
+								</div>
+							<!-- 	<div class="col-xs-7 mt10 text-right" style="display:inline-block;">
+								<div class="search-select-wrap">
+									<label style="font-size: 14px;">보고일</label>
+									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
+											<div style="width: 100px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+												<input id="st_dt"  name="stDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+												<div id="startpicker-container" style="margin-left: -1px;"></div>
+											</div>
+											~
+											<div style="width: 100px;"
+												class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+												<input id="ed_dt"name="edDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+												<div id="endpicker-container" style="margin-left: -1px;"></div>
+											</div>
+											<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
+									</div>
+								</div>
+							</div> -->
+								<div class ="col-xs-7 un-style">
+									<!-- 기간(월) 검색  -->
+										<div class="inline-elemnet col-xs-12">
+											<span class="inline-element col-xs-12" >
+												<label>월</label>
+												<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element" style="width: 100px; vertical-align: middle;">
+													<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
+													<span class="tui-ico-date"></span>
+												</span>
+												<label>~</label>												
+												<span class="datepicker-cell" id="datepicker-year-ko"></span>
+												<!-- <label>~</label> -->
+												<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element" style="width: 100px; vertical-align: middle;">
+													<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
+													<span class="tui-ico-date"></span>
+												</span>
+												<span class="datepicker-cell" id="datepicker-year-ko"></span>
+											
+											</span>
+											<%-- <div class ="col-xs-3 un-style">
+												<span class="inline-element">
+													<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+														<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+														<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+													</select>
+												</span>
+											</div>
+											<div class="col-xs-8 un-style">
+												<div class="input-group">
+													<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+													<span class="input-group-btn">
+														<button type="button" class="fnSearch btn-info btn"  >
+															<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+														</button>
+													</span>
+												</div>
+											</div> --%>
+										</div>
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class ="col-xs-5 un-style">
+									<span class="inline-element col-xs-11">
+										<label>휴가구분</label>
+										<select name="searchGubun4" id="searchGubun4" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
+											<option value="" >전체</option>
+											<c:forEach var="empType" items="${empTypeList}">
+												<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun4 }">selected="selected"</c:if> >${empType.CD_NM}</option>
+											</c:forEach>
+										</select>
+									</span>
+								</div>
+								<div class ="col-xs-7 un-style">
+									<span class="inline-element col-xs-11">
+										<label >상태구분</label>
+										<select name="searchGubun3" id="searchGubun3" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
+											<option value="" >전체</option>
+											<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
+											<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
+										</select>
+									</span>
+								</div>
+							</div>
+							
+							
+							
+							
+						
+						
+						
+							<%-- <div class="col-md-12">
 								<div class="col-md-6 mt10 text-right">
 								<span class="search-select-wrap" style="margin: 0px;">
 									<label style="font-size: 14px; padding: 0px;">구분코드</label>
@@ -115,7 +219,7 @@
 <!-- 										</div> -->
 <!-- 									</div> -->
 <!-- 								</div> -->
-							</div>
+							</div> --%>
 <!-- 						<div class="col-md-12 mt10 pull-left"> -->
 <!-- 							<div class="col-md-12"> -->
 <!-- 							</div> -->
@@ -136,7 +240,7 @@
 <!-- 									</select>					 -->
 <!-- 								</span> -->
 <!-- 							</div> -->
-							<div class="col-md-6 mt10 text-right" style="display:inline-block;">
+							<!-- <div class="col-md-6 mt10 text-right" style="display:inline-block;">
 								<div class="search-select-wrap">
 									<label style="font-size: 14px;">보고일</label>
 									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
@@ -153,7 +257,7 @@
 											<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							
 <!-- 							<div class="col-md-6 mt10 pull-right"> -->
 <!-- 								<div class="" style="max-width: 430px;"> -->
@@ -184,7 +288,7 @@
 							
 							
 							
-							<div class="col-md-6 mt10">
+							<%-- <div class="col-md-6 mt10">
 								<div class="" style="max-width: 430px;">
 									<div class="col-lg-4 un-style">
 										<span class="inline-element">
@@ -208,7 +312,7 @@
 										</div>
 									</div>
 								</div>
-							</div>
+							</div> --%>
 							
 							
 							
@@ -246,7 +350,7 @@
 							<option value="50">50</option>
 							<option value="100">100</option>
 						</select>
-						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
+						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="엑셀다운"/></span>
 					</p>
 						<table class="table table-bordered reactive" >
 							<colgroup>
@@ -367,14 +471,21 @@
 					</div>
 				</form>
 			</div>
-			<jsp:include page="/resources/com/inc/aside.jsp" />
+			<%-- <jsp:include page="/resources/com/inc/aside.jsp" /> --%>
 		</div>
 	</div>
-	<jsp:include page="/resources/com/inc/footer.jsp" />
+	<%-- <jsp:include page="/resources/com/inc/footer.jsp" /> --%>
 </div>
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	var stddYr = "${params.stddYr}";
+	var ussId = "${params.ussId}";
+	
+	alert("stddYr : " + stddYr);
+	alert("ussId : " + ussId);
+	
 // 	var optVal = $("#cdList1").val();
 // 	if(optVal != ""){
 // 		optionCreate(optVal);

@@ -30,7 +30,7 @@
 				<!-- 금년도  -->
 				<c:set var="year"><fmt:formatDate value="${today}" pattern="yyyy"/></c:set>
 				<!-- page -->
-					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/sys/vct/vctDay00List.do" >
+					<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/sys/vct/vctInf00List.do" >
 						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" id="cPage" name="cPage" value="${cPage }" />
@@ -51,29 +51,17 @@
 												<div class="inline-element col-xs-11">
 													<label>기준년도</label><br>
 													<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">
+														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
 														<span class="tui-ico-date"></span>
 													</div>
 													<div class="datepicker-cell" id="datepicker-year-ko"></div>
 												</div>
-											<!-- </div> -->
-											<%-- <div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label >재직구분</label>
-													<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-														<!-- <option value="" >전체</option> -->
-														<option value="N" <c:if test="${empty params.searchGubun3 || params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
-														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
-													</select>
-												</span>
-											</div> --%>
+										
 										</div>
 										<div class ="col-xs-6 un-style">
 											<!-- ID/성명 검색  -->
 											<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-												<%-- <li>
-													<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="" role="button">정보수정</a>
-												</li> --%>
+										
 												<div class="col-xs-12">
 													<label>ID/성명</label><br>
 													<div class ="col-xs-3 un-style">
@@ -99,9 +87,6 @@
 										</div>
 									</div>
 									<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-										<%-- <li>
-											<a href="${pageContext.request.contextPath}/uat/uia/ussInfoEdit.do?uss_id=${loginVO.id }" class="" role="button">정보수정</a>
-										</li> --%>
 										<div class="row">
 											<div class ="col-xs-6 un-style">
 												<span class="inline-element col-xs-11">
@@ -129,25 +114,12 @@
 										<div class="row">
 											<div class ="col-xs-6 un-style">
 												<span class="inline-element col-xs-11">
-													<%-- <label>부서</label>
-													<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="departList" items="${departList}">
-															<option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option>
-														</c:forEach>
-													</select> --%>
 													<label>프로젝트</label>
 													<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" >
 														<option value="" >전체</option>
 														<c:forEach var="proj" items="${projList}" varStatus="status">
 															<option value="${proj.CD}" <c:if test="${proj.CD eq params.searchGubun6 }">selected="selected"</c:if> >${proj.CD_NM}</option>
 														</c:forEach>
-														<%-- <select id="proj_cd" name="proj_cd" class="form-control">
-															<option value="">선택</option>
-															<c:forEach var="proj" items="${projList }" varStatus="status">
-															<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
-															</c:forEach>
-														</select> --%>
 													</select>
 													
 												</span>
@@ -169,13 +141,7 @@
 							</div>
 							<p class="clearfix board-top">
 								<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-									<%-- <select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
-										<option value="10" <c:if test="${params.listCnt == '10'}">selected = "selected"</c:if>>10</option>
-										<option value="20" <c:if test="${params.listCnt == '20'}">selected = "selected"</c:if>>20</option>
-										<option value="30" <c:if test="${params.listCnt == '30'}">selected = "selected"</c:if>>30</option>
-										<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
-										<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
-									</select> --%>
+									
 									<br>
 									<span class="pull-right">
 										<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>
@@ -208,8 +174,6 @@
 									<th class="visible-md visible-lg">재직구분</th>
 									<th>입사일</th>
 									<th>근속년수(년)</th>
-									<!-- <th class="visible-md visible-lg">휴가부여일수(일)</th>
-									<th>퇴사일</th> -->
 								</tr>
 							</thead>
 							<tbody>
@@ -235,10 +199,6 @@
 												<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
 												<td align="center">${list.JOIN_DT}</td>
 												<td align="right">${list.WORK_YR_CNT }</td>
-												<%-- <td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
-													<c:if test="${empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
-												</td>
-												<td align="center">${list.RTR_DT}</td> --%>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
@@ -247,76 +207,7 @@
 					</table>
 					</div>
 					<div class="table-responsive" id="uss-vct">
-						<table class="table table-bordered" summary="휴가현황 목록">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-							</colgroup>
-							<thead>
-								<tr>
-									<th class="visible-md visible-lg">휴가구분</th>
-									<th>휴가부여일수</th>
-									<th>사용일수</th>
-									<th>잔여일수</th>
-									<th>활용률</th>
-									<th>1월</th>
-									<th>2월</th>
-									<th>3월</th>
-									<th>4월</th>
-									<th>5월</th>
-									<th>6월</th>
-									<th>7월</th>
-									<th>8월</th>
-									<th>9월</th>
-									<th>10월</th>
-									<th>11월</th>
-									<th>12월</th>
-									<!-- <th class="visible-md visible-lg">재직구분</th>
-									<th>입사일</th>
-									<th>근속년수(년)</th> -->
-									<!-- <th class="visible-md visible-lg">휴가부여일수(일)</th>
-									<th>퇴사일</th> -->
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="list" items="${resultList}" varStatus="status">
-									<tr data-id="${list.USS_ID}">
-										<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-										<td align="center">${list.STDD_YR} </td>
-										<td>
-											<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}');">
-												<span class="ellip ellip-line">${list.USS_NM}</span>
-											</a>
-										</td>
-										<td>${list.EMP_TYPE_NM}</td>
-										<td>${list.PROJ_NM} </td>
-										<td>${list.AUTH_NM} </td>
-										<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
-										<td align="center">${list.JOIN_DT}</td>
-										<td align="right">${list.WORK_YR_CNT }</td>
-										<%-- <td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
-											<c:if test="${empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
-										</td>
-										<td align="center">${list.RTR_DT}</td> --%>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+						
 					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
@@ -337,8 +228,8 @@
 			</div>
 			<!-- 결재 정보 상세 팝업  -->
 			<form id="dtilFrm" name="dtilFrm" method="post" action="${pageContext.request.contextPath}/vct/vct00Popup.do" >
-				<input type="hidden" id="stdd_yr" name="stddYr" value="" />
-				<input type="hidden" id="uss_id" name="ussId" value="" />
+				<input type="hidden" id="stddYr" name="stddYr" value="" />
+				<input type="hidden" id="ussId" name="ussId" value="" />
 			</form>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
@@ -360,20 +251,19 @@
 		});
 		
 		/* 상세보기 팝업 */
-		$( ".fnDtil" ).click(function() {
-			
+		$( "#uss-vct" ).on('click', '#btnDtil', function() {
+			alert("상세보기팝업!!");
 			window.open("", "vct00Popup","width=720, height=750");
 			$("#dtilFrm").attr("target", "vct00Popup");
-//	 		$("#not_uss_id").val($("#rept_aprv_no").val());
 			$("#dtilFrm").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");
 			$("#dtilFrm").submit();
-			//$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
-			//$("#frm1").submit();
+
 		});
 		
 		/* 휴가현황목록조회 */
 		function fnView(uss_id, stdd_yr){
 			var ussId = uss_id;
+			//alert(ussId);
 			var stddYr = stdd_yr;
 			var table = "";
 			table += '<span class="pull-right">';
@@ -391,7 +281,7 @@
 					var stddYr = data.params.stdd_yr;
 					var ussId = data.params.uss_id;
 					var resultList = data.resultList;
-					    table = '<table class="table table-bordered" summary="휴가현황 목록">'
+					    table += '<table class="table table-bordered" summary="휴가현황 목록">'
 					    table += '<colgroup>'
 						table += '<col width="5%" />';
 						table += '<col width="5%" />';
@@ -412,7 +302,7 @@
 						table += '<col width="5%" />';
 					    table += '</colgroup>'
 					    table += '<thead>';
-						table += '<tr>';'
+						table += '<tr>';
 						table += '	<th class="visible-md visible-lg">휴가구분</th>';
 						table += '	<th>휴가부여일수</th>';
 						table += '	<th>사용일수</th>';
@@ -432,45 +322,57 @@
 						table += '	<th>12월</th>';
 						table += '</tr>';
 					    table += '</thead>';
-					    tab;e += '<tbody>';
-						<c:forEach var="list" items="${resultList}" varStatus="status">
+					    table += '<tbody>';
+				
 						for (var i = 0; i < resultList.length ; i++){
 							var result = resultList[i];
 							table += '<tr data-id="'+result.USS_ID+'">';
-							table += '<th class="visible-md visible-lg text-right">'+result.VCT_TYPE_NM+'</th>';
-							table += '<td align="center">'+result.VCT_GRNT_DAY+'</td>';
-							table += '<td>'+result.VCT_TOT_USE_CNT+'</td>';
-							table += '<td>'+result.VCT_LEFT_DAY+'</td>';
-							table += '<td>'+result.VCT_USE_RATE+'</td>';
-							table += '<td>'+result.JAN_CNT+'</td>';
-							table += '<td>'+result.FEB_CNT+'</td>';
-							table += '<td>'+result.MAR_CNT+'</td>';
+							table += '<th class="visible-md visible-lg text-center">'+result.VCT_TYPE_NM+'</th>';
+							if(result.VCT_GRNT_DAY == null){
+								table += '<td align="center">'+ '-'+'</td>';	
+							}else{
+								table += '<td align="right">'+ result.VCT_GRNT_DAY+'</td>';
+							}
+							table += '<td align="right">'+result.VCT_TOT_USE_CNT+'</td>';
+							if(result.VCT_LEFT_DAY == null){
+								table += '<td align="center">'+ '-'+'</td>';	
+							}else {
+								table += '<td align="right">'+result.VCT_LEFT_DAY+'</td>';
+							}
+							if(result.VCT_USE_RATE == null){
+								table += '<td align="center">'+ '-'+'</td>';	
+							}else {
+								table += '<td align="right">'+result.VCT_USE_RATE+'</td>';
+							}
+							table += '<td align="right">'+result.JAN_CNT+'</td>';
+							table += '<td align="right">'+result.FEB_CNT+'</td>';
+							table += '<td align="right">'+result.MAR_CNT+'</td>';
 							//table += '<td>'+result.FIR_QRTR_CNT+'</td>';
-							table += '<td>'+result.APR_CNT+'</td>';
-							table += '<td>'+result.MAY_CNT+'</td>';
-							table += '<td>'+result.JUN_CNT+'</td>';
-							table += '<td>'+result.SEC_QRTR_CNT+'</td>';
-							table += '<td>'+result.JUL_CNT+'</td>';
-							table += '<td>'+result.AUG_CNT+'</td>';
-							table += '<td>'+result.SEP_CNT+'</td>';
+							table += '<td align="right">'+result.APR_CNT+'</td>';
+							table += '<td align="right">'+result.MAY_CNT+'</td>';
+							table += '<td align="right">'+result.JUN_CNT+'</td>';
+							//table += '<td>'+result.SEC_QRTR_CNT+'</td>';
+							table += '<td align="right">'+result.JUL_CNT+'</td>';
+							table += '<td align="right">'+result.AUG_CNT+'</td>';
+							table += '<td align="right">'+result.SEP_CNT+'</td>';
 							//table += '<td>'+result.THR_QRTR_CNT+'</td>';
-							table += '<td>'+result.OCT_CNT+'</td>';
-							table += '<td>'+result.NOV_CNT+'</td>';
-							table += '<td>'+result.DEC_CNT+'</td>';
+							table += '<td align="right">'+result.OCT_CNT+'</td>';
+							table += '<td align="right">'+result.NOV_CNT+'</td>';
+							table += '<td align="right">'+result.DEC_CNT+'</td>';
 							//table += '<td>'+result.FRT_QRTR_CNT+'</td>';
 							
-							table += '</tr>;
+							table += '</tr>';
 							
 						}
 							
 						table += '</tbody>';
 						table += '</table>';
 						table += '<span class="pull-right">';
-						table += '<button class="fnDtil btn btn-sm btn-default" >상세보기</button>';
+						table += '<buttn type="button" id="btnDtil" class="fnDtil btn btn-sm btn-default" >상세보기</button>';
 						table += '</span>';
 						
-						$("#stdd_yr").val(stddYr);
-						$("#uss_id").val(ussId);
+						$("#stddYr").val(stddYr);
+						$("#ussId").val(ussId);
 						
 						$("#uss-vct").html(table);
 					/*상세항목 테이블 추가*/

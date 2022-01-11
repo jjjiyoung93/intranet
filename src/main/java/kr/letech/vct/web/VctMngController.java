@@ -193,7 +193,7 @@ public class VctMngController {
 		//결재 리스트 정보 가져올 것
 		
 		
-		
+		model.addAttribute("params", params);
 		
 		return "letech/vct/inf/vctInf00Popup";
 	}

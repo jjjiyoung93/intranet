@@ -159,7 +159,7 @@
 												<td align="center">${list.JOIN_DT}</td>
 												<td align="right">${list.WORK_YR_CNT }</td>
 												<td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
-													<c:if test="${empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
+													<c:if test="${(year <= list.STDD_YR) && (empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0)}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
 												</td>
 												<td align="center">${list.RTR_DT}</td>
 											</tr>

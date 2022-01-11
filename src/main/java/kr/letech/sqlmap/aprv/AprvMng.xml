@@ -205,8 +205,8 @@
 			AND A.REPT_APRV_NO = #{ussId}
 		</if>
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stddYr)"> <!-- 보고자  -->
-			AND A.APRV_TYPE = ''
-			AND A. = #{stddYr}
+			AND A.APRV_TYPE_CD = 'CD0001011'
+			AND SUBSTR(A.TERM_ST_YM, 1, 4) = #{stddYr}
 		</if>
 		ORDER BY E.SORT_ORDR DESC, A.CRTN_DT DESC
 <!-- 		           A.CRTN_DT DESC, A.TERM_ST_YM ASC, TO_NUMBER(A.APRV_NO) ASC -->
