@@ -77,12 +77,33 @@ public class AprvMngServiceImpl implements AprvMngService {
 		String stDt = ReqUtils.getEmptyResult2((String)params.get("st_dt"), "");
 		String edDt = ReqUtils.getEmptyResult2((String)params.get("ed_dt"), "");
 		
+		
+		/*2022.01.12 검색 조건 추가 : BEGIN*/
+		String yearStr = (String)params.get("stddYr");
+		String idStr = (String)params.get("ussId");
+		//유저아이디
+		String ussId = ReqUtils.getEmptyResult2((String)params.get("uss_id"), idStr);
+		//기준년도
+		String stddYr = ReqUtils.getEmptyResult2((String)params.get("stddYr"), yearStr);
+		//시작월
+		String startMon = ReqUtils.getEmptyResult2((String)params.get("startMon"), "");
+		//종료월
+		String endMon = ReqUtils.getEmptyResult2((String)params.get("endMon"), "");
+		//휴가구분
+		String vctType = ReqUtils.getEmptyResult2((String)params.get("vctTypeCd"), "");
+		//결재상태
+		String arpvStat = ReqUtils.getEmptyResult2((String)params.get("aprvStatCd"), "");
+		/*2022.01.12 검색 조건 추가 : END*/
+		
+		
+		
 		int intPage = Integer.parseInt(cPage);			/* 현재페이지 */
 		int intListCnt = Integer.parseInt(listCnt);		/* 세로페이징(게시글수)*/
 		int pageCnt = 10;								/* 가로페이징(페이지수) */
 		int totalCnt = 0;								/* 총 건수  */
 		
 		params.put("aprv_up_cd", VarConsts.EAM_MASTER_CODE);
+		params.put("uss_id", ussId);
 		
 		totalCnt = aprvMngDAO.getAprvTotalCount(params);
 		

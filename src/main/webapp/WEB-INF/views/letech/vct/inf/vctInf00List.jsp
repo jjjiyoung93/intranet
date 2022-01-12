@@ -230,6 +230,10 @@
 			<form id="dtilFrm" name="dtilFrm" method="post" action="${pageContext.request.contextPath}/vct/vct00Popup.do" >
 				<input type="hidden" id="stddYr" name="stddYr" value="" />
 				<input type="hidden" id="ussId" name="ussId" value="" />
+				<input type="hidden" id="startMon" name="startMon" value="" />
+				<input type="hidden" id="endMon" name="endMon" value="" />
+				<input type="hidden" id="vctTypeCd" name="vctTypeCd" value="" />
+				<input type="hidden" id="aprvStatCd" name="aprvStatCd" value="" />
 			</form>
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>

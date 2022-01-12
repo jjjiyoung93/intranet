@@ -150,6 +150,12 @@
 		                                 AND AAA.APRV_NO = AA.APRV_NO
 		                               GROUP BY AAA.APRV_NO)) AS APRV_ID	/* 현재 결재할 사람의 ID */
              , A.CAL_NO		/* 캘린더 번호*/
+             <!-- 2022.01.12 추가 조회 항목 : BEGIN  -->
+             , A.APRV_TYPE_DTIL_CD /*결재상세코드*/
+             , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.APRV_TYPE_DTIL_CD) AS APRV_TYPE_DTIL_NM /*결재상세코드명칭*/
+             , Z.SUM_DAY_CNT /*휴가기간*/
+             , A.MODI_DT /*상신일*/
+             <!-- 2022.01.12 추가 조회 항목 : BEGIN  -->
 			 
 		 FROM STD_APRV_MNG A
 		    LEFT OUTER JOIN STD_USS_MNG B ON B.USS_ID = A.REPT_APRV_NO
@@ -158,6 +164,12 @@
 		    LEFT OUTER JOIN VW_STD_LINE F ON F.APRV_NO = A.APRV_NO 
 			LEFT OUTER JOIN VW_STD_CONF G ON G.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_STD_CONF_Y H ON H.APRV_NO = A.APRV_NO
+			LEFT OUTER JOIN (SELECT
+			                        APRV_NO
+			                      , SUM(VCT_DAY_CNT) AS SUM_DAY_CNT
+			                   FROM VCT_INF_MNG
+			                   GROUP BY APRV_NO
+			                 ) Z ON (Z.APRV_NO = A.APRV_NO)
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >
 			LEFT OUTER JOIN STD_APRV_LINE I ON I.APRV_NO = E.APRV_NO
 			LEFT OUTER JOIN STD_USS_MNG J ON J.USS_ID = I.APRV_EMP_NO
@@ -208,6 +220,30 @@
 			AND A.APRV_TYPE_CD = 'CD0001011'
 			AND SUBSTR(A.TERM_ST_YM, 1, 4) = #{stddYr}
 		</if>
+		<!-- 2022.01.12 검색조건 추가 : BEGIN  -->
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ussId)" >	<!-- 사원ID -->
+			AND A.REPT_APRV_NO = #{ussId}
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stddYr)" >	<!-- 기준년도 -->
+			AND A.APRV_TYPE_CD = 'CD0001011'
+			AND SUBSTR(A.TERM_ST_YM, 1, 4) = #{stddYr}
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(startMon)" >	<!-- 시작월 -->
+			AND TO_NUMBER(SUBSTR(A.TERM_ST_YM, 6, 2)) >=  TO_NUMBER(#{startMon})
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(endMon)" >	<!-- 종료월 -->
+			AND TO_NUMBER(SUBSTR(A.TERM_ST_YM, 6, 2)) <![CDATA[<=]]> TO_NUMBER(#{endMon})
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(vctTypeCd)" >	<!-- 휴가구분 -->
+			AND A.APRV_TYPE_DTIL_CD = #{vctTypeCd}
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(aprvStatCd)" >	<!-- 결재상태구분 -->
+			AND E.APRV_YN_TP = #{aprvStatCd}
+		</if>
+		<!-- 2022.01.12 검색조건 추가 : END -->
+		
+		
+		
 		ORDER BY E.SORT_ORDR DESC, A.CRTN_DT DESC
 <!-- 		           A.CRTN_DT DESC, A.TERM_ST_YM ASC, TO_NUMBER(A.APRV_NO) ASC -->
 	</select>
@@ -351,6 +387,28 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
 			AND H.DP_CD = #{searchCdList4}
 		</if>
+		
+		<!-- 2022.01.12 검색조건 추가 : BEGIN  -->
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ussId)" >	<!-- 사원ID -->
+			AND A.REPT_APRV_NO = #{ussId}
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stddYr)" >	<!-- 기준년도 -->
+			AND A.APRV_TYPE_CD = 'CD0001011'
+			AND SUBSTR(A.TERM_ST_YM, 1, 4) = #{stddYr}
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(startMon)" >	<!-- 시작월 -->
+			AND TO_NUMBER(SUBSTR(A.TERM_ST_YM, 6, 2)) >=  TO_NUMBER(#{startMon})
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(endMon)" >	<!-- 종료월 -->
+			AND TO_NUMBER(SUBSTR(A.TERM_ST_YM, 6, 2)) <![CDATA[<=]]> TO_NUMBER(#{endMon})
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(vctTypeCd)" >	<!-- 휴가구분 -->
+			AND A.APRV_TYPE_DTIL_CD = #{vctTypeCd}
+		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(aprvStatCd)" >	<!-- 결재상태구분 -->
+			AND E.APRV_YN_TP = #{aprvStatCd}
+		</if>
+		<!-- 2022.01.12 검색조건 추가 : END -->
 		
 	</select>
 	

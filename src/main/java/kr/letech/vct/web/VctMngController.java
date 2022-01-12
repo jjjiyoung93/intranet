@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.sys.cdm.service.CodeMngService;
@@ -37,6 +38,10 @@ public class VctMngController {
 	/** 권한 관련 */
 	@Resource(name = "roleMngService")
 	private RoleMngService roleMngService;
+	
+	/** 결재 관련 */
+	@Resource(name = "aprvMngService")
+	private AprvMngService aprvMngService;
 	
 	/**
 	 * 휴가부여일수 조회
@@ -191,9 +196,20 @@ public class VctMngController {
 		//파라미터 - 기준년도, 사용자
 		
 		//결재 리스트 정보 가져올 것
+		// 목록 및 총건수, 페이징 
+		Map bbsObject = aprvMngService.getAprvPageingList(params);
 		
-		
+		model.addAttribute("cPage", bbsObject.get("cPage"));					// 페이지수
+		model.addAttribute("totalCnt", bbsObject.get("totalCnt"));				// 총건수
+		model.addAttribute("intListCnt", bbsObject.get("intListCnt"));			// 시작페이지 수
+		model.addAttribute("resultList", bbsObject.get("resultList"));			// 목록정보
+		model.addAttribute("pageNavigator", bbsObject.get("pageNavigator"));	// 페이징
 		model.addAttribute("params", params);
+			
+		
+		params.put("up_cd", VarConsts.EAM_VACATION_CODE);
+		List vctTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("vctTypeList", vctTypeList);
 		
 		return "letech/vct/inf/vctInf00Popup";
 	}

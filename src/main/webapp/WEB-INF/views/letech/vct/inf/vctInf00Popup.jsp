@@ -37,7 +37,7 @@
 	<div id="page-wrapper1">
 		<div class="row">
 			<div class="col-lg-10">
-				<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/aprv/aprv00List.do" >
+				<form name="frm1" id="frm1" method="post" action="${pageContext.request.contextPath}/vct/vct00Popup.do" >
 					<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
 					<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 					<input type="hidden" name="aprv_no" id="aprv_no" value="" />
@@ -46,7 +46,7 @@
 					<input type="hidden" name="cPage" id="cPage" value="${cPage }" />
 					<input type="hidden" name="conf_yn" id="conf_yn" value="" />
 					<input type="hidden" name="conf_y_cnt" id="conf_y_cnt" value="" />
-					<input type="hidden" name="uss_id" id="uss_id" value="${params.uss_id}" />
+					<input type="hidden" name="ussId" id="uss_id" value="${params.ussId}" />
 					<%-- <h2 class="page-title clearfix">
 						${titleNaviMap.MN_NM }
 						<span class="pull-right site-map">
@@ -63,7 +63,7 @@
 										<div class="inline-element col-xs-12">
 											<label>기준년도</label>
 											<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="width: 100px; vertical-align: middle;">
-												<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
+												<input type="text" id="datepicker-input-ko-year" name="stddYr" value="${params.stddYr}" aria-label="Year" class="form-control" title="search" autocomplete="off">											
 												<span class="tui-ico-date"></span>
 											</div>
 											<div class="datepicker-cell" id="datepicker-year-ko"></div>
@@ -94,17 +94,16 @@
 											<span class="inline-element col-xs-12" >
 												<label>월</label>
 												<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element" style="width: 100px; vertical-align: middle;">
-													<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
+													<input type="text" id="datepicker-input-ko-mon-start" name="startMon" value="${params.startMon}" aria-label="Month" class="form-control" title="search">											
 													<span class="tui-ico-date"></span>
 												</span>
+												<span class="datepicker-cell" id="datepicker-month-ko-start"></span>
 												<label>~</label>												
-												<span class="datepicker-cell" id="datepicker-year-ko"></span>
-												<!-- <label>~</label> -->
 												<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element" style="width: 100px; vertical-align: middle;">
-													<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
+													<input type="text" id="datepicker-input-ko-mon-end" name="endMon" value="${params.endMon}" aria-label="Month" class="form-control" title="search">											
 													<span class="tui-ico-date"></span>
 												</span>
-												<span class="datepicker-cell" id="datepicker-year-ko"></span>
+												<span class="datepicker-cell" id="datepicker-month-ko-end"></span>
 											
 											</span>
 											<%-- <div class ="col-xs-3 un-style">
@@ -133,10 +132,10 @@
 								<div class ="col-xs-5 un-style">
 									<span class="inline-element col-xs-11">
 										<label>휴가구분</label>
-										<select name="searchGubun4" id="searchGubun4" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
+										<select name="vctTypeCd" id="vctType" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
 											<option value="" >전체</option>
-											<c:forEach var="empType" items="${empTypeList}">
-												<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun4 }">selected="selected"</c:if> >${empType.CD_NM}</option>
+											<c:forEach var="vctType" items="${vctTypeList}">
+												<option value="${vctType.CD}" <c:if test="${vctType.CD eq params.vctTypeCd }">selected="selected"</c:if> >${vctType.CD_NM}</option>
 											</c:forEach>
 										</select>
 									</span>
@@ -144,11 +143,21 @@
 								<div class ="col-xs-7 un-style">
 									<span class="inline-element col-xs-11">
 										<label >상태구분</label>
-										<select name="searchGubun3" id="searchGubun3" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
+										<select name="aprvStatCd" id="searchGubun3" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
 											<option value="" >전체</option>
-											<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
-											<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
+											<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.aprvStatCd eq '0' }">selected="selected"</c:if>>대기</option>
+											<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.aprvStatCd eq '4' }">selected="selected"</c:if>>진행중</option>
+											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.aprvStatCd eq '1' }">selected="selected"</c:if>>완료</option>
+											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.aprvStatCd eq '2' }">selected="selected"</c:if>>보류</option>
+											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.aprvStatCd eq '3' }">selected="selected"</c:if>>반려</option>
+											<%-- <option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
+											<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option> --%>
 										</select>
+									</span>
+									<span class="input-group-btn">
+										<button type="button" class="fnSearch btn-info btn"  >
+											<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+										</button>
 									</span>
 								</div>
 							</div>
@@ -344,35 +353,37 @@
 					</div>
 					<p class="clearfix board-top">
 						<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">
-							<option value="10">10</option>
-							<option value="20">20</option>
-							<option value="30">30</option>
-							<option value="50">50</option>
-							<option value="100">100</option>
+							<option value="10" <c:if test="${params.listCnt == '10'}">selected = "selected"</c:if>>10</option>
+							<option value="20" <c:if test="${params.listCnt == '20'}">selected = "selected"</c:if>>20</option>
+							<option value="30" <c:if test="${params.listCnt == '30'}">selected = "selected"</c:if>>30</option>
+							<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
+							<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
 						</select>
 						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="엑셀다운"/></span>
 					</p>
 						<table class="table table-bordered reactive" >
 							<colgroup>
 								<col width="50" class="hidden-xs hidden-sm"/>
-								<col width="80"/>
 								<col width="80" class="hidden-xs hidden-sm"/>
-								<col width="50"/>
+								<col width="80"/>
 								<col width="*"/>
-								<col width="180" class="hidden-xs hidden-sm"/>
-								<col width="100" class="hidden-xs hidden-sm"/>
-								<col width="100"/>
+								<col width="50" class="hidden-xs hidden-sm"/>
+								<col width="180"/>
+								<col width="80"/>
+								<col width="80"/>
 							</colgroup>
 							<thead>
 								<tr role="row">
 									<th class="hidden-xs hidden-sm">NO</th>
-									<th class="">보고자</th>
-									<th class="hidden-xs hidden-sm">구분</th>
-									<th class="">확인</th>
+									<th class="hidden-xs hidden-sm">결재문서번호</th>
+									<!-- <th class="">보고자</th> -->
+									<th class="">휴가구분</th>
+									<!-- <th class="">확인</th> -->
 									<th class="">제 목</th>
 									<th class="hidden-xs hidden-sm">기간</th>
-									<th class="hidden-xs hidden-sm">보고일</th>
+									<th class="">상신일</th>
 									<th class="">상태</th>
+									<th class="">신청서</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -390,13 +401,16 @@
 												<td class="hidden-xs hidden-sm text-center">
 													${totalCnt - status.index - ((cPage-1) * (intListCnt))}
 												</td>
-												<td>
+												<td class="hidden-xs hidden-sm text-center">
+													${list.APRV_NO}
+												</td>
+											<%-- 	<td>
 													${list.REPT_APRV_NM}
+												</td> --%>
+												<td>
+													${list.APRV_TYPE_DTIL_NM}
 												</td>
-												<td class="hidden-xs hidden-sm">
-													${list.APRV_TYPE_NM}
-												</td>
-												<td class="">
+											<%-- 	<td class="">
 											<c:choose>
 												<c:when test="${list.CONF_YN eq 'Y' }">
 													확인
@@ -405,13 +419,16 @@
 													미확인
 												</c:otherwise>
 											</c:choose>
-												</td>
+												</td> --%>
 												<td class="center">
 													<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
 													<span class="ellip ellip-line">${list.TITLE}</span>
 													</a>
 												</td>
-												<td class="hidden-xs hidden-sm">
+												<td class="center hidden-xs hidden-sm">
+													${list.SUM_DAY_CNT}
+												</td>
+												<%-- <td class="hidden-xs hidden-sm">
 													<c:choose>
 														<c:when test="${list.TERM_ST_YM ne null }">
 															${list.TERM_ST_YM} - ${list.TERM_ED_YM}
@@ -421,9 +438,9 @@
 														</c:otherwise>
 													</c:choose> 
 													
-												</td>
-												<td class="hidden-xs hidden-sm">
-													${list.CRTN_DT}
+												</td> --%>
+												<td>
+													${list.MODI_DT}
 												</td>
 												<td class="center">
 													<c:choose>
@@ -454,6 +471,9 @@
 														</c:choose>
 													</c:if>
 												</td>
+												<td class="">
+													<input type="button" id="" name="" class="btn btn-sm btn-default" value="보기" onclick="fn_docPopup('${list.APRV_NO}')"/>
+												</td>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
@@ -470,6 +490,9 @@
 						</div>
 					</div>
 				</form>
+				<form id="docFrm" name="docFrm" method="post" action="${pageContext.request.contextPath}/doc/doc00Popup.do" >
+					<input type="hidden" id="aprv_no2" name="aprv_no" value="" />
+				</form>
 			</div>
 			<%-- <jsp:include page="/resources/com/inc/aside.jsp" /> --%>
 		</div>
@@ -482,9 +505,128 @@ $(document).ready(function(){
 	
 	var stddYr = "${params.stddYr}";
 	var ussId = "${params.ussId}";
-	
+	var startMon = "${params.startMon}";
+	var endMon = "${params.endMon}";
+	var yearStr = "${params.searchGubun2}";
+	var yearInt = parseInt(stddYr);
 	alert("stddYr : " + stddYr);
 	alert("ussId : " + ussId);
+	alert("startMon : " + startMon);
+	alert("endMon : " + endMon);
+	
+	//기준년도 선택
+	calYearKo = new tui.DatePicker('#datepicker-year-ko',{
+		date : new Date(),
+		language : 'ko',
+		date : "${params.stddYr}",
+		type: 'year',
+		input : {
+			element : '#datepicker-input-ko-year',
+			format : 'yyyy'
+		},
+		selectableRanges: [
+			[new Date(2015, 0, 1), new Date(9999, 11, 31)]
+		]
+	});
+	
+	
+	//시작월 선택	
+	calMonthKoStart = new tui.DatePicker("#datepicker-month-ko-start", {
+		
+		date : new Date(),
+		language : 'ko',
+		type : 'month',
+		date : '${params.startMon}',
+		input : {
+			element : '#datepicker-input-ko-mon-start',
+			format : 'MM'
+		},
+		selectableRanges : [
+			[new Date(yearInt, 0, 1) , new Date(yearInt, 11, 31) ]
+			
+		]
+		
+	});
+	
+	//종료월 선택
+	calMonthKoEnd = new tui.DatePicker("#datepicker-month-ko-end", {
+		
+		date : new Date(),
+		language : 'ko',
+		type : 'month',
+		date : '${params.endMon}',
+		input : {
+			element : '#datepicker-input-ko-mon-end',
+			format : 'MM'
+		},
+		selectableRanges : [
+			[new Date(yearInt, 0, 1) , new Date(yearInt, 11, 31) ]
+			
+		]
+		
+	});
+	
+	//년도 변경시 월의 선택 범위 변경 함수
+	calYearKo.on('change', () =>{
+		var year = $("#datepicker-input-ko-year").val();
+		var yearInt = parseInt(year);
+		var ranges = [[new Date(yearInt, 0, 1), new Date(yearInt, 11, 31)]];
+		
+		calMonthKoStart.setRanges(ranges);
+		calMonthKoEnd.setRanges(ranges);
+	});
+	
+	
+	//시작월 설정시 종료월과 크기 비교
+	calMonthKoStart.on('change', () =>{
+		var monStart = $("#datepicker-input-ko-mon-start").val();
+		var monEnd = $("#datepicker-input-ko-mon-end").val();
+		
+		//시작월 입력값이 있는지 체크
+		if(monEnd == null || monEnd == ""){
+			return;
+		}
+		
+		var monStartInt = parseInt(monStart);
+		var monEndInt = parseInt(monEnd);
+		
+		//시작월이 종료월보다 큰 경우 메세지 출력
+		if(monEndInt < monStartInt){
+			alert("시작월이 종료월보다 큽니다. 시작월을 다시 설정해주세요.");
+			$("#datepicker-input-ko-mon-start").val('');
+			$("#datepicker-input-ko-mon-start").focus();
+			return;
+		}		
+	});
+	
+	
+	
+	//종료월 설정시 시작 월과 크기 비교
+	calMonthKoEnd.on('change', () =>{
+		var monStart = $("#datepicker-input-ko-mon-start").val();
+		var monEnd = $("#datepicker-input-ko-mon-end").val();
+		
+		//시작월 입력값이 있는지 체크
+		if(monStart == null || monStart == ""){
+			alert("시작월을 먼저 선택해주세요.");
+			$("#datepicker-input-ko-mon-start").focus();
+			return;
+		}
+		
+		var monStartInt = parseInt(monStart);
+		var monEndInt = parseInt(monEnd);
+		
+		//시작월이 종료월보다 큰 경우 메세지 출력
+		if(monEndInt < monStartInt){
+			alert("종료월이 시작월보다 작습니다. 종료월을 다시 설정해주세요.");
+			$("#datepicker-input-ko-mon-end").val('');
+			$("#datepicker-input-ko-mon-end").focus();
+			return;
+		}		
+	});
+	
+	
+	
 	
 // 	var optVal = $("#cdList1").val();
 // 	if(optVal != ""){
@@ -493,6 +635,10 @@ $(document).ready(function(){
 	
 	//console.log($("#aprv_no").val());
 	//console.log($("#mode").val());
+	$( ".fnSearch" ).click(function() {
+			goPage(1);
+	});
+	
 	
 	/* 등록 */
 	$("#fnJoin").click(function(){
@@ -513,6 +659,13 @@ $(document).ready(function(){
 // 		optionCreate($(this).val());
 // 	});
 });
+
+function goPage(cPage){
+	$("#cPage").val(cPage);
+	$("#frm1").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");
+	$("#frm1").submit();
+}
+
 
 // select option 생성
 function optionCreate(val){
@@ -555,14 +708,17 @@ function fnView(aprv_no, line_chk, conf_yn, conf_y_cnt){
 	$("#frm1").submit();	
 }
 
-function goPage(cPage){
-	$("#cPage").val(cPage);
-	$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00List.do");
-	$("#frm1").submit();
-	
-}
+function fn_docPopup(aprvNo){
+	window.open("", "doc00Popup","width=720, height=750");
+	$("#aprv_no2").val(aprvNo);
+	$("#docFrm").attr("target", "doc00Popup");
+//		$("#not_uss_id").val($("#rept_aprv_no").val());
+	$("#docFrm").attr("action", "${pageContext.request.contextPath}/doc/doc00Popup.do");
+	$("#docFrm").submit();
+} 
 
-var picker = tui.DatePicker.createRangePicker({
+
+/* var picker = tui.DatePicker.createRangePicker({
 	language: 'ko',
 	startpicker: {
 		input: '#st_dt',
@@ -602,7 +758,7 @@ if(edDt != null && edDt != ''){
 function fn_delDate(){
 	picker.setStartDate(null);
 	picker.setEndDate(null);
-}
+} */
 
 </script>
 </body>
