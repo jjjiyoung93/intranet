@@ -293,7 +293,7 @@
 		}, //boolean
 		fOnAppLoad : function(){
 			//예제 코드
-			oEditors.getById["content"].exec("PASTE_HTML", ["${resultView.CONTENT }"]);
+			oEditors.getById["content"].exec("PASTE_HTML", ['${resultView.CONTENT }']);
 		},
 		fCreator: "createSEditor2"
 	});
