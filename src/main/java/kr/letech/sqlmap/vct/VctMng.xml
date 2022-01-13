@@ -292,4 +292,314 @@
 		  ORDER BY C.CD ASC                  
 	</select>
 	
+	<select id="getVctStatTotCount" parameterType="map" resultType="int">
+		WITH W_PARAMS AS(
+	       SELECT #{searchGubun2} AS STDD_YR
+	         FROM DUAL
+		),W_USS_LIST AS (
+		    SELECT
+		           B.STDD_YR
+		         , A.USS_ID
+		         , A.USS_NM
+		         , A.EMP_TYPE
+		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM
+		         , A.RTR_YN
+		         , DECODE(A.RTR_YN, 'Y', '퇴사', '재직중') AS RTR_YN_NM
+		         , A.JOIN_DT
+		         , A.RTR_DT
+		         , A.WORK_YR_CNT
+		         , C.VCT_GRNT_DAY
+		      FROM STD_USS_MNG A
+		      LEFT OUTER JOIN W_PARAMS B ON (1=1)
+		      LEFT OUTER JOIN VCT_DAY_MNG C ON (A.USS_ID = C.USS_ID AND B.STDD_YR = C.STDD_YR)
+		      WHERE 1=1
+		         AND ( TO_CHAR(A.REG_DT, 'YYYY')  <![CDATA[<=]]> B.STDD_YR OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> B.STDD_YR )/*기준년도 이전에 입사한 사원*/
+		         <choose>
+				  		<when test='searchGubun3 == "Y"'>
+				  			AND A.RTR_YN = #{searchGubun3}
+				  		</when>
+				  		<otherwise>
+				  			 AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= B.STDD_YR ) /*현재 재직중인 사원*/
+				  		</otherwise>
+				  </choose>
+				  <!-- 고용구분  -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun4)">
+						AND A.EMP_TYPE = #{searchGubun4}
+					</if>
+				<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+						<choose>
+							<when test='searchGubun == "01"' >
+						AND A.USS_ID LIKE '%' || #{searchField} || '%'
+							</when>
+							<when test='searchGubun == "02"' >
+						AND A.USS_NM LIKE '%' || #{searchField} || '%'	
+							</when>
+						</choose>
+					</if>
+		),W_LAST_APRV AS (
+		        SELECT
+		               C.REPT_APRV_NO
+		             , MAX(TO_NUMBER(C.APRV_NO)) AS MAX_APRV_NO
+		         FROM STD_APRV_MNG C
+		         LEFT OUTER JOIN W_PARAMS D ON (1=1)
+		        WHERE TO_CHAR(C.CRTN_DT, 'YYYY') = D.STDD_YR
+		        GROUP BY C.REPT_APRV_NO
+		),W_USS_ADD_INFO AS(
+		    SELECT
+		            E.APRV_NO
+		          , E.REPT_APRV_NO
+		          , E.PROJ_CD
+		          , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = E.PROJ_CD) AS PROJ_NM
+		          , E.REPT_DP_CD
+		          , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = E.REPT_DP_CD) AS REPT_DP_NM
+		          , E.REPT_AUTH_CD
+		          , (SELECT S.AUTHOR_NM FROM STD_AUT_INFO S WHERE S.AUTHOR_CODE = E.REPT_AUTH_CD) AS REPT_AUTH_NM
+		    FROM STD_APRV_MNG E
+		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
+		    WHERE 1=1
+		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
+		      AND E.REPT_AUTH_CD = #{searchGubun5}	
+		    </if>
+		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
+		      AND E.PROJ_CD = #{searchGubun6}	
+		    </if>
+		),W_VCT_TYPE_LIST AS (
+		    SELECT 
+		           * 
+		      FROM STD_CD_MNG 
+		     WHERE UP_CD = 'CD0001011' 
+		     ORDER BY CD_ORD
+		), W_VCT_SUM_DAY AS (
+		        SELECT 
+		               G.USS_ID
+		             , G.VCT_TYPE
+		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
+		           FROM VCT_INF_MNG G
+		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
+		          WHERE G.VCT_YR = H.STDD_YR
+		           GROUP BY G.USS_ID, G.VCT_TYPE 
+		), W_VCT_USE_DAY_CNT AS (
+		
+		SELECT
+		           J.STDD_YR
+		         , J.USS_ID
+		         , J.USS_NM
+		         , J.EMP_TYPE
+		         , J.EMP_TYPE_NM
+		         , J.RTR_YN
+		         , J.RTR_YN_NM
+		         , J.JOIN_DT
+		         , J.RTR_DT
+		         , J.WORK_YR_CNT
+		         , J.VCT_GRNT_DAY
+		         , K.CD AS VCT_TYPE
+		         , K.CD_NM AS VCT_TYPE_NM
+		         , K.CD_ORD
+		         , NVL(I.VCT_USE_DAY, 0) AS VCT_USE_DAY
+		         , J.VCT_GRNT_DAY - NVL(I.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
+		         , NVL(I.VCT_USE_DAY / J.VCT_GRNT_DAY * 100, 0) AS VCT_USE_RATE
+		  FROM W_USS_LIST J
+		  LEFT OUTER JOIN W_VCT_TYPE_LIST K ON (1=1)
+		  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
+		  ORDER BY J.USS_NM, K.CD_ORD
+		
+		), W_VCT_USS_INFO AS(
+		    SELECT
+		           L.STDD_YR
+		         , L.USS_ID
+		         , L.USS_NM
+		         , L.EMP_TYPE
+		         , L.EMP_TYPE_NM
+		         , L.RTR_YN
+		         , L.RTR_YN_NM
+		         , L.JOIN_DT
+		         , L.RTR_DT
+		         , NVL(L.WORK_YR_CNT, 0) AS WORK_YR_CNT
+		         , NVL(L.VCT_GRNT_DAY, 0) AS VCT_GRNT_DAY
+		         , M.PROJ_CD
+		         , M.PROJ_NM
+		         , M.REPT_DP_CD
+		         , M.REPT_DP_NM
+		         , M.REPT_AUTH_CD
+		         , M.REPT_AUTH_NM 
+		      
+		      FROM W_USS_LIST L
+		      LEFT OUTER JOIN W_USS_ADD_INFO M ON (M.REPT_APRV_NO = L.USS_ID)
+		)
+			SELECT
+			      COUNT(1) AS cnt
+			  FROM W_VCT_USS_INFO
+		    
+	</select>
+	
+	
+	<!-- 휴가현황집계 목록 조회  -->
+	<select id="getVctStatList" resultType="hashMap" parameterType="map">
+		WITH W_PARAMS AS(
+	       SELECT #{searchGubun2} AS STDD_YR
+	         FROM DUAL
+		),W_USS_LIST AS (
+		    SELECT
+		           B.STDD_YR
+		         , A.USS_ID
+		         , A.USS_NM
+		         , A.EMP_TYPE
+		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM
+		         , A.RTR_YN
+		         , DECODE(A.RTR_YN, 'Y', '퇴사', '재직중') AS RTR_YN_NM
+		         , A.JOIN_DT
+		         , A.RTR_DT
+		         , A.WORK_YR_CNT
+		         , C.VCT_GRNT_DAY
+		      FROM STD_USS_MNG A
+		      LEFT OUTER JOIN W_PARAMS B ON (1=1)
+		      LEFT OUTER JOIN VCT_DAY_MNG C ON (A.USS_ID = C.USS_ID AND B.STDD_YR = C.STDD_YR)
+		      WHERE 1=1
+		         AND ( TO_CHAR(A.REG_DT, 'YYYY')  <![CDATA[<=]]> B.STDD_YR OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> B.STDD_YR )/*기준년도 이전에 입사한 사원*/
+		         <choose>
+				  		<when test='searchGubun3 == "Y"'>
+				  			AND A.RTR_YN = #{searchGubun3}
+				  		</when>
+				  		<otherwise>
+				  			 AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= B.STDD_YR ) /*현재 재직중인 사원*/
+				  		</otherwise>
+				  </choose>
+				  <!-- 고용구분  -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun4)">
+						AND A.EMP_TYPE = #{searchGubun4}
+					</if>
+				<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+						<choose>
+							<when test='searchGubun == "01"' >
+						AND A.USS_ID LIKE '%' || #{searchField} || '%'
+							</when>
+							<when test='searchGubun == "02"' >
+						AND A.USS_NM LIKE '%' || #{searchField} || '%'	
+							</when>
+						</choose>
+					</if>
+		),W_LAST_APRV AS (
+		        SELECT
+		               C.REPT_APRV_NO
+		             , MAX(TO_NUMBER(C.APRV_NO)) AS MAX_APRV_NO
+		         FROM STD_APRV_MNG C
+		         LEFT OUTER JOIN W_PARAMS D ON (1=1)
+		        WHERE TO_CHAR(C.CRTN_DT, 'YYYY') = D.STDD_YR
+		        GROUP BY C.REPT_APRV_NO
+		),W_USS_ADD_INFO AS(
+		    SELECT
+		            E.APRV_NO
+		          , E.REPT_APRV_NO
+		          , E.PROJ_CD
+		          , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = E.PROJ_CD) AS PROJ_NM
+		          , E.REPT_DP_CD
+		          , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = E.REPT_DP_CD) AS REPT_DP_NM
+		          , E.REPT_AUTH_CD
+		          , (SELECT S.AUTHOR_NM FROM STD_AUT_INFO S WHERE S.AUTHOR_CODE = E.REPT_AUTH_CD) AS REPT_AUTH_NM
+		    FROM STD_APRV_MNG E
+		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
+		    WHERE 1=1
+		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
+		      AND E.REPT_AUTH_CD = #{searchGubun5}	
+		    </if>
+		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
+		      AND E.PROJ_CD = #{searchGubun6}	
+		    </if>
+		),W_VCT_TYPE_LIST AS (
+		    SELECT 
+		           * 
+		      FROM STD_CD_MNG 
+		     WHERE UP_CD = 'CD0001011' 
+		     ORDER BY CD_ORD
+		), W_VCT_SUM_DAY AS (
+		        SELECT 
+		               G.USS_ID
+		             , G.VCT_TYPE
+		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
+		           FROM VCT_INF_MNG G
+		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
+		          WHERE G.VCT_YR = H.STDD_YR
+		           GROUP BY G.USS_ID, G.VCT_TYPE 
+		), W_VCT_USE_DAY_CNT AS (
+		
+		SELECT
+		           J.STDD_YR
+		         , J.USS_ID
+		         , J.USS_NM
+		         , J.EMP_TYPE
+		         , J.EMP_TYPE_NM
+		         , J.RTR_YN
+		         , J.RTR_YN_NM
+		         , J.JOIN_DT
+		         , J.RTR_DT
+		         , J.WORK_YR_CNT
+		         , J.VCT_GRNT_DAY
+		         , K.CD AS VCT_TYPE
+		         , K.CD_NM AS VCT_TYPE_NM
+		         , K.CD_ORD
+		         , NVL(I.VCT_USE_DAY, 0) AS VCT_USE_DAY
+		         , J.VCT_GRNT_DAY - NVL(I.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
+		         , NVL(I.VCT_USE_DAY / J.VCT_GRNT_DAY * 100, 0) AS VCT_USE_RATE
+		  FROM W_USS_LIST J
+		  LEFT OUTER JOIN W_VCT_TYPE_LIST K ON (1=1)
+		  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
+		  ORDER BY J.USS_NM, K.CD_ORD
+		
+		), W_VCT_USS_INFO AS(
+		    SELECT
+		           L.STDD_YR
+		         , L.USS_ID
+		         , L.USS_NM
+		         , L.EMP_TYPE
+		         , L.EMP_TYPE_NM
+		         , L.RTR_YN
+		         , L.RTR_YN_NM
+		         , L.JOIN_DT
+		         , L.RTR_DT
+		         , NVL(L.WORK_YR_CNT, 0) AS WORK_YR_CNT
+		         , NVL(L.VCT_GRNT_DAY, 0) AS VCT_GRNT_DAY
+		         , M.PROJ_CD
+		         , M.PROJ_NM
+		         , M.REPT_DP_CD
+		         , M.REPT_DP_NM
+		         , M.REPT_AUTH_CD
+		         , M.REPT_AUTH_NM 
+		      
+		      FROM W_USS_LIST L
+		      LEFT OUTER JOIN W_USS_ADD_INFO M ON (M.REPT_APRV_NO = L.USS_ID)
+		)
+			SELECT
+		           X.STDD_YR
+		         , X.USS_ID
+		         , X.USS_NM
+		         , X.EMP_TYPE
+		         , X.EMP_TYPE_NM
+		         , X.RTR_YN
+		         , X.RTR_YN_NM
+		         , X.JOIN_DT
+		         , X.RTR_DT
+		         , X.WORK_YR_CNT
+		         , X.PROJ_CD
+		         , X.PROJ_NM
+		         , X.REPT_DP_CD
+		         , X.REPT_DP_NM
+		         , X.REPT_AUTH_CD
+		         , X.REPT_AUTH_NM
+		         , X.VCT_GRNT_DAY AS YEON_GRNT_DAY
+		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011001') AS YEON_USE_CNT
+		         , (SELECT NVL(S.VCT_LEFT_DAY, 0) FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011001') AS YEON_LEFT_CNT
+		         , (SELECT ROUND(S.VCT_USE_RATE, 2) FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011001') AS YEON_USE_RATE
+		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011002') AS DISS_USE_CNT
+		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011003') AS FAM_EVNT_USE_CNT
+		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011004') AS REPLC_USE_CNT
+		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011005') AS CMFT_USE_CNT
+		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011006') AS FAM_CARE_USE_CNT
+		         ,(SELECT NVL(SUM(S.VCT_USE_DAY), 0) FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID) AS VCT_TOT_CNT
+		      FROM W_VCT_USS_INFO X 
+		      ORDER BY X.USS_NM
+	
+	</select>
+	
 </mapper>

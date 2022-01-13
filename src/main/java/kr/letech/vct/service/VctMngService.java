@@ -37,4 +37,12 @@ public interface VctMngService {
 	 */
 	public List getVctViewList(Map params) throws Exception;
 
+	/**
+	 * 휴가현황집계 목록 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getVctStatPageingList(Map params) throws Exception;
+
 }

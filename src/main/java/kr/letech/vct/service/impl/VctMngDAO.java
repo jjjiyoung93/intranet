@@ -69,6 +69,29 @@ public class VctMngDAO extends AbstractDAO {
 	public List getVctViewList(Map params) throws Exception {
 		return getList("vctMng.getVctViewList", params);
 	}
+
+	/**
+	 * 휴가현황집계 사원 총 수
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public int getVctStatTotCount(Map params) throws Exception {
+		return (Integer)getObject("vctMng.getVctStatTotCount", params);
+	}
+
+	
+	/**
+	 * 휴가현황집계 목록 조회
+	 * @param params
+	 * @param offSet
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	public List getVctStatPageList(Map params, int offSet, int limit) throws Exception {
+		return getList("vctMng.getVctStatList", params, offSet, limit);
+	}
 	
 	
 

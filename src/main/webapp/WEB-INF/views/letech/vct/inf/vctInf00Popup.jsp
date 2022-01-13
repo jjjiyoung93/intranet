@@ -25,6 +25,13 @@
 <script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.js"></script>
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
 <link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/jsPDF/jspdf.umd.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/tableExport.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/vfs_fonts.js"></script>
 </head>
 
 <body style="zoom: 1; background-color: white;">
@@ -359,9 +366,9 @@
 							<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
 							<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
 						</select>
-						<span class="pull-right"><input type="button" id="fnJoin" name="fnJoin" class="btn btn-sm btn-default" value="엑셀다운"/></span>
+						<span class="pull-right"><input type="button" id="btnExcl" name="fnJoin" class="btn btn-sm btn-default" value="엑셀다운"/></span>
 					</p>
-						<table class="table table-bordered reactive" >
+						<table class="table table-bordered reactive" id="table-aprv"  data-show-export="true" data-pagination="true"  data-show-toggle="true" data-show-columns="true">
 							<colgroup>
 								<col width="50" class="hidden-xs hidden-sm"/>
 								<col width="80" class="hidden-xs hidden-sm"/>
@@ -374,16 +381,16 @@
 							</colgroup>
 							<thead>
 								<tr role="row">
-									<th class="hidden-xs hidden-sm">NO</th>
-									<th class="hidden-xs hidden-sm">결재문서번호</th>
+									<th class="hidden-xs hidden-sm" data-force-export="true">NO</th>
+									<th class="hidden-xs hidden-sm" data-force-export="true">결재문서번호</th>
 									<!-- <th class="">보고자</th> -->
-									<th class="">휴가구분</th>
+									<th class="" data-force-export="true">휴가구분</th>
 									<!-- <th class="">확인</th> -->
-									<th class="">제 목</th>
-									<th class="hidden-xs hidden-sm">기간</th>
-									<th class="">상신일</th>
-									<th class="">상태</th>
-									<th class="">신청서</th>
+									<th class="" data-force-export="true">제 목</th>
+									<th class="hidden-xs hidden-sm" data-force-export="true">기간</th>
+									<th class="" data-force-export="true">상신일</th>
+									<th class="" data-force-export="true">상태</th>
+									<th class="" data-force-hide="true">신청서</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -398,10 +405,10 @@
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
 											<tr class="">
-												<td class="hidden-xs hidden-sm text-center">
+												<td class="hidden-xs hidden-sm text-center" data-force-export="true">
 													${totalCnt - status.index - ((cPage-1) * (intListCnt))}
 												</td>
-												<td class="hidden-xs hidden-sm text-center">
+												<td class="hidden-xs hidden-sm text-center" data-force-export="true">
 													${list.APRV_NO}
 												</td>
 											<%-- 	<td>
@@ -420,12 +427,12 @@
 												</c:otherwise>
 											</c:choose>
 												</td> --%>
-												<td class="center">
+												<td class="center" data-force-export="true">
 													<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
 													<span class="ellip ellip-line">${list.TITLE}</span>
 													</a>
 												</td>
-												<td class="center hidden-xs hidden-sm">
+												<td class="center hidden-xs hidden-sm" data-force-export="true">
 													${list.SUM_DAY_CNT}
 												</td>
 												<%-- <td class="hidden-xs hidden-sm">
@@ -439,10 +446,10 @@
 													</c:choose> 
 													
 												</td> --%>
-												<td>
+												<td data-tableexport-msonumberformat="yyyy/mm/dd" data-force-export="true">
 													${list.MODI_DT}
 												</td>
-												<td class="center">
+												<td class="center" data-force-export="true">
 													<c:choose>
 														<c:when test="${list.LINE_CHK eq 'N' && list.APRV_YN_TP eq '1' && list.CONF_Y_CNT > 0 && list.CONF_Y_CNT > list.CONF_REFE_CNT }">
 															진행중
@@ -471,7 +478,7 @@
 														</c:choose>
 													</c:if>
 												</td>
-												<td class="">
+												<td class="" data-force-hide="true">
 													<input type="button" id="" name="" class="btn btn-sm btn-default" value="보기" onclick="fn_docPopup('${list.APRV_NO}')"/>
 												</td>
 											</tr>
@@ -640,10 +647,11 @@ $(document).ready(function(){
 	});
 	
 	
-	/* 등록 */
-	$("#fnJoin").click(function(){
-		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");
-		$("#frm1").submit();
+	/* 엑셀다운 */
+	$("#btnExcl").click(function(){
+		$('#table-aprv').tableExport({type : 'excel', exportHiddenCells: 'true'});
+		/* $("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");
+		$("#frm1").submit(); */
 	});
 	
 	/* 등록 */
@@ -660,6 +668,7 @@ $(document).ready(function(){
 // 	});
 });
 
+//검색 버튼
 function goPage(cPage){
 	$("#cPage").val(cPage);
 	$("#frm1").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");
@@ -698,16 +707,18 @@ function optionCreate(val){
 
 /* 글보기 */
 function fnView(aprv_no, line_chk, conf_yn, conf_y_cnt){
-	
+	window.open("", "aprv00View","width=720, height=750");
 	$("#aprv_no").val(aprv_no);
 	$("#line_chk").val(line_chk);		// 결재 인지 아닌지 구분 (Y:결재, N:결재신청)
 	$("#conf_yn").val(conf_yn);
 	$("#conf_y_cnt").val(conf_y_cnt);
 	$("#mode").val("<%=VarConsts.MODE_U%>");
-	$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00View.do");
+	$("#frm1").attr("target", "aprv00View");
+	$("#frm1").attr("action", "${pageContext.request.contextPath}/vct/vct00PopupDtil.do");
 	$("#frm1").submit();	
 }
 
+//보고서 보기
 function fn_docPopup(aprvNo){
 	window.open("", "doc00Popup","width=720, height=750");
 	$("#aprv_no2").val(aprvNo);

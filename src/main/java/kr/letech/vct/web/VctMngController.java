@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.letech.aprv.service.AprvMngService;
+import kr.letech.cmm.LoginVO;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.sys.cdm.service.CodeMngService;
 import kr.letech.sys.rol.service.RoleMngService;
+import kr.letech.uss.umt.service.impl.UssMngDAO;
 import kr.letech.vct.service.VctMngService;
 
 @Controller
@@ -42,6 +45,10 @@ public class VctMngController {
 	/** 결재 관련 */
 	@Resource(name = "aprvMngService")
 	private AprvMngService aprvMngService;
+	
+	/** ussMngDAO */
+	@Resource(name="ussMngDAO")
+	private UssMngDAO ussMngDAO;
 	
 	/**
 	 * 휴가부여일수 조회
@@ -184,7 +191,7 @@ public class VctMngController {
 	}
 	
 	/**
-	 * 휴가현황조회 상세 팝업 조회
+	 * 휴가현황조회 상세보기 팝업 조회
 	 * @param request
 	 * @param model
 	 * @return
@@ -214,5 +221,112 @@ public class VctMngController {
 		return "letech/vct/inf/vctInf00Popup";
 	}
 	
+	/**
+	 * 휴가현황조회 상세보기 결재문서 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/vct/vct00PopupDtil.do")
+	public String getVctPopupDtil(HttpServletRequest request, ModelMap model) throws Exception {
+		Map params = ReqUtils.getParameterMap(request);
+
+		// 사용자 정보 넣기
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		params.put("uss_id", loginVO.getId());
+		
+		// 권한 넣기
+		Map ussView = ussMngDAO.getUssView(params);
+		params.put("uss_auth_cd", ussView.get("USS_AUTH_CD"));
+
+		model.addAttribute("params", params);
+
+		params.put("aprv_emp_no", loginVO.getId());
+		
+		
+		/* 상세 정보 조회 */
+		Map viewMap = aprvMngService.getAprvView(params);
+		/* 결재 라인 정보 조회 */
+		List lineList = aprvMngService.aprvLineList(params);
+		/* 결재 첨부파일정보 조회 */
+		List fileList = aprvMngService.aprvFileList(params);
+		/* 지출결의서 조회 */
+		Map recMap = (Map) aprvMngService.getAprvRecList(params);
+		
+		model.addAttribute("viewMap", viewMap);
+		model.addAttribute("lineList", lineList);
+		model.addAttribute("fileList", fileList);
+		model.addAttribute("recList", recMap.get("recList"));
+		model.addAttribute("recFileList", recMap.get("recFileList"));
+		
+
+		/*코드리스트 조회를 위한 상위코드입력*/
+		params.put("up_cd", VarConsts.EAM_MASTER_CODE);
+		List codeList = codeMngService.getCodeList(params);
+		model.addAttribute("codeList", codeList);
+		
+		params.put("up_cd", VarConsts.EAM_PROJECT_CODE);
+		List projList = codeMngService.getCodeList(params);
+		model.addAttribute("projList", projList);
+		
+		/*상세 코드리스트 조회를 위한 상위코드입력*/
+		params.put("up_cd", viewMap.get("APRV_TYPE_CD"));
+		List codeList2 = codeMngService.getCodeList(params);
+		model.addAttribute("codeList2", codeList2);
+		
+		return "letech/vct/inf/vctInf00Dtil";
+	}
 	
+	/**
+	 * 휴가현황집계 목록 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "sys/vct/vctStat00List.do")
+	public String getVctStatList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		// searchGubun2 파라미터 값이 없으면 기본값으로 빈 값 추가
+		if(StringUtils.isEmpty((String)params.get("searchGubun2"))) {
+			params.put("searchGubun2", "");
+		}
+		
+		//목록 및 총건수, 페이징
+		Map vctDayObject = vctMngService.getVctStatPageingList(params);
+		
+		
+		model.addAttribute("cPage", vctDayObject.get("cPage"));					// 페이지수
+		model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
+		model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
+		model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
+		//model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
+		model.addAttribute("params", params);
+		
+		//고용구분 코드 목록 조회
+		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+		List empTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("empTypeList", empTypeList);
+		
+		//직급(권한) 코드 목록 조회
+		List authList = roleMngService.getAuthList(params);
+		model.addAttribute("authList", authList);
+		
+		//프로젝트 목록 조회
+		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
+		List projList = codeMngService.getCodeList(params);
+		model.addAttribute("projList", projList);
+		
+		//휴가구분 목록 조회
+		params.put("up_cd", VarConsts.EAM_VACATION_CODE); // 휴가구분코드
+		List vctTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("vctTypeList", vctTypeList);
+		
+		
+		return "letech/vct/stat/vctStat00List";
+	}
 }
