@@ -491,4 +491,29 @@ public class AprvMngController {
 		
 		return viewName;
 	}
+	
+	/**
+	 * 상위코드를 입력받아 하위코드를 json으로 응답
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/aprv/getCdList.do")
+	public String getCodeList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		String viewName = "jsonView";
+		
+		params.put("up_cd", params.get("upCd"));
+		
+		List cdList = codeMngService.getCodeList(params);
+		model.addAttribute("cdList", cdList);
+		
+		model.addAttribute("params", params);
+
+		return viewName;
+		
+	}
 }

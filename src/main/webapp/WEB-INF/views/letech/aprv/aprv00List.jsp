@@ -79,22 +79,39 @@
 											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
 											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
 											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
+									</select>
+									<label style="font-size: 14px; padding: 0px;">구분</label>
+									<select id="searchCdList6" style="width: 100px;" name="searchCdList6" class="form-control table-cell">
+											<option value="" >--전체--</option>
+											<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
+											<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '4' }">selected="selected"</c:if>>진행중</option>
+											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
+											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
+											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
 									</select>								
 								</span>
 								</div>
 								<div class="col-md-6 mt10 text-right">
 									<span class="search-select-wrap" style="margin: 0px;">
-										<label style="font-size: 14px; padding: 0px;">소속</label>
-										<select id="searchCdList4" style="width: 100px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control">
+										<label style="font-size: 14px; padding: 0px;">소속1</label>
+										<select id="searchCdList4" style="width: 130px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control" onchange="javascript:fn_dp2List(this.value)">
 													<option value="" >--전체--</option>
 													<c:forEach var="dp" items="${dpList}">
 														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
 													</c:forEach>
+										</select>
+										<label style="font-size: 14px; padding: 0px;">소속2</label>					
+										<select id="searchCdList5" style="width: 150px; font-size: 12px; display:inline-block;" name="searchCdList5" class="form-control">
+													<option value="" >--전체--</option>
+													
+													<%-- <c:forEach var="dp" items="${dpList}">
+														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
+													</c:forEach> --%>
 										</select>					
 										<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;보고자</label>
 										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" />
-										<label style="font-size: 14px; padding: 0px;">결재자</label>
-										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField3" id="searchField3" value="${params.searchField3}" title="검색어 입력" />
+										<%-- <label style="font-size: 14px; padding: 0px;">결재자</label>
+										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField3" id="searchField3" value="${params.searchField3}" title="검색어 입력" /> --%>
 									</span>
 								</div>
 <!-- 								<div class="col-lg-6 mt10 text-right" style="display:inline-block;"> -->
@@ -491,6 +508,35 @@ if(edDt != null && edDt != ''){
 function fn_delDate(){
 	picker.setStartDate(null);
 	picker.setEndDate(null);
+}
+
+function fn_dp2List(val){
+	var dp2Cd = '${params.searchList5}';
+	
+	var dpCd = val;
+	
+	$.ajax({
+		type: 'post',
+		data : {
+			upCd : dpCd 
+		},
+		url : "${pageContext.request.contextPath}/aprv/getCdList.do",
+		dataType : 'json',
+		success : function (data){
+			var params = data.params;
+			var cdList = data.cdList;
+			var html = '';
+			$(".cdList").remove();
+			for(var i in cdList){
+				var cd = cdList[i];
+				html += '<option class="cdList" value="'+cd.CD+'" id="'+cd.CD+'">'+cd.CD_NM+'</option>';
+			}
+			$("#searchCdList5").append(html);
+			$("#"+dp2Cd).prop('selected', true);
+		},error: function (request, status, error) {
+	         alert(request.responseText);
+	    } 
+	});
 }
 
 </script>

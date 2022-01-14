@@ -210,16 +210,16 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(edDtSrch)" >	<!-- 기간 끝날짜 -->
 			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{edDtSrch}, 'YYYY-MM-DD') 
 		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
-			AND B.DP_CD = #{searchCdList4}
-		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ussId)"> <!-- 보고자  -->
-			AND A.REPT_APRV_NO = #{ussId}
-		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stddYr)"> <!-- 보고자  -->
-			AND A.APRV_TYPE_CD = 'CD0001011'
-			AND SUBSTR(A.TERM_ST_YM, 1, 4) = #{stddYr}
-		</if>
+		<choose>
+			<when test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList5)">
+				AND H.DP_CD = #{searchCdList5}
+			</when>
+			<otherwise>
+				<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
+					AND H.DP_CD = #{searchCdList4}
+				</if>
+			</otherwise>		
+		</choose>
 		<!-- 2022.01.12 검색조건 추가 : BEGIN  -->
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ussId)" >	<!-- 사원ID -->
 			AND A.REPT_APRV_NO = #{ussId}
@@ -384,9 +384,16 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(edDtSrch)" >	<!-- 기간 끝날짜 -->
 			AND A.CRTN_DT <![CDATA[<=]]> TO_DATE(#{edDtSrch}, 'YYYY-MM-DD') 
 		</if>
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
-			AND H.DP_CD = #{searchCdList4}
-		</if>
+		<choose>
+			<when test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList5)">
+				AND H.DP_CD = #{searchCdList5}
+			</when>
+			<otherwise>
+				<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
+					AND H.DP_CD = #{searchCdList4}
+				</if>
+			</otherwise>		
+		</choose>
 		
 		<!-- 2022.01.12 검색조건 추가 : BEGIN  -->
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(ussId)" >	<!-- 사원ID -->
