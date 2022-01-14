@@ -14,6 +14,19 @@
 	<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.js"></script>
 	<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
 	<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
+	
+	<link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/resources/css/dataTables.bootstrap.min.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/resources/css/dataTables.responsive.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
+	<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.css' rel='stylesheet' />
+	<link href='${pageContext.request.contextPath}/resources/js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+	<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css"> --%>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/js/bootstrap.min.js"></script>
+
 </head>
 
 <body>
@@ -134,7 +147,7 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class ="col-xs-6 un-style">
+											<%-- <div class ="col-xs-6 un-style">
 												<span class="inline-element col-xs-11">
 													<label>휴가구분</label>
 													<select name="searchGubun7" id="searchGubun7" class="form-control" title="search" >
@@ -145,7 +158,7 @@
 													</select>
 													
 												</span>
-											</div>
+											</div> --%>
 <%-- 											<div class ="col-xs-6 un-style">
 												<span class="inline-element col-xs-11">
 													<label>권한</label>
@@ -164,23 +177,34 @@
 									
 									<br>
 									<span class="pull-right">
-										<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>
+										<button type="button" id="btnExcl" class="fnExcl btn btn-sm btn-default" >엑셀다운</button>
 									</span>
 									
-									<%-- <strong class="list_count" >Total : ${totalCnt} 건</strong> --%>
+									<strong class="list_count" >Total : ${totalCnt} 건</strong>
 							</p>
 						<div class="table-responsive" id="uss-list" style=" height: 500px; overflow-y:scroll;">
-						<table class="table table-bordered" summary="휴가집계">
+						<table class="table table-bordered reactive" id="table-stat" summary="휴가집계">
 							<colgroup>
 								<col width="5%" />
 								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="8%" />
-								<col width="10%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
+								<col width="5%" />
 							</colgroup>
 							<thead>
 								<tr>
@@ -289,14 +313,26 @@
 	</div>
 	 	<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/jsPDF/jspdf.umd.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/tableExport.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/vfs_fonts.js"></script>
+	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script> --%>
 	<script type="text/javascript">
 
+		
 		/* 엑셀Down */
-		$( ".fnExcl" ).click(function() {
+		$("#btnExcl").click(function() {
+			alert("excl!!");
+			$('#table-stat').tableExport({type: 'excel', exportHiddenCells: 'true'});
 			/* $("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
 			$("#frm1").submit(); */
 		});
+
+	
 		
 		/* 검색 */
 		$( ".fnSearch" ).click(function() {

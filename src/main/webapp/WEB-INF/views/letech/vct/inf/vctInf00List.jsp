@@ -139,16 +139,15 @@
 									</sec:authorize>
 									
 							</div>
+							<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 							<p class="clearfix board-top">
-								<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 									
 									<br>
 									<span class="pull-right">
-										<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>
+										<button type="button" class="btnExcl-uss btn btn-sm btn-default" >엑셀다운</button>
 									</span>
 									
 									<strong class="list_count" >Total : ${totalCnt} 건</strong>
-								</sec:authorize>
 							</p>
 						<div class="table-responsive" id="uss-list" style=" height: 200px; overflow-y:scroll;">
 						<table class="table table-bordered" summary="사용자관리 목록">
@@ -189,7 +188,7 @@
 												<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
 												<td align="center">${list.STDD_YR} </td>
 												<td>
-													<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}');">
+													<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}', '${list.USS_NM}');">
 														<span class="ellip ellip-line">${list.USS_NM}</span>
 													</a>
 												</td>
@@ -206,8 +205,12 @@
 						</tbody>
 					</table>
 					</div>
+					</sec:authorize>
 					<div class="table-responsive" id="uss-vct">
 						
+					</div>
+					<div class="table-reponsive" id="uss-vct-excl">
+					
 					</div>
 					<div class="table_foot2">
 						<!-- pase nav-->
@@ -241,10 +244,161 @@
 	 	<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/jsPDF/jspdf.umd.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/tableExport.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/pdfmake.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/vfs_fonts.js"></script>
 	<script type="text/javascript">
+		/*사원정보엑셀Down*/
+		$(".btnExcl-uss").click(function() {
+			
+			$.ajax({
+				type: 'post',
+				data : $("#frm1").serialize(),
+				url : "${pageContext.request.contextPath}/vct/vctInf00Excl.do",
+				dataType : 'json',
+				success : function (data){
+					var map = data.map;
+					var resultList = map.resultList;
+					var totalCnt = map.totalCnt;
+					var cPage = map.cPage;
+					var params = data.params;
+					var vctTypeList = data.vctTypeList;
+					var vctTypeCnt = vctTypeList.length;
+					var intListCnt = map.intListCnt;
+					var stddYr = params.searchGubun2;
+					
+					var html = "";
+					
+					html += '<table class="table table-bordered" id="table-stat" summary="휴가집계">';
+					html += '<colgroup>';
+					html +=	'<col width="5%" />';
+				    html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+					html += '<col width="5%" />';
+						for(var i  in vctTypeList){
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';
+							html += '<col width="5%" />';						
+						}
+						
+						html += '<col width="5%" />';
+						html += '</colgroup>';
+					html += '<thead>';
+					html += '	<tr>';
+					html += '		<th class="visible-md visible-lg" rowspan="2">번호</th>';
+					html += '		<th rowspan="2">기준년도</th>';
+					html += '		<th rowspan="2">성명</th>';
+					html += '		<th rowspan="2">고용구분</th>';
+					html += '		<th rowspan="2">프로젝트</th>';
+					html += '		<th rowspan="2">직급</th>';
+					html += '		<th class="visible-md visible-lg" rowspan="2">재직구분</th>';
+					html += '		<th rowspan="2">입사일</th>';
+					html += '		<th rowspan="2">퇴사일</th>';
+					html += '		<th rowspan="2">근속년수(년)</th>';
+					
+							for(var i in vctTypeList){
+								var vctType = vctTypeList[i];
+								
+								if(vctType.CD == "CD0001011001" ){
+									html += '<th rowspan="1" colspan="4">'+vctType.CD_NM+'</th>';
+								}else{
+									html += '<th rowspan="1" colspan="1">'+vctType.CD_NM+'</th>';	
+								}
+							
+							}
+							
+							html += '<th rowspan="2" colspan="1">전체</th>'
+						html+='</tr>';
+						html+='<tr>';
+							for(var i in vctTypeList){
+								var vctType = vctTypeList[i];
+								
+								if(vctType.CD == 'CD0001011001'){
+									html += '<th class="visible-md visible-lg">부여일수</th>';
+									html += '<th>사용일수</th>';
+									html += '<th>잔여일수</th>';
+									html += '<th>활용률</th>';
+								}else {
+									html += '<th>사용일수</th>';
+								}
+							
+							}
 
-		/* 엑셀Down */
-		$( ".fnExcl" ).click(function() {
+						html+='</tr>';
+					html+='</thead>';
+					html+='<tbody>';
+						if (totalCnt < 1){
+								
+							html+='<tr>';
+								html+='<td colspan="'+(vctTypeCnt +13)+'">검색된 내용이 없습니다.</td>'
+							html+='</tr>';
+						
+						}else{
+							for(var i in resultList){
+								var result = resultList[i];
+								html+='<tr data-id="'+result.USS_ID+'">';
+								html+='<th class="visible-md visible-lg text-right">'+(totalCnt - i - ((cPage-1) * (intListCnt)))+'</th>';
+								html+='<td align="center">'+result.STDD_YR+'</td>';
+								html+='<td>'+result.USS_NM+'</td>';
+								html+='<td>'+(result.EMP_TYPE_NM == null ? '' : result.EMP_TYPE_NM)+'</td>';
+								html+='<td>'+(result.PROJ_NM == null ? '' : result.PROJ_NM)+'</td>';
+								html+='<td>'+(result.REPT_AUTH_NM == null ? '' : result.REPT_AUTH_NM)+'</td>';
+								html+='<td align="center">'+(result.RTR_YN_NM == null ? '' : result.RTR_YN_NM)+'</td>';
+								html+='<td align="center">'+(result.JOIN_DT == null ? '' : result.JOIN_DT)+'</td>';
+								html+='<td align="center">'+(result.RTR_DT == null ? '' : result.RTR_DT)+'</td>';
+								html+='<td align="right">'+result.WORK_YR_CNT+'년</td>';
+								html+='<td align="right">'+result.YEON_GRNT_DAY+'일</td>';
+								html+='<td align="right">'+result.YEON_USE_CNT+'일</td>';
+								html+='<td align="right">'+result.YEON_LEFT_CNT+'일</td>';
+								html+='<td align="right">'+result.YEON_USE_RATE+'%</td>';
+								html+='<td align="right">'+result.DISS_USE_CNT+'일</td>';
+								html+='<td align="right">'+result.FAM_EVNT_USE_CNT+'일</td>';
+								html+='<td align="right">'+result.REPLC_USE_CNT+'일</td>';
+								html+='<td align="right">'+result.CMFT_USE_CNT+'일</td>';
+								html+='<td align="right">'+result.FAM_CARE_USE_CNT+'일</td>';
+								html+='<td align="right">'+result.VCT_TOT_CNT+'일</td>';
+								html+='</tr>';
+							}
+						
+						}
+					html+= '</tbody>';
+				html += '</table>';
+					
+				$("#uss-vct-excl").html(html);
+
+				$('#table-stat').tableExport({fileName: stddYr+'년도_사원_휴가현황', type: 'excel'});
+				$("#uss-vct-excl").hide();
+					
+				},error: function (request, status, error) {
+			         alert(request.responseText);
+			    }  
+		});
+	
+	})
+		/* 휴가현황엑셀Down */
+		$( "#uss-vct" ).on('click', '.btnExcl-vct', function() {
+			var id = $(this).attr('id');
+			var ussNm = id.split('-')[0];
+			var stddYr =id.split('-')[1];
+			var name = stddYr+'년도_'+ussNm+'_휴가현황';
+			//alert(stddYr);
+			$('#table-vct').tableExport({fileName: name, type: 'excel'});
 			/* $("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
 			$("#frm1").submit(); */
 		});
@@ -265,13 +419,14 @@
 		});
 		
 		/* 휴가현황목록조회 */
-		function fnView(uss_id, stdd_yr){
+		function fnView(uss_id, stdd_yr, uss_nm){
 			var ussId = uss_id;
+			var ussNm = uss_nm;
 			//alert(ussId);
 			var stddYr = stdd_yr;
 			var table = "";
 			table += '<span class="pull-right">';
-			table += '<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>';
+			table += '<button type="button" class="btnExcl-vct btn btn-sm btn-default" id="'+ussNm+'-'+stddYr+'" >엑셀다운</button>';
 			table += '</span>';
 			$.ajax({
 				type: 'post',
@@ -285,7 +440,7 @@
 					var stddYr = data.params.stdd_yr;
 					var ussId = data.params.uss_id;
 					var resultList = data.resultList;
-					    table += '<table class="table table-bordered" summary="휴가현황 목록">'
+					    table += '<table class="table table-bordered" id="table-vct" summary="휴가현황 목록">'
 					    table += '<colgroup>'
 						table += '<col width="5%" />';
 						table += '<col width="5%" />';
@@ -397,7 +552,7 @@
 		$(function(){
 			//년도 캘린더 만들기 - 관리자일 경우 시작년도가 2015년 , 사용자일 경우 사용자의 입사년도
 			//스프링 시큐리티를 이용해서 c:set 을 이용하여 변수 생성하고 그 값으로 세팅
-			var calYearKo = new tui.DatePicker('#datepicker-year-ko',{
+			calYearKo = new tui.DatePicker('#datepicker-year-ko',{
 				date : new Date(),
 				language : 'ko',
 				date : "${params.searchGubun2}",
@@ -422,5 +577,23 @@
 		});
 
 	</script>
+	<sec:authorize access="!hasAnyRole('ROLE_ADMIN')">
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var ussId = "${params.uss_id}";
+				var ussNm = "${params.uss_nm}";
+				var stddYr = "${params.searchGubun2}";
+				
+				
+				fnView(ussId, stddYr, ussNm);
+
+				calYearKo.on('change', function() {
+					goPage(1);
+				});
+			})
+			
+		
+		</script>
+	</sec:authorize>	
 </body>
 </html>

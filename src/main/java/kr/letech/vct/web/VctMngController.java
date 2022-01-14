@@ -1,6 +1,8 @@
 package kr.letech.vct.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -139,33 +141,51 @@ public class VctMngController {
 		
 		// searchGubun2 파라미터 값이 없으면 기본값으로 빈 값 추가
 		if(StringUtils.isEmpty((String)params.get("searchGubun2"))) {
-			params.put("searchGubun2", "");
+			Date now = new Date();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+			String yearStr = formatter.format(now);
+			params.put("searchGubun2", yearStr);
 		}
 		
-		//목록 및 총건수, 페이징
-		Map vctDayObject = vctMngService.getVctInfPageingList(params);
+		HttpSession session =  request.getSession();
+		LoginVO loginVO = (LoginVO)session.getAttribute("loginVO");
+		String auth_cd = loginVO.getAuthCd();
 		
+		//접속자가 관리자 권한이 없는 경우
+		if(!StringUtils.equals("ROLE_ADMIN", auth_cd)) {
+			params.put("uss_id", loginVO.getId());
+			Map user =  ussMngDAO.getUssView(params);
+			params.put("uss_nm", user.get("USS_NM"));
+		}else {
+			//접속자가 관리자 권한이 있는 경우
+			//목록 및 총건수, 페이징
+			Map vctDayObject = vctMngService.getVctInfPageingList(params);
+			
+			
+			model.addAttribute("cPage", vctDayObject.get("cPage"));					// 페이지수
+			model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
+			model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
+			model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
+			//model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
+			
+			//고용구분 코드 목록 조회
+			params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+			List empTypeList = codeMngService.getCodeList(params);
+			model.addAttribute("empTypeList", empTypeList);
+			
+			//직급(권한) 코드 목록 조회
+			List authList = roleMngService.getAuthList(params);
+			model.addAttribute("authList", authList);
+			
+			//프로젝트 목록 조회
+			params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
+			List projList = codeMngService.getCodeList(params);
+			model.addAttribute("projList", projList);
+			
+		}
 		
-		model.addAttribute("cPage", vctDayObject.get("cPage"));					// 페이지수
-		model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
-		model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
-		model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
-		//model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
 		model.addAttribute("params", params);
 		
-		//고용구분 코드 목록 조회
-		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
-		List empTypeList = codeMngService.getCodeList(params);
-		model.addAttribute("empTypeList", empTypeList);
-		
-		//직급(권한) 코드 목록 조회
-		List authList = roleMngService.getAuthList(params);
-		model.addAttribute("authList", authList);
-		
-		//프로젝트 목록 조회
-		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
-		List projList = codeMngService.getCodeList(params);
-		model.addAttribute("projList", projList);
 		
 		
 		return "letech/vct/inf/vctInf00List";
@@ -328,5 +348,39 @@ public class VctMngController {
 		
 		
 		return "letech/vct/stat/vctStat00List";
+	}
+	
+	/**
+	 * 휴가현황 엑셀 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "vct/vctInf00Excl.do")
+	public String getVctInfExclList(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		String viewName = "jsonView";
+		
+		// searchGubun2 파라미터 값이 없으면 기본값으로 빈 값 추가
+		if(StringUtils.isEmpty((String)params.get("searchGubun2"))) {
+			params.put("searchGubun2", "");
+		}
+		
+		//목록 및 총건수, 페이징
+		Map vctDayObject = vctMngService.getVctStatPageingList(params);
+		
+		params.put("up_cd", VarConsts.EAM_VACATION_CODE); // 휴가구분코드
+		List vctTypeList = codeMngService.getCodeList(params);
+		model.addAttribute("vctTypeList", vctTypeList);
+		
+		model.addAttribute("params", params);
+		model.addAttribute("map", vctDayObject);
+		//model.addAttribute("resultList", resultList);
+		
+		
+		return viewName;
 	}
 }

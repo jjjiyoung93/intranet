@@ -357,13 +357,7 @@
 		          , (SELECT S.AUTHOR_NM FROM STD_AUT_INFO S WHERE S.AUTHOR_CODE = E.REPT_AUTH_CD) AS REPT_AUTH_NM
 		    FROM STD_APRV_MNG E
 		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
-		    WHERE 1=1
-		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
-		      AND E.REPT_AUTH_CD = #{searchGubun5}	
-		    </if>
-		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
-		      AND E.PROJ_CD = #{searchGubun6}	
-		    </if>
+		   
 		),W_VCT_TYPE_LIST AS (
 		    SELECT 
 		           * 
@@ -426,6 +420,15 @@
 		      
 		      FROM W_USS_LIST L
 		      LEFT OUTER JOIN W_USS_ADD_INFO M ON (M.REPT_APRV_NO = L.USS_ID)
+		      <where>
+			      1=1
+			    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
+			      AND M.REPT_AUTH_CD = #{searchGubun5}	
+			    </if>
+			    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
+			      AND M.PROJ_CD = #{searchGubun6}	
+			    </if>
+		      </where>
 		)
 			SELECT
 			      COUNT(1) AS cnt
@@ -500,13 +503,7 @@
 		          , (SELECT S.AUTHOR_NM FROM STD_AUT_INFO S WHERE S.AUTHOR_CODE = E.REPT_AUTH_CD) AS REPT_AUTH_NM
 		    FROM STD_APRV_MNG E
 		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
-		    WHERE 1=1
-		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
-		      AND E.REPT_AUTH_CD = #{searchGubun5}	
-		    </if>
-		    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
-		      AND E.PROJ_CD = #{searchGubun6}	
-		    </if>
+		    
 		),W_VCT_TYPE_LIST AS (
 		    SELECT 
 		           * 
@@ -597,7 +594,16 @@
 		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011005') AS CMFT_USE_CNT
 		         , (SELECT S.VCT_USE_DAY FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID AND S.VCT_TYPE = 'CD0001011006') AS FAM_CARE_USE_CNT
 		         ,(SELECT NVL(SUM(S.VCT_USE_DAY), 0) FROM W_VCT_USE_DAY_CNT S WHERE S.USS_ID = X.USS_ID) AS VCT_TOT_CNT
-		      FROM W_VCT_USS_INFO X 
+		      FROM W_VCT_USS_INFO X
+		      <where>
+		          1=1
+			     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
+			      AND X.REPT_AUTH_CD = #{searchGubun5}	
+			    </if>
+			    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
+			      AND X.PROJ_CD = #{searchGubun6}	
+			    </if>
+		      </where> 
 		      ORDER BY X.USS_NM
 	
 	</select>
