@@ -75,7 +75,7 @@
 									<select id="searchCdList3" style="width: 100px;" name="searchCdList3" class="form-control table-cell">
 											<option value="" >--전체--</option>
 											<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
-											<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '4' }">selected="selected"</c:if>>진행중</option>
+											<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '9' }">selected="selected"</c:if>>진행중</option>
 											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
 											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
 											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
@@ -83,12 +83,12 @@
 									<label style="font-size: 14px; padding: 0px;">구분</label>
 									<select id="searchCdList6" style="width: 100px;" name="searchCdList6" class="form-control table-cell">
 											<option value="" >--전체--</option>
-											<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
-											<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '4' }">selected="selected"</c:if>>진행중</option>
-											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
-											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
-											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
-									</select>								
+											<option value="<%=VarConsts.APRV_GB_APRV %>" <c:if test="${params.searchCdList6 eq '0' }">selected="selected"</c:if>>결재</option>
+											<option value="<%=VarConsts.APRV_GB_REFE %>" <c:if test="${params.searchCdList6 eq '1' }">selected="selected"</c:if>>참조</option>
+									</select>
+									<input type="checkbox" value="Y" name="myAprvList" <c:if test="${params.myAprvList eq 'Y' }"> checked="checked"</c:if> >
+									<label style="font-size: 14px; padding: 0px;">내 결재문서 보기</label>
+																		
 								</span>
 								</div>
 								<div class="col-md-6 mt10 text-right">
@@ -347,6 +347,8 @@
 															${list.APRV_YN_NM}
 														</c:otherwise>
 													</c:choose>
+													
+													
 													<c:if test="${list.LINE_CHK eq 'Y' }">
 														<c:choose>
 															<c:when test="${list.REFE_YN eq 'Y' }">
@@ -400,6 +402,10 @@ $(document).ready(function(){
 	//console.log($("#aprv_no").val());
 	//console.log($("#mode").val());
 	
+	var dpCd = "<c:out value='${params.searchCdList4}'/>";
+	
+	fn_dp2List(dpCd);
+		
 	/* 등록 */
 	$("#fnJoin").click(function(){
 		$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");
@@ -511,7 +517,7 @@ function fn_delDate(){
 }
 
 function fn_dp2List(val){
-	var dp2Cd = '${params.searchList5}';
+	var dp2Cd = '${params.searchCdList5}';
 	
 	var dpCd = val;
 	

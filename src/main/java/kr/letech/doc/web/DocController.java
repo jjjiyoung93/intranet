@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -153,6 +154,15 @@ public class DocController {
 	public String getDocCode(HttpServletRequest request, ModelMap model) throws Exception {
 		
 		Map params = ReqUtils.getParameterMap(request);
+		
+		String cd1 = (String) params.get("APRV_TYPE_CD");
+		
+		if(StringUtils.isNotEmpty(cd1) && StringUtils.equals(cd1, VarConsts.EAM_VACATION_CODE)) {
+			params.put("up_cd", VarConsts.VAC_TYPE_CODE);
+			List vacTermList = codeMngService.getCodeList(params);
+			JSONArray jsonVacTerm = JSONArray.fromObject(vacTermList);
+			model.addAttribute("jsonVacTerm", jsonVacTerm);
+		}
 		
 		// 상위코드, 하위코드에 해당하는 문서코드(소스코드)
 		return docService.getDocCode(params);

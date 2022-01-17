@@ -239,15 +239,47 @@ $(function() {
 	$("#crtn_dt").text(crtn_dt[0] + "년 " + crtn_dt[1] + "월 " + crtn_dt[2] + "일");
 	if($("#term").size() == "1" && docJson != null) {
 		var term = "";
-		if(viewJson.hasOwnProperty('TERM_ST_HM') && viewJson.hasOwnProperty('TERM_ED_YM')) {
-			term = viewJson.TERM_ST_YM + " " + viewJson.TERM_ST_HM.slice(0, 2) + ":" + viewJson.TERM_ST_HM.slice(2, 4) + " ~ " + viewJson.TERM_ED_YM + " " + viewJson.TERM_ED_HM.slice(0, 2) + ":" + viewJson.TERM_ED_HM.slice(2, 4);
-		} else {
-			term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;
+		var proj = "";
+		var title = "";
+		var cont = "";
+		var day = "";
+		
+		/*2022.01.17 휴가 보고서 조회 시 기간 항목 출력 코드로 대체 : BEGIN */
+		if(viewJson.hasOwnProperty('APRV_TYPE_CD') && viewJson.APRV_TYPE_CD == "<%=VarConsts.EAM_VACATION_CODE%>"){
+			if(viewJson.hasOwnProperty('HALF_TYPE_CD_ST') && viewJson.hasOwnProperty('HALF_TYPE_CD_ED')) {
+				term = viewJson.TERM_ST_YM + "(" + viewJson.HALF_TYPE_CD_ST_NM+ ") ~ " + viewJson.TERM_ED_YM + "(" + viewJson.HALF_TYPE_CD_ED_NM + ")";
+			}else{
+				term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;
+			}
+			
+			proj = viewJson.PROJ_NM;
+			title = viewJson.TITLE;
+			cont =  viewJson.REPT_CONT;
+			day = viewJson.VCT_DAY_CNT;
+			
+			$("#proj").text(proj);
+			$("#title").text(title);
+			$("#cont").text(cont);
+			$("#day").text(day);
+			
+		/*2022.01.17 휴가 보고서 조회 시 기간 항목 출력 코드로 대체 : END */
+		}else{
+			if(viewJson.hasOwnProperty('TERM_ST_HM') && viewJson.hasOwnProperty('TERM_ED_YM')) {
+				term = viewJson.TERM_ST_YM + " " + viewJson.TERM_ST_HM.slice(0, 2) + ":" + viewJson.TERM_ST_HM.slice(2, 4) + " ~ " + viewJson.TERM_ED_YM + " " + viewJson.TERM_ED_HM.slice(0, 2) + ":" + viewJson.TERM_ED_HM.slice(2, 4);
+			} else {
+				term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;
+			}
+			
 		}
+		
 		$("#term").text(term);
+		
 		if(docJson.hasOwnProperty('BZTRP_NIGHT') && docJson.hasOwnProperty('BZTRP_DAYS')) {
 			$("#term").text(term + " (" + docJson.BZTRP_NIGHT + "박 " + docJson.BZTRP_DAYS + "일)");
 		}
+		
+		
+		
 	}
 
 	//문서정보의 키값을 추출 후 루프 돌면서 엘리먼트에 값을 세팅

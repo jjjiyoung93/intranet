@@ -54,6 +54,14 @@
 <!-- 연락처 END -->
 
 <script>
+$(document).ready(function(){
+	
+	jsonVacTerm = ${jsonVacTerm};
+	
+	
+	
+})
+
 function getValidation2(valid) {
 	if($("#cdList1").val() == "CD0001011") {
 		if($("#term_st").val() == ""){
@@ -64,6 +72,16 @@ function getValidation2(valid) {
 			$("#term_st").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
+		
+		if($("input[name='half_type_cd_st']:checked").val() == ""){
+			if(valid) {
+				alert("휴가 기간 구분을 선택해 주세요.");
+				$("input[name='half_type_cd_st']").focus();
+			}
+			$("input[name='half_type_cd_st']").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		
 		if($("#term_ed").val() == ""){
 			if(valid) {
 				alert("종료 날짜를 선택해 주세요.");
@@ -72,6 +90,16 @@ function getValidation2(valid) {
 			$("#term_st").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
+		
+		if($("input[name='half_type_cd_ed']:checked").val() == ""){
+			if(valid) {
+				alert("휴가 기간 구분을 선택해 주세요.");
+				$("input[name='half_type_cd_ed']").focus();
+			}
+			$("input[name='half_type_cd_ed']").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		
 		if($("#frogh_rsn").val() == ""){
 			if(valid) {
 				alert("사유를 입력해 주세요.");

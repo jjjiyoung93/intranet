@@ -52,6 +52,9 @@
                <input type="hidden" id="searchCdList2" name="searchCdList2" value="${params.searchCdList2}" />
                <input type="hidden" id="searchCdList3" name="searchCdList3" value="${params.searchCdList3}" />
                <input type="hidden" id="searchCdList4" name="searchCdList4" value="${params.searchCdList4}" />
+               <input type="hidden" id="searchCdList5" name="searchCdList5" value="${params.searchCdList5}" />
+               <input type="hidden" id="searchCdList6" name="searchCdList6" value="${params.searchCdList6}" />
+               <input type="hidden" id="myAprvList" name="myAprvList" value="${params.myAprvList}" />
                
                <input type="hidden" id="searchGubun" name="searchGubun" value="${params.searchGubun}" />
                <input type="hidden" id="searchField" name="searchField" value="${params.searchField}" />
@@ -94,6 +97,14 @@
                                <dt class="col-md-2 col-sm-3">소속</dt>
                                <dd class="col-md-10 col-sm-9">
                               ${viewMap.REPT_DP_NM }
+                           </dd>
+                           </dl>
+                           </li>
+                           <li>
+                           <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">직급(권한)</dt>
+                               <dd class="col-md-10 col-sm-9">
+                              ${viewMap.REPT_AUTH_NM }
                            </dd>
                            </dl>
                            </li>
@@ -143,15 +154,43 @@
                                <dd class="col-md-10 col-sm-9">
                                		<c:choose>
                                			<c:when test="${viewMap.TERM_ST_YM ne null }">
-                               				${viewMap.TERM_ST_YM} - ${viewMap.TERM_ED_YM}
+                               				<%-- ${viewMap.TERM_ST_YM} - ${viewMap.TERM_ED_YM} --%>
+                               				${viewMap.TERM_ST_YM}
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                               					(<c:out value="${viewMap.HALF_TYPE_CD_ST_NM}"/>) 
+                               				</c:if>
+                               				- ${viewMap.TERM_ED_YM}
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+	                               				(<c:out value="${viewMap.HALF_TYPE_CD_ED_NM}"/>)
+                               				</c:if>
+                               				
                                			</c:when>
                                			<c:otherwise>
-                               				${viewMap.CRTN_DT } - ${viewMap.CRTN_DT }
+                               				<%-- ${viewMap.CRTN_DT } - ${viewMap.CRTN_DT } --%>
+                               				${viewMap.CRTN_DT }
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+	                               				(<c:out value="${viewMap.HALF_TYPE_CD_ST_NM}"/>)
+                               				</c:if>
+                               				 - ${viewMap.CRTN_DT }
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                               				 (<c:out value="${viewMap.HALF_TYPE_CD_ED_NM}"/>)
+                               				</c:if>
                                			</c:otherwise>
                                		</c:choose>
                               </dd>
                               </dl>
                            </li>
+                           <c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                               	<li>
+		                           <dl class="clearfix">
+		                               <dt class="col-md-2 col-sm-3">사용일수</dt>
+		                               <dd class="col-md-10 col-sm-9">
+		                              ${viewMap.VCT_DAY_CNT }
+		                              </dd>
+		                           </dl>
+	                           </li>				
+                           </c:if>
+                           
                            <c:if test="${viewMap.PLACE ne null}">
                            <li>
                               <dl class="clearfix">
@@ -170,6 +209,42 @@
                               </dd>
                               </dl>
                            </li>
+                           <!-- 2022.01.17 - 휴가신청 상세 화면 조회 시 출력 항목 추가 : 사유, 행선지, 연락처 : BEGIN -->
+                           <c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                           <li>
+                              <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">사유</dt>
+                               <dd class="col-md-10 col-sm-9">
+                                  ${viewMap.FROGH_RSN }
+                              </dd>
+                              </dl>
+                           </li>
+                           
+                           <li>
+                              <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">행선지</dt>
+                               <dd class="col-md-10 col-sm-9">
+                                  ${viewMap.ADDR }
+                              </dd>
+                              </dl>
+                           </li>
+                           
+                           <li>
+                              <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">연락처</dt>
+                               <dd class="col-md-10 col-sm-9">
+                                  ${viewMap.CTTPLC }
+                              </dd>
+                              </dl>
+                           </li>
+                           </c:if>
+                           <!-- 2022.01.17 - 휴가신청 상세 화면 조회 시 출력 항목 추가 : 사유, 행선지, 연락처 : BEGIN -->
+                           
+                           
+                           
+                           
+                           
+                           
                            <li>
                               <dl class="clearfix">
                                   <dt class="col-md-2 col-sm-3">첨부파일</dt>

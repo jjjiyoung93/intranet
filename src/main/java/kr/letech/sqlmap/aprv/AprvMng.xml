@@ -137,7 +137,7 @@
 			 , NVL(F.REFE_YN, 'N') AS REFE_YN
 			 , H.CONF_REFE_CNT
 			 
-			 , (SELECT AB.APRV_EMP_NO
+			 <!-- (SELECT AB.APRV_EMP_NO
 		          FROM STD_APRV_MNG AA
 		             , STD_APRV_LINE AB
 		         WHERE 1=1
@@ -148,7 +148,8 @@
 		                               WHERE AAA.APRV_YN_CD IN 0
 		                                 AND AAA.APRV_ORDR NOT IN 0
 		                                 AND AAA.APRV_NO = AA.APRV_NO
-		                               GROUP BY AAA.APRV_NO)) AS APRV_ID	/* 현재 결재할 사람의 ID */
+		                               GROUP BY AAA.APRV_NO)) AS APRV_ID -->
+		     , Y.APRV_ID	/* 현재 결재할 사람의 ID */
              , A.CAL_NO		/* 캘린더 번호*/
              <!-- 2022.01.12 추가 조회 항목 : BEGIN  -->
              , A.APRV_TYPE_DTIL_CD /*결재상세코드*/
@@ -173,7 +174,21 @@
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >
 			LEFT OUTER JOIN STD_APRV_LINE I ON I.APRV_NO = E.APRV_NO
 			LEFT OUTER JOIN STD_USS_MNG J ON J.USS_ID = I.APRV_EMP_NO
-			</if> 
+			</if>
+			<!-- 2022.01.17 테이블 조인 추가 - 현재 결재할 사람의 ID 조회용 : BEGIN -->
+			LEFT OUTER JOIN (SELECT AB.APRV_EMP_NO AS APRV_ID
+			                      , AA.APRV_NO AS APRV_NO
+					          FROM STD_APRV_MNG AA
+					             , STD_APRV_LINE AB
+					         WHERE 1=1
+					           AND AA.APRV_NO = AB.APRV_NO
+					           AND AB.APRV_ORDR = (SELECT MIN(AAA.APRV_ORDR)
+					                                FROM STD_APRV_LINE AAA
+					                               WHERE AAA.APRV_YN_CD IN 0
+					                                 AND AAA.APRV_ORDR NOT IN 0
+					                                 AND AAA.APRV_NO = AA.APRV_NO
+					                               GROUP BY AAA.APRV_NO)  ) Y ON (Y.APRV_NO = A.APRV_NO) 
+			<!-- 2022.01.17 테이블 조인 추가 - 현재 결재할 사람의 ID 조회용 : BEGIN -->
 		WHERE 1=1
 		<if test='uss_auth_cd != "ROLE_ADMIN"'>
 			AND ( A.REPT_APRV_NO = #{uss_id}
@@ -212,11 +227,11 @@
 		</if>
 		<choose>
 			<when test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList5)">
-				AND H.DP_CD = #{searchCdList5}
+				AND B.DP_CD = #{searchCdList5}
 			</when>
 			<otherwise>
 				<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList4)"> <!-- 소속(보고자)  --> 
-					AND H.DP_CD = #{searchCdList4}
+					AND B.DP_CD = #{searchCdList4}
 				</if>
 			</otherwise>		
 		</choose>
@@ -241,6 +256,24 @@
 			AND E.APRV_YN_TP = #{aprvStatCd}
 		</if>
 		<!-- 2022.01.12 검색조건 추가 : END -->
+		<!-- 2022.01.17 검색조건 추가 : BEGIN -->
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList6)" >	<!-- 결재구분 (전체, 결재, 참조) -->
+			AND F.APRV_NO IS NOT NULL
+			
+			<if test='searchCdList6 == "0"' >	<!-- 결재 -->
+				AND (F.REFE_YN IS NULL OR F.REFE_YN != 'Y')
+			</if>
+			
+			<if test='searchCdList6 == "1"' >	<!-- 참조 -->
+				AND F.REFE_YN = 'Y'
+			</if>
+			
+			
+		</if>
+		<if test='myAprvList == "Y"' >	<!-- 내결재문서보기 -->
+			AND Y.APRV_ID = #{uss_id}
+		</if>
+		<!-- 2022.01.17 검색조건 추가 : END -->
 		
 		
 		
@@ -313,7 +346,7 @@
 		, VW_STD_LINE AS (
 			/* 결재자관련 정보 */			
 			SELECT
-			  APRV_NO, APRV_YN_CD, APRV_ORDR, CONF_YN
+			  APRV_NO, APRV_YN_CD, APRV_ORDR, CONF_YN, REFE_YN
 			FROM STD_APRV_LINE
 			WHERE APRV_EMP_NO = #{uss_id}
 		)
@@ -347,6 +380,20 @@
 			LEFT OUTER JOIN STD_APRV_LINE I ON I.APRV_NO = E.APRV_NO
 			LEFT OUTER JOIN STD_USS_MNG J ON J.USS_ID = I.APRV_EMP_NO
 			</if>
+			<!-- 2022.01.17 테이블 조인 추가 - 현재 결재할 사람의 ID 조회용 : BEGIN -->
+			LEFT OUTER JOIN (SELECT AB.APRV_EMP_NO AS APRV_ID
+			                      , AA.APRV_NO AS APRV_NO
+					          FROM STD_APRV_MNG AA
+					             , STD_APRV_LINE AB
+					         WHERE 1=1
+					           AND AA.APRV_NO = AB.APRV_NO
+					           AND AB.APRV_ORDR = (SELECT MIN(AAA.APRV_ORDR)
+					                                FROM STD_APRV_LINE AAA
+					                               WHERE AAA.APRV_YN_CD IN 0
+					                                 AND AAA.APRV_ORDR NOT IN 0
+					                                 AND AAA.APRV_NO = AA.APRV_NO
+					                               GROUP BY AAA.APRV_NO)  ) Y ON (Y.APRV_NO = A.APRV_NO) 
+			<!-- 2022.01.17 테이블 조인 추가 - 현재 결재할 사람의 ID 조회용 : END -->
 		WHERE 1=1
 		<if test='uss_auth_cd != "ROLE_ADMIN"'>
 			AND( A.REPT_APRV_NO = #{uss_id}
@@ -416,6 +463,24 @@
 			AND E.APRV_YN_TP = #{aprvStatCd}
 		</if>
 		<!-- 2022.01.12 검색조건 추가 : END -->
+		<!-- 2022.01.17 검색조건 추가 : BEGIN -->
+		<!-- 결재구분 (전체, 결재, 참조) -->
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList6)" >	
+			AND F.APRV_NO IS NOT NULL
+			
+			<if test='searchCdList6 == "0"' >	<!-- 결재 -->
+				AND (F.REFE_YN IS NULL OR F.REFE_YN != 'Y')
+			</if>
+			
+			<if test='searchCdList6 == "1"' >	<!-- 참조 -->
+				AND F.REFE_YN = 'Y'
+			</if>
+				
+		</if>
+		<if test='myAprvList == "Y"' >	<!-- 내결재문서보기 -->
+			AND Y.APRV_ID = #{uss_id}
+		</if>
+		<!-- 2022.01.17 검색조건 추가 : END -->
 		
 	</select>
 	
@@ -521,6 +586,7 @@
 			, A.APRV_TYPE_DTIL_CD				/* 결재구분상세코드 */
 			, A.TITLE					/* 제목 */
 			, A.PROJ_CD					/* 프로젝트코드 */
+			, (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.PROJ_CD) AS PROJ_NM /*프로젝트 명칭*/
 			, A.TERM_ST_YM					/* 기간시작일자 */
 			, A.TERM_ED_YM					/* 기간종료일자 */
 			, A.TERM_ST_HM					/* 기간시작시간 */
@@ -530,18 +596,33 @@
 			, SUBSTR(A.TERM_ED_HM, 1, 2) TERM_ED_H
 			, SUBSTR(A.TERM_ED_HM, 3, 4) TERM_ED_M
 			, A.REPT_CONT					/* 보고내용 */
-			, A.HALF_TYPE_CD				/* 반차구분코드 */
+			, A.HALF_TYPE_CD_ST				/* 시작일자반차구분코드 */
+			, A.HALF_TYPE_CD_ED				/* 종료일자반차구분코드 */
 			, A.PLACE					/* 행선지 */
 			, NVL(C.APRV_LINE_CD, '0') AS APRV_LINE_CD
 			, D.CONF_TYPE					/* 확인 유무 */
 			, E.DP_NM AS dpNm
 			, A.CAL_NO		/* 캘린더 번호 */
 			, TO_CHAR(CRTN_DT, 'YYYY-MM-DD') CRTN_DT /* 작성일 */
+			<!-- 2022.01.17 휴가 신청 상세 조회 시 조회 항목 추가 : BEGIN  -->
+			, F.FROGH_RSN /*휴가사유*/
+			, F.ADDR /*행선지*/
+			, F.CTTPLC /*연락처*/
+			, G.VCT_DAY_CNT /*휴가사용일수*/
+			<!-- 2022.01.17 휴가 신청 상세 조회 시 조회 항목 추가 : END  -->
+			
+			
 		FROM STD_APRV_MNG A
 			LEFT OUTER JOIN STD_USS_MNG B ON B.USS_ID = A.REPT_APRV_NO
 			LEFT OUTER JOIN VW_LINE_CNT C ON C.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_CONF_Y D ON D.APRV_NO = A.APRV_NO
 			LEFT OUTER JOIN VW_ORGNZT E ON E.USS_ID = A.REPT_APRV_NO
+			LEFT OUTER JOIN DOC_FROGH F ON F.APRV_NO = A.APRV_NO
+			LEFT OUTER JOIN (
+							 SELECT APRV_NO
+							      , SUM(VCT_DAY_CNT) AS VCT_DAY_CNT
+							   FROM VCT_INF_MNG
+							   GROUP BY APRV_NO ) G ON G.APRV_NO = A.APRV_NO
 		WHERE A.APRV_NO = #{aprv_no}
 	</select>
 	

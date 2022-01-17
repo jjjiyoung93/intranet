@@ -10,8 +10,22 @@
 			<td colspan="3" class="td-comm td-s3" id="emp_nm"></td>
 		</tr>
 		<tr>
+			<td colspan="2" class="td-comm td-s2 td-header">프로젝트</td>
+			<td colspan="8" class="td-comm td-s8" id="proj"></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="td-comm td-s2 td-header">제목</td>
+			<td colspan="8" class="td-comm td-s8" id="title"></td>
+		</tr>
+		<tr>
 			<td colspan="2" class="td-comm td-s2 td-header">기간</td>
-			<td colspan="8" class="td-comm td-s8" id="term"></td>
+			<td colspan="3" class="td-comm td-s6" id="term"></td>
+			<td colspan="2" class="td-comm td-s2 td-header">사용일수</td>
+			<td colspan="3" class="td-comm td-s1" id="day"></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="td-comm td-s2 td-header">보고내용</td>
+			<td colspan="8" class="td-comm td-s8" id="cont"></td>
 		</tr>
 		<tr>
 			<td colspan="2" class="td-comm td-s2 td-header">사유</td>

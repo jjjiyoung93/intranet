@@ -55,6 +55,9 @@
 							<input type="hidden" id="searchCdList2" name="searchCdList2" value="${params.searchCdList2}" />
 							<input type="hidden" id="searchCdList3" name="searchCdList3" value="${params.searchCdList3}" />
 							<input type="hidden" id="searchCdList4" name="searchCdList4" value="${params.searchCdList4}" />
+							<input type="hidden" id="searchCdList5" name="searchCdList5" value="${params.searchCdList5}" />
+               				<input type="hidden" id="searchCdList6" name="searchCdList6" value="${params.searchCdList6}" />
+               				<input type="hidden" id="myAprvList" name="myAprvList" value="${params.myAprvList}" />
 							<input type="hidden" id="searchGubun" name="searchGubun" value="${params.searchGubun}" />
 							<input type="hidden" id="searchField" name="searchField" value="${params.searchField}" />
 							<input type="hidden" id="searchField2" name="searchField2" value="${params.searchField2}" />
@@ -464,7 +467,9 @@ $(function() {
 		
 		var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
 		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
-		for(key in docJson) {
+		var vacTermList = ${jsonVacTerm}; // 휴가 기간 구분 코드 콕록
+		
+		for(key in docJson)
 			if(key != "items") { // 항목인지 확인
 				$("#" + key.toLowerCase()).val(docJson[key]);
 			} else {
@@ -480,11 +485,23 @@ $(function() {
 		if($("#term_st").size() == "1") { // 기간을 사용하지 않는 양식인지 확인
 			var term_st_ym;
 			var term_ed_ym;
+			var cd1 = docJson["APRV_TYPE_CD"];
 			//tui.date-picker
 			if(viewJson["TERM_ST_YM"] != null) {
-				term_st_ym = new Date(viewJson["TERM_ST_YM"] + " " + viewJson["TERM_ST_HM"].substring(0, 2) + ":" + viewJson["TERM_ST_HM"].substring(2, 4));
-				term_ed_ym = new Date(viewJson["TERM_ED_YM"] + " " + viewJson["TERM_ED_HM"].substring(0, 2) + ":" + viewJson["TERM_ED_HM"].substring(2, 4))
+				if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
+					term_st_ym = new Date(viewJson["TERM_ST_YM"] + " " + viewJson["TERM_ST_HM"].substring(0, 2) + ":" + viewJson["TERM_ST_HM"].substring(2, 4));
+					term_ed_ym = new Date(viewJson["TERM_ED_YM"] + " " + viewJson["TERM_ED_HM"].substring(0, 2) + ":" + viewJson["TERM_ED_HM"].substring(2, 4))
+				}else{
+					term_st_ym = new Date(viewJson["TERM_ST_YM"]);
+					term_ed_ym = new Date(viewJson["TERM_ED_YM"]);
+				}
 			}
+			
+			var html = "<div id='vacTermSt'>";
+			var html2 = "<div id='vacTermEd'>";
+			
+			html += "<hr/>";
+			html2 += "<hr/>";
 			var picker = tui.DatePicker.createRangePicker({
 				language: 'ko',
 				startpicker: {
@@ -497,15 +514,41 @@ $(function() {
 					container: '#endpicker-container',
 					date: term_ed_ym
 				},
-				type: 'date',
-				format: 'yyyy-MM-dd hh:mm',
-				timepicker: {
-					language: 'ko',
-					showMeridiem: false,
-					minuteStep: 10
+				type: 'date'
+				if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
+					,format: 'yyyy-MM-dd hh:mm'
+					,timepicker: {
+						language: 'ko',
+						showMeridiem: false,
+						minuteStep: 10
+					}
+					
+				}else{
+					format : 'yyyy-MM-dd'
 				}
 			});
-			//휴가일경우 
+			
+			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
+				for(var i in vacTermList){
+					var vacTerm = vacTermList[i];
+					html += '<input class="col_md_2 half_type_cd_st" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
+					html += '<br/>'
+					
+					html2 += '<input class="col_md_2 half_type_cd_ed" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+' cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
+					html2 += '<br/>'
+				}
+				
+				html += '</div>';
+				html2 += '</div>';
+				
+				$("#startpicker-container .tui-rangepicker").append(html);
+				$("#endpicker-container .tui-rangepicker").append(html2);
+				
+				$("input[name='half_type_cd_st_"+viewJson['HALF_TYPE_CD_ST']+"']").prop("checked", true);
+				$("input[name='half_type_cd_ed_"+viewJson['HALF_TYPE_CD_ED']+"']").prop("checked", true);
+			}
+			//휴가일경우
+			
 			
 			
 			$("#term_ed").attr("disabled", false);
@@ -576,16 +619,24 @@ $("#cdList2").change(function() {
 
 // 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
 function fn_getDocCode(cd1, cd2) {
+	var vacTermList;
 	$.ajax({
 		type:'get',
 		async: false,
 		url:'${pageContext.request.contextPath}/doc/doc00Ajax.do?APRV_TYPE_CD='+cd1+'&APRV_TYPE_DTIL_CD='+cd2,
 		success: function(json){
+			var html = "<div id='vacTermSt'>";
+			var html2 = "<div id='vacTermEd'>";
+			
+			html += "<hr/>";
+			html2 += "<hr/>";
 			// cd1, cd2에 해당하는 문서 양식을 화면에 찍어줌
 			$("#docForm").empty();
 			//console.log("화명:"+json);
 			$("#docForm").append(json);
+			vacTermList = jsonVacTerm;
 			//console.log("화명end:");
+			//console.log (jsonVacTerm);
 
 			// 화면에 찍은 양식에서 date picker를 사용할 때 라이브러리를 초기화 시킴 
 			if($("#term_st").length > 0) {
@@ -600,25 +651,38 @@ function fn_getDocCode(cd1, cd2) {
 						input: '#term_ed',
 						container: '#endpicker-container'
 					},
-					type: 'date',
-					format: 'yyyy-MM-dd hh:mm',
-					timepicker: {
-						language: 'ko',
-						showMeridiem: false,
-						minuteStep: 10
+					type: 'date'
+					if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
+						, format: 'yyyy-MM-dd hh:mm'
+						,timepicker: {
+							language: 'ko',
+							showMeridiem: false,
+							minuteStep: 10
+						}
+						
+					}else{
+						, format: 'yyyy-MM-dd'
 					}
+						
 				});
 			}
 			
-			//kyh - startpicker에 엘레먼트 추가
-			/*var html = '<span>'
-				html +='<input class="col_md_2" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S">';
-				html +='양력'
-				html +='<input class="col_md_2"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L">'
-				html += '음력'
-			    html += '</span>';
-			$("#startpicker-container .tui-rangepicker").append(html);*/
-			
+			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
+				for(var i in vacTermList){
+					var vacTerm = vacTermList[i];
+					html += '<input class="col_md_2 half_type_cd_st" name="half_type_cd_st" id="half_type_cd_st_'+i+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
+					html += '<br/>'
+					
+					html2 += '<input class="col_md_2 half_type_cd_ed" name="half_type_cd_ed" id="half_type_cd_ed_'+i+'" type="radio" value="'+vacTerm.CD+' cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
+					html2 += '<br/>'
+				}
+				
+				html += '</div>';
+				html2 += '</div>';
+				
+				$("#startpicker-container .tui-rangepicker").append(html);
+				$("#endpicker-container .tui-rangepicker").append(html2);
+			}
 			//가지급금 지급희망일자 datepicker
 			if($("#pay_dt").length > 0) {
 				//tui.date-picker

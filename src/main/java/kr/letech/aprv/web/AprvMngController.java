@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,6 +30,7 @@ import kr.letech.doc.service.DocService;
 import kr.letech.sys.cdm.service.CodeMngService;
 import kr.letech.sys.mail.service.MailAprvService;
 import kr.letech.uss.umt.service.impl.UssMngDAO;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -222,6 +224,13 @@ public class AprvMngController {
 			List fileList = aprvMngService.aprvFileList(params);
 			
 			String aprvTypeCd = (String)viewMap.get("APRV_TYPE_CD");
+			
+			if(StringUtils.isNotEmpty(aprvTypeCd) && StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
+				params.put("up_cd", VarConsts.VAC_TYPE_CODE);
+				List vacTermList = codeMngService.getCodeList(params);
+				JSONArray jsonVacTerm = JSONArray.fromObject(vacTermList);
+				model.addAttribute("jsonVacTerm", jsonVacTerm);
+			}
 			
 			//가지급금 목적 코드 로드
 			params.put("up_cd", VarConsts.TMP_PAY_PRPS);
