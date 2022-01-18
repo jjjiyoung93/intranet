@@ -246,7 +246,7 @@ $(function() {
 		
 		/*2022.01.17 휴가 보고서 조회 시 기간 항목 출력 코드로 대체 : BEGIN */
 		if(viewJson.hasOwnProperty('APRV_TYPE_CD') && viewJson.APRV_TYPE_CD == "<%=VarConsts.EAM_VACATION_CODE%>"){
-			if(viewJson.hasOwnProperty('HALF_TYPE_CD_ST') && viewJson.hasOwnProperty('HALF_TYPE_CD_ED')) {
+			if(viewJson.hasOwnProperty('HALF_TYPE_CD') && viewJson.hasOwnProperty('HALF_TYPE_CD_ED')) {
 				term = viewJson.TERM_ST_YM + "(" + viewJson.HALF_TYPE_CD_ST_NM+ ") ~ " + viewJson.TERM_ED_YM + "(" + viewJson.HALF_TYPE_CD_ED_NM + ")";
 			}else{
 				term = viewJson.TERM_ST_YM + " ~ " + viewJson.TERM_ED_YM;

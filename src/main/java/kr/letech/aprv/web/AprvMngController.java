@@ -212,6 +212,7 @@ public class AprvMngController {
 		// js 컴파일 에러 방지를 위해 update가 아닌 insert에는 빈값을 전송
 		model.addAttribute("docJson", "{}");
 		model.addAttribute("viewJson", "{}");
+		model.addAttribute("jsonVacTerm", "{}");
 		
 		Map viewMap = null;
 		if (params.get("mode") != null && params.get("mode").equals(VarConsts.MODE_U)) {
@@ -298,6 +299,16 @@ public class AprvMngController {
 			,TmpPayItemListVO tmpPayItemList) throws Exception {
 		
 		Map params = ReqUtils.getParameterMap3(multiRequest);
+		/*2022.01.18 휴가 등록 수정 시 파라미터 설정 : BEGIN*/
+		String aprvTypeCd = (String)params.get("cdList1");
+		if(StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
+			String halfTypeCdSt = (String)params.get("half_type_cd_st");
+			if(StringUtils.isNotEmpty(halfTypeCdSt)) {
+				params.put("half_type_cd", halfTypeCdSt);
+			}
+		}
+		
+		/*2022.01.18 휴가 등록 수정 시 파라미터 설정 : END*/
 		if(tmpPayItemList != null && !tmpPayItemList.getTmpPayItemList().isEmpty()) {
 			params.put("tmpPayItemList", tmpPayItemList.getTmpPayItemList());
 		}
@@ -307,6 +318,8 @@ public class AprvMngController {
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("aprv_nm", loginVO.getName());
+		params.put("auth_cd", loginVO.getAuthCd());
+		params.put("login_uss_id", loginVO.getId());
 		
 		String mode = VarConsts.MODE_I;
 		if (params.get("mode") != null) {

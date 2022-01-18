@@ -596,8 +596,10 @@
 			, SUBSTR(A.TERM_ED_HM, 1, 2) TERM_ED_H
 			, SUBSTR(A.TERM_ED_HM, 3, 4) TERM_ED_M
 			, A.REPT_CONT					/* 보고내용 */
-			, A.HALF_TYPE_CD_ST				/* 시작일자반차구분코드 */
+			, A.HALF_TYPE_CD				/* 시작일자반차구분코드 */
+			, (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.HALF_TYPE_CD) AS HALF_TYPE_CD_ST_NM /*시작일자반차구분명칭*/
 			, A.HALF_TYPE_CD_ED				/* 종료일자반차구분코드 */
+			, (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.HALF_TYPE_CD_ED) AS HALF_TYPE_CD_ED_NM /*종료일자반차구분명칭*/
 			, A.PLACE					/* 행선지 */
 			, NVL(C.APRV_LINE_CD, '0') AS APRV_LINE_CD
 			, D.CONF_TYPE					/* 확인 유무 */
@@ -644,6 +646,7 @@
 			  , TERM_ED_YM
 			  , REPT_CONT
 			  , HALF_TYPE_CD
+			  , HALF_TYPE_CD_ED
 			  , PLACE
 			  , CRTN_EMP_NO
 			  , CRTN_DT
@@ -665,10 +668,64 @@
 			  , #{term_ed_ym, jdbcType=VARCHAR}
 			  , #{rept_cont, jdbcType=VARCHAR}
 			  , #{half_type_cd, jdbcType=VARCHAR}
+			  , #{half_type_cd_ed, jdbcType=VARCHAR}
 			  , #{place, jdbcType=VARCHAR}
 			  , #{rept_aprv_no, jdbcType=VARCHAR}
 			  , SYSDATE
 			  , #{rept_aprv_no, jdbcType=VARCHAR}
+			  , SYSDATE
+			  , #{term_st_hm, jdbcType=VARCHAR}
+			  , #{term_ed_hm, jdbcType=VARCHAR}
+			  , #{rept_dp_cd, jdbcType=VARCHAR}
+			  , #{rept_auth_cd, jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<!-- 결재정보 등록(관리자) -->
+	<insert id="aprvInsertAdmin" parameterType="map" >
+		<selectKey keyProperty="aprv_no" resultType="String" order="BEFORE">
+			SELECT NVL(MAX(TO_NUMBER(aprv_no)),0)+1
+			 FROM STD_APRV_MNG
+		</selectKey>
+		INSERT INTO STD_APRV_MNG
+			(
+				APRV_NO
+			  , REPT_APRV_NO
+			  , APRV_TYPE_CD
+			  , APRV_TYPE_DTIL_CD
+			  , TITLE
+			  , PROJ_CD
+			  , TERM_ST_YM
+			  , TERM_ED_YM
+			  , REPT_CONT
+			  , HALF_TYPE_CD
+			  , HALF_TYPE_CD_ED
+			  , PLACE
+			  , CRTN_EMP_NO
+			  , CRTN_DT
+			  , MODI_EMP_NO
+			  , MODI_DT
+			  , TERM_ST_HM
+			  , TERM_ED_HM
+			  , REPT_DP_CD
+			  , REPT_AUTH_CD
+			) VALUES
+			(
+				#{aprv_no}
+			  , #{rept_aprv_no, jdbcType=VARCHAR}
+			  , #{cdList1, jdbcType=VARCHAR}
+			  , #{cdList2, jdbcType=VARCHAR}
+			  , #{title, jdbcType=VARCHAR}
+			  , #{proj_cd, jdbcType=VARCHAR}
+			  , #{term_st_ym, jdbcType=VARCHAR}
+			  , #{term_ed_ym, jdbcType=VARCHAR}
+			  , #{rept_cont, jdbcType=VARCHAR}
+			  , #{half_type_cd, jdbcType=VARCHAR}
+			  , #{half_type_cd_ed, jdbcType=VARCHAR}
+			  , #{place, jdbcType=VARCHAR}
+			  , #{crtn_emp_no, jdbcType=VARCHAR}
+			  , SYSDATE
+			  , #{modi_emp_no, jdbcType=VARCHAR}
 			  , SYSDATE
 			  , #{term_st_hm, jdbcType=VARCHAR}
 			  , #{term_ed_hm, jdbcType=VARCHAR}
@@ -688,8 +745,32 @@
 		          , TERM_ED_YM = #{term_ed_ym, jdbcType=VARCHAR}
 		          , REPT_CONT = #{rept_cont, jdbcType=VARCHAR}
 		          , HALF_TYPE_CD = #{half_type_cd, jdbcType=VARCHAR}
+		          , HALF_TYPE_CD_ED = #{half_type_cd_ed, jdbcType=VARCHAR}
 		          , PLACE = #{place, jdbcType=VARCHAR}
 		          , MODI_EMP_NO = #{rept_aprv_no, jdbcType=VARCHAR}
+		          , MODI_DT = SYSDATE
+		          , CAL_NO = #{cal_no, jdbcType=VARCHAR}
+		          , TERM_ST_HM = #{term_st_hm, jdbcType=VARCHAR}
+			      , TERM_ED_HM = #{term_ed_hm, jdbcType=VARCHAR}
+			      , REPT_DP_CD = #{rept_dp_cd, jdbcType=VARCHAR}
+			      , REPT_AUTH_CD = #{rept_auth_cd, jdbcType=VARCHAR}
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 결재정보 수정 -->
+	<update id="aprvUpdateAdmin" parameterType="map" >
+		UPDATE STD_APRV_MNG
+		      SET APRV_TYPE_CD = #{cdList1, jdbcType=VARCHAR}
+		          , APRV_TYPE_DTIL_CD = #{cdList2, jdbcType=VARCHAR}
+		          , TITLE = #{title, jdbcType=VARCHAR}
+		          , PROJ_CD = #{proj_cd, jdbcType=VARCHAR}
+		          , TERM_ST_YM = #{term_st_ym, jdbcType=VARCHAR}
+		          , TERM_ED_YM = #{term_ed_ym, jdbcType=VARCHAR}
+		          , REPT_CONT = #{rept_cont, jdbcType=VARCHAR}
+		          , HALF_TYPE_CD = #{half_type_cd, jdbcType=VARCHAR}
+		          , HALF_TYPE_CD_ED = #{half_type_cd_ed, jdbcType=VARCHAR}
+		          , PLACE = #{place, jdbcType=VARCHAR}
+		          , MODI_EMP_NO = #{modi_emp_no, jdbcType=VARCHAR}
 		          , MODI_DT = SYSDATE
 		          , CAL_NO = #{cal_no, jdbcType=VARCHAR}
 		          , TERM_ST_HM = #{term_st_hm, jdbcType=VARCHAR}

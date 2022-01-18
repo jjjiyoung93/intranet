@@ -3,6 +3,7 @@ package kr.letech.aprv.service.impl;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,8 @@ import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.doc.service.impl.DocDAO;
 import kr.letech.sys.cdm.service.impl.CodeMngDAO;
+import kr.letech.uss.umt.service.impl.UssMngDAO;
+import kr.letech.vct.service.impl.VctMngDAO;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
@@ -54,8 +57,18 @@ public class AprvMngServiceImpl implements AprvMngService {
 	@Resource(name="codeMngDAO")
 	private CodeMngDAO codeMngDAO;
 	
+	/** docDAO */
 	@Resource(name="docDAO")
 	private DocDAO docDAO;
+	
+	
+	/** ussMngDAO */
+	@Resource(name="ussMngDAO")
+	private UssMngDAO ussMngDAO;
+	
+	/** vctMngDAO */
+	@Resource(name="vctMngDAO")
+	private VctMngDAO vctMngDAO;
 		
 	
 	/**
@@ -177,9 +190,117 @@ public class AprvMngServiceImpl implements AprvMngService {
 	public int aprvInsert(Map params, List fileList) throws Exception {
 		
 		int procResultVal = 0;
-
+		String authCd = (String)params.get("auth_cd");
+		
 		// 결재 정보 등록
-		procResultVal = aprvMngDAO.aprvInsert(params);
+		if(StringUtils.equals(authCd, "ROLE_ADMIN")) {
+			String loginUssId = (String)params.get("login_uss_id");
+			params.put("crtn_emp_no", loginUssId);
+			params.put("modi_emp_no", loginUssId);
+			procResultVal = aprvMngDAO.aprvInsertAdmin(params);
+		}else {
+			procResultVal = aprvMngDAO.aprvInsert(params);
+			
+		}
+		
+		
+		
+		/*2022.01.18 휴가 등록 시 VCT_INF_MNG 휴가 정보 등록 : BEGIN*/
+		String aprvTypeCd = (String)params.get("cdList1");
+		
+		if(StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
+			String termSt = (String)params.get("term_st");
+			String termEd = (String)params.get("term_ed");
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date stDate = formatter.parse(termSt);
+			Date edDate = formatter.parse(termEd);
+			
+			Calendar stCal = Calendar.getInstance();
+			stCal.setTime(stDate);
+			Calendar edCal = Calendar.getInstance();
+			edCal.setTime(edDate);
+			
+			long diffDay = ( edCal.getTimeInMillis() - stCal.getTimeInMillis() ) / (1000 * 60 * 60 * 24);
+			String vctDt = null;
+			Map vctInfMap = null;
+			
+			params.put("uss_id", (String)params.get("rept_aprv_no"));
+			
+			Map ussInf = ussMngDAO.getUssView(params);
+			
+			Map codeMap = null; 
+			String vctQrtr = "";
+			String vctDayCnt = "";
+			
+			for(int i = 0; i <= diffDay; i++) {
+				
+				
+				vctDt = formatter.format(stCal.getTime());
+				
+				vctInfMap = new HashMap();
+				
+				String vctTermType = "";
+				
+				vctInfMap.put("uss_id", (String)params.get("rept_aprv_no"));
+				vctInfMap.put("vct_dt", vctDt);
+				vctInfMap.put("aprv_no", (String)params.get("aprv_no"));
+				vctInfMap.put("vct_type", (String)params.get("cdList2"));
+				// 시작일자일 경우 : 시작일자반차구분코드
+				if(i == 0) {
+					vctTermType = (String)params.get("half_type_cd_st");
+				}else if(i == diffDay) { //종료일자일 경우 : 종료일자반차구분코드
+					vctTermType = (String)params.get("half_type_cd_ed");
+				}else { // 그 외 : 종일 코드
+					vctTermType = "CD0021001";
+				}
+				
+				params.put("cd", vctTermType);
+				codeMap = codeMngDAO.getCodeView(params);
+				
+				vctDayCnt = (String)codeMap.get("CD_VAL");
+				
+				vctInfMap.put("vct_trm_type", vctTermType);
+				
+				vctInfMap.put("vct_day_cnt", vctDayCnt);
+				//휴가일자의 월로 계산
+				String month = vctDt.substring(5, 7);
+				if(StringUtils.equals(month, "01") ||
+				   StringUtils.equals(month, "02") ||
+				   StringUtils.equals(month, "03")  ) {
+					vctQrtr = "1";
+					
+				}else if(StringUtils.equals(month, "04") ||
+						 StringUtils.equals(month, "05") ||
+						 StringUtils.equals(month, "06")  ) {
+					vctQrtr = "2";
+					
+				}else if(StringUtils.equals(month, "07") ||
+						 StringUtils.equals(month, "08") ||
+						 StringUtils.equals(month, "09")  ) {
+					vctQrtr = "3";
+					
+				}else {
+					vctQrtr = "4";
+				}
+				vctInfMap.put("vct_qrtr", vctQrtr);
+				
+				vctInfMap.put("vct_yr", vctDt.substring(0, 4));
+				vctInfMap.put("proj_cd", (String)params.get("proj_cd"));
+				vctInfMap.put("emp_type", (String)ussInf.get("EMP_TYPE"));
+				vctInfMap.put("rtr_yn", (String)ussInf.get("RTR_YN"));
+				vctInfMap.put("aut_cd", (String)params.get("rept_auth_cd"));
+				
+				//등록
+				
+				int result = vctMngDAO.insertVctInf(vctInfMap);
+				
+				stCal.add(Calendar.DATE, 1);
+			}
+		}
+		/*2022.01.18 휴가 등록 시 VCT_INF_MNG 휴가 정보 등록 : END*/
+		
 		
 		// 결재 대상 등록
 		if (procResultVal > 0) {
@@ -251,7 +372,12 @@ public class AprvMngServiceImpl implements AprvMngService {
 			
 			int cal_seq = calMngDAO.calInsert(calAprvMap);
 			params.put("cal_no", cal_seq);
-			aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+			
+			if(StringUtils.equals(authCd, "ROLE_ADMIN")) {
+				aprvMngDAO.aprvUpdateAdmin(params);
+			}else {
+				aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+			}
 		}
 		
 		// 결재문서에 등록
@@ -359,8 +485,120 @@ public class AprvMngServiceImpl implements AprvMngService {
 		
 		int procResultVal = 0;
 		
+		String authCd = (String)params.get("auth_cd");
+		
 		// 결재 정보 수정
-		procResultVal = aprvMngDAO.aprvUpdate(params);
+		if(StringUtils.equals(authCd, "ROLE_ADMIN")) {
+			String loginUssId = (String)params.get("login_uss_id");
+			params.put("crtn_emp_no", loginUssId);
+			params.put("modi_emp_no", loginUssId);
+			procResultVal = aprvMngDAO.aprvUpdateAdmin(params);
+		}else {
+			procResultVal = aprvMngDAO.aprvUpdate(params);
+		}
+		
+		/*2022.01.18 휴가 수정 시 VCT_INF_MNG 휴가 정보 기존 정보 삭제 후 등록 : BEGIN*/
+		String aprvTypeCd = (String)params.get("cdList1");
+		
+		if(StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
+			//기존 정보 삭제 후 재등록
+			int result = vctMngDAO.deleteVctInf(params);
+			
+			
+			String termSt = (String)params.get("term_st");
+			String termEd = (String)params.get("term_ed");
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date stDate = formatter.parse(termSt);
+			Date edDate = formatter.parse(termEd);
+			
+			Calendar stCal = Calendar.getInstance();
+			stCal.setTime(stDate);
+			Calendar edCal = Calendar.getInstance();
+			edCal.setTime(edDate);
+			
+			long diffDay = ( edCal.getTimeInMillis() - stCal.getTimeInMillis() ) / (1000 * 60 * 60 * 24);
+			String vctDt = null;
+			Map vctInfMap = null;
+			
+			params.put("uss_id", (String)params.get("rept_aprv_no"));
+			
+			Map ussInf = ussMngDAO.getUssView(params);
+			
+			Map codeMap = null; 
+			String vctQrtr = "";
+			String vctDayCnt = "";
+			
+			for(int i = 0; i <= diffDay; i++) {
+				
+				
+				vctDt = formatter.format(stCal.getTime());
+				
+				vctInfMap = new HashMap();
+				
+				String vctTermType = "";
+				
+				vctInfMap.put("uss_id", (String)params.get("rept_aprv_no"));
+				vctInfMap.put("vct_dt", vctDt);
+				vctInfMap.put("aprv_no", (String)params.get("aprv_no"));
+				vctInfMap.put("vct_type", (String)params.get("cdList2"));
+				// 시작일자일 경우 : 시작일자반차구분코드
+				if(i == 0) {
+					vctTermType = (String)params.get("half_type_cd_st");
+				}else if(i == diffDay) { //종료일자일 경우 : 종료일자반차구분코드
+					vctTermType = (String)params.get("half_type_cd_ed");
+				}else { // 그 외 : 종일 코드
+					vctTermType = "CD0021001";
+				}
+				
+				params.put("cd", vctTermType);
+				codeMap = codeMngDAO.getCodeView(params);
+				
+				vctDayCnt = (String)codeMap.get("CD_VAL");
+				
+				vctInfMap.put("vct_trm_type", vctTermType);
+				
+				vctInfMap.put("vct_day_cnt", vctDayCnt);
+				//휴가일자의 월로 계산
+				String month = vctDt.substring(5, 7);
+				if(StringUtils.equals(month, "01") ||
+				   StringUtils.equals(month, "02") ||
+				   StringUtils.equals(month, "03")  ) {
+					vctQrtr = "1";
+					
+				}else if(StringUtils.equals(month, "04") ||
+						 StringUtils.equals(month, "05") ||
+						 StringUtils.equals(month, "06")  ) {
+					vctQrtr = "2";
+					
+				}else if(StringUtils.equals(month, "07") ||
+						 StringUtils.equals(month, "08") ||
+						 StringUtils.equals(month, "09")  ) {
+					vctQrtr = "3";
+					
+				}else {
+					vctQrtr = "4";
+				}
+				vctInfMap.put("vct_qrtr", vctQrtr);
+				
+				vctInfMap.put("vct_yr", vctDt.substring(0, 4));
+				vctInfMap.put("proj_cd", (String)params.get("proj_cd"));
+				vctInfMap.put("emp_type", (String)ussInf.get("EMP_TYPE"));
+				vctInfMap.put("rtr_yn", (String)ussInf.get("RTR_YN"));
+				vctInfMap.put("aut_cd", (String)params.get("rept_auth_cd"));
+				
+				//등록
+				
+				result = vctMngDAO.insertVctInf(vctInfMap);
+				
+				stCal.add(Calendar.DATE, 1);
+			}
+		}
+		/*2022.01.18 휴가 수정 시 VCT_INF_MNG 휴가 정보 기존 정보 삭제 후 등록 : END*/
+		
+		
+		
 		
 		// 결재 라인 수정
 		if (procResultVal > 0 && params.get("aprv_line_cd").equals("0")) {
@@ -446,7 +684,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 				int cal_seq = calMngDAO.calInsert(calAprvMap);	// 캘린더 삭제
 				params.put("cal_no", cal_seq);
 				
-				aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+				if(StringUtils.equals(authCd, "ROLE_ADMIN")) {
+					aprvMngDAO.aprvUpdateAdmin(params);
+				}else {
+					aprvMngDAO.aprvUpdate(params);	// 캘린더 번호 저장
+				}
 			}
 		}
 		
@@ -525,9 +767,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 		String cd1 = (String) params.get("cdList1");
 		String cd2 = (String) params.get("cdList2");
 		
+		
 		// 결재문서 삭제
 		if("CD0001011".equals(cd1)) { // 휴가신청
 			docDAO.deleteFrogh(params);
+			vctMngDAO.deleteVctInf(params);
 		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
 			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
 				docDAO.deleteFlexWrkSyst(params);

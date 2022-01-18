@@ -61,6 +61,16 @@ public class AprvMngDAO extends AbstractDAO {
 	}
 	
 	/**
+	 * 결재정보 등록(관리자)
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public int aprvInsertAdmin(Map params) throws Exception {
+		return (Integer)insert("aprvMng.aprvInsertAdmin", params);
+	}
+	
+	/**
 	 * 결재정보 수정
 	 * @param params
 	 * @return
@@ -68,6 +78,16 @@ public class AprvMngDAO extends AbstractDAO {
 	 */
 	public int aprvUpdate(Map params) throws Exception {
 		return update("aprvMng.aprvUpdate", params);
+	}
+	
+	/**
+	 * 결재정보 수정(관리자)
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public int aprvUpdateAdmin(Map params) throws Exception {
+		return update("aprvMng.aprvUpdateAdmin", params);
 	}
 	
 	/**

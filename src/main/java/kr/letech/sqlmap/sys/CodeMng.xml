@@ -29,6 +29,12 @@
 		     ,cd_val
 		  FROM STD_CD_MNG
 		  WHERE up_cd  = #{up_cd, javaType=String ,jdbcType=VARCHAR}
+		  <!-- 2022.01.18 프로젝트 코드 조회 시 종료 프로젝트 제외 : BEGIN  -->
+		  <if test='up_cd == "CD0002"'>
+		   AND CD_VAL IS NULL
+		  </if>
+		  <!-- 2022.01.18 프로젝트 코드 조회 시 종료 프로젝트 제외 : END  -->
+		  
 		  <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cd_val)" >
 		  AND CD_VAL = #{cd_val}
 		  </if>

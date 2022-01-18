@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
 <html>
 <head>
 <jsp:include page="/resources/com/inc/meta.jsp" />
@@ -96,11 +97,12 @@
 											<c:choose>
 												<c:when test="${params.mode eq mode_u }">
 													<c:set var="rept_dp_cd" value="${viewMap.REPT_DP_CD }"/>
-													<input type="text" class="form-control" value="${viewMap.REPT_DP_NM }" readonly/>
+													<input type="text" class="form-control" id="rept_dp_nm" value="${viewMap.REPT_DP_NM }" readonly/>
 												</c:when>
 												<c:otherwise>
-													<c:set var="rept_dp_cd" value="${loginVO.orgnztId }"/>
-													<input type="text" class="form-control" value="${loginVO.orgnztNm }" readonly/>
+													<c:set var="rept_dp_cd" value="${loginVO.authCd != 'ROLE_ADMIN' ? loginVO.orgnztId : '' }"/>
+													<input type="text" class="form-control" id="rept_dp_nm" value="${loginVO.authCd != 'ROLE_ADMIN' ? loginVO.orgnztNm : ''}" readonly/>
+													
 												</c:otherwise>
 											</c:choose>
 											<input type="hidden" id="rept_dp_cd" name="rept_dp_cd" value="${rept_dp_cd }" />
@@ -131,11 +133,11 @@
 											<c:choose>
 												<c:when test="${params.mode eq mode_u }">
 													<c:set var="rept_auth_cd" value="${viewMap.REPT_AUTH_CD }"/>
-													<input type="text" class="form-control" value="${viewMap.REPT_AUTH_CD }" readonly/>
+													<input type="text" class="form-control" id="rept_auth_nm" value="${viewMap.REPT_AUTH_CD }" readonly/>
 												</c:when>
 												<c:otherwise>
-													<c:set var="rept_auth_cd" value="${loginVO.authCd }"/>
-													<input type="text" class="form-control" value="${loginVO.authNm }" readonly/>
+													<c:set var="rept_auth_cd" value="${loginVO.authCd != 'ROLE_ADMIN' ? loginVO.authCd : ''}"/>
+													<input type="text" class="form-control" id="rept_auth_nm" value="${loginVO.authCd != 'ROLE_ADMIN' ? loginVO.authNm : '' }" readonly/>
 												</c:otherwise>
 											</c:choose>
 											<input type="hidden" id="rept_auth_cd" name="rept_auth_cd" value="${rept_auth_cd }" />
@@ -154,7 +156,12 @@
 													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
 												</c:when>
 												<c:otherwise>
-													<input type="text" class="form-control" value="${loginVO.name }" readonly/>
+													<input type="text" class="form-control" id="rept_aprv_no_nm" value="${loginVO.name }" readonly/>
+													<!-- 2022.01.18 관리자 등록 시 보고자 선택 가능 : BEGIN  -->
+													<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+														<button type="button" class="btn btn-default btn-sm" onclick="fn_ussSearch('rept_aprv_no')">찾기</button>
+													</sec:authorize>
+													<!-- 2022.01.18 관리자 등록 시 보고자 선택 가능 : END  -->
 													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
 												</c:otherwise>
 											</c:choose>
@@ -410,23 +417,32 @@ $(function() {
 		document.frm1.aprv_line_cnt.value = aprv_line.rows.length-1; 
 		var vali1 = getValidation1(); // 공통
 		var vali2 = getValidation2(vali1); // 개별
+		console.log(vali2);
 		if(vali1 && vali2){
 			if($("#mode").val() == "<%=VarConsts.MODE_U%>") {
 			} else {
 				$("#mode").val("<%=VarConsts.MODE_I%>");	
 			}
 			// datepicker의 시간을 yyyyMMdd, hhmm으로 구분하여 저장
-			if($("#term_st").size() == "1" && $("#term_st").val() != "" && $("#term_ed").val() != "") { // 기간을 사용하지 않는 양식인지 확인
+			var cd1 = $("#cdList1").val();
+			if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
+				if($("#term_st").size() == "1" && $("#term_st").val() != "" && $("#term_ed").val() != "") { // 기간을 사용하지 않는 양식인지 확인
+					var term_st = $("#term_st").val();
+					var term_st_ym = term_st.split(" ")[0];
+					var term_st_hm = term_st.split(" ")[1].replace(":", "");
+					$("#term_st_ym").val(term_st_ym);
+					$("#term_st_hm").val(term_st_hm);
+					var term_ed = $("#term_ed").val();
+					var term_ed_ym = term_ed.split(" ")[0];
+					var term_ed_hm = term_ed.split(" ")[1].replace(":", "");
+					$("#term_ed_ym").val(term_ed_ym);
+					$("#term_ed_hm").val(term_ed_hm);
+				}
+			}else{
 				var term_st = $("#term_st").val();
-				var term_st_ym = term_st.split(" ")[0];
-				var term_st_hm = term_st.split(" ")[1].replace(":", "");
-				$("#term_st_ym").val(term_st_ym);
-				$("#term_st_hm").val(term_st_hm);
+				$("#term_st_ym").val(term_st);
 				var term_ed = $("#term_ed").val();
-				var term_ed_ym = term_ed.split(" ")[0];
-				var term_ed_hm = term_ed.split(" ")[1].replace(":", "");
-				$("#term_ed_ym").val(term_ed_ym);
-				$("#term_ed_hm").val(term_ed_hm);
+				$("#term_ed_ym").val(term_ed);
 			}
 			
 			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Tran.do");
@@ -469,7 +485,7 @@ $(function() {
 		var viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
 		var vacTermList = ${jsonVacTerm}; // 휴가 기간 구분 코드 콕록
 		
-		for(key in docJson)
+		for(key in docJson){
 			if(key != "items") { // 항목인지 확인
 				$("#" + key.toLowerCase()).val(docJson[key]);
 			} else {
@@ -485,7 +501,7 @@ $(function() {
 		if($("#term_st").size() == "1") { // 기간을 사용하지 않는 양식인지 확인
 			var term_st_ym;
 			var term_ed_ym;
-			var cd1 = docJson["APRV_TYPE_CD"];
+			var cd1 = viewJson["APRV_TYPE_CD"];
 			//tui.date-picker
 			if(viewJson["TERM_ST_YM"] != null) {
 				if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
@@ -502,40 +518,59 @@ $(function() {
 			
 			html += "<hr/>";
 			html2 += "<hr/>";
-			var picker = tui.DatePicker.createRangePicker({
-				language: 'ko',
-				startpicker: {
-					input: '#term_st',
-					container: '#startpicker-container',
-					date: term_st_ym
-				},
-				endpicker: {
-					input: '#term_ed',
-					container: '#endpicker-container',
-					date: term_ed_ym
-				},
-				type: 'date'
-				if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
-					,format: 'yyyy-MM-dd hh:mm'
-					,timepicker: {
+			
+			var picker = null;
+			
+			if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
+				picker = tui.DatePicker.createRangePicker({
+					language: 'ko',
+					startpicker: {
+						input: '#term_st',
+						container: '#startpicker-container',
+						date: term_st_ym
+					},
+					endpicker: {
+						input: '#term_ed',
+						container: '#endpicker-container',
+						date: term_ed_ym
+					},
+					type: 'date',
+				    format: 'yyyy-MM-dd hh:mm',
+					timepicker: {
 						language: 'ko',
 						showMeridiem: false,
 						minuteStep: 10
 					}
+				});				
+			}else{
+				picker = tui.DatePicker.createRangePicker({
+					language: 'ko',
+					startpicker: {
+						input: '#term_st',
+						container: '#startpicker-container',
+						date: term_st_ym
+					},
+					endpicker: {
+						input: '#term_ed',
+						container: '#endpicker-container',
+						date: term_ed_ym
+					},
+					type: 'date',
+					foramt : 'yyyy-MM-dd'
+				});	
+			}	
 					
-				}else{
-					format : 'yyyy-MM-dd'
-				}
-			});
 			
 			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
 				for(var i in vacTermList){
 					var vacTerm = vacTermList[i];
-					html += '<input class="col_md_2 half_type_cd_st" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
-					html += '<br/>'
+					html += '<div class="radio">';
+					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html += '</div>';
 					
-					html2 += '<input class="col_md_2 half_type_cd_ed" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+' cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
-					html2 += '<br/>'
+					html2 += '<div class="radio">';
+					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html2 += '</div>';
 				}
 				
 				html += '</div>';
@@ -544,8 +579,10 @@ $(function() {
 				$("#startpicker-container .tui-rangepicker").append(html);
 				$("#endpicker-container .tui-rangepicker").append(html2);
 				
-				$("input[name='half_type_cd_st_"+viewJson['HALF_TYPE_CD_ST']+"']").prop("checked", true);
-				$("input[name='half_type_cd_ed_"+viewJson['HALF_TYPE_CD_ED']+"']").prop("checked", true);
+				$("#half_type_cd_st_"+viewJson["HALF_TYPE_CD"]).prop("checked", true);
+				$("#half_type_cd_ed_"+viewJson["HALF_TYPE_CD_ED"]).prop("checked", true);
+				
+				fn_calcVacDay();
 			}
 			//휴가일경우
 			
@@ -615,66 +652,149 @@ $("#cdList2").change(function() {
 	fn_getDocCode($("#cdList1").val(), $("#cdList2").val()); // 문서 양식 불러옴(2가지 경우 중 두번째)
 });
 
+/*2022.01.18 휴가 기간 선택에 따른 사용일수 계산 : BEGIN*/
+// 휴가 기간 선택
 
+function fn_calcVacDay(){
+	//시작일자
+	var termSt = $("#term_st").val();
+	//console.log(termSt);
+	//종료일자
+	var termEd = $("#term_ed").val();
+	//console.log(termEd);
+	//시작일자휴가기간코드
+	var halfTypeCdSt = $(".half_type_cd_st:checked").attr('cnt');
+	//console.log(halfTypeCdSt);
+	//종료일자휴가기간코드
+	var halfTypeCdEd = $(".half_type_cd_ed:checked").attr('cnt');
+	//console.log(halfTypeCdEd);
+	
+	var dayCnt = 0;
+	
+	
+	if(termSt == null || termSt == ""){
+		return false;
+	}
+	
+	if(termEd == null || termEd == ""){
+		return false;
+	}
+	
+	if(halfTypeCdSt == null || halfTypeCdSt == ""){
+		return false;
+		
+	}
+	
+	if(halfTypeCdEd == null || halfTypeCdEd == "" ){
+		return false;
+	}
+	
+	var stDate = new Date(termSt);
+	var edDate = new Date(termEd);
+	var diffDate = (edDate - stDate) / (1000 * 60 * 60 * 24) -1;
+	dayCnt = parseFloat(halfTypeCdSt) + parseFloat(halfTypeCdEd) + diffDate;
+	
+	$("#day_cnt").val(dayCnt);
+	
+	
+	/*구하는 법 : (종료일자 - 시작일자 - 1) + 시작기간코드값 + 종료기간코드값*/
+	
+}
+
+
+
+/*2022.01.18 반차구분코드 변경 시 사용일수 계산 함수 : BEGIN */
+$(document).on('click', ".half_type_cd", function(){
+	fn_calcVacDay();
+	
+});
+/*2022.01.18 반차구분코드 변경 시 사용일수 계산 함수 : END */
+
+
+/*2022.01.18 휴가 기간 선택에 따른 사용일수 계산 : END*/
 
 // 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
 function fn_getDocCode(cd1, cd2) {
-	var vacTermList;
+	var vacTermList= null ;
+	var html = "";
+	var html2 = "";
 	$.ajax({
 		type:'get',
 		async: false,
 		url:'${pageContext.request.contextPath}/doc/doc00Ajax.do?APRV_TYPE_CD='+cd1+'&APRV_TYPE_DTIL_CD='+cd2,
 		success: function(json){
-			var html = "<div id='vacTermSt'>";
-			var html2 = "<div id='vacTermEd'>";
-			
-			html += "<hr/>";
-			html2 += "<hr/>";
 			// cd1, cd2에 해당하는 문서 양식을 화면에 찍어줌
 			$("#docForm").empty();
 			//console.log("화명:"+json);
 			$("#docForm").append(json);
-			vacTermList = jsonVacTerm;
+			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE %>"){
+				html = "<div id='vacTermSt'>";
+				html2 = "<div id='vacTermEd'>";
+				
+				html += "<hr/>";
+				html2 += "<hr/>";
+			
+				//vacTermList = ${jsonVacTerm};
+				vacTermList = jsonVacCdList;
+				//console.log (vacTermList);
+				
+			}
 			//console.log("화명end:");
-			//console.log (jsonVacTerm);
 
 			// 화면에 찍은 양식에서 date picker를 사용할 때 라이브러리를 초기화 시킴 
 			if($("#term_st").length > 0) {
-				//tui.date-picker
-				var picker = tui.DatePicker.createRangePicker({
-					language: 'ko',
-					startpicker: {
-						input: '#term_st',
-						container: '#startpicker-container'
-					},
-					endpicker: {
-						input: '#term_ed',
-						container: '#endpicker-container'
-					},
-					type: 'date'
-					if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
-						, format: 'yyyy-MM-dd hh:mm'
-						,timepicker: {
-							language: 'ko',
-							showMeridiem: false,
-							minuteStep: 10
+				var picker = null;
+				if(cd1 != "<%=VarConsts.EAM_VACATION_CODE%>"){
+					picker = tui.DatePicker.createRangePicker({
+						language: 'ko',
+						startpicker: {
+							input: '#term_st',
+							container: '#startpicker-container'
+						},
+						endpicker: {
+							input: '#term_ed',
+							container: '#endpicker-container'
+						},
+						type: 'date',
+						format: 'yyyy-MM-dd hh:mm',
+					    timepicker: {
+								language: 'ko',
+								showMeridiem: false,
+								minuteStep: 10
 						}
-						
-					}else{
-						, format: 'yyyy-MM-dd'
-					}
-						
-				});
+							
+					});
+				}else{
+					picker = tui.DatePicker.createRangePicker({
+						language: 'ko',
+						startpicker: {
+							input: '#term_st',
+							container: '#startpicker-container'
+						},
+						endpicker: {
+							input: '#term_ed',
+							container: '#endpicker-container'
+						},
+						type: 'date',
+						format: 'yyyy-MM-dd'
+					   
+							
+					});
+				}
+				
+				//tui.date-picker
 			}
 			
 			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
 				for(var i in vacTermList){
 					var vacTerm = vacTermList[i];
-					html += '<input class="col_md_2 half_type_cd_st" name="half_type_cd_st" id="half_type_cd_st_'+i+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
-					html += '<br/>'
+					html += '<div class="radio">';
+					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html += '</div>';
 					
-					html2 += '<input class="col_md_2 half_type_cd_ed" name="half_type_cd_ed" id="half_type_cd_ed_'+i+'" type="radio" value="'+vacTerm.CD+' cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM;
-					html2 += '<br/>'
+					html2 += '<div class="radio">';
+					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html2 += '</div>';
 				}
 				
 				html += '</div>';
@@ -817,9 +937,20 @@ function fn_ussSearch(no){
 	$("#ussFrm").attr("action", "${pageContext.request.contextPath}/search/uss00Popup.do");
 	$("#ussFrm").submit();
 }
-function setUssForm(id, nm){
+function setUssForm(id, nm, authNm, deptNm, authCd, deptCd){
+
 	$("#"+div_id).val(id);
 	$("#"+div_id+"_nm").val(nm);
+	/*2022.01.18 관리자 결재 등록 시 보고자 선택 후 부서정보 및 권한 정보 수정:BEGIN*/	
+	var loginAuthCd = "${loginVO.authCd}";
+	if(loginAuthCd == 'ROLE_ADMIN' && div_id == 'rept_aprv_no' ){
+		$("#rept_dp_nm").val(deptNm);
+		$("#rept_auth_nm").val(authNm);
+		$("#rept_dp_cd").val(deptCd);
+		$("#rept_auth_cd").val(authCd);
+	}
+	/*2022.01.18 관리자 결재 등록 시 보고자 선택 후 부서정보 및 권한 정보 수정:END*/	
+	
 }
 
 // 파일 다운로드

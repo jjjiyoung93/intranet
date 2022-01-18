@@ -16,7 +16,17 @@
 			<input id="term_ed" name="term_ed" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
 			<div id="endpicker-container" style="margin-left: -1px;"></div>
 		</div>
+		<div class="col-lg-6 col-sm-6 pull-right">
+			<div class="col-lg-4 col-sm-2">
+				<label class="control-label">사용일수</label> <span class="req-sign"></span>
+ 			</div>
+			<div class="col-lg-6 col-sm-6">
+				<input id="day_cnt" type="text" class="form-control" value="0" readonly>
+			</div>
+	
+		</div>
 	</div>
+	
 </div>
 <!-- 기간 END -->
 
@@ -54,13 +64,8 @@
 <!-- 연락처 END -->
 
 <script>
-$(document).ready(function(){
-	
-	jsonVacTerm = ${jsonVacTerm};
-	
-	
-	
-})
+
+jsonVacCdList = ${jsonVacTerm};
 
 function getValidation2(valid) {
 	if($("#cdList1").val() == "CD0001011") {
@@ -73,9 +78,9 @@ function getValidation2(valid) {
 			valid = false;
 		}
 		
-		if($("input[name='half_type_cd_st']:checked").val() == ""){
+		if(!($("input[name='half_type_cd_st']").is(":checked"))){
 			if(valid) {
-				alert("휴가 기간 구분을 선택해 주세요.");
+				alert("휴가 기간 구분(시작일자)을 선택해 주세요.");
 				$("input[name='half_type_cd_st']").focus();
 			}
 			$("input[name='half_type_cd_st']").closest(".form-group").addClass("has-error");
@@ -91,9 +96,9 @@ function getValidation2(valid) {
 			valid = false;
 		}
 		
-		if($("input[name='half_type_cd_ed']:checked").val() == ""){
+		if(!($("input[name='half_type_cd_ed']").is(":checked"))){
 			if(valid) {
-				alert("휴가 기간 구분을 선택해 주세요.");
+				alert("휴가 기간 구분(종료일자)을 선택해 주세요.");
 				$("input[name='half_type_cd_ed']").focus();
 			}
 			$("input[name='half_type_cd_ed']").closest(".form-group").addClass("has-error");

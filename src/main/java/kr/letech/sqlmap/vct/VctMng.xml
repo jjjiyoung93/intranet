@@ -608,4 +608,49 @@
 	
 	</select>
 	
+	<!-- 휴가정보 등록  -->
+	<insert id="insertVctInf" parameterType="map">
+		INSERT INTO VCT_INF_MNG (
+			   USS_ID
+             , VCT_DT
+             , APRV_NO
+             , VCT_TYPE
+             , VCT_TRM_TYPE
+             , VCT_QRTR	
+             , VCT_YR
+             , PROJ_CD
+             , VCT_DAY_CNT
+             , EMP_TYPE
+             , RTR_YN
+             , AUT_CD
+             , CRTN_DT
+             , MODI_DT
+		)
+		VALUES(
+			   #{uss_id, jdbcType=VARCHAR}
+             , #{vct_dt, jdbcType=VARCHAR}
+             , #{aprv_no, jdbcType=VARCHAR}
+             , #{vct_type, jdbcType=VARCHAR}
+             , #{vct_trm_type, jdbcType=VARCHAR }
+             , TO_NUMBER(#{vct_qrtr, jdbcType=VARCHAR})
+             , #{vct_yr, jdbcType=VARCHAR}
+             , #{proj_cd, jdbcType=VARCHAR}
+             , TO_NUMBER(#{vct_day_cnt, jdbcType=VARCHAR})
+             , #{emp_type, jdbcType=VARCHAR}
+             , #{rtr_yn}
+             , #{aut_cd, jdbcType=VARCHAR}
+             , SYSDATE
+             , SYSDATE			
+		
+		)
+		
+	</insert>
+	
+	<!-- 휴가정보 삭제  -->
+	<delete id="deleteVctInf" parameterType="map">
+		DELETE
+		  FROM VCT_INF_MNG
+		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
+	</delete>
+	
 </mapper>
