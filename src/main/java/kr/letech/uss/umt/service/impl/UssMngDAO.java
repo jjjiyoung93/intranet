@@ -146,4 +146,34 @@ public class UssMngDAO extends AbstractDAO {
 	public int insertAprvLine(Map params) throws Exception {
 		return (Integer) insert("ussMng.insertAprvLine", params);
 	}
+	
+	/**
+	 * 재직중 사원 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public List getWorkUssList(Map params) throws Exception {
+		return getList("ussMng.getWorkUssList", params);
+	}
+	
+	/**
+	 * 사용자 생일 캘린더 수정
+	 * @param params
+	 * @throws Exception
+	 */
+	public void updateBirCalSeq(Map params) throws Exception {
+		update("ussMng.updateBirCalSeq", params);
+	}
+	
+	/**
+	 * 사용자 근속 년수 수정
+	 * @param params
+	 * @throws Exception
+	 */
+	public void updateWorkYrCnt(Map params) throws Exception {
+		update("ussMng.updateWorkYrCnt", params);
+	}
+	
+	
 }

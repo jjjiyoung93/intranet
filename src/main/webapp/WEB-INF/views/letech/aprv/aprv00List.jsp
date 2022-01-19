@@ -85,6 +85,7 @@
 											<option value="" >--전체--</option>
 											<option value="<%=VarConsts.APRV_GB_APRV %>" <c:if test="${params.searchCdList6 eq '0' }">selected="selected"</c:if>>결재</option>
 											<option value="<%=VarConsts.APRV_GB_REFE %>" <c:if test="${params.searchCdList6 eq '1' }">selected="selected"</c:if>>참조</option>
+											<option value="<%=VarConsts.APRV_GB_CAN %>" <c:if test="${params.searchCdList6 eq '2' }">selected="selected"</c:if>>취소</option>
 									</select>
 									<input type="checkbox" value="Y" name="myAprvList" <c:if test="${params.myAprvList eq 'Y' }"> checked="checked"</c:if> >
 									<label style="font-size: 14px; padding: 0px;">내 결재문서 보기</label>
@@ -348,26 +349,32 @@
 														</c:otherwise>
 													</c:choose>
 													
-													
-													<c:if test="${list.LINE_CHK eq 'Y' }">
-														<c:choose>
-															<c:when test="${list.REFE_YN eq 'Y' }">
-															(참조)
-															</c:when>
-															<c:otherwise>
+													<c:choose>
+														<c:when test="${!empty list.CANCEL_YN && list.CANCEL_YN eq 'Y' }">
+															<span style="color:red;">(취소)</span>
+														</c:when>
+														<c:otherwise>
 															<c:if test="${list.LINE_CHK eq 'Y' }">
 																<c:choose>
-																	<c:when test="${list.APRV_ID eq params.uss_id }">
-																		<span style="color:red;">(결재)</span>
+																	<c:when test="${list.REFE_YN eq 'Y' }">
+																	(참조)
 																	</c:when>
 																	<c:otherwise>
-																		(결재)
+																	<c:if test="${list.LINE_CHK eq 'Y' }">
+																		<c:choose>
+																			<c:when test="${list.APRV_ID eq params.uss_id }">
+																				<span style="color:red;">(결재)</span>
+																			</c:when>
+																			<c:otherwise>
+																				(결재)
+																			</c:otherwise>
+																		</c:choose>
+																	</c:if>
 																	</c:otherwise>
 																</c:choose>
 															</c:if>
-															</c:otherwise>
-														</c:choose>
-													</c:if>
+														</c:otherwise>
+													</c:choose>
 												</td>
 											</tr>
 										</c:forEach>

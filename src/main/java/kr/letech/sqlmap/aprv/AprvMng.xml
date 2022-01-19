@@ -156,6 +156,7 @@
              , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.APRV_TYPE_DTIL_CD) AS APRV_TYPE_DTIL_NM /*결재상세코드명칭*/
              , Z.SUM_DAY_CNT /*휴가기간*/
              , A.MODI_DT /*상신일*/
+             , A.CANCEL_YN /*관리자취소여부*/
              <!-- 2022.01.12 추가 조회 항목 : BEGIN  -->
 			 
 		 FROM STD_APRV_MNG A
@@ -258,17 +259,22 @@
 		<!-- 2022.01.12 검색조건 추가 : END -->
 		<!-- 2022.01.17 검색조건 추가 : BEGIN -->
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList6)" >	<!-- 결재구분 (전체, 결재, 참조) -->
-			AND F.APRV_NO IS NOT NULL
-			
-			<if test='searchCdList6 == "0"' >	<!-- 결재 -->
-				AND (F.REFE_YN IS NULL OR F.REFE_YN != 'Y')
-			</if>
-			
-			<if test='searchCdList6 == "1"' >	<!-- 참조 -->
-				AND F.REFE_YN = 'Y'
-			</if>
-			
-			
+			<choose>
+				<when test='searchCdList6 == "2"'>	<!-- 취소  -->
+					AND A.CANCEL_YN = 'Y'
+				</when>
+				<otherwise>
+					AND F.APRV_NO IS NOT NULL
+					AND (A.CANCEL_YN IS NULL OR A.CANCEL_YN != 'Y')
+					<if test='searchCdList6 == "0"' >	<!-- 결재 -->
+						AND (F.REFE_YN IS NULL OR F.REFE_YN != 'Y')
+					</if>
+					
+					<if test='searchCdList6 == "1"' >	<!-- 참조 -->
+						AND F.REFE_YN = 'Y'
+					</if>
+				</otherwise>
+			</choose>
 		</if>
 		<if test='myAprvList == "Y"' >	<!-- 내결재문서보기 -->
 			AND Y.APRV_ID = #{uss_id}
@@ -465,17 +471,33 @@
 		<!-- 2022.01.12 검색조건 추가 : END -->
 		<!-- 2022.01.17 검색조건 추가 : BEGIN -->
 		<!-- 결재구분 (전체, 결재, 참조) -->
-		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList6)" >	
-			AND F.APRV_NO IS NOT NULL
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchCdList6)" >
+			<choose>
+				<when test='searchCdList6 == "2"'>	<!-- 취소  -->
+					AND A.CANCEL_YN = 'Y'
+				</when>
+				<otherwise>
+					AND F.APRV_NO IS NOT NULL
+					AND (A.CANCEL_YN IS NULL OR A.CANCEL_YN != 'Y')
+					<if test='searchCdList6 == "0"' >	<!-- 결재 -->
+						AND (F.REFE_YN IS NULL OR F.REFE_YN != 'Y')
+					</if>
+					
+					<if test='searchCdList6 == "1"' >	<!-- 참조 -->
+						AND F.REFE_YN = 'Y'
+					</if>
+				</otherwise>
+			</choose>	
+<!-- 			AND F.APRV_NO IS NOT NULL
 			
-			<if test='searchCdList6 == "0"' >	<!-- 결재 -->
+			<if test='searchCdList6 == "0"' >	결재
 				AND (F.REFE_YN IS NULL OR F.REFE_YN != 'Y')
 			</if>
 			
-			<if test='searchCdList6 == "1"' >	<!-- 참조 -->
+			<if test='searchCdList6 == "1"' >	참조
 				AND F.REFE_YN = 'Y'
 			</if>
-				
+ -->				
 		</if>
 		<if test='myAprvList == "Y"' >	<!-- 내결재문서보기 -->
 			AND Y.APRV_ID = #{uss_id}
@@ -611,6 +633,8 @@
 			, F.ADDR /*행선지*/
 			, F.CTTPLC /*연락처*/
 			, G.VCT_DAY_CNT /*휴가사용일수*/
+			, A.CANCEL_YN /*관리자취소여부*/
+			, A.CRTN_EMP_NO /*결재문서작성자*/
 			<!-- 2022.01.17 휴가 신청 상세 조회 시 조회 항목 추가 : END  -->
 			
 			
@@ -1524,5 +1548,16 @@
 		   AND B.GROUP_CD = C.CD
 		   AND D.GROUP_CD = C.CD
 	</select>
+	
+	<!-- 2022.01.19 결재문서 관리자 취소 : BEGIN  -->
+	<update id="updateAprvCancelAdmin" parameterType="map">
+		UPDATE STD_APRV_MNG
+		   SET CANCEL_YN = #{cancel_yn, jdbcType=VARCHAR}
+	   		 , MODI_DT = SYSDATE
+	   		 , MODI_EMP_NO = #{uss_id}
+	   	  WHERE APRV_NO = #{aprv_no}	  
+	</update>
+	
+	<!-- 2022.01.19 결재문서 관리자 취소 : END  -->
 	
 </mapper>

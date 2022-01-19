@@ -138,6 +138,7 @@
 		  , E.CD_NM /*고용구분 명칭*/ AS EMP_TYPE_NM
 		  , A.RTR_RSN /*퇴사사유코드*/
 		  , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.RTR_RSN) /*퇴사사유 명칭*/ AS RTR_RSN_NM
+		  , A.BIR_CAL_SEQ /*생일캘린더번호*/
 		FROM
 		  	STD_USS_MNG A
 			<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
@@ -179,6 +180,7 @@
 			, work_yr_cnt = #{work_yr_cnt}
 			, emp_type = #{emp_type, jdbcType=VARCHAR}
 			, rtr_rsn = #{rtr_rsn, jdbcType=VARCHAR}
+			, bir_cal_seq = #{bir_cal_seq}
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_pwd)" >
 			, uss_pwd = #{uss_pwd}
 		</if>
@@ -291,4 +293,47 @@
 			, #{aprv_emp_no, jdbcType=VARCHAR}
 		)
 	</insert>
+	
+	<!-- 재직중인 사원만 조회  -->
+	<select id="getWorkUssList" parameterType="map" resultType="hashMap">
+		SELECT
+				A.USS_ID
+				, A.USS_NM
+				, A.USS_BIRTH
+				, A.USS_EMAIL
+				<!-- , A.USS_AUTH_CD --> <!-- 권한 매핑 테이블 미사용시 -->
+				, B.AUTHOR_CODE AS USS_AUTH_CD	<!-- 권한 매핑 테이블 사용시 --> 
+				, A.USS_AUTH_CD
+				, A.USS_TEL
+				, A.USS_EM_NO
+				, C.AUTHOR_NM AS USS_AUTH_NM	<!-- 권한 매핑 테이블 사용시 -->
+				, A.DP_CD
+				, D.CD_NM AS DP_NM
+				, A.EMP_TYPE
+				, (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM /*고용구분명칭*/
+				, A.RTR_YN /*재직구분*/
+			FROM
+				STD_USS_MNG A
+				<!-- LEFT OUTER JOIN STD_AUT_INFO B ON B.AUTHOR_CODE = A.USS_AUTH_CD --><!-- 사용자테이블에 권한 컬럼 사용시 및 권한 매핑 테이블 미사용 -->
+				LEFT OUTER JOIN STD_AUT_ROLE_MAP B ON A.USS_ID = B.SCRTY_DTRMN_TRGET_ID
+				LEFT OUTER JOIN STD_AUT_INFO C ON C.AUTHOR_CODE = B.AUTHOR_CODE
+				LEFT OUTER JOIN STD_CD_MNG D ON D.CD = A.DP_CD
+		   WHERE
+		      A.RTR_YN IS NULL OR A.RTR_YN != 'Y'
+	</select>
+	
+	<!-- 생일 캘린더 번호 수정  -->
+	<update id="updateBirCalSeq" parameterType="map">
+		UPDATE STD_USS_MNG
+		   SET BIR_CAL_SEQ = #{bir_cal_seq}
+		 WHERE USS_ID = #{uss_id} 
+	</update>
+	
+	<!-- 근속년수 업데이트 +1씩 수정  -->
+	<update id="updateWorkYrCnt" parameterType="map">
+		UPDATE STD_USS_MNG
+		   SET WORK_YR_CNT = (WORK_YR_CNT + 1)
+		 WHERE (RTR_YN IS NULL OR RTR_YN != 'Y')
+		   AND WORK_YR_CNT IS NOT NULL   
+	</update> 
 </mapper>

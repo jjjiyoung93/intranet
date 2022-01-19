@@ -36,6 +36,7 @@
 							<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}"/>
 							<input type="hidden" name="uss_id" id="uss_id" value="${params.uss_id }" />
 							<input type="hidden" id="mode" name="mode" value="" />
+							<input type="hidden" id="bir_cal_seq" name="bir_cal_seq" value="${resultView.BIR_CAL_SEQ}" />
 							
 							<ul class="payment-form">
 								<li class="">

@@ -1259,5 +1259,31 @@ public class AprvMngServiceImpl implements AprvMngService {
 	public List getTrvctInfo(Map params) throws Exception {
 		return aprvMngDAO.getTrvctInfo(params);
 	}
+	
+	/**
+	 * 결재문서 관리자 취소/취소해제
+	 * 작성자 : yhkim
+	 * @param params
+	 * @throws Exception
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public void updateAprvCancelAdmin(Map params) throws Exception {
+		
+		String cancelYn = (String)params.get("cancel_yn");
+		
+		//전달받은 취소여부가 'Y' 일경우 'N'으로 변경 (취소해제)
+		if(StringUtils.equals(cancelYn, "Y")) {
+			params.put("cancel_yn", "N");
+		}else {
+			//전달받은 취소여부가 'Y'가 아닌 경우 'Y'로 변경(취소)
+			params.put("cancel_yn", "Y");
+		}
+		
+		aprvMngDAO.updateAprvCancelAdmin(params);
+		
+	}
+
+	
 
 }

@@ -368,4 +368,14 @@ public class AprvMngDAO extends AbstractDAO {
 		return (List)getList("aprvMng.getTrvctInfo", params);
 	}
 
+	/**
+	 * 결재문서 관리자 취소/취소해제
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateAprvCancelAdmin(Map params) throws Exception {
+		return (Integer)update("aprvMng.updateAprvCancelAdmin", params);
+	}
+
 }

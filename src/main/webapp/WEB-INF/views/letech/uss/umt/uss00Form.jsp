@@ -34,6 +34,7 @@
 							<input type="hidden" name="id_check" id="id_check" value="" />
 							<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 							<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
+							<input type="hidden" id="bir_cal_seq" name="bir_cal_seq" value="${resultView.BIR_CAL_SEQ}" />
 							
 							<div class="row">
 								<ul class="col-md-12">

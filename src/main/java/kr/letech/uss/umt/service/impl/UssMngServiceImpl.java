@@ -1,18 +1,23 @@
 package kr.letech.uss.umt.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.letech.cal.service.impl.CalMngDAO;
+import kr.letech.cmm.util.EgovDateUtil;
 import kr.letech.cmm.util.EgovFileScrty;
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.PageNavigator;
@@ -30,6 +35,10 @@ public class UssMngServiceImpl implements UssMngService {
 	/** 권한 */
 	@Resource(name="roleMngDAO")
 	private RoleMngDAO roleMngDAO;
+	
+	/** 캘린더  */
+	@Resource(name = "calMngDAO")
+	private CalMngDAO calMngDAO;
 	
 	/**
 	 * 페이지 처리, 목록정보 가져오기
@@ -165,6 +174,53 @@ public class UssMngServiceImpl implements UssMngService {
 			roleMngDAO.roleMapInsertAndUpdate(params);		// merge사용 기존 정보가 없을경우 등록, 없을경우 수정
 			//roleMngDAO.roleMapInsert(params);				// 등록
 		}
+		
+		/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
+		Date today = new Date();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String todayStr = formatter.format(today);
+		
+		String year = todayStr.substring(0, 4);
+				
+		Map calMap = new HashMap();
+		String ussNm = (String)params.get("uss_nm");
+		calMap.put("cal_nm", ussNm + " 생일");
+		calMap.put("cal_content_", year + " 년도 " + ussNm + " 생일");
+		/*날짜 만들기(음력 시 양력 변화 필요) : BEGIN*/
+		String birtdayType = (String)params.get("uss_birth_day_type");
+		String birthdayMon = (String)params.get("uss_birth_day_mon");
+		String birthdayDate = (String)params.get("uss_birth_day_date");
+		String birthday = "";
+		//양력일 경우
+		if(StringUtils.equals(birtdayType, "S")) {
+			birthday = year+"-"+birthdayMon+"-"+birthdayDate;
+		}else if(StringUtils.equals(birtdayType, "L")) {
+			//음력일 경우
+			birthday = year+"-"+birthdayMon+"-"+birthdayDate;
+			String birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+			String birthYear = birthdayConv.substring(0, 4);
+			String birthMon = birthdayConv.substring(4, 6);
+			String birthDate = birthdayConv.substring(6);
+			
+			birthday = birthYear + "-" + birthMon + "-" + birthDate;
+		}
+		calMap.put("cal_st_dt", birthday);
+		calMap.put("cal_ed_dt", birthday);
+		/*날짜 만들기(음력 시 양력 변화 필요) : END*/
+		calMap.put("uss_id", (String)params.get("uss_id"));
+		calMap.put("aprv_yn", "N");
+		
+		//캘린더 정보 추가
+		int calSeq = calMngDAO.calInsert(calMap);
+		
+		params.put("bir_cal_seq", calSeq);
+		
+		//추가한 캘린더 시퀀스 번호 사용자 정보 등록
+		ussMngDAO.ussUpdate(params);
+		
+		/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : END*/
 	}
 	
 	/**
@@ -199,14 +255,80 @@ public class UssMngServiceImpl implements UssMngService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void ussUpdate(Map params) throws Exception {
+		
+		Map orginUssView = null;
+		
 		if(params.get("uss_pwd") == null || params.get("uss_pwd").equals("")){
+			orginUssView = ussMngDAO.getUssView(params);
 		}else{
 			// 비밀번호 수정할 경우 (비밀번호가 null값이 아닐경우)
 			String uss_pwd = (String) params.get("uss_pwd");
+			params.remove("uss_pwd");
+			orginUssView = ussMngDAO.getUssView(params);
 			String uss_id = (String) params.get("uss_id");
 			String enpassword = EgovFileScrty.encryptPassword(uss_pwd, uss_id);
 			params.put("uss_pwd", enpassword);
 		}
+		/*2022.01.19 사용자 생일 정보 수정 시 기존 자료 와 비교 후 다르면 캘린더 새로 추가 : BEGIN*/
+		String orginBirthType = (String)orginUssView.get("USS_BIRTH_DAY_TYPE");
+		String orginBirthday = (String)orginUssView.get("USS_BIRTH_DAY");
+		
+		String updBirthType = (String)params.get("uss_birth_day_type");
+		String updBirthday = (String)params.get("uss_birth_day");
+		
+		if(!StringUtils.equals(updBirthType, orginBirthType) || !StringUtils.equals(updBirthday, orginBirthday)) {
+			params.put("cal_seq", Integer.valueOf((String)orginUssView.get("BIR_CAL_SEQ")));
+			
+			calMngDAO.calDelete(params);
+			
+			
+			/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
+			Date today = new Date();
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			
+			String todayStr = formatter.format(today);
+			
+			String year = todayStr.substring(0, 4);
+					
+			Map calMap = new HashMap();
+			String ussNm = (String)params.get("uss_nm");
+			calMap.put("cal_nm", ussNm + " 생일");
+			calMap.put("cal_content_", year + " 년도 " + ussNm + " 생일");
+			/*날짜 만들기(음력 시 양력 변화 필요) : BEGIN*/
+			String birtdayType = (String)params.get("uss_birth_day_type");
+			String birthdayMon = (String)params.get("uss_birth_day_mon");
+			String birthdayDate = (String)params.get("uss_birth_day_date");
+			String birthday = "";
+			//양력일 경우
+			if(StringUtils.equals(birtdayType, "S")) {
+				birthday = year+"-"+birthdayMon+"-"+birthdayDate;
+			}else if(StringUtils.equals(birtdayType, "L")) {
+				//음력일 경우
+				birthday = year+"-"+birthdayMon+"-"+birthdayDate;
+				String birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+				String birthYear = birthdayConv.substring(0, 4);
+				String birthMon = birthdayConv.substring(4, 6);
+				String birthDate = birthdayConv.substring(6);
+				
+				birthday = birthYear + "-" + birthMon + "-" + birthDate;
+			}
+			calMap.put("cal_st_dt", birthday);
+			calMap.put("cal_ed_dt", birthday);
+			/*날짜 만들기(음력 시 양력 변화 필요) : END*/
+			calMap.put("uss_id", (String)params.get("uss_id"));
+			calMap.put("aprv_yn", "N");
+			
+			//캘린더 정보 추가
+			int calSeq = calMngDAO.calInsert(calMap);
+			
+			params.put("bir_cal_seq", calSeq);
+			/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : END*/
+		}
+		/*2022.01.19 사용자 생일 정보 수정 시 기존 자료 와 비교 후 다르면 캘린더 새로 추가 : END*/
+		
+		
+		
 		// 사용자 수정
 		ussMngDAO.ussUpdate(params);
 		
@@ -249,6 +371,10 @@ public class UssMngServiceImpl implements UssMngService {
 		params.put("scrty_dtrmn_trget_id", params.get("uss_id"));			// 사용자 ID
 		// 사용자 권한매핑 정보 삭제
 		roleMngDAO.roleMapDelete(params);
+		
+		params.put("cal_seq", Integer.valueOf((String)params.get("bir_cal_seq")));
+		
+		calMngDAO.calDelete(params);
 	}
 	
 

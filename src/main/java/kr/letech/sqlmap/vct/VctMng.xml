@@ -281,17 +281,19 @@
 		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 4) AS FRT_QRTR_CNT /*4분기 사용일수*/
 		  FROM ( SELECT * FROM VCT_DAY_MNG WHERE STDD_YR = #{stdd_yr} AND USS_ID = #{uss_id} ) A
 		  LEFT OUTER JOIN (SELECT
-		                          VCT_YR
-		                        , USS_ID
-		                        , VCT_TYPE
-		                        , SUM(VCT_DAY_CNT) AS VCT_TOT_USE_CNT
-		                     FROM VCT_INF_MNG
-		                    GROUP BY VCT_YR, USS_ID, VCT_TYPE ) B ON (B.USS_ID = A.USS_ID AND B.VCT_YR = A.STDD_YR)
+		                          E.VCT_YR
+		                        , E.USS_ID
+		                        , E.VCT_TYPE
+		                        , SUM(E.VCT_DAY_CNT) AS VCT_TOT_USE_CNT
+		                     FROM VCT_INF_MNG E
+		                     INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') F ON (E.APRV_NO = F.APRV_NO)
+		                    GROUP BY E.VCT_YR, E.USS_ID, E.VCT_TYPE ) B ON (B.USS_ID = A.USS_ID AND B.VCT_YR = A.STDD_YR)
 		  RIGHT OUTER JOIN (SELECT CD FROM STD_CD_MNG WHERE UP_CD = 'CD0001011' ORDER BY CD_ORD) C ON (B.VCT_TYPE = C.CD)                
 		
 		  ORDER BY C.CD ASC                  
 	</select>
 	
+	<!-- 휴가현황집계 총 갯수  -->
 	<select id="getVctStatTotCount" parameterType="map" resultType="int">
 		WITH W_PARAMS AS(
 	       SELECT #{searchGubun2} AS STDD_YR
@@ -371,6 +373,7 @@
 		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
 		           FROM VCT_INF_MNG G
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
+		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
 		           GROUP BY G.USS_ID, G.VCT_TYPE 
 		), W_VCT_USE_DAY_CNT AS (
@@ -517,6 +520,7 @@
 		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
 		           FROM VCT_INF_MNG G
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
+		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
 		           GROUP BY G.USS_ID, G.VCT_TYPE 
 		), W_VCT_USE_DAY_CNT AS (
@@ -653,4 +657,26 @@
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</delete>
 	
+	<!-- 로그인한 사용자의 남은 잔여일 수 가져오기  -->
+	<select id="getUssVctInfo" parameterType="map" resultType="hashMap">
+		SELECT
+		       A.USS_ID /*사원ID*/
+		     , A.USS_NM /*사원명*/
+		     , B.VCT_GRNT_DAY /*휴가부여일수*/
+		     , C.VCT_DAY_CNT /*연차사용일수*/
+		     , NVL(B.VCT_GRNT_DAY, 0) - NVL(C.VCT_DAY_CNT, 0) AS VCT_LEFT_DAY /*잔여연차일수*/
+		       
+		  FROM (SELECT * FROM STD_USS_MNG WHERE USS_ID = #{uss_id}) A
+		  LEFT OUTER JOIN (SELECT * FROM VCT_DAY_MNG WHERE STDD_YR = #{stdd_yr} AND USS_ID = #{uss_id}) B ON (A.USS_ID = B.USS_ID)
+		  LEFT OUTER JOIN (SELECT
+		                          G.VCT_YR
+		                        , G.USS_ID
+		                        , SUM(G.VCT_DAY_CNT) AS VCT_DAY_CNT
+		                     FROM VCT_INF_MNG G
+		                     INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		                    WHERE G.VCT_YR = #{stdd_yr}
+		                      AND G.USS_ID = #{uss_id}
+		                      AND G.VCT_TYPE = 'CD0001011001'
+		                    GROUP BY G.VCT_YR, G.USS_ID) C ON (C.USS_ID = A.USS_ID)
+	</select>
 </mapper>

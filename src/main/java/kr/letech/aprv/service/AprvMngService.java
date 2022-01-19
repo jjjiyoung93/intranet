@@ -162,4 +162,14 @@ public interface AprvMngService {
 	*/
 	public List getTrvctInfo(Map params) throws Exception;
 
+	/**
+	 * 결재문서 관리자 취소/취소해제
+	 * 작성자 : yhkim
+	 * @param params
+	 * @throws Exception
+	 */
+	public void updateAprvCancelAdmin(Map params) throws Exception;
+
+	
+
 }

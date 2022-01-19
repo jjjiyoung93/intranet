@@ -2,16 +2,25 @@ package kr.letech.cmm.schedule;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.letech.aprv.service.AprvMngService;
+import kr.letech.cal.service.impl.CalMngDAO;
+import kr.letech.cmm.util.EgovDateUtil;
+import kr.letech.uss.umt.service.impl.UssMngDAO;
 
 @Component
 public class CmmScheduler {
@@ -29,6 +38,18 @@ public class CmmScheduler {
 //	public void mailSender() throws Exception {
 //		mailSendService.searchMailSend();
 //	}
+	
+	/**
+	 * UssMngDAO
+	 */
+	@Resource(name = "ussMngDAO")
+	private UssMngDAO ussMngDAO;
+	
+	/**
+	 *  CalMngDAO
+	 */
+	@Resource(name = "calMngDAO")
+	private CalMngDAO calMngDAO;
 	
 
 	/**
@@ -66,4 +87,122 @@ public class CmmScheduler {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	
+	/**
+	 * 매년 말 사용자의 내년 생일 등록 
+	 */
+	@Scheduled(cron = "0 0 0 31 12 ? *")
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public void ussBirthday() {
+		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
+		//파라미터 생성
+		try {
+			List<Map> ussList = ussMngDAO.getWorkUssList(params);
+			Map calMap = null;
+			
+			for (Map ussView : ussList) {
+				String ussId = (String)ussView.get("USS_ID");
+				String ussNm = (String)ussView.get("USS_NM");
+				String birCalSeq = (String)ussView.get("BIR_CAL_SEQ");
+				String birthType = (String)ussView.get("USS_BIRTH_DAY_TYPE");
+				String birthDate = (String)ussView.get("USS_BIRTH_DAY");
+				
+				params.put("uss_id", ussId);
+				
+				/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
+				Date today = new Date();
+				
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+				
+				String thisYear = formatter.format(today);
+				
+				int yearNum = Integer.valueOf(thisYear);
+				
+				int nextYearNum = yearNum + 1 ;
+				
+				String nextYear = String.valueOf(nextYearNum);
+				
+				String birthday = "";
+				String birthdayConv = "";
+				String birthYear = "";
+				String birthMon = "";
+				String birthDays = "";
+				//양력일 경우
+				if(StringUtils.equals(birthType, "S")) {
+					birthYear = nextYear;
+					birthday = nextYear+"-"+birthDate;
+				}else if(StringUtils.equals(birthType, "L")) {
+					birthday = nextYear+"-"+birthDate;
+					birthday = birthday.replaceAll("-", "");
+					birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+					
+					//음력일 경우
+					birthYear = birthdayConv.substring(0, 4);
+					
+					int yearConvNum = Integer.valueOf(birthYear);
+					
+					if(yearConvNum > nextYearNum) {
+						birthYear = thisYear;
+						birthday = birthYear+birthDate;
+						birthday = birthday.replaceAll("-", "");
+						birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+						birthYear = birthdayConv.substring(0, 4);
+						
+					}
+					birthMon = birthdayConv.substring(4, 6);
+					birthDays = birthdayConv.substring(6);
+					
+					birthday = birthYear + "-" + birthMon + "-" + birthDays; 
+
+				}
+				
+				calMap = new HashMap();
+				calMap.put("cal_nm", ussNm + " 생일");
+				calMap.put("cal_content", birthYear + " 년도 " + ussNm + " 생일");
+				calMap.put("cal_st_dt", birthday);
+				calMap.put("cal_ed_dt", birthday);
+				/*날짜 만들기(음력 시 양력 변화 필요) : END*/
+				calMap.put("uss_id", ussId);
+				calMap.put("aprv_yn", "N");
+				
+				//캘린더 정보 추가
+				int calSeq = calMngDAO.calInsert(calMap);
+				
+				params.put("bir_cal_seq", calSeq);
+				
+				//추가한 캘린더 시퀀스 번호 사용자 정보 등록
+				ussMngDAO.ussUpdate(params);
+				
+				/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : END*/ 
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * 매년 첫 날 재직중인 사원 근속년수 수정 
+	 */
+	@Scheduled(cron = "0 0 0 1 1 ? *")
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public void ussWorkYrCnt()  {
+		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
+		
+		try {
+			ussMngDAO.updateWorkYrCnt(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 }

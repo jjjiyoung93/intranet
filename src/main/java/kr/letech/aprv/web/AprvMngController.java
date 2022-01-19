@@ -1,6 +1,8 @@
 package kr.letech.aprv.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,7 @@ import kr.letech.doc.service.DocService;
 import kr.letech.sys.cdm.service.CodeMngService;
 import kr.letech.sys.mail.service.MailAprvService;
 import kr.letech.uss.umt.service.impl.UssMngDAO;
+import kr.letech.vct.service.impl.VctMngDAO;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -60,6 +63,9 @@ public class AprvMngController {
 	
 	@Resource(name="docService")
 	private DocService docService;
+	
+	@Resource(name = "vctMngDAO")
+	private VctMngDAO vctMngDAO;
 
 	/**
 	 * 결재관리 화면
@@ -145,6 +151,17 @@ public class AprvMngController {
 		model.addAttribute("params", params);
 
 		params.put("aprv_emp_no", loginVO.getId());
+		
+		
+		/*2022. 01.19 관리자 취소 : BEGIN*/
+		String authCd = (String) ussView.get("USS_AUTH_CD");
+		if(StringUtils.equals(authCd, VarConsts.AUTH_CD_ADMIN)) {
+			String mode = (String) params.get("mode");
+			if(StringUtils.equals(mode, VarConsts.MODE_C)) {
+				aprvMngService.updateAprvCancelAdmin(params);
+			}
+		}
+		/*2022. 01.19 관리자 취소 : END */
 		
 		
 		/* 상세 정보 조회 */
@@ -429,6 +446,18 @@ public class AprvMngController {
 
 		params.put("aprv_up_cd", VarConsts.EAM_MASTER_CODE);
 		params.put("uss_id", loginVO.getId());
+		
+		Date today = new Date();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String todayStr = formatter.format(today);
+		
+		String year = todayStr.substring(0, 4);
+	
+		params.put("stdd_yr", year);
+		Map ussVctInfo = vctMngDAO.getUssVctInfo(params);
+		model.addAttribute("ussVctInfo", ussVctInfo);
 		// 결재중
 		params.put("aprv_yn_cd", "0");
 		List aprvList0 = aprvMngService.layerAprvInfo(params);

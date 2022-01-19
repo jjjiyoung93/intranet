@@ -134,6 +134,9 @@
                                <dt class="col-md-2 col-sm-3">제목</dt>
                                <dd class="col-md-10 col-sm-9">
                               ${viewMap.TITLE }
+                              <c:if test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN == 'Y'}">
+	                              <span style="color:red;">(취소)</span>
+                              </c:if>
                               </dd>
                            </dl>
                            </li>
@@ -143,15 +146,50 @@
                                <dd class="col-md-10 col-sm-9">
                                		<c:choose>
                                			<c:when test="${viewMap.TERM_ST_YM ne null }">
+                               				<%-- ${viewMap.TERM_ST_YM} - ${viewMap.TERM_ED_YM} --%>
+                               				${viewMap.TERM_ST_YM}
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                               					(<c:out value="${viewMap.HALF_TYPE_CD_ST_NM}"/>) 
+                               				</c:if>
+                               				- ${viewMap.TERM_ED_YM}
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+	                               				(<c:out value="${viewMap.HALF_TYPE_CD_ED_NM}"/>)
+                               				</c:if>
+                               				
+                               			</c:when>
+                               			<c:otherwise>
+                               				<%-- ${viewMap.CRTN_DT } - ${viewMap.CRTN_DT } --%>
+                               				${viewMap.CRTN_DT }
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+	                               				(<c:out value="${viewMap.HALF_TYPE_CD_ST_NM}"/>)
+                               				</c:if>
+                               				 - ${viewMap.CRTN_DT }
+                               				<c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                               				 (<c:out value="${viewMap.HALF_TYPE_CD_ED_NM}"/>)
+                               				</c:if>
+                               			</c:otherwise>
+                               		</c:choose>
+                               		<%-- <c:choose>
+                               			<c:when test="${viewMap.TERM_ST_YM ne null }">
                                				${viewMap.TERM_ST_YM} - ${viewMap.TERM_ED_YM}
                                			</c:when>
                                			<c:otherwise>
                                				${viewMap.CRTN_DT } - ${viewMap.CRTN_DT }
                                			</c:otherwise>
-                               		</c:choose>
+                               		</c:choose> --%>
                               </dd>
                               </dl>
                            </li>
+                           <c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                               	<li>
+		                           <dl class="clearfix">
+		                               <dt class="col-md-2 col-sm-3">사용일수</dt>
+		                               <dd class="col-md-10 col-sm-9">
+		                              ${viewMap.VCT_DAY_CNT }
+		                              </dd>
+		                           </dl>
+	                           </li>				
+                           </c:if>
                            <c:if test="${viewMap.PLACE ne null}">
                            <li>
                               <dl class="clearfix">
@@ -170,6 +208,35 @@
                               </dd>
                               </dl>
                            </li>
+                           <c:if test="${viewMap.APRV_TYPE_CD == 'CD0001011'}">
+                           <li>
+                              <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">사유</dt>
+                               <dd class="col-md-10 col-sm-9">
+                                  ${viewMap.FROGH_RSN }
+                              </dd>
+                              </dl>
+                           </li>
+                           
+                           <li>
+                              <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">행선지</dt>
+                               <dd class="col-md-10 col-sm-9">
+                                  ${viewMap.ADDR }
+                              </dd>
+                              </dl>
+                           </li>
+                           
+                           <li>
+                              <dl class="clearfix">
+                               <dt class="col-md-2 col-sm-3">연락처</dt>
+                               <dd class="col-md-10 col-sm-9">
+                                  ${viewMap.CTTPLC }
+                              </dd>
+                              </dl>
+                           </li>
+                           </c:if>
+                           
                            <li>
                               <dl class="clearfix">
                                   <dt class="col-md-2 col-sm-3">첨부파일</dt>

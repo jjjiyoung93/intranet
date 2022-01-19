@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="kr.letech.cmm.util.VarConsts"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"  %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -145,6 +146,9 @@
                                <dt class="col-md-2 col-sm-3">제목</dt>
                                <dd class="col-md-10 col-sm-9">
                               ${viewMap.TITLE }
+                              <c:if test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN == 'Y'}">
+	                              <span style="color:red;">(취소)</span>
+                              </c:if>
                               </dd>
                            </dl>
                            </li>
@@ -239,12 +243,6 @@
                            </li>
                            </c:if>
                            <!-- 2022.01.17 - 휴가신청 상세 화면 조회 시 출력 항목 추가 : 사유, 행선지, 연락처 : BEGIN -->
-                           
-                           
-                           
-                           
-                           
-                           
                            <li>
                               <dl class="clearfix">
                                   <dt class="col-md-2 col-sm-3">첨부파일</dt>
@@ -378,7 +376,7 @@
                                                     </td>
                                                     <td>${line.APRV_ORDR }</td>
                                                     <td>
-                                                       <select id="aprv_yn_cd" name="aprv_yn_cd" class="form-control">
+                                                       <select id="aprv_yn_cd" name="aprv_yn_cd" class="form-control" <c:if test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN eq 'Y'}">disabled</c:if>>
                                                           <option value="0" <c:if test="${line.APRV_YN_CD eq '0' }">selected="selected"</c:if> >대기</option>
                                                           <option value="1" <c:if test="${line.APRV_YN_CD eq '1' }">selected="selected"</c:if> >승인</option>
                                                           <option value="2" <c:if test="${line.APRV_YN_CD eq '2' }">selected="selected"</c:if> >보류</option>
@@ -389,7 +387,7 @@
                                                        <input type="text" id="aprv_cont" class="form-control" name="aprv_cont" value="${line.APRV_CONT }" />
                                                     </td>
                                                     <td>
-                                                       <input class="btn btn-default btn-sm"  type="button" value="결재" onClick="aprvOk()" />
+                                                       <input class="btn btn-default btn-sm"  type="button" value="결재" onClick="aprvOk()" <c:if test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN eq 'Y'}">disabled</c:if>/>
                                                     </td>
                                                  </tr>
                                              </c:when>
@@ -440,11 +438,30 @@
                         <span class="pull-right">
                         
                         <!-- admin일 경우 반려된 결재 삭제 가능 추가  -->
-                        <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' ) || (params.uss_auth_cd eq 'ROLE_ADMIN' && viewMap.APRV_LINE_CD eq '3')}">
-                               <input class="btn btn-sm btn-info" type="button" id="btn-ok" value="수정" />
+                        <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' ) 
+                        			|| (params.uss_auth_cd eq 'ROLE_ADMIN' && viewMap.APRV_LINE_CD eq '3')
+                        			|| (viewMap.CRTN_EMP_NO eq 'admin01') }">
+                        		<c:if test="${(empty viewMap.CANCEL_YN || !viewMap.CANCEL_YN eq 'Y')}">
+	                               <input class="btn btn-sm btn-info" type="button" id="btn-ok" value="수정" />
+                        		</c:if>	
                                <input class="btn btn-sm btn-default"  type="button" id="btn-delete" value="삭제" />
+                               
                         </c:if>
-                        <c:if test="${viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '3' }">
+                        <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
+                           	<button type="button" id="btn-can" class="btn btn-sm btn-default">
+                           		<c:choose>
+                           			<c:when test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN eq 'Y'}">
+                           				취소해제
+                           			</c:when>
+                           			<c:otherwise>
+                           				취소
+                           			</c:otherwise>
+                           		</c:choose>
+                           	</button>
+                           	<input type="hidden" name="cancel_yn" id="cancel_yn" value="${viewMap.CANCEL_YN}"/>
+                         </sec:authorize>
+                        <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '3')
+                                      || (viewMap.REPT_APRV_NO eq loginVO.id && viewMap.CANCEL_YN eq 'Y') }">
                            <input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="재결재" />
                         </c:if>
                         </span>
@@ -478,6 +495,24 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	/*2022.01.19 취소(관리자) : BEGIN*/
+	$("#btn-can").click(function() {
+		var cancelYn = "${viewMap.CANCEL_YN}";
+		var msg = "";
+		if(cancelYn == "Y"){
+			msg = "취소해제하시겠습니까?"
+		}else{
+			msg = "취소하시겠습니까?"
+		}
+		if(confirm(msg)){
+			$("#mode").val("<%=VarConsts.MODE_C%>");
+			$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00View.do");
+			$("#frm1").submit();
+		}
+	})
+	/*2022.01.19 취소(관리자) : END*/
+	
+	
    /* 수정 */   
    $( "#btn-ok" ).click(function() {
       $("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/aprv00Form.do");

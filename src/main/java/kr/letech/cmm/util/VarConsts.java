@@ -55,6 +55,13 @@ public class VarConsts {
 	 */
 	public static final String MODE_R = "REPLY";
 	
+	/**
+	 * 종류 = 취소(관리자) <br>
+	 * 타입 = String<br>
+	 * 값 = 'CANCEL'<br>
+	 */
+	public static final String MODE_C = "CANCEL";
+	
 	
 	/*이하 코드*/
 	
@@ -338,4 +345,18 @@ public class VarConsts {
 	 * 값 = '1'<br>
 	 */
 	public static final String APRV_GB_REFE = "1";
+	
+	/** 
+	 * 종류 = 결재 구분 코드 - 취소<br>
+	 * 타입 = String<br>
+	 * 값 = '2'<br>
+	 */
+	public static final String APRV_GB_CAN = "2";
+	
+	/** 
+	 * 종류 = 권한 코드 - 관리자<br>
+	 * 타입 = String<br>
+	 * 값 = 'ROLE_ADMIN'<br>
+	 */
+	public static final String AUTH_CD_ADMIN = "ROLE_ADMIN";
 }

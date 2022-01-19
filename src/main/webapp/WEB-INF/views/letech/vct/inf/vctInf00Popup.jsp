@@ -376,7 +376,7 @@
 								<col width="*"/>
 								<col width="50" class="hidden-xs hidden-sm"/>
 								<col width="180"/>
-								<col width="80"/>
+								<col width="100"/>
 								<col width="80"/>
 							</colgroup>
 							<thead>
@@ -458,6 +458,41 @@
 															${list.APRV_YN_NM}
 														</c:otherwise>
 													</c:choose>
+													
+													<c:choose>
+														<c:when test="${!empty list.CANCEL_YN && list.CANCEL_YN eq 'Y' }">
+															<span style="color:red;">(취소)</span>
+														</c:when>
+														<c:otherwise>
+															<c:if test="${list.LINE_CHK eq 'Y' }">
+																<c:choose>
+																	<c:when test="${list.REFE_YN eq 'Y' }">
+																	(참조)
+																	</c:when>
+																	<c:otherwise>
+																	<c:if test="${list.LINE_CHK eq 'Y' }">
+																		<c:choose>
+																			<c:when test="${list.APRV_ID eq params.uss_id }">
+																				<span style="color:red;">(결재)</span>
+																			</c:when>
+																			<c:otherwise>
+																				(결재)
+																			</c:otherwise>
+																		</c:choose>
+																	</c:if>
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+														</c:otherwise>
+													</c:choose>
+													<%-- <c:choose>
+														<c:when test="${list.LINE_CHK eq 'N' && list.APRV_YN_TP eq '1' && list.CONF_Y_CNT > 0 && list.CONF_Y_CNT > list.CONF_REFE_CNT }">
+															진행중
+														</c:when>
+														<c:otherwise>
+															${list.APRV_YN_NM}
+														</c:otherwise>
+													</c:choose>
 													<c:if test="${list.LINE_CHK eq 'Y' }">
 														<c:choose>
 															<c:when test="${list.REFE_YN eq 'Y' }">
@@ -476,7 +511,7 @@
 															</c:if>
 															</c:otherwise>
 														</c:choose>
-													</c:if>
+													</c:if> --%>
 												</td>
 												<td class="" data-force-hide="true">
 													<input type="button" id="" name="" class="btn btn-sm btn-default" value="보기" onclick="fn_docPopup('${list.APRV_NO}')"/>

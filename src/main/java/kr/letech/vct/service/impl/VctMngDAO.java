@@ -112,6 +112,16 @@ public class VctMngDAO extends AbstractDAO {
 	public int deleteVctInf(Map params) throws Exception {
 		return (Integer)delete("vctMng.deleteVctInf", params);
 	}
+
+	/**
+	 * 로그인 사원 휴가정보 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getUssVctInfo(Map params) throws Exception {
+		return (Map)getObject("vctMng.getUssVctInfo", params);
+	}
 	
 	
 

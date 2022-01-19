@@ -30,10 +30,17 @@ if(Sessinfo != null){
 					<a class="navbar-brand" href="<%=request.getContextPath() %>/index.do">
 						<img src="http://intra.letech.kr/letech/resources/images/layout/nav_logo.png" width="150"alt="" />
 					</a>
+					
 				</h1>
+				
 			</div>
 		<div class="top_menu">
 			<ul class="nav navbar-top-links navbar-right" >
+					<!-- <li>
+					<a href="" class="hidden-sm">
+						<span class="badge active">남은 연차 : 4일</span>
+					</a>
+					</li> -->
 					<li>
 						<a data-toggle="collapse" data-parent="#accordion" href="#alarmOne" aria-expanded="false">
 							<i class="glyphicon glyphicon-bell"></i>
@@ -41,6 +48,11 @@ if(Sessinfo != null){
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 
 						</a>
 						<ul id="alarmOne" class="panel navber-right dropdown-menu collapse">
+							<li>
+								<a href="${pageContext.request.contextPath }/vct/vctInf00List.do" class="text-center">
+									<span class="badge" id="vctLeftDayCnt" style="font-size:1.5rem;"></span>
+								</a>
+							</li>
 							<li>
 								<a data-toggle="collapse" data-parent="#accordion" href="#aside_aprv0" aria-expanded="false">결재(<font id="aside_aprvCnt0"></font>)
 									<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>
@@ -156,6 +168,11 @@ $(document).ready(function(){
 			var aprvListCnt2 = aprvList2.length;
 			var aprvListCnt3 = aprvList3.length;
 			
+			var ussVctInfo = json.ussVctInfo;
+			var vctLeftDayCnt = ussVctInfo.VCT_LEFT_DAY;
+			var msg = "남은 연차 : "
+			msg += vctLeftDayCnt + " 일";
+			
 			for(var i=0; i<aprvListCnt0; i++){
 				$("#aside_aprv0").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList0[i]['CD']+"\">"+"- "+aprvList0[i]['CD_NM']+"("+aprvList0[i]['TYPE_CNT']+")</a></li>");
 			}
@@ -179,6 +196,7 @@ $(document).ready(function(){
 			$("#aside_aprvCnt2").text(aprvCount2);
 			$("#aside_aprvCnt3").text(aprvCount3);
 			$("#aside_aprvTotCnt").text(aprvCountTotCnt);
+			$("#vctLeftDayCnt").text(msg);
 			/* 결재 관련 건수 END */
 		}
 	});	
