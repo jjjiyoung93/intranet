@@ -40,7 +40,7 @@
 								<ul class="col-md-12">
 									<li class="form-group col-md-6">
 											<label>사용자 ID</label>
-																							<c:set var="modeType" value="<%=VarConsts.MODE_U%>"/>
+												<c:set var="modeType" value="<%=VarConsts.MODE_U%>"/>
 													<c:choose>
 														<c:when test="${params.mode eq modeType }">
 															<br/><span class="">${resultView.USS_ID }</span>

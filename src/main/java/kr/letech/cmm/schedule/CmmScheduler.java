@@ -94,7 +94,8 @@ public class CmmScheduler {
 	/**
 	 * 매년 말 사용자의 내년 생일 등록 
 	 */
-	@Scheduled(cron = "0 0 0 31 12 ? *")
+	/* @Scheduled(cron = "0 0 0 31 12 ?") */
+	@Scheduled(cron = "0 25 14 * * ?")
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void ussBirthday() {
 		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
@@ -106,77 +107,83 @@ public class CmmScheduler {
 			for (Map ussView : ussList) {
 				String ussId = (String)ussView.get("USS_ID");
 				String ussNm = (String)ussView.get("USS_NM");
-				String birCalSeq = (String)ussView.get("BIR_CAL_SEQ");
+				String birCalSeq = String.valueOf(ussView.get("BIR_CAL_SEQ"));
 				String birthType = (String)ussView.get("USS_BIRTH_DAY_TYPE");
 				String birthDate = (String)ussView.get("USS_BIRTH_DAY");
+				String ussAuthNm = (String)ussView.get("USS_AUTH_NM");
 				
 				params.put("uss_id", ussId);
 				
-				/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
-				Date today = new Date();
-				
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-				
-				String thisYear = formatter.format(today);
-				
-				int yearNum = Integer.valueOf(thisYear);
-				
-				int nextYearNum = yearNum + 1 ;
-				
-				String nextYear = String.valueOf(nextYearNum);
-				
-				String birthday = "";
-				String birthdayConv = "";
-				String birthYear = "";
-				String birthMon = "";
-				String birthDays = "";
-				//양력일 경우
-				if(StringUtils.equals(birthType, "S")) {
-					birthYear = nextYear;
-					birthday = nextYear+"-"+birthDate;
-				}else if(StringUtils.equals(birthType, "L")) {
-					birthday = nextYear+"-"+birthDate;
-					birthday = birthday.replaceAll("-", "");
-					birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+				if(StringUtils.isNotEmpty(birthType) && StringUtils.isNotEmpty(birthDate)) {
 					
-					//음력일 경우
-					birthYear = birthdayConv.substring(0, 4);
+					/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
+					Date today = new Date();
 					
-					int yearConvNum = Integer.valueOf(birthYear);
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
 					
-					if(yearConvNum > nextYearNum) {
-						birthYear = thisYear;
-						birthday = birthYear+birthDate;
+					String thisYear = formatter.format(today);
+					
+					int yearNum = Integer.valueOf(thisYear);
+					
+					int nextYearNum = yearNum + 1 ;
+					
+					String nextYear = String.valueOf(nextYearNum);
+					
+					String birthday = "";
+					String birthdayConv = "";
+					String birthYear = "";
+					String birthMon = "";
+					String birthDays = "";
+					//양력일 경우
+					if(StringUtils.equals(birthType, "S")) {
+						birthYear = nextYear;
+						birthday = nextYear+"-"+birthDate;
+					}else if(StringUtils.equals(birthType, "L")) {
+						birthday = nextYear+"-"+birthDate;
 						birthday = birthday.replaceAll("-", "");
 						birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+						
+						//음력일 경우
 						birthYear = birthdayConv.substring(0, 4);
 						
-					}
-					birthMon = birthdayConv.substring(4, 6);
-					birthDays = birthdayConv.substring(6);
-					
-					birthday = birthYear + "-" + birthMon + "-" + birthDays; 
+						int yearConvNum = Integer.valueOf(birthYear);
+						
+						if(yearConvNum > nextYearNum) {
+							birthYear = thisYear;
+							birthday = birthYear+birthDate;
+							birthday = birthday.replaceAll("-", "");
+							birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+							birthYear = birthdayConv.substring(0, 4);
+							
+						}
+						birthMon = birthdayConv.substring(4, 6);
+						birthDays = birthdayConv.substring(6);
+						
+						birthday = birthYear + "-" + birthMon + "-" + birthDays; 
 
+					}
+					
+					calMap = new HashMap();
+					calMap.put("cal_nm", ussNm + " "+ussAuthNm+ " 생일");
+					calMap.put("cal_content", birthYear + " 년도 " + ussNm + " " + ussAuthNm + " 생일");
+					calMap.put("cal_st_dt", birthday);
+					calMap.put("cal_ed_dt", birthday);
+					/*날짜 만들기(음력 시 양력 변화 필요) : END*/
+					calMap.put("uss_id", ussId);
+					calMap.put("aprv_yn", "N");
+					
+					//캘린더 정보 추가
+					int calSeq = calMngDAO.calInsert(calMap);
+					
+					params.put("bir_cal_seq", calSeq);
+					
+					//추가한 캘린더 시퀀스 번호 사용자 정보 등록
+					ussMngDAO.updateBirCalSeq(params);
+					
+					/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : END*/ 
+					
 				}
 				
-				calMap = new HashMap();
-				calMap.put("cal_nm", ussNm + " 생일");
-				calMap.put("cal_content", birthYear + " 년도 " + ussNm + " 생일");
-				calMap.put("cal_st_dt", birthday);
-				calMap.put("cal_ed_dt", birthday);
-				/*날짜 만들기(음력 시 양력 변화 필요) : END*/
-				calMap.put("uss_id", ussId);
-				calMap.put("aprv_yn", "N");
-				
-				//캘린더 정보 추가
-				int calSeq = calMngDAO.calInsert(calMap);
-				
-				params.put("bir_cal_seq", calSeq);
-				
-				//추가한 캘린더 시퀀스 번호 사용자 정보 등록
-				ussMngDAO.ussUpdate(params);
-				
-				/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : END*/ 
 			}
 			
 		} catch (Exception e) {
@@ -190,7 +197,8 @@ public class CmmScheduler {
 	/**
 	 * 매년 첫 날 재직중인 사원 근속년수 수정 
 	 */
-	@Scheduled(cron = "0 0 0 1 1 ? *")
+	/* @Scheduled(cron = "0 0 0 1 1 ?") */
+	@Scheduled(cron = "0 37 12 * * ?")
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void ussWorkYrCnt()  {
 		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 
+
 <h1>휴 가 신 청 서</h1>
+
 <table class="table table-bordered" style="border: 2px solid black;">
 	<tbody>
 		<tr>

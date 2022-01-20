@@ -95,7 +95,7 @@
 										</div>
 										<div class="col-lg-6">
 											<c:choose>
-												<c:when test="${params.mode eq mode_u }">
+												<c:when test="${params.mode eq 'UPDATE' }">
 													<c:set var="rept_dp_cd" value="${viewMap.REPT_DP_CD }"/>
 													<input type="text" class="form-control" id="rept_dp_nm" value="${viewMap.REPT_DP_NM }" readonly/>
 												</c:when>
@@ -131,9 +131,9 @@
 										</div>
 										<div class="col-lg-6">
 											<c:choose>
-												<c:when test="${params.mode eq mode_u }">
+												<c:when test="${params.mode eq 'UPDATE' }">
 													<c:set var="rept_auth_cd" value="${viewMap.REPT_AUTH_CD }"/>
-													<input type="text" class="form-control" id="rept_auth_nm" value="${viewMap.REPT_AUTH_CD }" readonly/>
+													<input type="text" class="form-control" id="rept_auth_nm" value="${viewMap.REPT_AUTH_NM }" readonly/>
 												</c:when>
 												<c:otherwise>
 													<c:set var="rept_auth_cd" value="${loginVO.authCd != 'ROLE_ADMIN' ? loginVO.authCd : ''}"/>

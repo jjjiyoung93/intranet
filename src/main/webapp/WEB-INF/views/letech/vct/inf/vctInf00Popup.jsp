@@ -528,7 +528,7 @@
 							</ul>
 						</div>
 						<div class="clearfix">
-							<span class="pull-right"><input type="button" id="fnJoin1" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span>
+							<!-- <span class="pull-right"><input type="button" id="fnJoin1" name="fnJoin" class="btn btn-sm btn-default" value="등록"/></span> -->
 						</div>
 					</div>
 				</form>
@@ -551,10 +551,10 @@ $(document).ready(function(){
 	var endMon = "${params.endMon}";
 	var yearStr = "${params.searchGubun2}";
 	var yearInt = parseInt(stddYr);
-	alert("stddYr : " + stddYr);
+	/* alert("stddYr : " + stddYr);
 	alert("ussId : " + ussId);
 	alert("startMon : " + startMon);
-	alert("endMon : " + endMon);
+	alert("endMon : " + endMon); */
 	
 	//기준년도 선택
 	calYearKo = new tui.DatePicker('#datepicker-year-ko',{

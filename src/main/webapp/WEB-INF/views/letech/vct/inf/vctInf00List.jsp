@@ -410,7 +410,7 @@
 		
 		/* 상세보기 팝업 */
 		$( "#uss-vct" ).on('click', '#btnDtil', function() {
-			alert("상세보기팝업!!");
+			//alert("상세보기팝업!!");
 			window.open("", "vct00Popup","width=720, height=750");
 			$("#dtilFrm").attr("target", "vct00Popup");
 			$("#dtilFrm").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");

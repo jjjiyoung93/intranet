@@ -158,7 +158,8 @@ h4 {
 				</tr>
 			</tbody>
 		</table>
-		<div id="docReport"></div>
+		<div id="docReport">
+		</div>
 	</div>
 </body>
 <!-- 파일 다운로드 form Start -->
@@ -228,6 +229,13 @@ $(function() {
 				$("#docReport").append(data);
 			}
 			
+			var cancelYn = "${viewJson.CANCEL_YN}";
+			//취소 문건 메세지 표시
+			if(cancelYn == 'Y'){
+				var cancelTitle = '<div class="col-md-10 col-sm-11 " style="font-weight: bold; color:red; font-size: 20px;">※본 문건은 관리자에 의하여 취소된 문건입니다.</div>';
+				var table = $("#docReport").find('table').first();
+				$(cancelTitle).insertBefore($(table));
+			}
 		}
 	});
 

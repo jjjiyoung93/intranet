@@ -176,33 +176,54 @@ public class UssMngServiceImpl implements UssMngService {
 		}
 		
 		/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
+		//오늘 날짜 생성
 		Date today = new Date();
-		
+		//날짜 형식 설정
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		
+		//오늘 날짜 문자열 생성
 		String todayStr = formatter.format(today);
-		
+		//금년도
 		String year = todayStr.substring(0, 4);
-				
+		int thisYearNum = Integer.valueOf(year);
+		//캘린더 등록할 자료 생성
 		Map calMap = new HashMap();
 		String ussNm = (String)params.get("uss_nm");
 		calMap.put("cal_nm", ussNm + " 생일");
 		calMap.put("cal_content_", year + " 년도 " + ussNm + " 생일");
 		/*날짜 만들기(음력 시 양력 변화 필요) : BEGIN*/
+		//생일 음/양력 구분
 		String birtdayType = (String)params.get("uss_birth_day_type");
+		//생일 월
 		String birthdayMon = (String)params.get("uss_birth_day_mon");
+		//생일 일자
 		String birthdayDate = (String)params.get("uss_birth_day_date");
+		//저장할 생일
 		String birthday = "";
-		//양력일 경우
+		//양력일 경우 : 금년도 - 생일 월 - 생일 일자
 		if(StringUtils.equals(birtdayType, "S")) {
 			birthday = year+"-"+birthdayMon+"-"+birthdayDate;
 		}else if(StringUtils.equals(birtdayType, "L")) {
-			//음력일 경우
-			birthday = year+"-"+birthdayMon+"-"+birthdayDate;
+			//음력일 경우 : 변환시 해가 넘어가는 생일일 경우 전년도 값으로 계산
+			//변환대상
+			birthday = year+birthdayMon+birthdayDate;
 			String birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+			//변환 후 년도
 			String birthYear = birthdayConv.substring(0, 4);
+			//변환 후 월
 			String birthMon = birthdayConv.substring(4, 6);
+			//변환 후 일자
 			String birthDate = birthdayConv.substring(6);
+			
+			int birthYearNum = Integer.valueOf(birthYear);
+			//변환 후 해가 넘어가는 생일 일경우
+			if(birthYearNum > thisYearNum) {
+				birthYear = String.valueOf(thisYearNum - 1);
+				birthday = birthYear+birthdayMon+birthdayDate;
+				birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+				birthYear = birthdayConv.substring(0, 4);
+				birthMon = birthdayConv.substring(4, 6);
+				birthDate = birthdayConv.substring(6);
+			}
 			
 			birthday = birthYear + "-" + birthMon + "-" + birthDate;
 		}
@@ -277,7 +298,7 @@ public class UssMngServiceImpl implements UssMngService {
 		String updBirthday = (String)params.get("uss_birth_day");
 		
 		if(!StringUtils.equals(updBirthType, orginBirthType) || !StringUtils.equals(updBirthday, orginBirthday)) {
-			params.put("cal_seq", Integer.valueOf((String)orginUssView.get("BIR_CAL_SEQ")));
+			params.put("cal_seq", orginUssView.get("BIR_CAL_SEQ"));
 			
 			calMngDAO.calDelete(params);
 			
@@ -290,26 +311,47 @@ public class UssMngServiceImpl implements UssMngService {
 			String todayStr = formatter.format(today);
 			
 			String year = todayStr.substring(0, 4);
+			int thisYearNum = Integer.valueOf(year);
 					
 			Map calMap = new HashMap();
 			String ussNm = (String)params.get("uss_nm");
 			calMap.put("cal_nm", ussNm + " 생일");
 			calMap.put("cal_content_", year + " 년도 " + ussNm + " 생일");
 			/*날짜 만들기(음력 시 양력 변화 필요) : BEGIN*/
+			//생일 음/양력 구분
 			String birtdayType = (String)params.get("uss_birth_day_type");
+			//생일 월
 			String birthdayMon = (String)params.get("uss_birth_day_mon");
+			//생일 일자
 			String birthdayDate = (String)params.get("uss_birth_day_date");
+			//생일 결과
 			String birthday = "";
 			//양력일 경우
 			if(StringUtils.equals(birtdayType, "S")) {
 				birthday = year+"-"+birthdayMon+"-"+birthdayDate;
 			}else if(StringUtils.equals(birtdayType, "L")) {
-				//음력일 경우
-				birthday = year+"-"+birthdayMon+"-"+birthdayDate;
+				
+				//음력일 경우 : 변환시 해가 넘어가는 생일일 경우 전년도 값으로 계산
+				//변환대상
+				birthday = year+birthdayMon+birthdayDate;
 				String birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+				//변환 후 년도
 				String birthYear = birthdayConv.substring(0, 4);
+				//변환 후 월
 				String birthMon = birthdayConv.substring(4, 6);
+				//변환 후 일자
 				String birthDate = birthdayConv.substring(6);
+				
+				int birthYearNum = Integer.valueOf(birthYear);
+				//변환 후 해가 넘어가는 생일 일경우
+				if(birthYearNum > thisYearNum) {
+					birthYear = String.valueOf(thisYearNum - 1);
+					birthday = birthYear+birthdayMon+birthdayDate;
+					birthdayConv = EgovDateUtil.toSolar(birthday, 0);
+					birthYear = birthdayConv.substring(0, 4);
+					birthMon = birthdayConv.substring(4, 6);
+					birthDate = birthdayConv.substring(6);
+				}
 				
 				birthday = birthYear + "-" + birthMon + "-" + birthDate;
 			}

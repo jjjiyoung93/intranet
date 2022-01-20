@@ -85,6 +85,15 @@
                   </c:if>
                   <div class="board-view">       
                   <ul class="payment-form">
+                  		<c:if test="${viewMap.CANCEL_YN eq 'Y'}">
+                  			<li>
+	                           <dl class="clearfix">
+	                               <dt class="col-md-10 col-sm-11 " style="font-weight: bold; color:red; font-size: 20px;">※본 문건은 관리자에 의하여 취소된 문건입니다.</dt>
+	                               <dd class="col-md-2 col-sm-1" style="font-weight: bold; color:red; font-size: 20px;"></dd>
+	                           </dl>
+                           </li>
+                  		</c:if>
+                  
                         <li>
                            <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">보고자</dt>
@@ -448,20 +457,22 @@
                                
                         </c:if>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-                           	<button type="button" id="btn-can" class="btn btn-sm btn-default">
-                           		<c:choose>
-                           			<c:when test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN eq 'Y'}">
-                           				취소해제
-                           			</c:when>
-                           			<c:otherwise>
-                           				취소
-                           			</c:otherwise>
-                           		</c:choose>
-                           	</button>
+                       		<c:if test="${viewMap.APRV_LINE_CD eq '1'}">
+	                           	<button type="button" id="btn-can" class="btn btn-sm btn-default">
+	                           		<!-- 결재 완료된 건에 대하여 관리자 취소  -->
+		                           		<c:choose>
+		                           			<c:when test="${!empty viewMap.CANCEL_YN && viewMap.CANCEL_YN eq 'Y'}">
+		                           				취소해제
+		                           			</c:when>
+		                           			<c:otherwise>
+		                           				취소
+		                           			</c:otherwise>
+		                           		</c:choose>
+	                           	</button>
+                       		</c:if>
                            	<input type="hidden" name="cancel_yn" id="cancel_yn" value="${viewMap.CANCEL_YN}"/>
                          </sec:authorize>
-                        <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '3')
-                                      || (viewMap.REPT_APRV_NO eq loginVO.id && viewMap.CANCEL_YN eq 'Y') }">
+                        <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '3')}">
                            <input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="재결재" />
                         </c:if>
                         </span>

@@ -288,8 +288,8 @@ public class AprvMngServiceImpl implements AprvMngService {
 				
 				vctInfMap.put("vct_yr", vctDt.substring(0, 4));
 				vctInfMap.put("proj_cd", (String)params.get("proj_cd"));
-				vctInfMap.put("emp_type", (String)ussInf.get("EMP_TYPE"));
-				vctInfMap.put("rtr_yn", (String)ussInf.get("RTR_YN"));
+				vctInfMap.put("emp_type", ussInf.get("EMP_TYPE"));
+				vctInfMap.put("rtr_yn", ussInf.get("RTR_YN"));
 				vctInfMap.put("aut_cd", (String)params.get("rept_auth_cd"));
 				
 				//등록

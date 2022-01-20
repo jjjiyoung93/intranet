@@ -631,18 +631,18 @@
              , MODI_DT
 		)
 		VALUES(
-			   #{uss_id, jdbcType=VARCHAR}
-             , #{vct_dt, jdbcType=VARCHAR}
-             , #{aprv_no, jdbcType=VARCHAR}
-             , #{vct_type, jdbcType=VARCHAR}
-             , #{vct_trm_type, jdbcType=VARCHAR }
-             , TO_NUMBER(#{vct_qrtr, jdbcType=VARCHAR})
-             , #{vct_yr, jdbcType=VARCHAR}
-             , #{proj_cd, jdbcType=VARCHAR}
-             , TO_NUMBER(#{vct_day_cnt, jdbcType=VARCHAR})
-             , #{emp_type, jdbcType=VARCHAR}
+			   #{uss_id}
+             , #{vct_dt}
+             , #{aprv_no}
+             , #{vct_type}
+             , #{vct_trm_type}
+             , TO_NUMBER(#{vct_qrtr})
+             , #{vct_yr}
+             , #{proj_cd}
+             , TO_NUMBER(#{vct_day_cnt})
+             , #{emp_type}
              , #{rtr_yn}
-             , #{aut_cd, jdbcType=VARCHAR}
+             , #{aut_cd}
              , SYSDATE
              , SYSDATE			
 		
