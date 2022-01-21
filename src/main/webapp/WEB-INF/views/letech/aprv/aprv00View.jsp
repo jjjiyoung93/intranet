@@ -449,11 +449,11 @@
                         <!-- admin일 경우 반려된 결재 삭제 가능 추가  -->
                         <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' ) 
                         			|| (params.uss_auth_cd eq 'ROLE_ADMIN' && viewMap.APRV_LINE_CD eq '3')
-                        			|| (viewMap.CRTN_EMP_NO eq 'admin01') }">
+                        			|| (viewMap.CRTN_EMP_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' ) }">
                         		<c:if test="${(empty viewMap.CANCEL_YN || !viewMap.CANCEL_YN eq 'Y')}">
 	                               <input class="btn btn-sm btn-info" type="button" id="btn-ok" value="수정" />
+	                               <input class="btn btn-sm btn-default"  type="button" id="btn-delete" value="삭제" />
                         		</c:if>	
-                               <input class="btn btn-sm btn-default"  type="button" id="btn-delete" value="삭제" />
                                
                         </c:if>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN')">

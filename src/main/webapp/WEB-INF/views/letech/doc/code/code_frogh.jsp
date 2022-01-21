@@ -1,21 +1,24 @@
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 
+
 <!-- 기간 START -->
 <div class="col-lg-12 form-group">
 	<div class="col-lg-2 col-sm-2 text-right">
 		<label class="control-label">기간</label> <span class="req-sign">*</span>
 	</div>
 	<div class="col-lg-9">
-		<div class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-			<input id="term_st" name="term_st" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+		<div class="form-control tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle;">
+			<input id="term_st" class="vac-term" name="term_st" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
 			<div id="startpicker-container" style="margin-left: -1px;"></div>
 		</div>
-		~
+		<label class="control-label">(<span class="half_type_nm_st"></span>)</label>
+		<label class="control-label">~</label>
 		<div
-			class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-			<input id="term_ed" name="term_ed" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+			class="form-control tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle;">
+			<input id="term_ed" class="vac-term" name="term_ed" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
 			<div id="endpicker-container" style="margin-left: -1px;"></div>
 		</div>
+		<label class="control-label">(<span class="half_type_nm_ed"></span>)</label>
 		<div class="col-lg-6 col-sm-6 pull-right">
 			<div class="col-lg-4 col-sm-2">
 				<label class="control-label">사용일수</label> <span class="req-sign"></span>
@@ -78,12 +81,12 @@ function getValidation2(valid) {
 			valid = false;
 		}
 		
-		if(!($("input[name='half_type_cd_st']").is(":checked"))){
+		if(!($("option[class='half_type_cd_st_opt']").is(":selected"))){
 			if(valid) {
-				alert("휴가 기간 구분(시작일자)을 선택해 주세요.");
-				$("input[name='half_type_cd_st']").focus();
+				alert("휴가 시간 구분(시작일자)을 선택해 주세요.");
+				$("option[class='half_type_cd_st_opt']").focus();
 			}
-			$("input[name='half_type_cd_st']").closest(".form-group").addClass("has-error");
+			$("option[class='half_type_cd_st_opt']").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
 		
@@ -96,12 +99,12 @@ function getValidation2(valid) {
 			valid = false;
 		}
 		
-		if(!($("input[name='half_type_cd_ed']").is(":checked"))){
+		if(!($("option[class='half_type_cd_ed_opt']").is(":selected"))){
 			if(valid) {
-				alert("휴가 기간 구분(종료일자)을 선택해 주세요.");
-				$("input[name='half_type_cd_ed']").focus();
+				alert("휴가 시간 구분(종료일자)을 선택해 주세요.");
+				$("option[class='half_type_cd_ed_opt']]").focus();
 			}
-			$("input[name='half_type_cd_ed']").closest(".form-group").addClass("has-error");
+			$("option[class='half_type_cd_ed_opt']").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
 		

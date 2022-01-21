@@ -640,8 +640,8 @@
              , #{vct_yr}
              , #{proj_cd}
              , TO_NUMBER(#{vct_day_cnt})
-             , #{emp_type}
-             , #{rtr_yn}
+             , #{emp_type, jdbcType=VARCHAR}
+             , #{rtr_yn, jdbcType=VARCHAR}
              , #{aut_cd}
              , SYSDATE
              , SYSDATE			

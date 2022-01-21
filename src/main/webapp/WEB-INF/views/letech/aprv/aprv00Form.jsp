@@ -152,14 +152,20 @@
 											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
 											<c:choose>
 												<c:when test="${params.mode eq mode_u }">
+													<div class="col-lg-3">
 													<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
 													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
+													</div>
 												</c:when>
 												<c:otherwise>
-													<input type="text" class="form-control" id="rept_aprv_no_nm" value="${loginVO.name }" readonly/>
+													<div class="col-lg-6" style="vertical-align: middle;">
+														<input type="text" class="form-control" id="rept_aprv_no_nm" value="${loginVO.name }" readonly/>
+													</div>
 													<!-- 2022.01.18 관리자 등록 시 보고자 선택 가능 : BEGIN  -->
 													<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-														<button type="button" class="btn btn-default btn-sm" onclick="fn_ussSearch('rept_aprv_no')">찾기</button>
+														<div class="col-lg-4" style="vertical-align: middle;">
+															<button type="button" class="btn btn-default btn-sm" onclick="fn_ussSearch('rept_aprv_no')">찾기</button>
+														</div>
 													</sec:authorize>
 													<!-- 2022.01.18 관리자 등록 시 보고자 선택 가능 : END  -->
 													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
@@ -559,9 +565,50 @@ $(function() {
 					foramt : 'yyyy-MM-dd'
 				});	
 			}	
-					
 			
 			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
+				html += '<div class="select-box">';
+				html += '<select name="half_type_cd_st" id="half_type_cd_st" class="half_type_cd_st half_type_cd form-control vac-term">';
+				html += '<option  class="half_type_cd_st_opt" value="" cnt="" nm="">선택</option>';
+				html2 += '<div class="select-box">';
+				html2 += '<select name="half_type_cd_ed" id="half_type_cd_ed" class="half_type_cd_ed half_type_cd form-control vac-term">';
+				html2 += '<option  class="half_type_cd_ed_opt" value="" cnt="" nm="">선택</option>';
+				
+				
+				for(var i in vacTermList){
+					var vacTerm = vacTermList[i];
+					
+					html += '<option class="half_type_cd_st_opt" id="half_type_cd_st_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
+					html2 += '<option class="half_type_cd_ed_opt" id="half_type_cd_ed_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
+					
+					/* html += '<div class="radio">';
+					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html += '</div>'; */
+					
+					/* html2 += '<div class="radio">';
+					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html2 += '</div>'; */
+				}
+				
+				html += '</select>';
+				html2 += '</select>';
+				html += '</div>';
+				html2 += '</div>';
+				
+				$("#startpicker-container .tui-rangepicker").append(html);
+				$("#endpicker-container .tui-rangepicker").append(html2);
+				
+				$("#half_type_cd_st_"+viewJson["HALF_TYPE_CD"]).prop("selected", true);
+				$("#half_type_cd_ed_"+viewJson["HALF_TYPE_CD_ED"]).prop("selected", true);
+				
+				fn_calcVacDay();
+			}
+			
+			
+			
+			
+			
+			<%-- if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
 				for(var i in vacTermList){
 					var vacTerm = vacTermList[i];
 					html += '<div class="radio">';
@@ -583,7 +630,7 @@ $(function() {
 				$("#half_type_cd_ed_"+viewJson["HALF_TYPE_CD_ED"]).prop("checked", true);
 				
 				fn_calcVacDay();
-			}
+			} --%>
 			//휴가일경우
 			
 			
@@ -663,10 +710,10 @@ function fn_calcVacDay(){
 	var termEd = $("#term_ed").val();
 	//console.log(termEd);
 	//시작일자휴가기간코드
-	var halfTypeCdSt = $(".half_type_cd_st:checked").attr('cnt');
+	var halfTypeCdSt = $(".half_type_cd_st_opt:selected").attr('cnt');
 	//console.log(halfTypeCdSt);
 	//종료일자휴가기간코드
-	var halfTypeCdEd = $(".half_type_cd_ed:checked").attr('cnt');
+	var halfTypeCdEd = $(".half_type_cd_ed_opt:selected").attr('cnt');
 	//console.log(halfTypeCdEd);
 	
 	var dayCnt = 0;
@@ -685,7 +732,7 @@ function fn_calcVacDay(){
 		
 	}
 	
-	if(halfTypeCdEd == null || halfTypeCdEd == "" ){
+	if(halfTypeCdEd == null || halfTypeCdEd == ""){
 		return false;
 	}
 	
@@ -704,14 +751,31 @@ function fn_calcVacDay(){
 
 
 /*2022.01.18 반차구분코드 변경 시 사용일수 계산 함수 : BEGIN */
-$(document).on('click', ".half_type_cd", function(){
+$(document).on('change', ".vac-term", function(){
 	fn_calcVacDay();
+	var halfTypeNmSt = $(".half_type_cd_st_opt:selected").attr("nm");
+	var halfTypeNmEd = $(".half_type_cd_ed_opt:selected").attr("nm");
+	$(".half_type_nm_st").text(halfTypeNmSt);
+	$(".half_type_nm_ed").text(halfTypeNmEd);
 	
 });
 /*2022.01.18 반차구분코드 변경 시 사용일수 계산 함수 : END */
 
 
 /*2022.01.18 휴가 기간 선택에 따른 사용일수 계산 : END*/
+
+/*2022.01.21 캘린더 버튼 이벤트 버블링 방지 : BEGIN*/
+//캘린더 이전 월, 다음 월 버튼 클릭 시 submit 이벤트 방지	
+$(document).on('click', '.tui-calendar-btn', function(e){
+	e.preventDefault();
+});	
+
+//모바일에서 캘린더 날짜 선택 시 이벤트 겹침 방지
+$(document).on('touchend', '.tui-calendar-date', function(e){
+	//alert("click!!");
+	e.preventDefault();
+});	
+/*2022.01.21 캘린더 버튼 이벤트 버블링 방지 : END*/
 
 // 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
 function fn_getDocCode(cd1, cd2) {
@@ -786,17 +850,30 @@ function fn_getDocCode(cd1, cd2) {
 			}
 			
 			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
+				html += '<div class="select-box">';
+				html += '<select name="half_type_cd_st" id="half_type_cd_st" class="half_type_cd_st half_type_cd form-control vac-term">';
+				html += '<option  class="half_type_cd_st_opt" value="" cnt="" nm="">선택</option>';
+				html2 += '<div class="select-box">';
+				html2 += '<select name="half_type_cd_ed" id="half_type_cd_ed" class="half_type_cd_ed half_type_cd form-control vac-term">';
+				html2 += '<option  class="half_type_cd_ed_opt" value="" cnt="" nm="">선택</option>';
+				
 				for(var i in vacTermList){
 					var vacTerm = vacTermList[i];
-					html += '<div class="radio">';
-					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html += '</div>';
 					
-					html2 += '<div class="radio">';
+					html += '<option class="half_type_cd_st_opt" id="half_type_cd_st_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
+					html2 += '<option class="half_type_cd_ed_opt" id="half_type_cd_ed_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
+					
+					/* html += '<div class="radio">';
+					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
+					html += '</div>'; */
+					
+					/* html2 += '<div class="radio">';
 					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html2 += '</div>';
+					html2 += '</div>'; */
 				}
 				
+				html += '</select>';
+				html2 += '</select>';
 				html += '</div>';
 				html2 += '</div>';
 				
@@ -1157,7 +1234,6 @@ function fn_getDocTmplt(cd1, cd2){
 		}
 	});			
 }
-
 
 </script>
 </body>
