@@ -597,6 +597,11 @@ $(function() {
 				$("#startpicker-container .tui-rangepicker").append(html);
 				$("#endpicker-container .tui-rangepicker").append(html2);
 				
+				//////////////////////////////////////////////
+				
+				$("#startpicker-container table.tui-calendar-body-inner").addClass("startpicker-selectable");
+				$("#endpicker-container table.tui-calendar-body-inner").addClass("endpicker-selectable");
+				
 				$("#half_type_cd_st_"+viewJson["HALF_TYPE_CD"]).prop("selected", true);
 				$("#half_type_cd_ed_"+viewJson["HALF_TYPE_CD_ED"]).prop("selected", true);
 				
@@ -775,42 +780,21 @@ $(document).on('click', '.tui-calendar-date', function(e){
 //캘린더 이전 월, 다음 월 버튼 클릭 시 submit 이벤트 방지	
 $(document).on('click', '.tui-calendar-btn', function(e){
 	e.preventDefault();
-	var target = e.target;
-	/*ajax - 공휴일 정보 불러오기*/
-	fn_loadHolMng(target);
 });	
 	
 //모바일에서 캘린더 날짜 선택 시 이벤트 겹침 방지
 $(document).on('touchend', '.tui-calendar-date', function(e){
-	//alert("click!!");
 	e.preventDefault();
 });	
 /*2022.01.21 캘린더 버튼 이벤트 버블링 방지 : END*/
 
-/*2022.02.08 캘린더 년도, 웗 변경 시 달력 공휴일 정보 추가 : BEGIN*/
-$(document).on('click', '.tui-calendar-year', function(e){
-	/*ajax - 공휴일 정보 불러오기*/
-	var target = e.target;
-	fn_loadHolMng(target);
-});
-
-$(document).on('click', '.tui-calendar-month', function(e){
-	/*ajax - 공휴일 정보 불러오기*/
-	var target = e.target;
-	fn_loadHolMng(target);
-	
-});
-/*2022.02.08 캘린더 년도, 웗 변경 시 달력 공휴일 정보 추가 : END*/
 
 function fn_loadHolMng(trgt){
-	alert("target : " + $(trgt).attr("class"));
-	var prnt = $(trgt).parents();
-	prnt = $(prnt).parents();
-	console.log(prnt);
-	//var clss = $(prnt).attr("class");
-	//alert(clss);
-	var stddYr = $(".tui-calendar-title").text();
+	var prnt = "#"+trgt;
+	
+	var stddYr = $(prnt+" .tui-calendar-title").text();
 	stddYr = stddYr.substr(0,4);
+	//console.log(stddYr);
 	
 	$.ajax({
 		url: "${pageContext.request.contextPath}/cal/hol00Ajax.do",
@@ -820,6 +804,7 @@ function fn_loadHolMng(trgt){
 		data : {"stdd_yr" : stddYr},
 		success: function(result){
 			var holList = result.jsonList;
+			//console.log(holList);
 			if(holList != null){
 				for(var i = 0; i< holList.length ; i++){
 					var hol = holList[i];
@@ -831,8 +816,8 @@ function fn_loadHolMng(trgt){
 					
 					var dt = new Date(year, mon-1, date, 0, 0, 0);
 					var timestamp = dt.getTime();
-					var text = "<div class='cal-nm' style='font-size : 5px; text-align:center;'>"+holNm+"</div>";
-					$("#startpicker-container td[data-timestamp='"+timestamp+"']").append(text).css({"color" : "red"});
+					//var text = "<div class='cal-nm' style='font-size : 5px; text-align:center;'>"+holNm+"</div>";
+					$(prnt+" td.tui-calendar-date[data-timestamp='"+timestamp+"']").css({"color" : "red"}).attr("title", holNm);
 				}
 				
 			}else{
@@ -952,6 +937,9 @@ function fn_getDocCode(cd1, cd2) {
 				
 				$("#startpicker-container .tui-rangepicker").append(html);
 				$("#endpicker-container .tui-rangepicker").append(html2);
+				
+				$("#startpicker-container table.tui-calendar-body-inner").addClass("startpicker-selectable");
+				$("#endpicker-container table.tui-calendar-body-inner").addClass("endpicker-selectable");
 			}
 			//가지급금 지급희망일자 datepicker
 			if($("#pay_dt").length > 0) {
@@ -1307,6 +1295,23 @@ function fn_getDocTmplt(cd1, cd2){
 		}
 	});			
 }
+/*2022-02-09 : 캘린더 년도, 월 변경 시 공휴일 정보 추가 : BEGIN*/
+$(document).on('DOMSubtreeModified', '#startpicker-container .tui-calendar-body', function(e){
+	var trgt = "startpicker-container";
+	//console.log(trgt);
+	/*ajax - 공휴일 정보 불러오기*/
+	fn_loadHolMng(trgt);
+
+});
+
+$(document).on('DOMSubtreeModified', '#endpicker-container .tui-calendar-body', function(e){
+	var trgt = "endpicker-container";
+	//console.log(trgt);
+	/*ajax - 공휴일 정보 불러오기*/
+	fn_loadHolMng(trgt);
+});
+/*2022-02-09 : 캘린더 년도, 월 변경 시 공휴일 정보 추가 : BEGIN*/
+
 
 </script>
 </body>
