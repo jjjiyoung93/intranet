@@ -52,27 +52,18 @@
 								<div class="clearfix search-box">
 										<div class="row">
 											<!-- 기준년도  -->
-											<div class="col-lg-3 col-sm-6 form-inline mt10">
+											<div class="col-lg-3 col-sm-5 col-xs-8 form-inline">
 												<label>기준년도</label>
 												<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle; width: 90px;">
-													<input type="text" id="datepicker-input-ko" name="stdd_yr" value="${params.stdd_yr}" aria-label="Date" class="" title="search">
+													<input type="text" id="datepicker-input-ko" name="stdd_yr" value="${params.stdd_yr}" aria-label="Date" class="text-center" title="search">
 													<span class="tui-ico-date"></span>
 												</div>
 												<div class="datepicker-cell" id="datepicker-year-ko"></div>
 											</div>
 											<!-- id/성명  -->
-											<div class="col-lg-5 col-sm-12 mt10 pull-right">
-												<%-- <div class="col-xs-4 un-style">
-													<span class="inline-element">
-														<select name="searchGubun" id="searchGubun" class="form-control" style="display: inline;" title="search" >
-															<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-															<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-														</select>
-													</span>
-												</div> --%>
-												<div class="col-xs-8 un-style">
+											<div class="col-lg-9 col-sm-6 col-xs-4 pull-right">
+												<div class="col-xs-12 un-style">
 													<div class="input-group text-right">
-														
 														<span class="input-group-btn">
 															<button class="fnLoadHol btn btn-info" type="button">
 																<i class="glyphicon glyphicon-refresh"></i>
@@ -113,8 +104,8 @@
 								<tr>
 									<!-- <th id="checkbox-header" data-checkbox="true"></th> -->
 									<!-- <th class="visible-md visible-lg" data-align="center" data-valign="middle" data-halign="center">번호</th> -->
-									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">날짜</th>
-									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">내용</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true"><span class="req-sign" style="color:red;">*</span>날짜</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true"><span class="req-sign" style="color:red;">*</span>내용</th>
 									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">비고</th>
 									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">수정자</th>
 									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">수정일</th>
@@ -133,35 +124,33 @@
 										<c:set var="intListCnt" value="${fn:length(resultList)}"/>
 										<input type="hidden" name="rowCnt" id="rowCnt" value="${totalCnt}"/>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
-											<tr>
+											<tr id="${list.CAL_HOL_SEQ}" class="hol_tr">
 												<!-- <td></td> -->
 												<%-- <th class="visible-md visible-lg text-center" style="vertical-align: middle;">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th> --%>
 												<td align="center" style="vertical-align: middle;">
-													<%-- <fmt:parseDate value="${list.CAL_HOL_DT}" var="dateFmt" pattern="yyyyMMdd"/>
-													<fmt:formatDate value="${dateFmt}" pattern="yyyy-MM-dd"/> --%>
-													<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle; width: 130px;">
-														<input type="text" id="datepicker-input-ko-${list.CAL_HOL_SEQ}" name="dt_${list.CAL_HOL_SEQ}" value="${list.CAL_HOL_DT}" aria-label="Date" class="" title="date">
-														<span class="tui-ico-date tui-ico-date-${list.CAL_HOL_SEQ}"></span>
-													</div>
-													<div class="datepicker-cell datepicker-date-ko" id="datepicker-date-${list.CAL_HOL_SEQ}"></div>
+														<div class="tui-datepicker-input tui-datetime-input tui-has-focus form-group" style="vertical-align: middle; margin-bottom:0px; width: 130px;">
+															<input type="text" id="datepicker-input-ko-${list.CAL_HOL_SEQ}" name="dt_${list.CAL_HOL_SEQ}" value="${list.CAL_HOL_DT}" aria-label="Date" class="hol_dt form-control text-center" title="date">
+															<span class="tui-ico-date tui-ico-date-${list.CAL_HOL_SEQ}"></span>
+														</div>
+														<div class="datepicker-cell datepicker-date-ko" id="datepicker-date-${list.CAL_HOL_SEQ}"></div>
 												</td> 
-												<td style="vertical-align: middle;">
-													<input type="hidden" name="seq_${list.CAL_HOL_SEQ }" id="seq_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_SEQ}" class="form-control">
-													<input type="text" name="nm_${list.CAL_HOL_SEQ }" id="nm_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_NM}" class="form-control">
-													<input type="hidden" name="mode_${list.CAL_HOL_SEQ }" id="mode_${list.CAL_HOL_SEQ }" value="<%=VarConsts.MODE_U %>" class="form-control">
+												<td style="vertical-align: middle;" class="form-group">
+														<input type="hidden" name="seq_${list.CAL_HOL_SEQ }" id="seq_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_SEQ}" class="form-control hol_seq">
+														<input type="text" name="nm_${list.CAL_HOL_SEQ }" id="nm_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_NM}" class="form-control hol_nm">
+														<input type="hidden" name="mode_${list.CAL_HOL_SEQ }" id="mode_${list.CAL_HOL_SEQ }" value="<%=VarConsts.MODE_U %>" class="form-control hol_mode">
 												</td>
 												<td align="center" style="vertical-align: middle;">
-													<input type="text" name="rmk_${list.CAL_HOL_SEQ }" id="rmk_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_RMK}" class="form-control">
+													<input type="text" name="rmk_${list.CAL_HOL_SEQ }" id="rmk_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_RMK}" class="form-control hol_rmk">
 												</td>
-												<td align="center" style="vertical-align: middle;">
-													<input type="hidden" id="mod_emp_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_LST_MOD_EMP }" >
+												<td align="center" style="vertical-align: middle;" >
+													<input type="hidden" id="mod_emp_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_LST_MOD_EMP }" class="hol_mod_emp">
 													${list.CAL_HOL_LST_MOD_EMP eq 'SYSTEM' ? '시스템' : list.CAL_HOL_LST_MOD_EMP_NM}
 												</td>
 												<td align="center" style="vertical-align: middle;">
-													
+													${list.CAL_HOL_MOD_DT}
 												</td>
 												<td align="center" style="vertical-align: middle;">
-													<button type="button" class="fnDel btn btn-sm btn-default" onclick="fn_delHoliday('${list.CAL_HOL_SEQ}')">삭 제</button>
+													<button type="button" class="fnDel btn btn-sm btn-default" onclick="fn_delHoliday('${list.CAL_HOL_SEQ}', '${list.CAL_HOL_NM}')">삭 제</button>
 												</td>
 												
 											</tr>
@@ -199,14 +188,54 @@
 	<script type="text/javascript">
 	
 		var insRowSeq = parseInt("${maxSeq}");
+		
+		/*필수값 validation*/
+		function fn_validation(){
+			var reuslt = true;
+			var trList = $(".hol_tr");
+			var len = $(".hol_tr").length;
+			
+			for(var i=0; i< len; i++){
+				var tr = trList[i];
+				//시퀀스
+				var seq = $(tr).find('.hol_seq');
+				var seqVal = $(seq).val();
+				//일자
+				var dt = $(tr).find('.hol_dt');
+				var dtVal = $(dt).val();
+				//내용
+				var nm = $(tr).find('.hol_nm');
+				var nmVal = $(nm).val();
+				
+				/* if(seqVal == null || seqVal == ""){
+					return false
+				} */
+				if(dtVal == null || dtVal == ""){
+					alert("날짜를 선택해주세요");
+					$(dt).focus();
+					$(dt).closest(".form-group").addClass("has-error");
+					return false
+				}
+				if(nmVal == null || nmVal == ""){
+					alert("내용을 입력해주세요.");
+					$(nm).focus();
+					$(nm).closest(".form-group").addClass("has-error");
+					return false
+				}
+			}
+			return true;
+		}
 
 		/* 저장 */
 			
 		$( ".fnJoin" ).click(function() {
 			$("#max_row_seq").val(insRowSeq);
 			
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/cal/hol00Tran.do");
-			$("#frm1").submit();
+			var val = fn_validation();
+			if(val){
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/cal/hol00Tran.do");
+				$("#frm1").submit();
+			}
 		});
 		
 		/* 검색 */
@@ -240,21 +269,26 @@
 		}
 		
 		/*등록 데이터 삭제*/
-		function fn_delHoliday(seq){
-			alert(seq);
-			$("#mode").val("DELETE");
-			$("#cal_hol_seq").val(seq);
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/cal/hol00Tran.do");
-			$("#frm1").submit();
-			
+		function fn_delHoliday(seq, nm){
+		  	var msg = nm+"을 삭제하시겠습니까?";
+		  	if(confirm(msg)){
+				//alert(seq);
+				$("#mode").val("DELETE");
+				$("#cal_hol_seq").val(seq);
+				$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/cal/hol00Tran.do");
+				$("#frm1").submit();
+		  	}
 		}
 		
 		/*추가 로우 삭제*/
 		function fn_delRow(target){
+			var msg = "행을 삭제하시겠습니까?";
 			var object = $(target);
 			//alert(object);
 			var tr = $(object).parents('tr');
-			$(tr).remove();
+			if(confirm(msg)){
+				$(tr).remove();
+			}
 		}
 		
 		// 추가
@@ -271,12 +305,17 @@
 			//alert("nextRow = " +nextRows);
 			
  			var oRow = holidayList.insertRow();
+ 			$(oRow).attr("id", rowOrd);
+ 			$(oRow).addClass("hol_tr");
  			oRow.onmouseover=function(){holidayList.clickedRowIndex=this.rowIndex};
 			 
  			var oCell1 = oRow.insertCell(0);
  			var oCell2 = oRow.insertCell(1);
+ 			$(oCell2).addClass("form-group");
  			var oCell3 = oRow.insertCell(2);
  			var oCell4 = oRow.insertCell(3);
+ 			var oCell5 = oRow.insertCell(4);
+ 			var oCell6 = oRow.insertCell(5);
  			
  			var totalCnt  = "${totalCnt}";
  			//alert("totalCnt = " + totalCnt);
@@ -286,13 +325,15 @@
  			var stddYr = "${params.stdd_yr}";
  			
 			
-			oCell1.style.cssText = "text-align:center;";
-			oCell2.style.cssText = "text-align:center;";
- 			oCell3.style.cssText = "text-align:center;";
- 			oCell4.style.cssText = "text-align:center;";
+			oCell1.style.cssText = "text-align:center; vertical-align:middle;";
+			oCell2.style.cssText = "text-align:center; vertical-align:middle;";
+ 			oCell3.style.cssText = "text-align:center; vertical-align:middle;";
+ 			oCell4.style.cssText = "text-align:center; vertical-align:middle;";
+ 			oCell5.style.cssText = "text-align:center; vertical-align:middle;";
+ 			oCell6.style.cssText = "text-align:center; vertical-align:middle;";
 			
- 			oCell1.innerHTML = '<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle; width: 130px;">'
-			                 +  '<input type="text" id="datepicker-input-ko-'+rowOrd+'" name="dt_'+rowOrd+'" value="" aria-label="Date" class="" title="date">'
+ 			oCell1.innerHTML = '<div class="tui-datepicker-input tui-datetime-input tui-has-focus form-group" style="vertical-align: middle; margin-bottom:0px; width: 130px;">'
+			                 +  '<input type="text" id="datepicker-input-ko-'+rowOrd+'" name="dt_'+rowOrd+'" value="" aria-label="Date" class="hol_dt form-control text-center" title="date">'
 			                 +  '<span class="tui-ico-date tui-ico-date-'+rowOrd+'"></span>'
 		                     +  '</div>'
 		                     +  '<div class="datepicker-cell datepicker-date-ko" id="datepicker-date-'+rowOrd+'"></div>';
@@ -316,11 +357,13 @@
 // 							 + "<input type='button' class='btn btn-default btn-sm' value='찾기' onclick=\"fn_ussSearch('aprv_emp_no"+ nextRows +"')\" />&nbsp;&nbsp;"
 // 							 + "<input type='checkbox' id='refe_yn"+ nextRows +"' name='refe_yn"+ nextRows +"' value='Y' onclick='fn_order(this)' />"
 // 							 + "<label for='refe_yn"+ nextRows +"'>참조인</label>";
- 			oCell2.innerHTML = '<input type="hidden" name="seq_'+rowOrd+'" id="seq_'+rowOrd+'" value="'+rowOrd+'" class="form-control">'
- 			                 + '<input type="text" name="nm_'+rowOrd+'" id="nm_'+rowOrd+'" value="" class="form-control">'
-			                 + '<input type="hidden" name="mode_'+rowOrd+'" id="mode_'+rowOrd+'" value="INSERT" class="form-control">';
- 			oCell3.innerHTML = '<input type="text" name="rmk_'+rowOrd+'" id="rmk_'+rowOrd+'" value="" class="form-control">'
- 			oCell4.innerHTML = '<button type="button" class="fnDel btn btn-sm btn-default" onclick="fn_delRow(this)">삭 제</button>';
+ 			oCell2.innerHTML = '<input type="hidden" name="seq_'+rowOrd+'" id="seq_'+rowOrd+'" value="'+rowOrd+'" class="form-control hol_seq">'
+ 			                 + '<input type="text" name="nm_'+rowOrd+'" id="nm_'+rowOrd+'" value="" class="form-control hol_nm">'
+			                 + '<input type="hidden" name="mode_'+rowOrd+'" id="mode_'+rowOrd+'" value="INSERT" class="form-control hol_mode">';
+ 			oCell3.innerHTML = '<input type="text" name="rmk_'+rowOrd+'" id="rmk_'+rowOrd+'" value="" class="form-control hol_rmk">'
+ 			oCell4.innerHTML = '${loginVO.name}';
+ 			oCell5.innerHTML = '';
+ 			oCell6.innerHTML = '<button type="button" class="fnDel btn btn-sm btn-default" onclick="fn_delRow(this)">삭 제</button>';
 			
 // 			var cnt = 1;
 // 			for(var i = 1; i < aprv_line.rows.length; i++) {
@@ -403,6 +446,11 @@
 				$($(this).attr("href")).show();
 				return false;
 			});
+			
+			$("input").on('click', function(e){
+				var trgt = e.target;
+				$(trgt).closest(".has-error").removeClass("has-error");
+			})
 		});
 
 	</script>

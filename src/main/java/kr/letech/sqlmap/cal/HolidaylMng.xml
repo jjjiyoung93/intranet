@@ -67,6 +67,7 @@
 		  , cal_hol_yr
 		  , cal_hol_lst_mod_emp
 		  , (SELECT S.USS_NM FROM STD_USS_MNG S WHERE S.USS_ID = cal_hol_lst_mod_emp) AS CAL_HOL_LST_MOD_EMP_NM
+		  , TO_CHAR(cal_hol_mod_dt, 'yyyy-MM-dd') AS CAL_HOL_MOD_DT
 		FROM std_cal_hol
 	   WHERE cal_hol_yr = #{stdd_yr, jdbcType=VARCHAR}
 	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
@@ -89,6 +90,7 @@
 		  , cal_hol_rmk
 		  , cal_hol_yr
 		  , cal_hol_lst_mod_emp
+		  , TO_CHAR(cal_hol_mod_dt, 'yyyy-MM-dd') AS CAL_HOL_MOD_DT
 		FROM std_cal_hol
 	   WHERE 1=1
 	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
@@ -156,6 +158,7 @@
 		     , CAL_HOL_RMK = #{cal_hol_rmk, jdbcType=VARCHAR}
 		     , CAL_HOL_YR = #{cal_hol_yr, jdbcType=VARCHAR}
 		     , CAL_HOL_LST_MOD_EMP = #{cal_hol_lst_mod_emp, jdbcType=VARCHAR}
+		     , CAL_HOL_MOD_DT = SYSDATE
 		 WHERE CAL_HOL_SEQ = TO_NUMBER(#{cal_hol_seq})
 	</update>
 	

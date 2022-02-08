@@ -253,6 +253,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 						
 						String orginHolNm = (String)holViewMap.get("CAL_HOL_NM");
 						String orginHolRmk = (String)holViewMap.get("CAL_HOL_RMK");
+						orginHolRmk = orginHolRmk == null ? "" : orginHolRmk; 
 						
 						if( StringUtils.equals(dt, orginHolDt)
 						   && StringUtils.equals(nm, orginHolNm)
