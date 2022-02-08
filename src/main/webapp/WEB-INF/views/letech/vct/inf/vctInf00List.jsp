@@ -612,7 +612,16 @@
 							table += '<tr id="'+result.CD+'">';
 							var typeNm = result.VCT_TYPE_NM
 								typeNm = typeNm.split("휴가")[0];
-							table += '<th align="center" style="vertical-align: middle;" class="text-center">'+typeNm+'</th>';
+							var len = typeNm.length;
+							var nm = "";
+								if(len >= 4){
+									for(var j = 0; j < len; j+=2){
+										nm += (typeNm.substr(j,2) +"<br>");
+									}
+								}else{
+									nm = typeNm;
+								}
+							table += '<th align="center" style="vertical-align: middle;" class="text-center">'+nm+'</th>';
 							if(result.VCT_GRNT_DAY == null){
 								table += '<td align="center" style="vertical-align: middle;">－</td>';	
 							}else{
