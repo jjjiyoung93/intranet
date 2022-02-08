@@ -180,7 +180,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 		//휴일정보 삭제
 		delCnt = holidayMngDAO.deleteHolMng(params);
 		
-		Map paramMap = new HashMap();
+		/*Map paramMap = new HashMap();
 		
 		paramMap.put("cal_hol_dt", holDt);
 		
@@ -192,7 +192,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 			paramMap.put("use_yn", "Y");
 			paramMap.put("vct_dt", vctDt);
 			vctMngDAO.updateVctInfUse(paramMap);
-		}
+		}*/
 		
 		return delCnt;
 	}
@@ -264,6 +264,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 							//휴일 정보 수정
 							updCnt += holidayMngDAO.updateHolMng(paramMap);
 							
+							/*
 							int holCnt = 0;
 							Map holParam = new HashMap();
 							holParam.put("cal_hol_dt", orginHolDt);
@@ -290,6 +291,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 								
 								vctMngDAO.updateVctInfUse(holParam);
 							}
+							*/
 						
 						}
 						
@@ -298,9 +300,11 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 						insCnt += holidayMngDAO.insertHolMng(paramMap);
 						
 						/*해당 날짜 휴가정보 사용여부 'N' 변경*/
+						/*
 						paramMap.put("vct_dt", vctDt);
 						paramMap.put("use_yn", "N");
 						vctMngDAO.updateVctInfUse(paramMap);
+						*/
 						
 					}
 					
@@ -328,6 +332,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 		List<Map> sysHolList = holidayMngDAO.getHolMngList(params);
 		//기존자료 삭제 단, SYSTEM 등록 자료만
 		holidayMngDAO.deleteHolMngBySys(params);
+		/*
 		Map paramMap = new HashMap();
 		int holCnt = 0;
 		//삭제한 자료에 맞춰 휴가 정보 사용여부 Y 변경처리
@@ -347,6 +352,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 			}
 			
 		}
+		*/
 		//api 호출 정보 생성
 		String urlStr = EgovProperties.getProperty("holi.url");
 		String operation = "/"+EgovProperties.getProperty("holi.operation");
@@ -413,11 +419,12 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 			insCnt += holidayMngDAO.insertHolMngBySys(holParam);
 			
 			//신규 데이터 등록에 따른 휴가 정보 사용여부 N 변경처리
+			/*
 			holParam.put("vct_dt", vctDt);
 			holParam.put("use_yn", "N");
 			
 			vctMngDAO.updateVctInfUse(holParam);
-			
+			*/
 			
 		}
 		
