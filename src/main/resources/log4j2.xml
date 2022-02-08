@@ -47,7 +47,7 @@
 		<Logger name="jdbc.sqlonly" level="INFO" additivity="false"> 
 			<AppenderRef ref="Console"/> 
 		</Logger>
-		<Logger name="jdbc.resultset" level="INFO" additivity="false">
+		<Logger name="jdbc.resultset" level="WARN" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
 		<Logger name="jdbc.resultsettable" level="OFF" additivity="false">
@@ -61,7 +61,7 @@
 
 		
 		<!-- 최초작성일 		2017. 1. 20 -->
-		<Logger name="kr.letech" level="WARN">
+		<Logger name="kr.letech" level="INFO" additivity="false">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="databaseAppender" />
 		</Logger>

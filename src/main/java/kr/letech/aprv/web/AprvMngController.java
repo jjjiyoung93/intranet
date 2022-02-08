@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +28,7 @@ import kr.letech.cmm.LoginVO;
 import kr.letech.cmm.annotation.IncludedInfo;
 import kr.letech.cmm.util.DateUtil;
 import kr.letech.cmm.util.EgovFileMngUtil;
+import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.doc.service.DocService;
@@ -39,6 +42,8 @@ import net.sf.json.JSONObject;
 @Controller
 public class AprvMngController {
 
+	private static final Logger log = LoggerFactory.getLogger(EgovProperties.class);
+	
 	/** calMngService */
 	@Resource(name = "aprvMngService")
 	private AprvMngService aprvMngService;
@@ -529,16 +534,29 @@ public class AprvMngController {
 	* @throws Exception
 	*/
 	@RequestMapping(value = "/aprv/loadBizplay.do")
-	public String loadBizplay(HttpServletRequest request, ModelMap model) throws Exception {
+	public String loadBizplay(HttpServletRequest request, ModelMap model) {
 		
 		Map params = ReqUtils.getParameterMap(request);
 		
 		String viewName = "jsonView";
 
 		// BIZPLAY 데이터 호출하여 DB에 저장
-		aprvMngService.insertBizplayData(params);
+		try {
+			aprvMngService.insertBizplayData(params);
+		} catch (Exception e) {
+			model.put("result", "비즈플레이 데이터 적재 실패");
+			log.error("[BIZPLAY] 비즈플레이 데이터 적재 실패 : {}", e.getCause(), e);
+			return viewName;
+		}
+		
 		// 저장된 BIZPLAY 데이터를 이용하여 결재 데이터 생성
-		aprvMngService.insertBizplayAprv(params);
+		try {
+			aprvMngService.insertBizplayAprv(params);
+		} catch (Exception e) {
+			model.put("result", "결재 데이터 생성 실패");
+			log.error("[BIZPLAY] 결재 데이터 생성 실패 : {}", e.getCause(), e);
+			return viewName;
+		}
 		
 		return viewName;
 	}
