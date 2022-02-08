@@ -835,7 +835,7 @@
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
 		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
-		            ADN G.USE_YN = 'Y'
+		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE , G.VCT_QRTR
 		)
 		, W_VCT_USE_DAY_CNT AS (

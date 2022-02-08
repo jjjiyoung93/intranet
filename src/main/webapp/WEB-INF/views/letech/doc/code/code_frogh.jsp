@@ -60,7 +60,7 @@
 		<label class="control-label">연락처</label> <span class="req-sign">*</span>
 	</div>
 	<div class="col-lg-9">
-		<input type="text" name="cttplc" id="cttplc" class="form-control" />
+		<input type="text" name="cttplc" id="cttplc" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
 	</div>
 </div>
 <!-- 연락처 END -->

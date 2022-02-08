@@ -243,7 +243,9 @@ public class HolidayMngController {
 		} catch (Exception e) {
 			msg = "9999";
 		}
+		JSONObject jsonMap = JSONObject.fromObject(resultMap);
 		model.addAttribute("resultMap", resultMap);
+		model.addAttribute("jsonMap", jsonMap);
 		model.addAttribute("resultCnt", resultCnt);
 		model.addAttribute("resultMsg", msg);
 		model.addAttribute("params", params);
@@ -258,7 +260,7 @@ public class HolidayMngController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sys/cal/hol00Upd.do")
+	@RequestMapping(value = "sys/cal/hol00Upd.do")
 	public String getHolMngUpd(HttpServletRequest request, ModelMap model) throws Exception {
 		
 		Map params = ReqUtils.getParameterMap(request);
@@ -276,7 +278,10 @@ public class HolidayMngController {
 			msg = "9999";
 		}
 		params.put("mode", "UPDATE_SYS");
+		JSONObject jsonMap = JSONObject.fromObject(resultMap);
 		model.addAttribute("resultMap", resultMap);
+		model.addAttribute("jsonMap", jsonMap);
+		
 		model.addAttribute("resultCnt", resultCnt);
 		model.addAttribute("resultMsg", msg);
 		model.addAttribute("params", params);

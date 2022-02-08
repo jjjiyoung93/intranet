@@ -251,37 +251,47 @@ public class HolidayMngServiceImpl implements HolidayMngService {
 						String orginHolDt = (String)holViewMap.get("CAL_HOL_DT");
 						String vctOrginDt = orginHolDt.substring(0, 4) + "-" + orginHolDt.substring(4, 6) + "-" + orginHolDt.substring(6);
 						
+						String orginHolNm = (String)holViewMap.get("CAL_HOL_NM");
+						String orginHolRmk = (String)holViewMap.get("CAL_HOL_RMK");
 						
-						//휴일 정보 수정
-						updCnt += holidayMngDAO.updateHolMng(paramMap);
-						
-						int holCnt = 0;
-						Map holParam = new HashMap();
-						holParam.put("cal_hol_dt", orginHolDt);
-						
-						//날짜 수정된 경우 : 기존 날짜 관련 휴일 정보 카운팅 후 없으면 휴가정보 사용여부 Y 변경, 있으면 N 변경
-					    //             : 변경 날짜 관련 휴가정보 사용여부 N 변경
-						if(!StringUtils.equals(dt, orginHolDt)) {
-							//기존날짜 : 기존날짜는 날짜 중복 자료가 존재할 경우 휴가 정보 사용여부는 N, 날짜 중복 자료가 존재하지 않을 시 Y 변경
-							holCnt = holidayMngDAO.getHolidayCnt(holParam);
+						if( StringUtils.equals(dt, orginHolDt)
+						   && StringUtils.equals(nm, orginHolNm)
+						   && StringUtils.equals(rmk, orginHolRmk)) {
 							
-							if(holCnt > 0) {
-								holParam.put("vct_dt", vctOrginDt);
-								holParam.put("use_yn", "N");
-							}else if(holCnt == 0) {
-								holParam.put("vct_dt", vctOrginDt);
-								holParam.put("use_yn", "Y");
+							continue;
+						}else {
+						
+							//휴일 정보 수정
+							updCnt += holidayMngDAO.updateHolMng(paramMap);
+							
+							int holCnt = 0;
+							Map holParam = new HashMap();
+							holParam.put("cal_hol_dt", orginHolDt);
+							
+							//날짜 수정된 경우 : 기존 날짜 관련 휴일 정보 카운팅 후 없으면 휴가정보 사용여부 Y 변경, 있으면 N 변경
+						    //             : 변경 날짜 관련 휴가정보 사용여부 N 변경
+							if(!StringUtils.equals(dt, orginHolDt)) {
+								//기존날짜 : 기존날짜는 날짜 중복 자료가 존재할 경우 휴가 정보 사용여부는 N, 날짜 중복 자료가 존재하지 않을 시 Y 변경
+								holCnt = holidayMngDAO.getHolidayCnt(holParam);
+								
+								if(holCnt > 0) {
+									holParam.put("vct_dt", vctOrginDt);
+									holParam.put("use_yn", "N");
+								}else if(holCnt == 0) {
+									holParam.put("vct_dt", vctOrginDt);
+									holParam.put("use_yn", "Y");
+								}
+								
+								vctMngDAO.updateVctInfUse(holParam);
+								
+								//변경날짜 : 변경날짜는 중복 자료가 있으나 없으나 휴가 정보 사용여부 N 변경
+								holParam.put("vct_dt", vctDt);
+								holParam.put("vct_dt", "N");
+								
+								vctMngDAO.updateVctInfUse(holParam);
 							}
-							
-							vctMngDAO.updateVctInfUse(holParam);
-							
-							//변경날짜 : 변경날짜는 중복 자료가 있으나 없으나 휴가 정보 사용여부 N 변경
-							holParam.put("vct_dt", vctDt);
-							holParam.put("vct_dt", "N");
-							
-							vctMngDAO.updateVctInfUse(holParam);
-						}
 						
+						}
 						
 					}else if(StringUtils.equals(mode, VarConsts.MODE_I)) {
 						/*휴일등록*/
@@ -387,7 +397,7 @@ public class HolidayMngServiceImpl implements HolidayMngService {
         Map holParam = new HashMap();
         int insCnt = 0;
         for (Map item : itemList) {
-        	String holDt = (String)item.get("locdate");
+        	String holDt = String.valueOf( (Integer)item.get("locdate"));
 			String holNm = (String)item.get("dateName");
 			String holRmk = (String)item.get("remarks");
 			String vctDt = holDt.substring(0, 4) + "-" + holDt.substring(4, 6) + "-" + holDt.substring(6);

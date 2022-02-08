@@ -775,8 +775,8 @@ $(document).on('click', '.tui-calendar-date', function(e){
 //캘린더 이전 월, 다음 월 버튼 클릭 시 submit 이벤트 방지	
 $(document).on('click', '.tui-calendar-btn', function(e){
 	e.preventDefault();
+	var target = e.target;
 	/*ajax - 공휴일 정보 불러오기*/
-	var target = e.target
 	fn_loadHolMng(target);
 });	
 	
@@ -805,6 +805,7 @@ $(document).on('click', '.tui-calendar-month', function(e){
 function fn_loadHolMng(trgt){
 	alert("target : " + $(trgt).attr("class"));
 	var prnt = $(trgt).parents();
+	prnt = $(prnt).parents();
 	console.log(prnt);
 	//var clss = $(prnt).attr("class");
 	//alert(clss);

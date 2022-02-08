@@ -20,7 +20,7 @@ $(document).ready(function() {
 	
 	var resultCnt = "${resultCnt}";
 	var resultMsg = "${resultMsg}";
-	var resultMap = ${resultMap};
+	var resultMap = ${jsonMap};
 	var mode = "${params.mode}";
 	
 	var msg = "";
@@ -31,7 +31,6 @@ $(document).ready(function() {
 			msg = "휴일" + resultCnt + "건이 정상 삭제되었습니다."
 		} else if(mode == "UPDATE_SYS"){
 			msg = "휴일" + resultCnt + "건이 정상적으로 동기화되었습니다."	
-			
 		}else {
 			var insCnt = resultMap.insCnt;
 			var updCnt = resultMap.updCnt;
@@ -73,17 +72,17 @@ $(document).ready(function() {
 	<input type="hidden" name="aprv_no" id="aprv_no" value="${params.aprv_no }" />
 	<input type="hidden" id="line_chk" name="line_chk" value="${params.line_chk }" /> --%>
 	<!-- 검색 정보 Start -->
-	<input type="hidden" name="cPage" id="cPage" value="${param.cPage }" />
+	<input type="hidden" name="cPage" id="cPage" value="${params.cPage }" />
 	<input type="hidden" name="stdd_yr" id="stdd_yr" value="${params.stdd_yr}" />
 
 	<%-- <input type="hidden" id="searchCdList1" name="searchCdList1" value="${param.searchCdList1}" />
 	<input type="hidden" id="searchCdList2" name="searchCdList2" value="${param.searchCdList2}" />
 	<input type="hidden" id="searchCdList3" name="searchCdList3" value="${param.searchCdList3}" /> --%>
 	
-	<input type="hidden" id="searchGubun2" name="searchGubun2" value="${param.searchGubun2}" />
+	<%-- <input type="hidden" id="searchGubun2" name="searchGubun2" value="${param.searchGubun2}" />
 	<input type="hidden" id="searchGubun3" name="searchGubun3" value="${param.searchGubun3}" />
 	<input type="hidden" id="searchGubun" name="searchGubun" value="${param.searchGubun}" />
-	<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" />
+	<input type="hidden" id="searchField" name="searchField" value="${param.searchField}" /> --%>
 	<!-- 검색 정보 End -->
 </form>
 <!-- Content Start -->

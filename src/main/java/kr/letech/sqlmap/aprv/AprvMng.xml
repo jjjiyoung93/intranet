@@ -170,6 +170,7 @@
 			                        APRV_NO
 			                      , SUM(VCT_DAY_CNT) AS SUM_DAY_CNT
 			                   FROM VCT_INF_MNG
+			                   WHERE USE_YN = 'Y'
 			                   GROUP BY APRV_NO
 			                 ) Z ON (Z.APRV_NO = A.APRV_NO)
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField3)" >
@@ -653,6 +654,7 @@
 							 SELECT APRV_NO
 							      , SUM(VCT_DAY_CNT) AS VCT_DAY_CNT
 							   FROM VCT_INF_MNG
+							   WHERE USE_YN = 'Y'
 							   GROUP BY APRV_NO ) G ON G.APRV_NO = A.APRV_NO
 		WHERE A.APRV_NO = #{aprv_no}
 	</select>
@@ -1589,6 +1591,7 @@
 		                         WHERE D.VCT_YR = TO_CHAR(SYSDATE, 'YYYY')
 		                           AND D.USS_ID = #{rept_aprv_no} 
 		                           AND D.VCT_TYPE = 'CD0001011001'
+		                           AND D.USE_YN = 'Y'
 		                         GROUP BY D.VCT_YR, D.USS_ID) C ON (A.USS_ID = C.USS_ID)
 	
 	</select>

@@ -39,8 +39,8 @@
 						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
 						<input type="hidden" id="cPage" name="cPage" value="${cPage }" />
 						<input type="hidden" id="mode" name="mode" value="${params.mode}" />
-						<input type="hidden" id="cal_hol_seq" name="cal_hol_seq" value="">;
-						<input type="hidden" id="max_row_seq" name="max_row_cnt" value="">;
+						<input type="hidden" id="cal_hol_seq" name="cal_hol_seq" value="">
+						<input type="hidden" id="max_row_seq" name="max_row_cnt" value="">
 						<!-- 타이틀 및 페이지 네비 -->
 								<h2 class="page-title clearfix">
 								${titleNaviMap.MN_NM }
@@ -76,7 +76,7 @@
 														<span class="input-group-btn">
 															<button class="fnLoadHol btn btn-info" type="button">
 																<i class="glyphicon glyphicon-refresh"></i>
-																<span class="hidden-xs hidden-sm">업데이트</span>
+																<span class="hidden-xs hidden-sm">공공데이터포털 휴일 API 동기화</span>
 															</button>
 														</span>
 													</div>
@@ -97,11 +97,13 @@
 									<button type="button" class="btn btn-sm btn-default" onClick="addRow();" >추 가</button>
 									<!-- <button type="button" class="fnDel btn btn-sm btn-default" >삭 제</button> -->
 								</span>
-								<strong class="list_count" >Total : ${totalCnt} 건</strong>
+								<%-- <strong class="list_count" >Total : ${totalCnt} 건</strong> --%>
 							</p>
 						<div class="table-responsive">
 						<table class="table table-bordered" id="holidayList" summary="휴일관리 목록">
 							<colgroup>
+								<col width="10%" />
+								<col width="10%" />
 								<col width="10%" />
 								<col width="10%" />
 								<col width="10%" />
@@ -114,6 +116,8 @@
 									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">날짜</th>
 									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">내용</th>
 									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">비고</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">수정자</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">수정일</th>
 									<th data-align="center" data-valign="middle" data-halign="center"></th>
 								</tr>
 							</thead>
@@ -148,6 +152,13 @@
 												</td>
 												<td align="center" style="vertical-align: middle;">
 													<input type="text" name="rmk_${list.CAL_HOL_SEQ }" id="rmk_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_RMK}" class="form-control">
+												</td>
+												<td align="center" style="vertical-align: middle;">
+													<input type="hidden" id="mod_emp_${list.CAL_HOL_SEQ }" value="${list.CAL_HOL_LST_MOD_EMP }" >
+													${list.CAL_HOL_LST_MOD_EMP eq 'SYSTEM' ? '시스템' : list.CAL_HOL_LST_MOD_EMP_NM}
+												</td>
+												<td align="center" style="vertical-align: middle;">
+													
 												</td>
 												<td align="center" style="vertical-align: middle;">
 													<button type="button" class="fnDel btn btn-sm btn-default" onclick="fn_delHoliday('${list.CAL_HOL_SEQ}')">삭 제</button>
@@ -224,7 +235,7 @@
 		
 		function goPage(cPage){
 			$("#cPage").val(cPage);
-			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/cal/vctDay00List.do");
+			$("#frm1").attr("action", "${pageContext.request.contextPath}/sys/cal/hol00List.do");
 			$("#frm1").submit();
 		}
 		
@@ -252,12 +263,12 @@
 			
 			var rowOrd = insRowSeq;
 			
-			alert(rowOrd);
+			//alert(rowOrd);
 			var nextRows = holidayList.rows.length;
 			
 			// row개수 설정
 			document.frm1.rowCnt.value = nextRows;
-			alert("nextRow = " +nextRows);
+			//alert("nextRow = " +nextRows);
 			
  			var oRow = holidayList.insertRow();
  			oRow.onmouseover=function(){holidayList.clickedRowIndex=this.rowIndex};
@@ -268,9 +279,9 @@
  			var oCell4 = oRow.insertCell(3);
  			
  			var totalCnt  = "${totalCnt}";
- 			alert("totalCnt = " + totalCnt);
+ 			//alert("totalCnt = " + totalCnt);
  			var insRowOrd = parseInt(nextRows) - parseInt(totalCnt);
- 			alert("insRowOrd = "+ insRowOrd);
+ 			//alert("insRowOrd = "+ insRowOrd);
  			
  			var stddYr = "${params.stdd_yr}";
  			
@@ -293,7 +304,7 @@
 					type: 'date',
 					input : {
 						element : '#datepicker-input-ko-'+rowOrd,
-						format : 'yyyy-MM-dd'
+						format : 'yyyyMMdd'
 					},
 					//선택 범위 : 기준년도 내
 					selectableRanges: [
@@ -334,7 +345,7 @@
 			
 			
 			//년도 캘린더 만들기
-			var calYearKo = new tui.DatePicker('#datepicker-year-ko',{
+			calYearKo = new tui.DatePicker('#datepicker-year-ko',{
 				date : new Date(),
 				language : 'ko',
 				date : "${params.stdd_yr}",
@@ -349,6 +360,10 @@
 				]
 			});
 			
+			calYearKo.on('change', () =>{
+				goPage(1);
+			});
+			
 			//var resultListStr = ${resultList};
 			
 			var resultList = ${jsonList};
@@ -360,6 +375,7 @@
 				
 				var seq = result.CAL_HOL_SEQ;
 				var dt = result.CAL_HOL_DT;
+				
 				//var datepickerid = "date"
 				
 				var holDtKo = new tui.DatePicker('#datepicker-date-'+seq ,{

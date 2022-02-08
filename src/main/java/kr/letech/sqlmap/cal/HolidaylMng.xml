@@ -66,6 +66,7 @@
 		  , cal_hol_rmk
 		  , cal_hol_yr
 		  , cal_hol_lst_mod_emp
+		  , (SELECT S.USS_NM FROM STD_USS_MNG S WHERE S.USS_ID = cal_hol_lst_mod_emp) AS CAL_HOL_LST_MOD_EMP_NM
 		FROM std_cal_hol
 	   WHERE cal_hol_yr = #{stdd_yr, jdbcType=VARCHAR}
 	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
@@ -74,6 +75,8 @@
 	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
 	     	AND cal_hol_lst_mod_emp = #{cal_hol_lst_mod_emp, jdbcType=VARCHAR}
 	     </if>
+	     
+	    ORDER BY cal_hol_dt
 
 	</select>
 	
@@ -85,6 +88,7 @@
 		  , cal_hol_nm
 		  , cal_hol_rmk
 		  , cal_hol_yr
+		  , cal_hol_lst_mod_emp
 		FROM std_cal_hol
 	   WHERE 1=1
 	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
@@ -173,7 +177,7 @@
 		MERGE INTO STD_CAL_HOL 
 		USING DUAL 
 		   ON (   CAL_HOL_DT = #{cal_hol_dt, jdbcType=VARCHAR}
-		      AND CAL_HOL_NM LIKE '%' || #{cal_hol_nm, jdbcType=VARCHAR} || '%'
+		      AND CAL_HOL_NM LIKE '%' || #{cal_hol_nm, jdbcType=VARCHAR} || '%' )
 		WHEN NOT MATCHED THEN
 		INSERT (
 			   CAL_HOL_SEQ
