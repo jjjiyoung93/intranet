@@ -14,6 +14,8 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.reflection.wrapper.MapWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,7 @@ import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cal.service.impl.CalMngDAO;
 import kr.letech.cal.service.impl.HolidayMngDAO;
 import kr.letech.cmm.util.EgovFileTool;
+import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.PageNavigator;
 import kr.letech.cmm.util.ReqUtils;
@@ -43,6 +46,8 @@ import net.sf.json.JSONObject;
 @Service("aprvMngService")
 public class AprvMngServiceImpl implements AprvMngService {
 
+	private static final Logger log = LoggerFactory.getLogger(EgovProperties.class);
+	
 	/** aprvMngDAO */
 	@Resource(name="aprvMngDAO")
 	private AprvMngDAO aprvMngDAO;
@@ -1061,17 +1066,19 @@ public class AprvMngServiceImpl implements AprvMngService {
 	
 	/**
 	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
-	* @param request
-	* @param model
+	* REQ_DATA(요청부) 정의 -> RestTemplate을 이용하여 RES_DATA(반환부) 호출 -> BP_0411A, BP_0411A_FILE, BP_0411A_LINE에 적재 
+	* 작성자 : JO MIN SOO
+	* @param params
 	* @return
 	* @throws Exception
 	*/
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void insertBizplayData(Map params) throws Exception {
+		log.info("[BIZPLAY] 비즈플레이 데이터 적재 시작");
 		JSONArray receiptArray = new JSONArray(); // 영수증이 저장될 리스트
 		
-		// 입력부 데이터 입력 시작 
+		// 입력부 데이터 입력 시작 => REQ_DATA에 json형태로 담아서 비즈플레이API쪽으로 요청해야함
 		JSONObject jsonData = new JSONObject();
 		jsonData.put("API_ID", "0411A");
 		jsonData.put("API_KEY", "b10b7fb2-dccc-1657-bde8-b580cbc48355");
@@ -1094,79 +1101,119 @@ public class AprvMngServiceImpl implements AprvMngService {
 		
 		// 비즈플레이 API에서는 한번에 50건의 영수증만 반환하며 50건을 초과하면 NEXTKEY를 반환
 		// NEXTKEY를 입력부에 추가하여 다시 API를 호출하여야 됨
-		while(true) {
-			// BIZPLAY API의 URL에 입력부 데이터를 추가하여 인코딩한 URL 생성
-			URI targetUrl = UriComponentsBuilder.fromUriString("https://webankapi.appplay.co.kr/")	// Build the base link
-				.path("gateway.do")					// Add path
-				.queryParam("JSONData", jsonData)	// Add one or more query params
-				.build()							// Build the URL
-				.encode()							// Encode any URI items that need to be encoded
-				.toUri();							// Convert to URI
-			
-			// RestTemplate을 이용하여 API 호출 및 데이터 반환
-			RestTemplate rest = new RestTemplate();
-			String result = rest.getForObject(targetUrl, String.class);
-			
-			// 받아온 데이터를 Map 데이터로 변환
-			Map rtnData = JSONObject.fromObject(result);
-			JSONArray resData = (JSONArray) rtnData.get("RES_DATA");
-			receiptArray.addAll(resData);
-			
-			String nextKey = rtnData.get("NEXT_KEY") + "";
-			if("".equals(nextKey)) { // NEXTKEY가 없으면 API호출을 중단
-				break;
-			} else {
-				reqData.put("NEXT_KEY", nextKey);
-				jsonData.put("REQ_DATA", reqData);
+		URI targetUrl = null;
+		try {
+			while(true) {
+				// BIZPLAY API의 URL에 입력부 데이터를 추가하여 인코딩한 URL 생성
+				targetUrl = UriComponentsBuilder.fromUriString("https://webankapi.appplay.co.kr/")	// Build the base link
+					.path("gateway.do")					// Add path
+					.queryParam("JSONData", jsonData)	// Add one or more query params
+					.build()							// Build the URL
+					.encode()							// Encode any URI items that need to be encoded
+					.toUri();							// Convert to URI
+				
+				// RestTemplate을 이용하여 API 호출 및 데이터 반환
+				RestTemplate rest = new RestTemplate();
+				String result = rest.getForObject(targetUrl, String.class);
+				
+				// 받아온 데이터를 Map 데이터로 변환
+				Map rtnData = JSONObject.fromObject(result);
+				if(rtnData.get("RES_DATA") == null) {
+					log.error("[BIZPLAY] {}", rtnData);
+					throw new Exception("[BIZPLAY] API 호출 실패 ");
+				}
+				JSONArray resData = (JSONArray) rtnData.get("RES_DATA");
+				receiptArray.addAll(resData);
+				
+				String nextKey = rtnData.get("NEXT_KEY") + "";
+				if("".equals(nextKey)) { // NEXTKEY가 없으면 API호출을 중단
+					break;
+				} else { // NEXTKEY가 있으면 NEXTKEY를 REQ_DATA에 담아 API호출 한번 더 수행
+					reqData.put("NEXT_KEY", nextKey);
+					jsonData.put("REQ_DATA", reqData);
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("[BIZPLAY] API 호출 실패 =>" + targetUrl);
+			throw new Exception("[BIZPLAY] API 호출 실패 ");
 		}
-			
+		
+		// 위 로직을 진행하고 나면 receiptArray에 JSONArray형태로 영수증 데이터들을 저장
 		for(int i = 0; i < receiptArray.size(); i++) {
 			Map tempMap = (Map) receiptArray.get(i);
 			Map paramMap = new HashMap();
 			
 			for(Object key : tempMap.keySet()) {
-				// jsonarray에는 null이 JSONNull타입임.. 따라서 그대로 사용하면 mybatis에서 에러가 발생했음. JSONNull인 경우 저장하지 않아 null로 처리
+				// JSONArray의 NULL은 JAVA의 일반적인 NULL이 아니라 JSONNull 타입이다
+				// 이를 mybatis를 통해 그냥 사용하게 되면 에러가 발생하므로(JSONNull 인식 불가) NULL로 치환하는 작업
 				if(!(JSONNull.class == tempMap.get(key).getClass())) {
 					paramMap.put(key, tempMap.get(key));
 				}
 			}
 			
-			// BP_0411A 테이블에 모든 결재건 적재
-			aprvMngDAO.insertBizplayData(paramMap);
+			// BP_0411A 테이블에 영수증 적재
+			try {
+				aprvMngDAO.insertBizplayData(paramMap); // merge into
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("[BIZPLAY] BP_0411A 테이블에 영수증 적재 실패 => {}" + paramMap);
+				throw new Exception("[BIZPLAY] BP_0411A 테이블에 영수증 적재 실패");
+			}
 			
 			// BP_0411A_FILE 테이블에 결재건에 대한 첨부파일들 등록
-			aprvMngDAO.deleteBizplayFile(paramMap);
-			JSONArray fileList = (JSONArray) tempMap.get("ATT_IMG_LIST");
-			for(int j = 0; j < fileList.size(); j++) {
-				Map tempMap2 = (Map) fileList.get(j);
-				paramMap.put("IMG_SEQ_NO", tempMap2.get("IMG_SEQ_NO"));
-				paramMap.put("REG_DTM", tempMap2.get("REG_DTM"));
-				paramMap.put("RCPT_IMG_URL", tempMap2.get("RCPT_IMG_URL"));
-				paramMap.put("ORG_IMG_URL", tempMap2.get("ORG_IMG_URL"));
-				paramMap.put("IMG_NM", (String)paramMap.get("APV_DT") + "_" + paramMap.get("MEST_NM") + "_" + tempMap2.get("IMG_SEQ_NO"));
-				
-				aprvMngDAO.insertBizplayFile(paramMap);
+			JSONArray fileList = null;
+			try {
+				aprvMngDAO.deleteBizplayFile(paramMap);
+				fileList = (JSONArray) tempMap.get("ATT_IMG_LIST");
+				for(int j = 0; j < fileList.size(); j++) {
+					Map tempMap2 = (Map) fileList.get(j);
+					paramMap.put("IMG_SEQ_NO", tempMap2.get("IMG_SEQ_NO"));
+					paramMap.put("REG_DTM", tempMap2.get("REG_DTM"));
+					paramMap.put("RCPT_IMG_URL", tempMap2.get("RCPT_IMG_URL"));
+					paramMap.put("ORG_IMG_URL", tempMap2.get("ORG_IMG_URL"));
+					paramMap.put("IMG_NM", (String)paramMap.get("APV_DT") + "_" + paramMap.get("MEST_NM") + "_" + tempMap2.get("IMG_SEQ_NO"));
+					
+					aprvMngDAO.insertBizplayFile(paramMap);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("[BIZPLAY] BP_0411A_FILE 테이블에 결재건에 대한 첨부파일들 등록 실패 => {}", paramMap);
+				throw new Exception("[BIZPLAY] BP_0411A_FILE 테이블에 결재건에 대한 첨부파일들 등록 실패");
 			}
 			
+			
 			// BP_0411A_LINE 테이블에 결재건에 대한 결재라인들 등록
-			JSONArray lineList = (JSONArray) tempMap.get("CD_PPP_APPR_REC");
-			for(int j = 0; j < lineList.size(); j++) {
-				Map tempMap2 = (Map) lineList.get(j);
-				if((JSONNull.class == tempMap2.get("APRV_EMP_CD").getClass())) {
-					continue;
+			JSONArray lineList = null;
+			try {
+				lineList = (JSONArray) tempMap.get("CD_PPP_APPR_REC");
+				for(int j = 0; j < lineList.size(); j++) {
+					Map tempMap2 = (Map) lineList.get(j);
+					// 비즈플레이 상에서 결재가 종료된 시점에, 결재라인에 속해있는 결재자가 해당 결의서를 읽지 않았다면 JSONNull로 데이터가 넘어오게 된다
+					// 이는 API에서 그렇게 반환하기에 조치할 방법이 없다
+					// ex) 참조인이 결재라인에 속해 있고 결재가 완료된 시점에 참조인이 그 결의서를 읽지않으면 JSONNull로 데이터가 넘어와서 mybatis에서 에러가 발생한다
+					//     이를 해결하기 위해 읽지 않은 결재자(참조인)은 continue처리한다
+					if((JSONNull.class == tempMap2.get("APRV_EMP_CD").getClass())) {
+						continue;
+					}
+					paramMap.put("APPV_SEQ_NO", tempMap2.get("APPV_SEQ_NO"));
+					paramMap.put("APRV_LINE_NM", tempMap2.get("APRV_LINE_NM"));
+					paramMap.put("APPR_KIND", tempMap2.get("APPR_KIND"));
+					paramMap.put("APRV_DATE", tempMap2.get("APRV_DATE"));
+					paramMap.put("APRV_EMP_CD",  tempMap2.get("APRV_EMP_CD"));
+					paramMap.put("APRV_USER_GB", tempMap2.get("APRV_USER_GB"));
+					paramMap.put("APRV_USER_DEPT_NM", tempMap2.get("APRV_USER_DEPT_NM"));
+					
+					aprvMngDAO.insertBizplayLine(paramMap);
 				}
-				paramMap.put("APPV_SEQ_NO", tempMap2.get("APPV_SEQ_NO"));
-				paramMap.put("APRV_LINE_NM", tempMap2.get("APRV_LINE_NM"));
-				paramMap.put("APPR_KIND", tempMap2.get("APPR_KIND"));
-				paramMap.put("APRV_DATE", tempMap2.get("APRV_DATE"));
-				paramMap.put("APRV_EMP_CD",  tempMap2.get("APRV_EMP_CD"));
-				paramMap.put("APRV_USER_GB", tempMap2.get("APRV_USER_GB"));
-				paramMap.put("APRV_USER_DEPT_NM", tempMap2.get("APRV_USER_DEPT_NM"));
-				
-				aprvMngDAO.insertBizplayLine(paramMap);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("[BIZPLAY] BP_0411A_LINE 테이블에 결재건에 대한 결재라인들 등록 실패 => {}", lineList);
+				throw new Exception("[BIZPLAY] BP_0411A_LINE 테이블에 결재건에 대한 결재라인들 등록 실패");
 			}
 		}
+		
+		log.info("[BIZPLAY] 비즈플레이 데이터 적재 정상 종료");
 	}
 
 	/**
@@ -1179,27 +1226,32 @@ public class AprvMngServiceImpl implements AprvMngService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void insertBizplayAprv(Map params) throws Exception {
-		List<Map> rtnList = aprvMngDAO.getBizplayAprvData(params); // 비즈플레이 영수증 리스트 반환
+		log.info("[BIZPLAY] 결재 데이터 생성 시작");
+		// APPR_STS = 9(결재완료)인 데이터 중 APRV테이블에 PPP_APPR_SEQ_NO가 이미 등록되지 않은 영수증 데이터 반환
+		List<Map> rtnList = aprvMngDAO.getBizplayAprvData(params);
 		
 		Map<String, Object> sortedMap = new HashMap<String, Object>();
 		
-		for(int i = 0; i < rtnList.size(); i++) { // 같은 결의서 번호끼리 묶어서 맵에 리스트로 넣어줌
+		// 같은 결의서 번호끼리 묶어서 sortedMap에 영수증 리스트를 넣어줌
+		for(int i = 0; i < rtnList.size(); i++) {
 			Map rtnMap = (Map) rtnList.get(i);
 			
-			if(sortedMap.get(rtnMap.get("PPP_APPR_SEQ_NO")) == null) { // list가 있는지
+			if(sortedMap.get(rtnMap.get("PPP_APPR_SEQ_NO")) == null) { // 같은 결의서 번호가 없으면 list 생성하고 영수증 저장
 				List list = new ArrayList<Object>();
 				list.add(rtnMap);
 				sortedMap.put((String) rtnMap.get("PPP_APPR_SEQ_NO"), list);
-			} else {
+			} else { // 같은 결의서 번호가 있으면 생성된 list에 영수증 저장
 				List list = (List) sortedMap.get(rtnMap.get("PPP_APPR_SEQ_NO"));
 				list.add(rtnMap);
 			}
 		}
-		
-		for(String key : sortedMap.keySet()) { // 맵의 요소를 모두 조회하며 각 리스트 반복(리스트는 영수증 1건) 
+		int count = 0;
+		// 맵의 요소를 모두 조회하며 각 리스트 반복(리스트의 하나의 값은 영수증 1건) 
+		for(String key : sortedMap.keySet()) { 
+			count++;
 			List sortedList = (List) sortedMap.get(key);
 			Map paramMap = null;
-			paramMap = (Map) sortedList.get(0);
+			paramMap = (Map) sortedList.get(0); // list에 여러개 있어도 0번째 데이터 1건만으로 결재를 생성할 수 있다(시작 ~ 종료 기간만 모든 list 정보가 필요)
 			
 			// 모든 데이터 중 결재완료(9)인 데이터는 지출결의 완료 등록
 			// 저장될 데이터 정제 시작 
@@ -1236,14 +1288,22 @@ public class AprvMngServiceImpl implements AprvMngService {
 			paramMap.put("TERM_ED_YM", termEdYm);
 			// 저장될 데이터 정제 끝
 			
-			aprvMngDAO.insertBizplayAprv(paramMap); // 결재정보 등록
+			// 비즈플레이의 영수증를 이용한 인트라넷 결재정보 등록
+			try {
+				aprvMngDAO.insertBizplayAprv(paramMap);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error("[BIZPLAY] 비즈플레이의 영수증를 이용한 인트라넷 결재정보 등록 실패 => {}", paramMap);
+				throw new Exception("[BIZPLAY] 비즈플레이의 영수증를 이용한 인트라넷 결재정보 등록 실패");
+			}
 			
-			// 결재 대상(결재 라인) 등록
+			// 비즈플레이의 결재라인을 이용한 인트라넷 결재대상(결재라인) 등록
 			List aprvLineList = aprvMngDAO.getBizplayLine(paramMap.get("PPP_APPR_SEQ_NO") + "");
 			for (int j = 0; j < aprvLineList.size(); j++) {
 				Map aprvLineMap = (Map) aprvLineList.get(j);
 				
-				if(("1").equals(aprvLineMap.get("APPR_KIND"))) { // 기안자(작성자)일 때 스킵
+				// 기안자(작성자)일 때 스킵(1은 비즈플레이에서 정한 기안자를 뜻하며 인트라넷에서는 기안자는 결재라인에 들어가지 않게 로직이 구현되어 있음)
+				if(("1").equals(aprvLineMap.get("APPR_KIND"))) {
 					continue;
 				}
 					
@@ -1254,15 +1314,24 @@ public class AprvMngServiceImpl implements AprvMngService {
 				aprvLineMap.put("CRTN_DT", paramMap.get("DRAFT_DATE"));
 				aprvLineMap.put("MODI_DT", aprvLineMap.get("APRV_DATE"));
 				aprvLineMap.put("CONF_YN", 'Y');
-				if(("4").equals(aprvLineMap.get("APPR_KIND"))) { // 참조인
+				if(("4").equals(aprvLineMap.get("APPR_KIND"))) { // 참조인(4는 비즈플레이에서 정한 참조인을 뜻함)
 					aprvLineMap.put("REFE_YN", "Y");
 				} else {
 					aprvLineMap.put("REFE_YN", "N");
 				}
 				
-				aprvMngDAO.insertBizplayAprvLine(aprvLineMap);	// 결재라인 등록
+				// 결재라인 등록
+				try {
+					aprvMngDAO.insertBizplayAprvLine(aprvLineMap);
+				} catch (Exception e) {
+					e.printStackTrace();
+					log.error("[BIZPLAY] 결재라인 등록 실패 => {}", aprvLineMap);
+					throw new Exception("[BIZPLAY] 결재라인 등록 실패");
+				}
 			}
 		}
+
+		log.info("[BIZPLAY] 결재 데이터 생성 정상 종료");
 	}
 
 	/**

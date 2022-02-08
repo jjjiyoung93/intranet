@@ -12,6 +12,8 @@ import java.util.TimeZone;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,11 +23,14 @@ import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cal.service.HolidayMngService;
 import kr.letech.cal.service.impl.CalMngDAO;
 import kr.letech.cmm.util.EgovDateUtil;
+import kr.letech.cmm.util.EgovProperties;
 import kr.letech.uss.umt.service.impl.UssMngDAO;
 
 @Component
 public class CmmScheduler {
 
+	private static final Logger log = LoggerFactory.getLogger(EgovProperties.class);
+	
 	/**
 	 * 메일보내기 관리 서비스
 	 */
@@ -65,7 +70,7 @@ public class CmmScheduler {
 	* @Author : JO MIN SOO
 	* @Date : 2021. 1. 6.
 	*/
-	@Scheduled(cron = "0 0 07 * * *") // 매일 오전 7시에 
+	@Scheduled(cron = "0 0 07,21 * * *") // 매일 오전 7시, 오후 9시에 
 	public void bizplayAPI() {
 		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
 		
@@ -75,23 +80,23 @@ public class CmmScheduler {
 		String endDate = df.format(cal.getTime()); // 종료일
 		
 		cal.add(Calendar.MONTH, -1); // 한달 전
-		String startDate = null;
-		if(("2020").equals(df.format(cal.getTime()).substring(0, 4))) { // 시작일
-			startDate = "20210101"; // 2021년 전 인경우 2021년으로 세팅(2020년에 테스트 데이터들이 있음)
-		} else {
-			startDate = df.format(cal.getTime());
-		}
+		String startDate = df.format(cal.getTime());
 		
 		params.put("START_DATE", startDate);
 		params.put("END_DATE", endDate);
 		
+		// BIZPLAY 데이터 호출하여 DB에 저장
 		try {
-			// BIZPLAY 데이터 호출하여 DB에 저장
 			aprvMngService.insertBizplayData(params);
-			// 저장된 BIZPLAY 데이터를 이용하여 결재 데이터 생성
+		} catch (Exception e) {
+			log.error("[BIZPLAY] 비즈플레이 데이터 적재 실패");
+		}
+		
+		// 저장된 BIZPLAY 데이터를 이용하여 결재 데이터 생성
+		try {
 			aprvMngService.insertBizplayAprv(params);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("[BIZPLAY] 결재 데이터 생성 실패");
 		}
 	}
 	
