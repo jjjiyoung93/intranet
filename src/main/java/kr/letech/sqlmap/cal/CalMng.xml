@@ -3,7 +3,7 @@
 <mapper namespace="calMng">	
 	<!-- 일정 조회 -->
 	<select id="getCalList" resultType="HashMap" parameterType="map" >
-		SELECT
+		<!-- SELECT
 			cal_seq
 			, uss_id
 			, cal_nm
@@ -28,7 +28,54 @@
 		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 3, 2) || '분'
 		      ELSE ''
 		    END cal_ed_time_sec
+		FROM std_cal_mng -->
+		SELECT
+		       CAL_SEQ
+		     , USS_ID
+		     , CAL_NM
+		     , CAL_ST_DT
+		     , CAL_ED_DT
+		     , CAL_ED_DT_PLUS
+		     , CAL_ST_TIME
+		     , CAL_ED_TIME
+		     , CAL_ST_TIME_FRI
+		     , CAL_ST_TIME_SEC
+		     , CAL_ED_TIME_FRI
+		     , CAL_ED_TIME_SEC
+		     , ORD
+		
+		FROM (SELECT 
+		  cal_seq 
+		, uss_id 
+		, cal_nm 
+		, cal_st_dt 
+		, cal_ed_dt 
+		, TO_CHAR(TO_DATE(cal_ed_dt)+1, 'YYYY-MM-DD') AS cal_ed_dt_plus 
+		, cal_st_time 
+		, cal_ed_time 
+		, CASE WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 1, 2) || '시 ' ELSE '' END cal_st_time_fri 
+		, CASE WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 3, 2) || '분' ELSE '' END cal_st_time_sec 
+		, CASE WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 1, 2) || '시 ' ELSE '' END cal_ed_time_fri 
+		, CASE WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 3, 2) || '분' ELSE '' END cal_ed_time_sec 
+		, '2' AS ORD
 		FROM std_cal_mng
+		UNION SELECT 
+		       CAL_HOL_SEQ
+		     , CAL_HOL_LST_MOD_EMP  
+		     , CAL_HOL_NM
+		     , TO_CHAR(TO_DATE(CAL_HOL_DT, 'YYYY-MM-DD') , 'YYYY-MM-DD') 
+		     , TO_CHAR(TO_DATE(CAL_HOL_DT, 'YYYY-MM-DD') , 'YYYY-MM-DD')
+		     , NULL
+		     , NULL
+		     , NULL
+		     , NULL
+		     , NULL
+		     , NULL
+		     , NULL
+		     , '1' AS ORD
+		  FROM STD_CAL_HOL )
+		
+		
 		WHERE
 		<if test="view_type == 'month'" > 
 			(cal_st_dt LIKE #{start_date}||'%'
@@ -43,7 +90,7 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_id)" >
 			<!-- AND uss_id = #{uss_id}	 -->	
 		</if>
-		ORDER BY cal_st_dt ASC
+		ORDER BY ORD ASC, cal_st_dt ASC
 	</select>
 	<!-- 일정등록 -->
 	<insert id="calInsert" parameterType="map">

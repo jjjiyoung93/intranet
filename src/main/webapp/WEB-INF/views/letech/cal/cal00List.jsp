@@ -111,34 +111,71 @@ $(document).ready(function() {
 	            data: {"now_date":moment.format(), "view_type":view.name},
 	            success: function(doc) {
 	            	var array = doc.calList;
+	            	//console.log(array);
 	                var events = [];
 	                var arrayCnt = array.length;
 	                for(var i=0; i<arrayCnt; i++){
+	                	var order = array[i].ord;
 	                	if(array[i].ussId == "${params.session_uss_id}"){
-		                	events.push({
-		                        title: array[i].title,
-		                        uss_id: array[i].uss_id,
-		                        start: array[i].start,
-		                        end: array[i].end,
-		                        url: array[i].url,
-		                        dateStart: array[i].startDate,
-		                        dateEnd: array[i].endDate,
-		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
-		                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
-		                        color: '#f0ad4e'
-		                    });
+	                		if(order == '1'){
+	                			events.push({
+			                        title: array[i].title,
+			                        uss_id: array[i].uss_id,
+			                        start: array[i].start,
+			                        end: array[i].end,
+			                        url: '',
+			                        dateStart: array[i].startDate,
+			                        dateEnd: array[i].endDate,
+			                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+			                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
+			                        ord: array[i].ord,
+								    color: '#ff0000'	                        	
+			                    });
+	                		}else{
+	                			events.push({
+			                        title: array[i].title,
+			                        uss_id: array[i].uss_id,
+			                        start: array[i].start,
+			                        end: array[i].end,
+			                        url: array[i].url,
+			                        dateStart: array[i].startDate,
+			                        dateEnd: array[i].endDate,
+			                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+			                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
+			                        ord: array[i].ord,
+								    color: '#f0ad4e'	                        	
+			                    });
+	                		}
+
 	                	}else{
-	                		events.push({
-		                        title: array[i].title,
-		                        uss_id: array[i].uss_id,
-		                        start: array[i].start,
-		                        end: array[i].end,
-		                        url: array[i].url,
-		                        dateStart: array[i].startDate,
-		                        dateEnd: array[i].endDate,
-		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
-		                        timeEnd: array[i].endTimeFri + array[i].endTimeSec
-		                    });
+	                		if(order == '1'){
+	                			events.push({
+			                        title: array[i].title,
+			                        uss_id: array[i].uss_id,
+			                        start: array[i].start,
+			                        end: array[i].end,
+			                        url: '',
+			                        dateStart: array[i].startDate,
+			                        dateEnd: array[i].endDate,
+			                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+			                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
+			                        ord: array[i].ord,
+			                        color: '#ff0000'	
+			                    });
+	                		}else{
+		                		events.push({
+			                        title: array[i].title,
+			                        uss_id: array[i].uss_id,
+			                        start: array[i].start,
+			                        end: array[i].end,
+			                        url: array[i].url,
+			                        dateStart: array[i].startDate,
+			                        dateEnd: array[i].endDate,
+			                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+			                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
+			                        ord: array[i].ord
+			                    });
+	                		}
 	                	}
                 	}
 	                callback(events);
@@ -147,10 +184,12 @@ $(document).ready(function() {
 	    }, eventClick: function(event) {
 	    	var moment = $('#calendar').fullCalendar('getDate');
 	    	$("#now_date").val(moment.format());
-	    	if (event.url) {
-		    	fnView(event.url);
-	            return false;
-	        }
+	    	if(event.ord != '1'){
+		    	if (event.url) {
+			    	fnView(event.url);
+		            return false;
+		        }
+	    	}
 	    }
 	});
 //		$(".fc-sun").css('color','red');	// 일요일 백그라운드 색생 변경

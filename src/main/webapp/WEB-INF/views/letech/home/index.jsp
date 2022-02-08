@@ -108,26 +108,49 @@ $(document).ready(function() {
 	            	var array = doc.calList;
 	                var events = [];
 	                var arrayCnt = array.length;
+	                //console.log(array);
 	                for(var i=0; i<arrayCnt; i++){
-	                	events.push({
-	                        title: array[i].title,
-	                        start: array[i].start,
-	                        end: array[i].end,
-	                        url: array[i].url,
-	                      	dateStart: array[i].startDate,
-	                        dateEnd: array[i].endDate,
-	                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
-	                        timeEnd: array[i].endTimeFri + array[i].endTimeSec
-	                    });
+	                	console.log(events);
+	                	var order = array[i].ord;
+	                	
+	                	if(order == '1'){
+	                		events.push({
+		                        title: array[i].title,
+		                        start: array[i].start,
+		                        end: array[i].end,
+		                        url: array[i].url,
+		                      	dateStart: array[i].startDate,
+		                        dateEnd: array[i].endDate,
+		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+		                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
+		                        ord : array[i].ord,
+		                        color : '#ff0000'
+		                    });
+	                	}else{
+		                	events.push({
+		                        title: array[i].title,
+		                        start: array[i].start,
+		                        end: array[i].end,
+		                        url: array[i].url,
+		                      	dateStart: array[i].startDate,
+		                        dateEnd: array[i].endDate,
+		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
+		                        timeEnd: array[i].endTimeFri + array[i].endTimeSec,
+		                        ord : array[i].ord
+		                    });
+	                	}
+	                	
 	                }
 	                callback(events);
 	            }
 	        });
 	    }, eventClick: function(event) {
-	    	if (event.url) {
-		    	fnView(event.url);
-	            return false;
-	        }
+	    	if(event.ord != '1'){
+		    	if (event.url) {
+			    	fnView(event.url);
+		            return false;
+		        }
+	    	}
 /* 				
 	        alert('Event: ' + calEvent.title);
 	        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
