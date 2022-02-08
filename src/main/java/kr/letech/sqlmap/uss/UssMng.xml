@@ -173,7 +173,7 @@
 			, dp_cd = #{dp_cd, jdbcType=VARCHAR}
 			<!-- 컬럼 추가에 따른 쿼리 변경 - 2022.01.03  -->
 			, join_dt = #{join_dt, jdbcType=VARCHAR}
-			, rtr_yn = #{rtr_yn}
+			, rtr_yn = #{rtr_yn, jdbcType=VARCHAR}
 			, rtr_dt = #{rtr_dt, jdbcType=VARCHAR}
 			, uss_birth_day = #{uss_birth_day, jdbcType=VARCHAR}
 			, uss_birth_day_type = #{uss_birth_day_type, jdbcType=VARCHAR}

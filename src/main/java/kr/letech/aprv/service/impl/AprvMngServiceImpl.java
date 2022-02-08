@@ -26,6 +26,7 @@ import kr.letech.app.service.AppPushService;
 import kr.letech.aprv.TmpPayItemVO;
 import kr.letech.aprv.service.AprvMngService;
 import kr.letech.cal.service.impl.CalMngDAO;
+import kr.letech.cal.service.impl.HolidayMngDAO;
 import kr.letech.cmm.util.EgovFileTool;
 import kr.letech.cmm.util.ObjToConvert;
 import kr.letech.cmm.util.PageNavigator;
@@ -69,6 +70,12 @@ public class AprvMngServiceImpl implements AprvMngService {
 	/** vctMngDAO */
 	@Resource(name="vctMngDAO")
 	private VctMngDAO vctMngDAO;
+	
+	/** holidayMngDAO */
+	@Resource(name="holidayMngDAO")
+	private HolidayMngDAO holidayMngDAO;
+	
+	
 		
 	
 	/**
@@ -213,6 +220,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			String termEd = (String)params.get("term_ed");
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMdd");
 			
 			Date stDate = formatter.parse(termSt);
 			Date edDate = formatter.parse(termEd);
@@ -224,6 +232,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			
 			long diffDay = ( edCal.getTimeInMillis() - stCal.getTimeInMillis() ) / (1000 * 60 * 60 * 24);
 			String vctDt = null;
+			String dt = null;
 			Map vctInfMap = null;
 			
 			params.put("uss_id", (String)params.get("rept_aprv_no"));
@@ -233,11 +242,13 @@ public class AprvMngServiceImpl implements AprvMngService {
 			Map codeMap = null; 
 			String vctQrtr = "";
 			String vctDayCnt = "";
-			
+			int dayOfWeek=0;
+			int holCnt = 0;
 			for(int i = 0; i <= diffDay; i++) {
 				
 				
 				vctDt = formatter.format(stCal.getTime());
+				dt = formatter2.format(stCal.getTime());
 				
 				vctInfMap = new HashMap();
 				
@@ -291,6 +302,22 @@ public class AprvMngServiceImpl implements AprvMngService {
 				vctInfMap.put("emp_type", ussInf.get("EMP_TYPE"));
 				vctInfMap.put("rtr_yn", ussInf.get("RTR_YN"));
 				vctInfMap.put("aut_cd", (String)params.get("rept_auth_cd"));
+				vctInfMap.put("use_yn", "Y");
+				//공휴일, 주말 체크 로직
+				dayOfWeek = stCal.get(Calendar.DAY_OF_WEEK);
+				if(dayOfWeek == 1 || dayOfWeek == 7) {
+					vctInfMap.put("use_yn", "N");
+				}
+				
+				Map holMap = new HashMap();
+				
+				holMap.put("cal_hol_dt", dt);
+				
+				holCnt = holidayMngDAO.getHolidayCnt(holMap);
+				
+				if(holCnt > 0) {
+					vctInfMap.put("use_yn", "N");
+				}
 				
 				//등록
 				
@@ -355,6 +382,9 @@ public class AprvMngServiceImpl implements AprvMngService {
 			Map calAprvMap = null;
 			calAprvMap = params;
 			String aprv_nm = String.valueOf(params.get("aprv_nm"));	// 결재자 이름
+			if(StringUtils.equals(authCd, "ROLE_ADMIN")) {
+				aprv_nm = String.valueOf(params.get("rept_aprv_no_nm")); // 관리자가 선택한 결재자 이름
+			}
 			calAprvMap.put("cd", params.get("cdList2"));
 			
 			Map codeView = codeMngDAO.getCodeView(calAprvMap);	// 코드 조회
@@ -509,6 +539,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			String termEd = (String)params.get("term_ed");
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMdd");
 			
 			Date stDate = formatter.parse(termSt);
 			Date edDate = formatter.parse(termEd);
@@ -520,6 +551,7 @@ public class AprvMngServiceImpl implements AprvMngService {
 			
 			long diffDay = ( edCal.getTimeInMillis() - stCal.getTimeInMillis() ) / (1000 * 60 * 60 * 24);
 			String vctDt = null;
+			String dt = null;
 			Map vctInfMap = null;
 			
 			params.put("uss_id", (String)params.get("rept_aprv_no"));
@@ -529,12 +561,13 @@ public class AprvMngServiceImpl implements AprvMngService {
 			Map codeMap = null; 
 			String vctQrtr = "";
 			String vctDayCnt = "";
-			
+			int dayOfWeek = 0;
+			int holCnt = 0;
 			for(int i = 0; i <= diffDay; i++) {
 				
 				
 				vctDt = formatter.format(stCal.getTime());
-				
+				dt = formatter2.format(stCal.getTime());
 				vctInfMap = new HashMap();
 				
 				String vctTermType = "";
@@ -587,6 +620,22 @@ public class AprvMngServiceImpl implements AprvMngService {
 				vctInfMap.put("emp_type", (String)ussInf.get("EMP_TYPE"));
 				vctInfMap.put("rtr_yn", (String)ussInf.get("RTR_YN"));
 				vctInfMap.put("aut_cd", (String)params.get("rept_auth_cd"));
+				vctInfMap.put("use_yn", "Y");
+				//공휴일, 주말 체크 로직
+				dayOfWeek = stCal.get(Calendar.DAY_OF_WEEK);
+				if(dayOfWeek == 1 || dayOfWeek == 7) {
+					vctInfMap.put("use_yn", "N");
+				}
+				
+				Map holMap = new HashMap();
+				
+				holMap.put("cal_hol_dt", dt);
+				
+				holCnt = holidayMngDAO.getHolidayCnt(holMap);
+				
+				if(holCnt > 0) {
+					vctInfMap.put("use_yn", "N");
+				}
 				
 				//등록
 				
@@ -658,6 +707,9 @@ public class AprvMngServiceImpl implements AprvMngService {
 			calAprvMap = params;
 			
 			String aprv_nm = String.valueOf(params.get("aprv_nm"));	// 결재자 이름
+			if(StringUtils.equals(authCd, "ROLE_ADMIN")) {
+				aprv_nm = String.valueOf(params.get("rept_aprv_no_nm")); // 관리자가 선택한 결재자 이름
+			}
 			calAprvMap.put("cd", params.get("cdList2"));	// 코드 조회용
 			
 			Map codeView = codeMngDAO.getCodeView(calAprvMap);	// 코드 조회
@@ -1282,6 +1334,11 @@ public class AprvMngServiceImpl implements AprvMngService {
 		
 		aprvMngDAO.updateAprvCancelAdmin(params);
 		
+	}
+
+	@Override
+	public Map getVctLeftDay(Map params) throws Exception {
+		return aprvMngDAO.getVctLeftDay(params);
 	}
 
 	

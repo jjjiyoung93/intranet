@@ -14,6 +14,8 @@
 	<script src="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.js"></script>
 	<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-time-picker.css" rel="stylesheet" >
 	<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
+	
+	<link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -44,43 +46,123 @@
 							<div class="form-container">
 								<div class="clearfix search-box">
 									<input type="hidden" name="uss_id" id="uss_id" value=""/>
-									<div class="row">
-										<div class ="col-xs-6 un-style">
-											<!-- 기준년도(년도 선택), 재직구분  -->
-											<div class="col-xs-6 un-style">
-												<div class="inline-element col-xs-11">
-													<label>기준년도</label><br>
-													<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">
+									<%-- <div class="row">
+										<div class="col-sm-6 form-inline mt10">
+											<label>기준년도</label>
+											<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
+													<div class="tui-datepicker-input tui-datetime-input tui-has-focus table-cell" style="vertical-align: middle;">
+														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-controll" title="search">
 														<span class="tui-ico-date"></span>
-														<%-- <select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
+														<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
 															<option value="" >전체</option>
 															<c:forEach var="empType" items="${empTypeList}">
 																<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
 															</c:forEach>
-														</select> --%>
+														</select>
+													</div>
+													<div class="datepicker-cell" id="datepicker-year-ko"></div>
+											</div>
+										</div>
+										<div class ="col-sm-6 un-style form-inline mt10">
+												<label >재직구분</label>
+												<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
+												<select name="searchGubun3" id="searchGubun3" class="form-control" style="font-size: 12px; width : 125px; display:inline-block; margin-right: 10px;" title="search" >
+													<option value="" >전체</option>
+													<option value="N" <c:if test="${empty params.searchGubun3 || params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
+													<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
+												</select>
+												</div>
+										</div>
+										<div class ="col-md-6 un-style">
+											<!-- 기준년도(년도 선택), 재직구분  -->
+											<div class="col-md-6 un-style form-inline">
+												<div class="inline-element col-md-12" style="display:inline-block; vertical-align: middle; width: 125px;">
+													<label>기준년도</label>
+													<div class="tui-datepicker-input tui-datetime-input tui-has-focus table-cell" style="vertical-align: middle;">
+														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-controll" title="search">
+														<span class="tui-ico-date"></span>
+														<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
+															<option value="" >전체</option>
+															<c:forEach var="empType" items="${empTypeList}">
+																<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
+															</c:forEach>
+														</select>
 													</div>
 													<div class="datepicker-cell" id="datepicker-year-ko"></div>
 												</div>
 											</div>
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
+											<div class ="col-md-6 un-style form-inline">
+												<span class="inline-element col-md-11 col-xs-12">
 													<label >재직구분</label>
-													<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-														<!-- <option value="" >전체</option> -->
-														<option value="N" <c:if test="${empty params.searchGubun3 || params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
-														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option>
+													<select name="searchGubun3" id="searchGubun3" class="form-control" style="font-size: 12px; width : 125px; display:inline-block; margin-right: 10px;" title="search" >
+														<option value="" >전체</option>
+														<option value="N" <c:if test="${empty params.searchGubun3 || params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
+														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
 													</select>
 												</span>
 											</div>
 										</div>
-										<div class ="col-xs-6 un-style">
-											<!-- ID/성명 검색  -->
-											<div class="col-xs-12">
-												<label>ID/성명</label><br>
-												<div class ="col-xs-3 un-style">
+										<div class ="col-lg-5 un-style form-inline mt10">
+											<div class="search-container pull-left">
+												<!-- ID/성명 검색  -->
+												<div class="form-inline">
+													<div class ="col-lg-3 un-style">
+														<span class="inline-element">
+														<!-- <label>ID/성명</label> -->
+															<select name="searchGubun" id="searchGubun" class="form-control" style="display: inline;" title="search" >
+																<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
+																<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
+															</select>
+														</span>
+													</div>
+													<div class="col-lg-8 un-style">
+														<div class="input-group">
+															<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+															<span class="input-group-btn">
+																<button type="button" class="fnSearch btn-info btn"  >
+																	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+																</button>
+															</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div> --%>
+									<!-- 검색조건 retstyling  -->
+									<!-- <div class="container" > -->
+										<div class="row">
+											<!-- 기준년도  -->
+											<div class="col-lg-3 col-sm-6 form-inline mt10">
+												<label>기준년도</label>
+												<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle; width: 90px;">
+													<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="" title="search">
+													<span class="tui-ico-date"></span>
+													<%-- <select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
+														<option value="" >전체</option>
+														<c:forEach var="empType" items="${empTypeList}">
+															<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
+														</c:forEach>
+													</select> --%>
+												</div>
+												<div class="datepicker-cell" id="datepicker-year-ko"></div>
+											</div>
+											<!-- 재직구분  -->
+											<div class="col-lg-3 col-sm-6 form-inline mt10">
+												<label >재직구분</label>
+												<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
+													<select name="searchGubun3" id="searchGubun3" class="form-control" style="font-size: 12px; width : 90px; display:inline-block;" title="search" >
+														<option value="" >전체</option>
+														<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
+														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
+													</select>
+												</div>
+											</div>
+											<!-- id/성명  -->
+											<div class="col-lg-5 col-sm-12 mt10">
+												<div class="col-xs-4 un-style">
 													<span class="inline-element">
-														<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
+														<select name="searchGubun" id="searchGubun" class="form-control" style="display: inline;" title="search" >
 															<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
 															<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
 														</select>
@@ -90,15 +172,42 @@
 													<div class="input-group">
 														<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
 														<span class="input-group-btn">
-															<button type="button" class="fnSearch btn-info btn"  >
-																<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+															<button class="fnSearch btn btn-info" type="button">
+																<i class="glyphicon glyphicon-search"></i>
+																<span class="hidden-xs hidden-sm"> 검색</span>
 															</button>
 														</span>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
+									<!-- </div> -->
+									<!-- 샘플  -->
+									<%-- <div class="clearfix search-box">
+										<div class="search-container">
+											<div class="col-xs-5 un-style">
+												<span class="inline-element">
+													<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
+														<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
+														<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
+													</select>
+												</span>
+											</div>
+											<div class="col-xs-7 un-style">
+												<div class="input-group">
+													<input type="hidden"/>
+													<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+													<span class="input-group-btn">
+														<button class="fnSearch btn btn-info" type="button">
+															<i class="glyphicon glyphicon-search"></i>
+															<span class="hidden-xs hidden-sm"> 검색</span>
+														</button>
+													</span>
+												</div>
+											</div>
+										</div>
+									</div> --%>
+									
 									
 							</div>
 							<p class="clearfix board-top">
@@ -116,29 +225,29 @@
 								<strong class="list_count" >Total : ${totalCnt} 건</strong>
 							</p>
 						<div class="table-responsive">
-						<table class="table table-bordered" summary="사용자관리 목록">
+						<table class="table table-bordered" id="vct-day-table" summary="사용자관리 목록">
 							<colgroup>
+								<col width="3%" />
 								<col width="5%" />
+								<col width="10%" />
+								<col width="10%" />
 								<col width="5%" />
 								<col width="10%" />
 								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="8%" />
+								<col width="5%" />
 								<col width="10%" />
 							</colgroup>
 							<thead>
 								<tr>
-									<th class="visible-md visible-lg">번호</th>
-									<th>기준년도</th>
-									<th>ID</th>
-									<th>성명</th>
-									<th class="visible-md visible-lg">재직구분</th>
-									<th>입사일</th>
-									<th>근속년수(년)</th>
-									<th class="visible-md visible-lg">휴가부여일수(일)</th>
-									<th>퇴사일</th>
+									<th class="visible-md visible-lg" data-align="center" data-valign="middle" data-halign="center">번호</th>
+									<th data-align="center" data-valign="middle" data-halign="center">기준년도</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">ID</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">성명</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true" class="visible-md visible-lg">재직구분</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">입사일</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">근속년수(년)</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true" class="visible-md visible-lg">휴가부여일수(일)</th>
+									<th data-align="center" data-valign="middle" data-halign="center" data-sortable="true">퇴사일</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -151,17 +260,17 @@
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
 											<tr>
-												<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-												<td align="center">${list.STDD_YR} </td>
-												<td>${list.USS_ID} </td>
-												<td>${list.USS_NM}</td>
-												<td align="center">${list.RTR_YN == 'Y'? '퇴사' : '재직중'}</td>
-												<td align="center">${list.JOIN_DT}</td>
-												<td align="right">${list.WORK_YR_CNT }</td>
-												<td align="right"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
-													<c:if test="${(year <= list.STDD_YR) && (empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0)}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
+												<th class="visible-md visible-lg text-center" style="vertical-align: middle;">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+												<td align="center" style="vertical-align: middle;">${list.STDD_YR} </td>
+												<td style="vertical-align: middle;" align="center">${list.USS_ID} </td>
+												<td align="center" style="vertical-align: middle;">${list.USS_NM}</td>
+												<td align="center" style="vertical-align: middle;">${list.RTR_YN == 'Y'? '퇴직' : '재직'}</td>
+												<td align="center" style="vertical-align: middle;">${list.JOIN_DT}</td>
+												<td align="center" style="vertical-align: middle;">${list.WORK_YR_CNT }</td>
+												<td align="right" style="vertical-align: middle;"><input id="vct_grnt_day" type="number" class="form-control text-right vct-grnt-day"  min="0" value="${empty list.VCT_GRNT_DAY ? 0 : list.VCT_GRNT_DAY}" 
+													<c:if test="${(list.RTR_YN ne 'Y') &&(year <= list.STDD_YR) && (empty list.VCT_GRNT_DAY || list.VCT_GRNT_DAY == 0)}">style="color: red;"</c:if> name="vct_grnt_day-${list.USS_ID}" oninput="this.value = this.value.replace(/[^0-9]/g, '')" <c:if test="${year > list.STDD_YR || list.RTR_YN == 'Y'}">readonly</c:if>>
 												</td>
-												<td align="center">${list.RTR_DT}</td>
+												<td align="center" style="vertical-align: middle;">${list.RTR_DT}</td>
 											</tr>
 										</c:forEach>
 									</c:otherwise>
@@ -191,7 +300,9 @@
 	</div>
 	 	<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script> --%>
+	<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
 	<script type="text/javascript">
 
 		/* 저장 */
@@ -221,7 +332,7 @@
 		/*sub_menu 탭*/
 		$(function(){
 			
-			
+			$("#vct-day-table").bootstrapTable();
 			
 			
 			//년도 캘린더 만들기

@@ -37,6 +37,9 @@
 			</li>
 			<li class="form-group">
 				<label class="">코드값</label>
+				<c:if test="${params.cd eq 'CD0002' || getCodeView.UP_CD eq 'CD0002'}">
+					<span style="color: red;">진행 프로젝트 : 'Y', 종료 프로제트 : 'N' (대소문자 유의)</span>
+				</c:if>
 				<input class="form-control" name="cd_val" id="cd_val" type="text" value="<c:if test="${params.flag eq '3' }">${getCodeView.CD_VAL}</c:if>">
 			</li>
 		</ul>

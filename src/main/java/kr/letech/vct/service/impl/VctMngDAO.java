@@ -123,6 +123,28 @@ public class VctMngDAO extends AbstractDAO {
 		return (Map)getObject("vctMng.getUssVctInfo", params);
 	}
 	
+	/**
+	 * 휴가현황집계 평균 목록 조회
+	 * @param params
+	 * @param offSet
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	public List getVctStatAvgPageList(Map params) throws Exception {
+		return getList("vctMng.getVctStatAvgList", params);
+	}
+	
+	/**
+	 * 휴가정보 사용여부 변경
+	 * @param vctInfMap
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateVctInfUse(Map params) throws Exception {
+		return (Integer)update("vctMng.updteVctInfUse", params);
+	}
+	
 	
 
 }

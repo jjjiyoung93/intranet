@@ -48,9 +48,16 @@
 										<dd class="col-md-9 col-sm-9">
 											<div class="form-inline">
 												${resultView.CAL_ST_DT }
-												<c:if test="${not empty resultView.CAL_ST_TIME_FRI }">
-												(${resultView.CAL_ST_TIME_FRI } 시  ${resultView.CAL_ST_TIME_SEC } 분)
-												</c:if>
+												<c:choose>
+													<c:when test="${resultView.APRV_TYPE_CD eq 'CD0001011'}">
+													( ${resultView.HALF_TYPE_NM } )
+													</c:when>
+													<c:otherwise>
+														<c:if test="${not empty resultView.CAL_ST_TIME_FRI }">
+														(${resultView.CAL_ST_TIME_FRI } 시  ${resultView.CAL_ST_TIME_SEC } 분)
+														</c:if>
+													</c:otherwise>
+												</c:choose>
 												</div>
 										</dd>
 									</dl>
@@ -61,13 +68,34 @@
 										<dd class="col-md-9 col-sm-9">
 											<div class="form-inline">
 												${resultView.CAL_ED_DT }
-												<c:if test="${not empty resultView.CAL_ED_TIME_FRI }">
-												(${resultView.CAL_ED_TIME_FRI } 시 ${resultView.CAL_ED_TIME_SEC } 분)
-												</c:if>
+												<c:choose>
+													<c:when test="${resultView.APRV_TYPE_CD eq'CD0001011'}">
+													( ${resultView.HALF_TYPE_NM_ED } )
+													</c:when>
+													<c:otherwise>
+														<c:if test="${not empty resultView.CAL_ED_TIME_FRI }">
+														(${resultView.CAL_ED_TIME_FRI } 시 ${resultView.CAL_ED_TIME_SEC } 분)
+														</c:if>
+													</c:otherwise>
+												</c:choose>
 											</div>
 										</dd>
 									</dl>
 								</li>
+								
+								<c:if test="${resultView.APRV_TYPE_CD eq 'CD0001011'}">
+									<li>
+										<dl class="clearfix">
+											<dt class="col-md-3 col-sm-3">사용일수</dt>
+											<dd class="col-md-9 col-sm-9">
+												<div class="form-inline">
+													${resultView.VCT_DAY_CNT } 일
+												</div>
+											</dd>
+										</dl>
+									</li>
+								</c:if>
+								
 								<li>
 									<dl class="clearfix">
 										<dt class="col-md-3 col-sm-3">제목</dt>

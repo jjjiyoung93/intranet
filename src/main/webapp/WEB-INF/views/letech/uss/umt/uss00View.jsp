@@ -142,7 +142,7 @@
 									<dl class="clearfix ">
 										<dt class="col-md-2 col-sm-3">재직구분</dt>
 										<dd class="col-md-10 col-sm-9">
-											${resultView.RTR_YN == 'Y' ? '퇴사' : '재직중'}
+											${resultView.RTR_YN == 'Y' ? '퇴직' : '재직'}
 										</dd>
 									</dl>
 								</li>

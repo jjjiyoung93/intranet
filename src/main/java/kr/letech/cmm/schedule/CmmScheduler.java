@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.letech.aprv.service.AprvMngService;
+import kr.letech.cal.service.HolidayMngService;
 import kr.letech.cal.service.impl.CalMngDAO;
 import kr.letech.cmm.util.EgovDateUtil;
 import kr.letech.uss.umt.service.impl.UssMngDAO;
@@ -50,6 +51,12 @@ public class CmmScheduler {
 	 */
 	@Resource(name = "calMngDAO")
 	private CalMngDAO calMngDAO;
+	
+	
+	/** holidayMngService */
+	@Resource(name = "holidayMngService")
+	private HolidayMngService holidayMngService;
+	
 	
 
 	/**
@@ -210,6 +217,36 @@ public class CmmScheduler {
 		}
 		
 	}
+	 
+	 /**
+	  * 매년 12월 1일 다음 해 휴일 정보 저장
+	  */
+	 @Scheduled(cron = "0 0 0 1 12 ?") 
+	 /* @Scheduled(cron = "0 37 12 * * ?") */
+	 @Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	 public void insertHoliday()  {
+		 Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
+		 
+		 Date today = new Date();
+		 
+		 SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
+		 
+		 String thisYr = formatter.format(today);
+		 int thisYrNum = Integer.valueOf(thisYr);
+		 int nextYrNum = thisYrNum + 1;
+		 String nextYr = String.valueOf(nextYrNum);
+		 
+		 params.put("stdd_yr", nextYr);
+		 
+		 try {
+			 holidayMngService.holMngUpdateBySys(params);
+		 } catch (Exception e) {
+			 e.printStackTrace();
+		 }
+		 
+	 }
+	 
+	
 	
 	
 	

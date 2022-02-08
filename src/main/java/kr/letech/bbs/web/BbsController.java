@@ -1,5 +1,7 @@
 package kr.letech.bbs.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +19,7 @@ import kr.letech.cmm.util.ReqUtils;
 import kr.letech.cmm.util.VarConsts;
 import kr.letech.sys.bbs.service.BbsMngService;
 import kr.letech.sys.cdm.service.CodeMngService;
+import kr.letech.vct.service.impl.VctMngDAO;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,6 +56,10 @@ public class BbsController {
 	/** 파일 업로드 */
     @Resource(name = "EgovFileMngUtil")
     private EgovFileMngUtil fileUtil;
+    
+    /** 휴가 관리 DAO*/
+    @Resource(name = "vctMngDAO")
+	private VctMngDAO vctMngDAO;
 	
 	/**
 	 * 게시판 리스트 조회
@@ -338,6 +345,29 @@ public class BbsController {
 		Map params = ReqUtils.getParameterMap(request);
 		
 		String viewName = "jsonView";
+		
+		/*2022.01.24 휴가정보 조회 추가(연차 사용일 / 부여일) : BEGIN*/
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+
+		params.put("aprv_up_cd", VarConsts.EAM_MASTER_CODE);
+		params.put("uss_id", loginVO.getId());
+		
+		Date today = new Date();
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String todayStr = formatter.format(today);
+		
+		String year = todayStr.substring(0, 4);
+	
+		params.put("stdd_yr", year);
+		Map ussVctInfo = vctMngDAO.getUssVctInfo(params);
+		model.addAttribute("ussVctInfo", ussVctInfo);
+		/*2022.01.24 휴가정보 조회 추가(연차 사용일 / 부여일) : END*/
+		
+		
+		
 		
 		List notiesList = bbsService.noticeList(params);
 		

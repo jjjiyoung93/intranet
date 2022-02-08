@@ -122,11 +122,12 @@
                            <dl class="clearfix">
                                <dt class="col-md-2 col-sm-3">프로젝트</dt>
                                <dd class="col-md-10 col-sm-9">
-                              <c:forEach var="proj" items="${projList }" varStatus="status">
+                                ${viewMap.PROJ_NM}
+                              <%-- <c:forEach var="proj" items="${projList }" varStatus="status">
                                  <c:if test="${proj.CD eq viewMap.PROJ_CD }">
                                                       ${proj.CD_NM }
                                  </c:if>
-                              </c:forEach>
+                              </c:forEach> --%>
                               </dd>
                            </dl>
                            </li>

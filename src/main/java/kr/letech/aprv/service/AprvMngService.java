@@ -171,5 +171,15 @@ public interface AprvMngService {
 	public void updateAprvCancelAdmin(Map params) throws Exception;
 
 	
+	
+	/**
+	 * 휴가 잔여일수 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getVctLeftDay(Map params) throws Exception;
+
+	
 
 }

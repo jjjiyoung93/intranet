@@ -34,6 +34,14 @@
 						<input type="hidden" id="mode" name="mode" value="${params.mode }" />
 						<input type="hidden" id="joinType" name="joinType" value="${joinType }" />
 						<input type="hidden" id="uss_auth_cd" name="uss_auth_cd" value="${resultView.USS_AUTH_CD}"/>
+						<input type="hidden" id="bir_cal_seq" name="bir_cal_seq" value="${resultView.BIR_CAL_SEQ}" />
+						<input type="hidden" id="uss_em_no" name="uss_em_no" value="" />
+						<input type="hidden" id="rtr_yn" name="rtr_yn" value="${resultView.RTR_YN }" />
+						<input type="hidden" id="rtr_dt" name="rtr_dt" value="${resultView.RTR_DT }" />
+						<input type="hidden" id="rtr_rsn" name="rtr_rsn" value="${resultView.RTR_RSN }" />
+						<input type="hidden" id="emp_type" name="emp_type" value="${resultView.EMP_TYPE }" />
+						
+						
 							<div class="board-view">
 								<div class="row">
 								<ul class="col-md-6">
@@ -112,7 +120,7 @@
 										<dl class="row ">
 											<dt class="col-md-3 col-sm-3">직급(권한)</dt>
 											<dd class="col-md-9 col-sm-9">
-												<input name="uss_auth_cd" id="uss_auth_cd" type="text" class="form-control form-group" value="${resultView.USS_AUTH_NM }" readonly/>
+												<input id="uss_auth_cd" type="text" class="form-control form-group" value="${resultView.USS_AUTH_NM }" readonly/>
 											</dd>
 										</dl>
 									</li>
@@ -170,13 +178,14 @@
 											<dd class="col-md-9 col-sm-9">
 												<div class="form-group">
 													<span class="col-md-12">
-														<input class="col_md_2 table-cell" name="uss_birth_day_type" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if> disabled>
+														<input type="hidden" name="uss_birth_day_type" id="uss_birth_day_type" value="${resultView.USS_BIRTH_DAY_TYPE }"/>
+														<input class="col_md_2 table-cell" name="uss_birth_day_type_read" id="uss_birth_day_type_s" type="radio" value="S" <c:if test="${empty resultView.USS_BIRTH_DAY_TYPE || resultView.USS_BIRTH_DAY_TYPE eq 'S' }">checked="checked"</c:if> disabled>
 														양력
-														<input class="col_md_2 table-cell"  name="uss_birth_day_type" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> disabled>
+														<input class="col_md_2 table-cell"  name="uss_birth_day_type_read" id="uss_birth_day_type_l" type="radio" value="L" <c:if test="${resultView.USS_BIRTH_DAY_TYPE eq 'L' }">checked="checked"</c:if> disabled>
 														음력
 													</span>
 													<span class="col-md-12">
-														<input name="uss_birth_day_mon" id="uss_birth_day_mon" type="text" value="${resultView.USS_BIRTH_DAY }" class="form-control " readonly />
+														<input name="uss_birth_day" id="uss_birth_day_mon" type="text" value="${resultView.USS_BIRTH_DAY }" class="form-control " readonly />
 													</span>
 												</div>
 											</dd>
