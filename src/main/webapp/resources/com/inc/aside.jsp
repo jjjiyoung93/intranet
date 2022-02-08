@@ -56,7 +56,7 @@
 	    			<div class="col-lg-2 visible-lg">
 	    				<div class="panel panel-brown">
 	    					<div class="panel-heading text-center">
-				    			<strong class="sky">${loginVO.name }(${loginVO.id})님 환영합니다.</strong>
+				    			<strong class="sky">${loginVO.name }<br>(${loginVO.id})님<br>환영합니다.</strong>
 	    					</div>
 	    				</div>
 	    			</div>
@@ -134,7 +134,7 @@ $(document).ready(function(){
 				}
 				
 				
-				var vctInf = '<li><a href="${pageContext.request.contextPath}/vct/vctInf00List.do" class="text-center"><strong class=\"sky\" id="vctDayCnt">연차 사용일 / 부여일 : '+vctUseDayCnt+' / '+vctGrntDay+'</strong></a></li>';
+				var vctInf = '<li><a href="${pageContext.request.contextPath}/vct/vctInf00List.do" class="text-center"><strong class=\"sky\" id="vctDayCnt">사용일  : '+vctUseDayCnt+' <br>부여일 : '+vctGrntDay+'</strong></a></li>';
 				$("#vct_info").append(vctInf);
 				
 				
