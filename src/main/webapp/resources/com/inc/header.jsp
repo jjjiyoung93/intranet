@@ -48,11 +48,11 @@ if(Sessinfo != null){
 							<i class="glyphicon glyphicon-triangle-bottom"></i> 
 						</a>
 						<ul id="alarmOne" class="panel navber-right dropdown-menu collapse">
-							<li>
+							<%-- <li>
 								<a href="${pageContext.request.contextPath }/vct/vctInf00List.do" class="text-center">
 									<span class="badge" id="vctLeftDayCnt" style="font-size:1.5rem;"></span>
 								</a>
-							</li>
+							</li> --%>
 							<li>
 								<a data-toggle="collapse" data-parent="#accordion" href="#aside_aprv0" aria-expanded="false">결재(<font id="aside_aprvCnt0"></font>)
 									<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span>

@@ -300,8 +300,11 @@ public class UssMngServiceImpl implements UssMngService {
 		if(!StringUtils.equals(updBirthType, orginBirthType) || !StringUtils.equals(updBirthday, orginBirthday)) {
 			params.put("cal_seq", orginUssView.get("BIR_CAL_SEQ"));
 			
-			calMngDAO.calDelete(params);
+			String calSeqStr = (String)params.get("cal_seq");
 			
+			if(StringUtils.isNotEmpty(calSeqStr)) {
+				calMngDAO.calDelete(params);
+			}
 			
 			/*2022.01.19 생일을 캘린더에 등록 후 캘린더 번호 사원 테이블에 저장 : BEGIN*/
 			Date today = new Date();
@@ -369,8 +372,6 @@ public class UssMngServiceImpl implements UssMngService {
 		}
 		/*2022.01.19 사용자 생일 정보 수정 시 기존 자료 와 비교 후 다르면 캘린더 새로 추가 : END*/
 		
-		
-		
 		// 사용자 수정
 		ussMngDAO.ussUpdate(params);
 		
@@ -414,9 +415,14 @@ public class UssMngServiceImpl implements UssMngService {
 		// 사용자 권한매핑 정보 삭제
 		roleMngDAO.roleMapDelete(params);
 		
+		String calSeqStr = (String)params.get("bir_cal_seq");
+		
 		params.put("cal_seq", Integer.valueOf((String)params.get("bir_cal_seq")));
 		
-		calMngDAO.calDelete(params);
+		if(StringUtils.isNotEmpty(calSeqStr)) {
+			calMngDAO.calDelete(params);
+		}
+		
 	}
 	
 

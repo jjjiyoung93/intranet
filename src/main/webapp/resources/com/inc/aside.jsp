@@ -53,6 +53,26 @@
 							</fieldset>
     					</form>
 	    			</div> --%>
+	    			<div class="col-lg-2 visible-lg">
+	    				<div class="panel panel-brown">
+	    					<div class="panel-heading text-center">
+				    			<strong class="sky">${loginVO.name }(${loginVO.id})님 환영합니다.</strong>
+	    					</div>
+	    				</div>
+	    			</div>
+	    			<div class="col-lg-2 visible-lg">
+							<div class="panel panel-brown">
+								<div class="panel-heading">연차정보</div>
+								<div class="panel-body">
+									<div class="vct_box">
+										<ul id="vct_info">
+											
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+	    			
     				<div class="col-lg-2 visible-lg">
 							<div class="panel panel-brown">
 								<div class="panel-heading">공지사항</div>
@@ -99,6 +119,25 @@ $(document).ready(function(){
 			dataType:'json',
 			success: function(json){
 				var data = json.notiesList;
+				
+				var ussVctInfo = json.ussVctInfo;
+				var vctLeftDayCnt = ussVctInfo.VCT_LEFT_DAY;
+				var vctUseDayCnt = 0;
+				var vctGrntDay = 0;
+				
+				if(ussVctInfo.VCT_DAY_CNT != null && "" != ussVctInfo.VCT_DAY_CNT){
+					vctUseDayCnt = ussVctInfo.VCT_DAY_CNT;
+				}
+				
+				if(ussVctInfo.VCT_GRNT_DAY != null && "" != ussVctInfo.VCT_GRNT_DAY){
+				vctGrntDay = ussVctInfo.VCT_GRNT_DAY;
+				}
+				
+				
+				var vctInf = '<li><a href="${pageContext.request.contextPath}/vct/vctInf00List.do" class="text-center"><strong class=\"sky\" id="vctDayCnt">연차 사용일 / 부여일 : '+vctUseDayCnt+' / '+vctGrntDay+'</strong></a></li>';
+				$("#vct_info").append(vctInf);
+				
+				
 				if(data==null){
 					$("#noties_type").append("<li><strong class=\"sky\">공지사항 정보가 없습니다</strong></li>");
 				}

@@ -41,4 +41,159 @@
 		DELETE FROM std_cal_hol WHERE cal_hol_seq = #{cal_hol_seq} 
 	</delete>
 	
+	
+	<!-- 휴일정보 삭제 WITH 날짜  -->
+	<delete id="holidayDeleteWtDate" parameterType="map">
+		DELETE FROM STD_CAL_HOL WHERE CAL_HOL_DT = #{CAL_HOL_DT, jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 휴일정보 수정 WITH SEQ  -->
+	<update id="holidayUpdateWtSeq" parameterType="map">
+		UPDATE STD_CAL_HOL
+		   SET CAL_HOL_DT = #{cal_hol_dt, jdbcType=VARCHAR}
+		     , CAL_HOL_NM = #{cal_hol_nm, jdbcType=VARCHAR}
+		     , CAL_HOL_RMK = #{cal_hol_rmk, jdbcType=VARCHAR}
+		     , CAL_HOL_YR = #{cal_hol_yr, jdbcType=VARCHAR}
+		 WHERE CAL_HOL_SEQ = #{cal_hol_seq}
+	</update>
+	
+	<!-- 휴일정보 조회 (목록) -->
+	<select id="getHolMngList" resultType="HashMap" parameterType="map" >
+		SELECT
+		  cal_hol_seq
+		  , cal_hol_dt
+		  , cal_hol_nm
+		  , cal_hol_rmk
+		  , cal_hol_yr
+		  , cal_hol_lst_mod_emp
+		FROM std_cal_hol
+	   WHERE cal_hol_yr = #{stdd_yr, jdbcType=VARCHAR}
+	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
+	     	AND cal_hol_seq = TO_NUMBER(#{cal_hol_seq})
+	     </if>
+	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
+	     	AND cal_hol_lst_mod_emp = #{cal_hol_lst_mod_emp, jdbcType=VARCHAR}
+	     </if>
+
+	</select>
+	
+	<!-- 휴일정보 조회 (상세) -->
+	<select id="getHolMngView" resultType="HashMap" parameterType="map" >
+		SELECT
+		  cal_hol_seq
+		  , cal_hol_dt
+		  , cal_hol_nm
+		  , cal_hol_rmk
+		  , cal_hol_yr
+		FROM std_cal_hol
+	   WHERE 1=1
+	     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(cal_hol_seq)">
+	     	AND cal_hol_seq = TO_NUMBER(#{cal_hol_seq})
+	     </if>
+	</select>
+	
+	<!-- 휴일정보 갯수 조회  -->
+	<select id="getHolidayCnt" parameterType="map" resultType="int">
+		SELECT COUNT(1)
+		  FROM STD_CAL_HOL
+		  WHERE CAL_HOL_DT = #{cal_hol_dt, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 휴일정보 삭제  -->
+	<delete id="deleteHolMng" parameterType="map">
+		DELETE
+		  FROM STD_CAL_HOL
+		 WHERE CAL_HOL_SEQ = TO_NUMBER(#{cal_hol_seq}) 
+	</delete>
+	
+	<!-- 휴일정보 MAX SEQUENCE  -->
+	<select id="getHolMngMaxSeq" parameterType="map" resultType="int">
+		SELECT
+		       NVL(MAX(cal_hol_seq), 0) AS MAX_SEQ
+		  FROM STD_CAL_HOL
+		 WHERE CAL_HOL_YR = #{stdd_yr, jdbcType=VARCHAR}    
+	</select>
+	
+	<!-- 휴일정보 등록  -->
+	<insert id="insertHolMng" parameterType="map">
+		<selectKey keyProperty="cal_hol_seq" resultType="int" order="BEFORE">
+			SELECT
+			      NVL(MAX(CAL_HOL_SEQ), 0) +1
+			  FROM STD_CAL_HOL
+		</selectKey>
+	
+	
+		INSERT INTO STD_CAL_HOL
+		(
+			   CAL_HOL_SEQ
+	         , CAL_HOL_DT
+	         , CAL_HOL_NM
+	         , CAL_HOL_RMK
+	         , CAL_HOL_YR
+	         , CAL_HOL_LST_MOD_EMP	
+		)
+		VALUES
+		(
+		       #{cal_hol_seq}
+		     , #{cal_hol_dt, jdbcType=VARCHAR}
+		     , #{cal_hol_nm, jdbcType=VARCHAR}
+		     , #{cal_hol_rmk, jdbcType=VARCHAR}
+		     , #{cal_hol_yr, jdbcType=VARCHAR}
+		     , #{cal_hol_lst_mod_emp, jdbcType=VARCHAR}
+		)
+		
+	</insert>
+	
+	<!-- 휴일정보 수정  -->
+	<update id="updateHolMng" parameterType="map" >
+		UPDATE STD_CAL_HOL
+		   SET CAL_HOL_DT = #{cal_hol_dt, jdbcType=VARCHAR}
+		     , CAL_HOL_NM = #{cal_hol_nm, jdbcType=VARCHAR}
+		     , CAL_HOL_RMK = #{cal_hol_rmk, jdbcType=VARCHAR}
+		     , CAL_HOL_YR = #{cal_hol_yr, jdbcType=VARCHAR}
+		     , CAL_HOL_LST_MOD_EMP = #{cal_hol_lst_mod_emp, jdbcType=VARCHAR}
+		 WHERE CAL_HOL_SEQ = TO_NUMBER(#{cal_hol_seq})
+	</update>
+	
+	<!-- 휴일정보 전체 삭제 단, SYSTEM 등록 인 건만  -->
+	<delete id="deleteHolMngBySys" parameterType="map">
+		DELETE
+		  FROM STD_CAL_HOL
+		 WHERE CAL_HOL_YR = #{stdd_yr, jdbcType=VARCHAR}
+		   AND CAL_HOL_LST_MOD_EMP = 'SYSTEM'
+	</delete>
+	
+	<!-- 휴일정보 등록 BY SYSTEM  -->
+	<insert id="insertHolMngBySys" parameterType="map">
+		<selectKey keyProperty="cal_hol_seq" resultType="int" order="BEFORE">
+			SELECT
+			      NVL(MAX(cal_hol_seq), 0) +1
+			  FROM std_cal_hol
+		</selectKey>
+		MERGE INTO STD_CAL_HOL 
+		USING DUAL 
+		   ON (   CAL_HOL_DT = #{cal_hol_dt, jdbcType=VARCHAR}
+		      AND CAL_HOL_NM LIKE '%' || #{cal_hol_nm, jdbcType=VARCHAR} || '%'
+		WHEN NOT MATCHED THEN
+		INSERT (
+			   CAL_HOL_SEQ
+			 , CAL_HOL_DT
+			 , CAL_HOL_NM
+			 , CAL_HOL_RMK
+			 , CAL_HOL_YR
+			 , CAL_HOL_LST_MOD_EMP
+		)
+		VALUES (
+			   #{cal_hol_seq}
+			 , #{cal_hol_dt, jdbcType=VARCHAR}
+			 , #{cal_hol_nm, jdbcType=VARCHAR}
+			 , #{cal_hol_rmk, jdbcType=VARCHAR}
+			 , #{cal_hol_yr, jdbcType=VARCHAR}
+			 , #{cal_hol_lst_mod_emp, jdbcType=VARCHAR}
+		)
+		
+	</insert>
+	
+	<!-- 휴일정보 SYSTEM 등록 건 조회  -->
+	
 </mapper>

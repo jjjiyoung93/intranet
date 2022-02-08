@@ -59,33 +59,48 @@
 	<!-- 일정 상세정보 -->
 	<select id="getCalView" resultType="HashMap" parameterType="map">
 		SELECT
-		  cal_seq
-		  , uss_id
-		  , cal_nm
-		  , cal_content
-		  , cal_st_dt
-		  , cal_ed_dt
-		  , cal_st_time
-		  , cal_ed_time
-		  , aprv_yn
-		  , TO_CHAR(reg_dt, 'YYYY-MM-DD') reg_dt
+		  A.cal_seq
+		  , A.uss_id
+		  , A.cal_nm
+		  , A.cal_content
+		  , A.cal_st_dt
+		  , A.cal_ed_dt
+		  , A.cal_st_time
+		  , A.cal_ed_time
+		  , A.aprv_yn
+		  , TO_CHAR(A.reg_dt, 'YYYY-MM-DD') reg_dt
 		  , CASE
-		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 1, 2)
+		      WHEN NVL(A.cal_st_time, 0) > 0 THEN SUBSTR(A.cal_st_time, 1, 2)
 		      ELSE ''
 		    END cal_st_time_fri
 		  , CASE
-		      WHEN NVL(cal_st_time, 0) > 0 THEN SUBSTR(cal_st_time, 3, 2)
+		      WHEN NVL(A.cal_st_time, 0) > 0 THEN SUBSTR(A.cal_st_time, 3, 2)
 		      ELSE ''
 		    END cal_st_time_sec
 		  , CASE
-		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 1, 2)
+		      WHEN NVL(A.cal_ed_time, 0) > 0 THEN SUBSTR(A.cal_ed_time, 1, 2)
 		      ELSE ''
 		    END cal_ed_time_fri
 		  , CASE
-		      WHEN NVL(cal_ed_time, 0) > 0 THEN SUBSTR(cal_ed_time, 3, 2)
+		      WHEN NVL(A.cal_ed_time, 0) > 0 THEN SUBSTR(A.cal_ed_time, 3, 2)
 		      ELSE ''
 		    END cal_ed_time_sec
-		FROM std_cal_mng
+		  , B.APRV_NO
+		  , B.APRV_TYPE_CD
+		  , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.APRV_TYPE_CD) AS APRV_TYPE_NM
+		  , B.HALF_TYPE_CD
+		  , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.HALF_TYPE_CD) AS HALF_TYPE_NM
+		  , B.HALF_TYPE_CD_ED
+		  , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = B.HALF_TYPE_CD_ED) AS HALF_TYPE_NM_ED
+		  , (SELECT SUM(S.VCT_DAY_CNT) FROM VCT_INF_MNG S WHERE S.APRV_NO = B.APRV_NO) AS VCT_DAY_CNT
+		  , C.ADDR
+		  , C.CTTPLC
+		  , C.FROGH_RSN
+		FROM std_cal_mng A
+		<!-- 2022.01.24 캘린더 상세조회 시 휴가 정보 추가 : BEGIN -->
+		LEFT OUTER JOIN STD_APRV_MNG B ON (A.CAL_SEQ = B.CAL_NO)
+		LEFT OUTER JOIN DOC_FROGH C ON (B.APRV_NO = C.APRV_NO) 
+		<!-- 2022.01.24 캘린더 상세조회 시 휴가 정보 추가 : BEGIN -->
 		WHERE
 			cal_seq = #{cal_seq}
 	</select>

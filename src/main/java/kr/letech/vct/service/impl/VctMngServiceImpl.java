@@ -235,10 +235,12 @@ public class VctMngServiceImpl implements VctMngService {
 			   ,""); // 검색 파라미터
 		
 		List list = vctMngDAO.getVctStatPageList(params, offSet, limit);
+		List avgList = vctMngDAO.getVctStatAvgPageList(params);
 		
 		Map objectMap = new HashMap();
 		
 		objectMap.put("resultList", list);
+		objectMap.put("avgList", avgList);
 		objectMap.put("cPage", cPage);
 		objectMap.put("intListCnt", intListCnt);
 		objectMap.put("totalCnt", totalCnt);

@@ -324,6 +324,7 @@ public class VctMngController {
 		model.addAttribute("totalCnt", vctDayObject.get("totalCnt"));				// 총건수
 		model.addAttribute("intListCnt", vctDayObject.get("intListCnt"));			// 시작페이지 수
 		model.addAttribute("resultList", vctDayObject.get("resultList"));			// 목록정보
+		model.addAttribute("avgList", vctDayObject.get("avgList")); 
 		//model.addAttribute("pageNavigator", vctDayObject.get("pageNavigator"));	// 페이징
 		model.addAttribute("params", params);
 		

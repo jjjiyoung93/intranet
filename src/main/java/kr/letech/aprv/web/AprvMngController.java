@@ -2,9 +2,11 @@ package kr.letech.aprv.web;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -221,6 +223,8 @@ public class AprvMngController {
 		model.addAttribute("codeList", codeList);
 		
 		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
+		//진행중인 프로젝트 검색 조건
+		params.put("y_only", "Y");
 		List projList = codeMngService.getCodeList(params);
 		model.addAttribute("projList", projList);
 		
@@ -584,5 +588,25 @@ public class AprvMngController {
 
 		return viewName;
 		
+	}
+	
+	/**
+	 * 휴가 잔여일 수 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "aprv/aprv04Ajax.do")
+	public String getVctLeftDay(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		model.addAttribute("params", params);
+		
+		Map vctMap =  aprvMngService.getVctLeftDay(params);
+		
+		model.addAttribute("vctMap", vctMap);
+		
+		return "jsonView";
 	}
 }

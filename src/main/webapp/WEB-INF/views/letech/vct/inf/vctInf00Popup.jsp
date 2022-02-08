@@ -63,11 +63,11 @@
 					<div class="form-container">
 					<div class="clearfix search-box">
 						<div class="search-container2">
-							<div class="row">
-								<div class ="col-xs-5 un-style">
+							<%-- <div class="row">
+								<div class ="col-sm-5 un-style">
 									<!-- 기준년도(년도 선택), 재직구분  -->
-									<!-- <div class="col-xs-6 un-style"> -->
-										<div class="inline-element col-xs-12">
+									<!-- <div class="col-sm-6 un-style"> -->
+										<div class="inline-element col-sm-12">
 											<label>기준년도</label>
 											<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="width: 100px; vertical-align: middle;">
 												<input type="text" id="datepicker-input-ko-year" name="stddYr" value="${params.stddYr}" aria-label="Year" class="form-control" title="search" autocomplete="off">											
@@ -77,7 +77,7 @@
 										</div>
 								
 								</div>
-							<!-- 	<div class="col-xs-7 mt10 text-right" style="display:inline-block;">
+							<!-- 	<div class="col-sm-7 mt10 text-right" style="display:inline-block;">
 								<div class="search-select-wrap">
 									<label style="font-size: 14px;">보고일</label>
 									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
@@ -95,10 +95,10 @@
 									</div>
 								</div>
 							</div> -->
-								<div class ="col-xs-7 un-style">
+								<div class ="col-sm-7 un-style">
 									<!-- 기간(월) 검색  -->
-										<div class="inline-elemnet col-xs-12">
-											<span class="inline-element col-xs-12" >
+										<div class="inline-elemnet col-sm-12">
+											<span class="inline-element col-sm-12" >
 												<label>월</label>
 												<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element" style="width: 100px; vertical-align: middle;">
 													<input type="text" id="datepicker-input-ko-mon-start" name="startMon" value="${params.startMon}" aria-label="Month" class="form-control" title="search">											
@@ -113,7 +113,7 @@
 												<span class="datepicker-cell" id="datepicker-month-ko-end"></span>
 											
 											</span>
-											<%-- <div class ="col-xs-3 un-style">
+											<div class ="col-sm-3 un-style">
 												<span class="inline-element">
 													<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
 														<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
@@ -121,7 +121,7 @@
 													</select>
 												</span>
 											</div>
-											<div class="col-xs-8 un-style">
+											<div class="col-sm-8 un-style">
 												<div class="input-group">
 													<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
 													<span class="input-group-btn">
@@ -130,14 +130,14 @@
 														</button>
 													</span>
 												</div>
-											</div> --%>
+											</div>
 										</div>
 								</div>
 							</div>
 							<br>
 							<div class="row">
-								<div class ="col-xs-5 un-style">
-									<span class="inline-element col-xs-11">
+								<div class ="col-sm-5 un-style">
+									<span class="inline-element col-sm-11">
 										<label>휴가구분</label>
 										<select name="vctTypeCd" id="vctType" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
 											<option value="" >전체</option>
@@ -147,8 +147,8 @@
 										</select>
 									</span>
 								</div>
-								<div class ="col-xs-7 un-style">
-									<span class="inline-element col-xs-11">
+								<div class ="col-sm-7 un-style">
+									<span class="inline-element col-sm-11">
 										<label >상태구분</label>
 										<select name="aprvStatCd" id="searchGubun3" class="form-control table-cell" title="search" style="width: 100px; vertical-align: middle;">
 											<option value="" >전체</option>
@@ -157,8 +157,8 @@
 											<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.aprvStatCd eq '1' }">selected="selected"</c:if>>완료</option>
 											<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.aprvStatCd eq '2' }">selected="selected"</c:if>>보류</option>
 											<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.aprvStatCd eq '3' }">selected="selected"</c:if>>반려</option>
-											<%-- <option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직중</option>
-											<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴사</option> --%>
+											<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
+											<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
 										</select>
 									</span>
 									<span class="input-group-btn">
@@ -167,9 +167,68 @@
 										</button>
 									</span>
 								</div>
+							</div> --%>
+							
+							<div class="row">
+								<div class="col-lg-6 col-sm-6 form-inline mt10">
+									<label style="width: 70px;">기준년도</label>
+									<div class="tui-datepicker-input tui-datetime-input tui-has-focus form-control" style="width: 100px; vertical-align: middle;">
+										<input type="text" id="datepicker-input-ko-year" name="stddYr" value="${params.stddYr}" aria-label="Year" class="" title="search" autocomplete="off">											
+										<span class="tui-ico-date"></span>
+									</div>
+									<div class="datepicker-cell" id="datepicker-year-ko"></div>
+								</div>
+								<div class="col-lg-6 col-sm-6 form-inline mt10">
+									<label style="width: 70px;">휴가구분</label>
+									<select name="vctTypeCd" id="vctType" class="form-control" title="search" style="width: 100px; vertical-align: middle;">
+										<option value="" >전체</option>
+										<c:forEach var="vctType" items="${vctTypeList}">
+											<option value="${vctType.CD}" <c:if test="${vctType.CD eq params.vctTypeCd }">selected="selected"</c:if> >${vctType.CD_NM}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="col-lg-6 col-sm-6 form-inline mt10">
+								
+									<label style="width: 70px;">월</label>
+									<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element form-control" style="width: 100px; vertical-align: middle;">
+										<input type="text" id="datepicker-input-ko-mon-start" name="startMon" value="${params.startMon}" aria-label="Month" class="" title="search">											
+										<span class="tui-ico-date"></span>
+									</span>
+									<span class="datepicker-cell" id="datepicker-month-ko-start"></span>
+									<label>~</label>												
+									<span class="tui-datepicker-input tui-datetime-input tui-has-focus inline-element form-control" style="width: 100px; vertical-align: middle;">
+										<input type="text" id="datepicker-input-ko-mon-end" name="endMon" value="${params.endMon}" aria-label="Month" class="" title="search">											
+										<span class="tui-ico-date"></span>
+									</span>
+									<span class="datepicker-cell" id="datepicker-month-ko-end"></span>
+							
+								</div>
+								
+								<div class="col-lg-6 col-sm-6 form-inline mt10">
+									<label style="width: 70px;" >상태구분</label>
+									<select name="aprvStatCd" id="searchGubun3" class="form-control" title="search" style="width: 100px; margin-right:10px; vertical-align: middle;">
+										<option value="" >전체</option>
+										<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.aprvStatCd eq '0' }">selected="selected"</c:if>>대기</option>
+										<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.aprvStatCd eq '9' }">selected="selected"</c:if>>진행중</option>
+										<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.aprvStatCd eq '1' }">selected="selected"</c:if>>완료</option>
+										<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.aprvStatCd eq '2' }">selected="selected"</c:if>>보류</option>
+										<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.aprvStatCd eq '3' }">selected="selected"</c:if>>반려</option>
+										<%-- <option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
+										<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option> --%>
+									</select>
+									<select id="searchCdList6" style="width : 100px; display:inline-block;" name="searchCdList6" class="form-control">
+										<option value="" >--전체--</option>
+										<option value="<%=VarConsts.APRV_GB_APRV %>" <c:if test="${params.searchCdList6 eq '0' }">selected="selected"</c:if>>결재</option>
+										<option value="<%=VarConsts.APRV_GB_REFE %>" <c:if test="${params.searchCdList6 eq '1' }">selected="selected"</c:if>>참조</option>
+										<option value="<%=VarConsts.APRV_GB_CAN %>" <c:if test="${params.searchCdList6 eq '2' }">selected="selected"</c:if>>취소</option>
+									</select>
+									<span class="">
+											<button type="button" class="fnSearch btn-info btn"  >
+												<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
+											</button>
+									</span>
+								</div>
 							</div>
-							
-							
 							
 							
 						
@@ -366,38 +425,40 @@
 							<option value="50" <c:if test="${params.listCnt == '50'}">selected = "selected"</c:if>>50</option>
 							<option value="100" <c:if test="${params.listCnt == '100'}">selected = "selected"</c:if>>100</option>
 						</select>
-						<span class="pull-right"><input type="button" id="btnExcl" name="fnJoin" class="btn btn-sm btn-default" value="엑셀다운"/></span>
+						<!-- <span class="pull-right"><input type="button" id="btnExcl" name="fnJoin" class="btn btn-sm btn-default" value="엑셀다운"/></span> -->
 					</p>
 						<table class="table table-bordered reactive" id="table-aprv"  data-show-export="true" data-pagination="true"  data-show-toggle="true" data-show-columns="true">
 							<colgroup>
-								<col width="50" class="hidden-xs hidden-sm"/>
-								<col width="80" class="hidden-xs hidden-sm"/>
+								<col width="50" class=""/>
+								<%-- <col width="80" class="hidden-xs hidden-sm"/> --%>
 								<col width="80"/>
-								<col width="*"/>
-								<col width="50" class="hidden-xs hidden-sm"/>
+								<col width="200"/>
 								<col width="180"/>
+								<col width="80" class=""/>
+								<col width="100"/>
 								<col width="100"/>
 								<col width="80"/>
 							</colgroup>
 							<thead>
 								<tr role="row">
-									<th class="hidden-xs hidden-sm" data-force-export="true">NO</th>
-									<th class="hidden-xs hidden-sm" data-force-export="true">결재문서번호</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">NO</th>
+									<!-- <th class="hidden-xs hidden-sm" data-force-export="true">결재문서번호</th> -->
 									<!-- <th class="">보고자</th> -->
-									<th class="" data-force-export="true">휴가구분</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">휴가구분</th>
 									<!-- <th class="">확인</th> -->
-									<th class="" data-force-export="true">제 목</th>
-									<th class="hidden-xs hidden-sm" data-force-export="true">기간</th>
-									<th class="" data-force-export="true">상신일</th>
-									<th class="" data-force-export="true">상태</th>
-									<th class="" data-force-hide="true">신청서</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">제 목</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">휴가기간</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">사용일수</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">상신자</th>
+									<th class="" data-force-export="true" style="vertical-align: middle;">상태</th>
+									<th class="" data-force-hide="true" style="vertical-align: middle;">신청서</th>
 								</tr>
 							</thead>
 							<tbody>
 					        	<c:choose>
 									<c:when test="${totalCnt < 1 }">
 										<tr>
-											<td colspan="8">
+											<td align="center" class="align-middle" colspan="8" style="vertical-align: middle;">
 												검색된 내용이 없습니다.
 											</td>
 										</tr>
@@ -405,16 +466,16 @@
 									<c:otherwise>
 										<c:forEach var="list" items="${resultList}" varStatus="status">
 											<tr class="">
-												<td class="hidden-xs hidden-sm text-center" data-force-export="true">
+												<td align="center" class="text-center align-middle" style="vertical-align: middle;" data-force-export="true">
 													${totalCnt - status.index - ((cPage-1) * (intListCnt))}
 												</td>
-												<td class="hidden-xs hidden-sm text-center" data-force-export="true">
+												<%-- <td align="center" class="hidden-xs hidden-sm text-center" data-force-export="true">
 													${list.APRV_NO}
-												</td>
+												</td> --%>
 											<%-- 	<td>
 													${list.REPT_APRV_NM}
 												</td> --%>
-												<td>
+												<td align="center" class="align-middle" style="vertical-align: middle;">
 													${list.APRV_TYPE_DTIL_NM}
 												</td>
 											<%-- 	<td class="">
@@ -427,12 +488,15 @@
 												</c:otherwise>
 											</c:choose>
 												</td> --%>
-												<td class="center" data-force-export="true">
+												<td class="center align-middle" data-force-export="true" style="vertical-align: middle;">
 													<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
 													<span class="ellip ellip-line">${list.TITLE}</span>
 													</a>
 												</td>
-												<td class="center hidden-xs hidden-sm" data-force-export="true">
+												<td align="center" class="align-middle" data-tableexport-msonumberformat="yyyy-MM-dd" data-force-export="true" style="vertical-align: middle;">
+													${list.TERM_ST_YM} - ${list.TERM_ED_YM}
+												</td>
+												<td align="center" class="center align-middle" data-force-export="true" style="vertical-align: middle;">
 													${list.SUM_DAY_CNT}
 												</td>
 												<%-- <td class="hidden-xs hidden-sm">
@@ -446,10 +510,10 @@
 													</c:choose> 
 													
 												</td> --%>
-												<td data-tableexport-msonumberformat="yyyy/mm/dd" data-force-export="true">
-													${list.MODI_DT}
+												<td align="center" class="align-middle" data-force-export="true" style="vertical-align: middle;">
+													${list.REPT_APRV_NM}
 												</td>
-												<td class="center" data-force-export="true">
+												<td align="center" class="center align-middle" data-force-export="true" style="vertical-align: middle;">
 													<c:choose>
 														<c:when test="${list.LINE_CHK eq 'N' && list.APRV_YN_TP eq '1' && list.CONF_Y_CNT > 0 && list.CONF_Y_CNT > list.CONF_REFE_CNT }">
 															진행중
@@ -461,7 +525,7 @@
 													
 													<c:choose>
 														<c:when test="${!empty list.CANCEL_YN && list.CANCEL_YN eq 'Y' }">
-															<span style="color:red;">(취소)</span>
+															<span style="color:blue;">(취소)</span>
 														</c:when>
 														<c:otherwise>
 															<c:if test="${list.LINE_CHK eq 'Y' }">
@@ -513,7 +577,7 @@
 														</c:choose>
 													</c:if> --%>
 												</td>
-												<td class="" data-force-hide="true">
+												<td align="center" class="align-middle" data-force-hide="true" style="vertical-align: middle;">
 													<input type="button" id="" name="" class="btn btn-sm btn-default" value="보기" onclick="fn_docPopup('${list.APRV_NO}')"/>
 												</td>
 											</tr>

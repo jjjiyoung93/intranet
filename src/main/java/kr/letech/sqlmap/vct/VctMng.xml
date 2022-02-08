@@ -14,14 +14,16 @@
 			      OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> #{searchGubun2} ) 
 			<!-- AND SUBSTR(A.RTR_DT, 1, 4) >= #{searchGubun2} -->  
 			<!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
-		  	<choose>
-		  		<when test='searchGubun3 == "Y"'>
-		  			AND A.RTR_YN = #{searchGubun3}
-		  		</when>
-		  		<otherwise>
-		  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
-		  		</otherwise>
-		  	</choose>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)">
+			  	<choose>
+			  		<when test='searchGubun3 == "Y"'>
+			  			AND A.RTR_YN = #{searchGubun3}
+			  		</when>
+			  		<otherwise>
+			  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+			  		</otherwise>
+			  	</choose>
+			</if>
 			<!-- ID/성명 : 키워드 값이 있으면 구분에 따라 조회  -->
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 				<choose>
@@ -67,14 +69,16 @@
 			<!-- 퇴사일 이 기준년도 보다 크거나 같은 직원 조회  -->
 			<!-- AND SUBSTR(A.RTR_DT, 1, 4) >= #{searchGubun2} -->       
 		  	<!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
-		  	<choose>
-		  		<when test='searchGubun3 == "Y"'>
-		  			AND A.RTR_YN = #{searchGubun3}
-		  		</when>
-		  		<otherwise>
-		  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
-		  		</otherwise>
-		  	</choose>
+		  	<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)">
+			  	<choose>
+			  		<when test='searchGubun3 == "Y"'>
+			  			AND A.RTR_YN = #{searchGubun3}
+			  		</when>
+			  		<otherwise>
+			  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+			  		</otherwise>
+			  	</choose>
+		  	</if>
 		  	<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 				<choose>
@@ -134,14 +138,16 @@
 			AND ( TO_CHAR(A.REG_DT, 'YYYY') <![CDATA[<=]]> #{searchGubun2} 
 			      OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> #{searchGubun2} )  
 			<!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
-		  	<choose>
-		  		<when test='searchGubun3 == "Y"'>
-		  			AND A.RTR_YN = #{searchGubun3}
-		  		</when>
-		  		<otherwise>
-		  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
-		  		</otherwise>
-		  	</choose>
+			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)" >
+			  	<choose>
+			  		<when test='searchGubun3 == "Y"'>
+			  			AND A.RTR_YN = #{searchGubun3}
+			  		</when>
+			  		<otherwise>
+			  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+			  		</otherwise>
+			  	</choose>
+			</if>
 			<!-- ID/성명 : 키워드 값이 있으면 구분에 따라 조회  -->
 			<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 				<choose>
@@ -200,6 +206,7 @@
 		          AND ( TO_CHAR(A.REG_DT, 'YYYY') <![CDATA[<=]]> #{searchGubun2}
 		                OR SUBSTR(A.JOIN_DT, 1, 4)<![CDATA[<=]]> #{searchGubun2} ) /*입사년도*/
 		          <!-- 재직구분 : 파라미터 값이 존재하면 파라미터 값에 따라 조회, 파라미터 값이 존재하지 않으면 '재직중' 조회  -->
+		          <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)" >
 				  	<choose>
 				  		<when test='searchGubun3 == "Y"'>
 				  			AND A.RTR_YN = #{searchGubun3}
@@ -208,6 +215,7 @@
 				  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
 				  		</otherwise>
 				  	</choose>
+				  </if>
 				  	<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
 					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
 						<choose>
@@ -240,6 +248,11 @@
 		
 	<!-- 휴가 현황 목록 조회  -->
 	<select id="getVctViewList" parameterType="map" resultType="hashMap">
+		<!-- WITH W_VCT_DAY_CNT AS (
+			SELECT A.* 
+			  FROM VCT_INF_MNG A
+			  INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') B ON (A.APRV_NO = B.APRV_NO)
+		)
 		SELECT
 		       A.STDD_YR
 		     , A.USS_ID
@@ -256,29 +269,29 @@
 		     , CASE WHEN C.CD = 'CD0001011001' THEN ROUND((B.VCT_TOT_USE_CNT / A.VCT_GRNT_DAY * 100) , 2)
 		            ELSE NULL
 		            END AS VCT_USE_RATE /*활용률*/
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '01') AS JAN_CNT /*1월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '02') AS FEB_CNT /*2월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '03') AS MAR_CNT /*3월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '01') AS JAN_CNT /*1월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '02') AS FEB_CNT /*2월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '03') AS MAR_CNT /*3월 사용일수 */
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 1) AS FIR_QRTR_CNT /*1분기 사용일수*/
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 1) AS FIR_QRTR_CNT /*1분기 사용일수*/
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '04') AS APR_CNT/*4월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '05') AS MAY_CNT/*5월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '06') AS JUN_CNT/*6월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '04') AS APR_CNT/*4월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '05') AS MAY_CNT/*5월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '06') AS JUN_CNT/*6월 사용일수 */
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 2) AS SEC_QRTR_CNT /*2분기 사용일수*/
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 2) AS SEC_QRTR_CNT /*2분기 사용일수*/
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '07') AS JUL_CNT/*7월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '08') AS AUg_CNT/*8월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '09') AS SEP_CNT/*9월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '07') AS JUL_CNT/*7월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '08') AS AUg_CNT/*8월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '09') AS SEP_CNT/*9월 사용일수 */
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 3) AS THR_QRTR_CNT /*3분기 사용일수*/
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 3) AS THR_QRTR_CNT /*3분기 사용일수*/
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '10')AS OCT_CNT/*10월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '11') AS NOV_CNT/*11월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '12') AS DEC_CNT/*12월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '10')AS OCT_CNT/*10월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '11') AS NOV_CNT/*11월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '12') AS DEC_CNT/*12월 사용일수 */
 		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM VCT_INF_MNG S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 4) AS FRT_QRTR_CNT /*4분기 사용일수*/
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 4) AS FRT_QRTR_CNT /*4분기 사용일수*/
 		  FROM ( SELECT * FROM VCT_DAY_MNG WHERE STDD_YR = #{stdd_yr} AND USS_ID = #{uss_id} ) A
 		  LEFT OUTER JOIN (SELECT
 		                          E.VCT_YR
@@ -290,7 +303,110 @@
 		                    GROUP BY E.VCT_YR, E.USS_ID, E.VCT_TYPE ) B ON (B.USS_ID = A.USS_ID AND B.VCT_YR = A.STDD_YR)
 		  RIGHT OUTER JOIN (SELECT CD FROM STD_CD_MNG WHERE UP_CD = 'CD0001011' ORDER BY CD_ORD) C ON (B.VCT_TYPE = C.CD)                
 		
-		  ORDER BY C.CD ASC                  
+		  ORDER BY C.CD ASC  -->
+		  WITH W_VCT_APRV_TB AS (
+		        SELECT
+		               A.*
+		             , NVL(B.CNT, 0) AS APRV_YN_3_CNT
+		          FROM STD_APRV_MNG A
+		          LEFT OUTER JOIN (
+		                            SELECT APRV_NO
+		                                 , COUNT(1) AS CNT
+		                              FROM STD_APRV_LINE
+		                              WHERE APRV_YN_CD = '3'
+		                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
+		   
+		 ),  W_VCT_DAY_CNT AS (
+					SELECT A.* 
+					  FROM VCT_INF_MNG A
+					  INNER JOIN (SELECT APRV_NO 
+		                           FROM W_VCT_APRV_TB 
+		                          WHERE (CANCEL_YN IS NULL 
+		                             OR CANCEL_YN != 'Y')
+		                             AND APRV_YN_3_CNT = 0) B ON (A.APRV_NO = B.APRV_NO)
+		              WHERE A.USE_YN = 'Y'     
+		), W_VCT_INF_TB AS (
+		        
+		        
+		SELECT
+		       #{stdd_yr} AS STDD_YR
+		     , A.USS_ID
+		     , A.USS_NM
+		     , B.CD
+		     , B.CD_NM AS VCT_TYPE_NM
+		     , B.CD_ORD
+		     , C.VCT_GRNT_DAY
+		     , NVL(D.VCT_USE_DAY, 0) AS VCT_TOT_USE_CNT
+		     , C.VCT_GRNT_DAY - NVL(D.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
+		     , NVL(ROUND((NVL(D.VCT_USE_DAY, 0) / DECODE(C.VCT_GRNT_DAY, 0, NULL, C.VCT_GRNT_DAY) * 100) , 2), 0) AS VCT_USE_RATE
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '01') AS JAN_CNT /*1월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '02') AS FEB_CNT /*2월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '03') AS MAR_CNT /*3월 사용일수 */
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND S.VCT_QRTR = 1) AS FIR_QRTR_CNT /*1분기 사용일수*/
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '04') AS APR_CNT/*4월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '05') AS MAY_CNT/*5월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '06') AS JUN_CNT/*6월 사용일수 */
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND S.VCT_QRTR = 2) AS SEC_QRTR_CNT /*2분기 사용일수*/
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '07') AS JUL_CNT/*7월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '08') AS AUg_CNT/*8월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '09') AS SEP_CNT/*9월 사용일수 */
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND S.VCT_QRTR = 3) AS THR_QRTR_CNT /*3분기 사용일수*/
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '10')AS OCT_CNT/*10월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '11') AS NOV_CNT/*11월 사용일수 */
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND SUBSTR(S.VCT_DT, 6, 2) = '12') AS DEC_CNT/*12월 사용일수 */
+		     
+		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = #{stdd_yr} AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = B.CD AND S.VCT_QRTR = 4) AS FRT_QRTR_CNT /*4분기 사용일수*/
+		FROM ( SELECT * FROM STD_USS_MNG WHERE USS_ID =  #{uss_id} ) A
+		LEFT OUTER JOIN ( SELECT * FROM STD_CD_MNG WHERE UP_CD = 'CD0001011') B ON (1=1)
+		LEFT OUTER JOIN ( SELECT * FROM VCT_DAY_MNG WHERE USS_ID =  #{uss_id} AND STDD_YR = #{stdd_yr}) C ON (A.USS_ID = C.USS_ID AND B.CD = 'CD0001011001')
+		LEFT OUTER JOIN ( SELECT
+		                         T1.USS_ID AS USS_ID
+		                       , T1.VCT_TYPE AS VCT_TYPE  
+		                       , SUM(T1.VCT_DAY_CNT) AS VCT_USE_DAY
+		                    FROM (SELECT * FROM VCT_INF_MNG WHERE USS_ID =  #{uss_id} AND VCT_YR = #{stdd_yr} AND USE_YN = 'Y') T1
+		                    INNER JOIN (SELECT * FROM W_VCT_APRV_TB WHERE REPT_APRV_NO =  #{uss_id} AND (CANCEL_YN IS NULL OR CANCEL_YN != 'Y') AND APRV_YN_3_CNT = 0) T2 ON (T1.APRV_NO = T2.APRV_NO)
+		                    GROUP BY T1.USS_ID, T1.VCT_TYPE
+		) D ON (A.USS_ID = D.USS_ID AND D.VCT_TYPE = B.CD )
+		ORDER BY B.CD_ORD
+		
+		)
+		 SELECT * 
+		   FROM W_VCT_INF_TB
+		   UNION ALL (SELECT
+		                     STDD_YR
+		                   , USS_ID
+		                   , USS_NM
+		                   , 'TOTAL'
+		                   , '소계'
+		                   , 999
+		                   , NULL
+		                   , SUM(VCT_TOT_USE_CNT)
+		                   , NULL
+		                   , NULL
+		                   , SUM(JAN_CNT)
+		                   , SUM(FEB_CNT)
+		                   , SUM(MAR_CNT)
+		                   , SUM(FIR_QRTR_CNT)
+		                   , SUM(APR_CNT)
+		                   , SUM(MAY_CNT)
+		                   , SUM(JUN_CNT)
+		                   , SUM(SEC_QRTR_CNT)
+		                   , SUM(JUL_CNT)
+		                   , SUM(AUG_CNT)
+		                   , SUM(SEP_CNT)
+		                   , SUM(THR_QRTR_CNT)
+		                   , SUM(OCT_CNT)
+		                   , SUM(NOV_CNT)
+		                   , SUM(DEC_CNT)
+		                   , SUM(FRT_QRTR_CNT)
+		                FROM W_VCT_INF_TB
+		                GROUP BY STDD_YR, USS_ID, USS_NM)                
 	</select>
 	
 	<!-- 휴가현황집계 총 갯수  -->
@@ -306,7 +422,7 @@
 		         , A.EMP_TYPE
 		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM
 		         , A.RTR_YN
-		         , DECODE(A.RTR_YN, 'Y', '퇴사', '재직중') AS RTR_YN_NM
+		         , DECODE(A.RTR_YN, 'Y', '퇴직', '재직') AS RTR_YN_NM
 		         , A.JOIN_DT
 		         , A.RTR_DT
 		         , A.WORK_YR_CNT
@@ -375,6 +491,7 @@
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
 		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
+		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE 
 		), W_VCT_USE_DAY_CNT AS (
 		
@@ -453,7 +570,7 @@
 		         , A.EMP_TYPE
 		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM
 		         , A.RTR_YN
-		         , DECODE(A.RTR_YN, 'Y', '퇴사', '재직중') AS RTR_YN_NM
+		         , DECODE(A.RTR_YN, 'Y', '퇴직', '재직') AS RTR_YN_NM
 		         , A.JOIN_DT
 		         , A.RTR_DT
 		         , A.WORK_YR_CNT
@@ -522,6 +639,7 @@
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
 		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
+		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE 
 		), W_VCT_USE_DAY_CNT AS (
 		
@@ -612,6 +730,212 @@
 	
 	</select>
 	
+	<!-- 휴가현황집계 평균 목록 조회  -->
+	<select id="getVctStatAvgList" resultType="hashMap" parameterType="map">
+		WITH W_PARAMS AS(
+	       SELECT #{searchGubun2} AS STDD_YR
+	         FROM DUAL
+		),W_USS_LIST AS (
+		    SELECT
+		           B.STDD_YR
+		         , A.USS_ID
+		         , A.USS_NM
+		         , A.EMP_TYPE
+		         , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = A.EMP_TYPE) AS EMP_TYPE_NM
+		         , A.RTR_YN
+		         , DECODE(A.RTR_YN, 'Y', '퇴직', '재직') AS RTR_YN_NM
+		         , A.JOIN_DT
+		         , A.RTR_DT
+		         , A.WORK_YR_CNT
+		         , C.VCT_GRNT_DAY
+		      FROM STD_USS_MNG A
+		      LEFT OUTER JOIN W_PARAMS B ON (1=1)
+		      LEFT OUTER JOIN VCT_DAY_MNG C ON (A.USS_ID = C.USS_ID AND B.STDD_YR = C.STDD_YR)
+		      WHERE 1=1
+		         AND ( TO_CHAR(A.REG_DT, 'YYYY')  <![CDATA[<=]]> B.STDD_YR OR SUBSTR(A.JOIN_DT, 1, 4) <![CDATA[<=]]> B.STDD_YR )/*기준년도 이전에 입사한 사원*/
+		         <choose>
+				  		<when test='searchGubun3 == "Y"'>
+				  			AND A.RTR_YN = #{searchGubun3}
+				  		</when>
+				  		<otherwise>
+				  			 AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= B.STDD_YR ) /*현재 재직중인 사원*/
+				  		</otherwise>
+				  </choose>
+				  <!-- 고용구분  -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun4)">
+						AND A.EMP_TYPE = #{searchGubun4}
+					</if>
+				<!-- ID/성명 : ID/성명 : 키워드 값이 있으면 구분에 따라 조회 -->
+					<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchField)" >
+						<choose>
+							<when test='searchGubun == "01"' >
+						AND A.USS_ID LIKE '%' || #{searchField} || '%'
+							</when>
+							<when test='searchGubun == "02"' >
+						AND A.USS_NM LIKE '%' || #{searchField} || '%'	
+							</when>
+						</choose>
+					</if>
+		),W_LAST_APRV AS (
+		        SELECT
+		               C.REPT_APRV_NO
+		             , MAX(TO_NUMBER(C.APRV_NO)) AS MAX_APRV_NO
+		         FROM STD_APRV_MNG C
+		         LEFT OUTER JOIN W_PARAMS D ON (1=1)
+		        WHERE TO_CHAR(C.CRTN_DT, 'YYYY') = D.STDD_YR
+		        GROUP BY C.REPT_APRV_NO
+		),W_USS_ADD_INFO AS(
+		    SELECT
+		            E.APRV_NO
+		          , E.REPT_APRV_NO
+		          , E.PROJ_CD
+		          , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = E.PROJ_CD) AS PROJ_NM
+		          , E.REPT_DP_CD
+		          , (SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = E.REPT_DP_CD) AS REPT_DP_NM
+		          , E.REPT_AUTH_CD
+		          , (SELECT S.AUTHOR_NM FROM STD_AUT_INFO S WHERE S.AUTHOR_CODE = E.REPT_AUTH_CD) AS REPT_AUTH_NM
+		    FROM STD_APRV_MNG E
+		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
+		    
+		      <where>
+		          1=1
+			     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun5)">
+			      AND E.REPT_AUTH_CD = #{searchGubun5}	
+			    </if>
+			    <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun6)">
+			      AND E.PROJ_CD = #{searchGubun6}	
+			    </if>
+		      </where>
+		    
+		),W_VCT_TYPE_LIST AS (
+		    SELECT 
+		           * 
+		      FROM STD_CD_MNG 
+		     WHERE UP_CD = 'CD0001011' 
+		     ORDER BY CD_ORD
+		), W_VCT_SUM_DAY AS (
+		        SELECT 
+		               G.USS_ID
+		             , G.VCT_TYPE
+		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
+		           FROM VCT_INF_MNG G
+		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
+		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		          WHERE G.VCT_YR = H.STDD_YR
+		            AND G.USE_YN = 'Y'
+		           GROUP BY G.USS_ID, G.VCT_TYPE
+		            
+		), W_VCT_SUM_DAY_QRTR AS (
+		        SELECT 
+		               G.USS_ID
+		             , G.VCT_TYPE
+		             , G.VCT_QRTR
+		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
+		           FROM VCT_INF_MNG G
+		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
+		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		          WHERE G.VCT_YR = H.STDD_YR
+		            ADN G.USE_YN = 'Y'
+		           GROUP BY G.USS_ID, G.VCT_TYPE , G.VCT_QRTR
+		)
+		, W_VCT_USE_DAY_CNT AS (
+		
+		SELECT
+		           J.STDD_YR
+		         , J.USS_ID
+		         , J.USS_NM
+		         , J.EMP_TYPE
+		         , J.EMP_TYPE_NM
+		         , J.RTR_YN
+		         , J.RTR_YN_NM
+		         , J.JOIN_DT
+		         , J.RTR_DT
+		         , J.WORK_YR_CNT
+		         , J.VCT_GRNT_DAY
+		         , K.CD AS VCT_TYPE
+		         , K.CD_NM AS VCT_TYPE_NM
+		         , K.CD_ORD
+		         , NVL(I.VCT_USE_DAY, 0) AS VCT_USE_DAY
+		         , J.VCT_GRNT_DAY - NVL(I.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
+		         , NVL(I.VCT_USE_DAY / J.VCT_GRNT_DAY * 100, 0) AS VCT_USE_RATE
+		  FROM W_USS_LIST J
+		  LEFT OUTER JOIN W_VCT_TYPE_LIST K ON (1=1)
+		  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
+		  ORDER BY J.USS_NM, K.CD_ORD
+		
+		), W_QRTR AS (
+            SELECT
+                  LEVEL AS QRTR
+              FROM DUAL
+              CONNECT BY LEVEL <![CDATA[<=]]> 4
+
+        )
+		, W_VCT_USE_DAY_CNT_QRTR AS (
+		
+		SELECT
+		           J.STDD_YR
+		         , J.USS_ID
+		         , J.USS_NM
+		         , J.EMP_TYPE
+		         , J.EMP_TYPE_NM
+		         , J.RTR_YN
+		         , J.RTR_YN_NM
+		         , J.JOIN_DT
+		         , J.RTR_DT
+		         , J.WORK_YR_CNT
+		         , J.VCT_GRNT_DAY
+		         , K.CD AS VCT_TYPE
+		         , K.CD_NM AS VCT_TYPE_NM
+		         , K.CD_ORD
+		         , H.QRTR AS VCT_QRTR
+		         , NVL(I.VCT_USE_DAY, 0) AS VCT_USE_DAY
+		         , J.VCT_GRNT_DAY - NVL(I.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
+		         , NVL(I.VCT_USE_DAY / J.VCT_GRNT_DAY * 100, 0) AS VCT_USE_RATE
+		  FROM W_USS_LIST J
+		  LEFT OUTER JOIN W_VCT_TYPE_LIST K ON (1=1)
+		  LEFT OUTER JOIN W_QRTR H ON (1=1)
+		  LEFT OUTER JOIN W_VCT_SUM_DAY_QRTR I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE AND H.QRTR = I.VCT_QRTR)
+		  ORDER BY J.USS_NM, H.QRTR, K.CD_ORD
+		
+		)
+		
+		SELECT
+             A.CD AS VCT_TYPE_CD /*휴가 코드*/
+          ,  A.CD_NM AS VCT_TYPE_NM /*휴가 코드 명*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT S WHERE S.VCT_TYPE = A.CD) AS TOT_AVG_USE_DAY /*총 사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_LEFT_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT S WHERE S.VCT_TYPE = A.CD) AS TOT_AVG_LEFT_DAY /*총 미사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_RATE), 2), 0) FROM W_VCT_USE_DAY_CNT S WHERE S.VCT_TYPE = A.CD) AS TOT_AVG_USE_RATE /*총 활용률 평균*/
+          
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 1) AS FIR_AVG_USE_DAY /*1분기 사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_LEFT_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 1) AS FIR_AVG_LEFT_DAY /*1분기 미사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_RATE), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 1) AS FIR_AVG_USE_RATE /*1분기 활용률 평균*/
+          
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 2) AS SEC_AVG_USE_DAY	/*2분기 사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_LEFT_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 2) AS SEC_AVG_LEFT_DAY /*2분기 미사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_RATE), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 2) AS SEC_AVG_USE_RATE /*2분기 활용률 평균*/
+          
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 3) AS THR_AVG_USE_DAY /*3분기 사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_LEFT_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 3) AS THR_AVG_LEFT_DAY /*3분기 미사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_RATE), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 3) AS THR_AVG_USE_RATE /*3분기 활용률 평균*/
+
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 4) AS FRT_AVG_USE_DAY /*4분기 사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_LEFT_DAY), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 4) AS FRT_AVG_LEFT_DAY /*4분기 미사용일수 평균*/
+          , (SELECT NVL(ROUND(AVG(S.VCT_USE_RATE), 2), 0) FROM W_VCT_USE_DAY_CNT_QRTR S WHERE S.VCT_TYPE = A.CD AND S.VCT_QRTR = 4) AS FRT_AVG_USE_RATE /*4분기 활용률 평균*/
+       FROM  W_VCT_TYPE_LIST A
+       GROUP BY A.CD, A.CD_NM
+	   ORDER BY A.CD
+	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<!-- 휴가정보 등록  -->
 	<insert id="insertVctInf" parameterType="map">
 		INSERT INTO VCT_INF_MNG (
@@ -629,6 +953,7 @@
              , AUT_CD
              , CRTN_DT
              , MODI_DT
+             , USE_YN
 		)
 		VALUES(
 			   #{uss_id}
@@ -644,7 +969,8 @@
              , #{rtr_yn, jdbcType=VARCHAR}
              , #{aut_cd}
              , SYSDATE
-             , SYSDATE			
+             , SYSDATE
+             , #{use_yn, jdbcType=VARCHAR}			
 		
 		)
 		
@@ -663,7 +989,7 @@
 		       A.USS_ID /*사원ID*/
 		     , A.USS_NM /*사원명*/
 		     , B.VCT_GRNT_DAY /*휴가부여일수*/
-		     , C.VCT_DAY_CNT /*연차사용일수*/
+		     , NVL(C.VCT_DAY_CNT, 0) AS VCT_DAY_CNT /*연차사용일수*/
 		     , NVL(B.VCT_GRNT_DAY, 0) - NVL(C.VCT_DAY_CNT, 0) AS VCT_LEFT_DAY /*잔여연차일수*/
 		       
 		  FROM (SELECT * FROM STD_USS_MNG WHERE USS_ID = #{uss_id}) A
@@ -677,6 +1003,15 @@
 		                    WHERE G.VCT_YR = #{stdd_yr}
 		                      AND G.USS_ID = #{uss_id}
 		                      AND G.VCT_TYPE = 'CD0001011001'
+		                      AND G.USE_YN = 'Y'
 		                    GROUP BY G.VCT_YR, G.USS_ID) C ON (C.USS_ID = A.USS_ID)
 	</select>
+	
+	<!-- 휴가정보 사용여부 수정  -->
+	<update id="updteVctInfUse" parameterType="map">
+		UPDATE VCT_INF_MNG
+		  SET USE_YN = #{use_yn, jdbcType=VARCHAR}
+		 WHERE VCT_DT = #{vct_dt, jdbcType=VARCHAR}
+	</update>
+	
 </mapper>

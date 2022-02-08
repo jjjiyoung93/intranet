@@ -116,6 +116,9 @@
 										<div class="col-lg-6">
 											<select id="proj_cd" name="proj_cd" class="form-control">
 												<option value="">선택</option>
+												<c:if test="${params.mode eq 'UPDATE' }">
+													<option value="${viewMap.PROJ_CD }" selected>${viewMap.PROJ_NM }</option>
+												</c:if>
 												<c:forEach var="proj" items="${projList }" varStatus="status">
 												<option value="${proj.CD }" <c:if test="${proj.CD eq viewMap.PROJ_CD }" >selected="selected"</c:if> >${proj.CD_NM }</option>
 												</c:forEach>
@@ -147,25 +150,22 @@
 										<div class="col-lg-4 col-sm-2 text-right">
 											<label class="control-label">보고자</label>
 										</div>
-										<div class="col-lg-6">
+										<div class="col-lg-6 form-inline">
 											<c:set var="rept_aprv_no" value=""/>
 											<c:set var="mode_u" value="<%=VarConsts.MODE_U%>"/>
 											<c:choose>
 												<c:when test="${params.mode eq mode_u }">
-													<div class="col-lg-3">
+													<div class="">
 													<input type="text" class="form-control" value="${viewMap.REPT_APRV_NM }" readonly/>
 													<c:set var="rept_aprv_no" value="${viewMap.REPT_APRV_NO }"/>
+													<input type="hidden" class="form-control" name="rept_aprv_no_nm" id="rept_aprv_no_nm" value="${viewMap.REPT_APRV_NM }" readonly/>
 													</div>
 												</c:when>
 												<c:otherwise>
-													<div class="col-lg-6" style="vertical-align: middle;">
-														<input type="text" class="form-control" id="rept_aprv_no_nm" value="${loginVO.name }" readonly/>
-													</div>
+													<input type="text" class="form-control" name="rept_aprv_no_nm" id="rept_aprv_no_nm" value="${loginVO.name }" readonly/>
 													<!-- 2022.01.18 관리자 등록 시 보고자 선택 가능 : BEGIN  -->
 													<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-														<div class="col-lg-4" style="vertical-align: middle;">
 															<button type="button" class="btn btn-default btn-sm" onclick="fn_ussSearch('rept_aprv_no')">찾기</button>
-														</div>
 													</sec:authorize>
 													<!-- 2022.01.18 관리자 등록 시 보고자 선택 가능 : END  -->
 													<c:set var="rept_aprv_no" value="${loginVO.id }"/>
@@ -416,7 +416,6 @@
 <jsp:include page="/resources/com/inc/javascript.jsp" />
 
 <script type="text/javascript">
-
 $(function() {
 	// 저장	
 	$("#btn-ok").click(function() {
@@ -747,6 +746,7 @@ function fn_calcVacDay(){
 	/*구하는 법 : (종료일자 - 시작일자 - 1) + 시작기간코드값 + 종료기간코드값*/
 	
 }
+/*2022.01.18 휴가 기간 선택에 따른 사용일수 계산 : END*/
 
 
 
@@ -759,23 +759,95 @@ $(document).on('change', ".vac-term", function(){
 	$(".half_type_nm_ed").text(halfTypeNmEd);
 	
 });
+	
+$(document).on('click', '.tui-calendar-date', function(e){
+	fn_calcVacDay();
+	var halfTypeNmSt = $(".half_type_cd_st_opt:selected").attr("nm");
+	var halfTypeNmEd = $(".half_type_cd_ed_opt:selected").attr("nm");
+	$(".half_type_nm_st").text(halfTypeNmSt);
+	$(".half_type_nm_ed").text(halfTypeNmEd);
+});
 /*2022.01.18 반차구분코드 변경 시 사용일수 계산 함수 : END */
 
 
-/*2022.01.18 휴가 기간 선택에 따른 사용일수 계산 : END*/
 
 /*2022.01.21 캘린더 버튼 이벤트 버블링 방지 : BEGIN*/
 //캘린더 이전 월, 다음 월 버튼 클릭 시 submit 이벤트 방지	
 $(document).on('click', '.tui-calendar-btn', function(e){
 	e.preventDefault();
+	/*ajax - 공휴일 정보 불러오기*/
+	var target = e.target
+	fn_loadHolMng(target);
 });	
-
+	
 //모바일에서 캘린더 날짜 선택 시 이벤트 겹침 방지
 $(document).on('touchend', '.tui-calendar-date', function(e){
 	//alert("click!!");
 	e.preventDefault();
 });	
 /*2022.01.21 캘린더 버튼 이벤트 버블링 방지 : END*/
+
+/*2022.02.08 캘린더 년도, 웗 변경 시 달력 공휴일 정보 추가 : BEGIN*/
+$(document).on('click', '.tui-calendar-year', function(e){
+	/*ajax - 공휴일 정보 불러오기*/
+	var target = e.target;
+	fn_loadHolMng(target);
+});
+
+$(document).on('click', '.tui-calendar-month', function(e){
+	/*ajax - 공휴일 정보 불러오기*/
+	var target = e.target;
+	fn_loadHolMng(target);
+	
+});
+/*2022.02.08 캘린더 년도, 웗 변경 시 달력 공휴일 정보 추가 : END*/
+
+function fn_loadHolMng(trgt){
+	alert("target : " + $(trgt).attr("class"));
+	var prnt = $(trgt).parents();
+	console.log(prnt);
+	//var clss = $(prnt).attr("class");
+	//alert(clss);
+	var stddYr = $(".tui-calendar-title").text();
+	stddYr = stddYr.substr(0,4);
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/cal/hol00Ajax.do",
+		type: "post",
+		dataType : "json", 
+		async : false,
+		data : {"stdd_yr" : stddYr},
+		success: function(result){
+			var holList = result.jsonList;
+			if(holList != null){
+				for(var i = 0; i< holList.length ; i++){
+					var hol = holList[i];
+					var holDt = hol.CAL_HOL_DT;
+					var holNm = hol.CAL_HOL_NM;
+					var year = parseInt(holDt.substr(0, 4));
+					var mon = parseInt(holDt.substr(4, 2));
+					var date = parseInt(holDt.substr(6, 2));
+					
+					var dt = new Date(year, mon-1, date, 0, 0, 0);
+					var timestamp = dt.getTime();
+					var text = "<div class='cal-nm' style='font-size : 5px; text-align:center;'>"+holNm+"</div>";
+					$("#startpicker-container td[data-timestamp='"+timestamp+"']").append(text).css({"color" : "red"});
+				}
+				
+			}else{
+				alert("휴일 정보가 등록되지 않았습니다. 휴일 정보를 먼저 등록해주세요.");
+			}
+			
+			
+		},error: function (request, status, error) {
+			//alert("삭제에 실패 했습니다.");
+			alert(request.responseText);
+		} 
+	});
+	
+	
+}
+
 
 // 문서 양식을 불러옴(cdList1, cdList2가 변할 때 마다 호출)
 function fn_getDocCode(cd1, cd2) {

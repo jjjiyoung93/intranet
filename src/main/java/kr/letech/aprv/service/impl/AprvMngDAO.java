@@ -378,4 +378,14 @@ public class AprvMngDAO extends AbstractDAO {
 		return (Integer)update("aprvMng.updateAprvCancelAdmin", params);
 	}
 
+	/**
+	 * 휴가 잔여일수 조회
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public Map getVctLeftDay(Map params) throws Exception {
+		return (Map)getObject("aprvMng.getVctLeftDay", params);
+	}
+
 }
