@@ -99,6 +99,7 @@ $(document).ready(function() {
 		{ 
 			fnInsert(date.format());	// 등록화면으로 이동
 		},
+		eventOrder : 'ord',
 		events: function(start, end, timezone, callback) {
 			var moment = $('#calendar').fullCalendar('getDate');	// 현재 날짜 ,  해당 달 및 주에 첫번째 일자
 			var view = $('#calendar').fullCalendar('getView');		// 월별인지 주별인지 구분

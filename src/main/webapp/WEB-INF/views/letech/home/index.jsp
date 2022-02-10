@@ -93,6 +93,7 @@ $(document).ready(function() {
 //             alert(moment.stripZone());
 //             $("#now_date").val(moment.format());
         },
+        eventOrder : 'ord',
 		events: function(start, end, timezone, callback) {
 			var moment = $('#calendar').fullCalendar('getDate');	// 현재 날짜 ,  해당 달 및 주에 첫번째 일자
 			var view = $('#calendar').fullCalendar('getView');		// 월별인지 주별인지 구분
@@ -110,7 +111,7 @@ $(document).ready(function() {
 	                var arrayCnt = array.length;
 	                //console.log(array);
 	                for(var i=0; i<arrayCnt; i++){
-	                	console.log(events);
+	                	//console.log(events);
 	                	var order = array[i].ord;
 	                	
 	                	if(order == '1'){
@@ -118,7 +119,7 @@ $(document).ready(function() {
 		                        title: array[i].title,
 		                        start: array[i].start,
 		                        end: array[i].end,
-		                        url: array[i].url,
+		                        url: '',
 		                      	dateStart: array[i].startDate,
 		                        dateEnd: array[i].endDate,
 		                        timeStart: array[i].startTimeFri + array[i].startTimeSec,
