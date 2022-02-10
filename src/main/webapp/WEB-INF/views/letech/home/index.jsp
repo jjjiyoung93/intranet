@@ -57,7 +57,11 @@
 <script src='${pageContext.request.contextPath}/resources/js/flipout_cards.js'></script>
 <script src='${pageContext.request.contextPath}/resources/js/modernizr.js'></script>
 <script type="text/javascript">
-$(document).ready(function() {	
+$(document).ready(function() {
+	
+	/*점검일 팝업 생성*/
+	/* var strWindowFeatures = "location=no, menubar=no";
+	window.open("${pageContext.request.contextPath}/resources/com/inc/NoticePop.jsp", "NtcPopup","width=800, height=400"); */
 
 	/** fullcalendar start **/
 	var currentLangCode = 'ko';
