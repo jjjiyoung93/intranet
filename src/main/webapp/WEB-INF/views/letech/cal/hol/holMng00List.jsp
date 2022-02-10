@@ -116,7 +116,7 @@
 								<c:choose>
 									<c:when test="${empty resultList}">
 										<tr>
-											<td colspan="5" align="center">검색된 내용이 없습니다.</td>
+											<td colspan="6" align="center">검색된 내용이 없습니다.</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
