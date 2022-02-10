@@ -90,6 +90,10 @@
 		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(uss_id)" >
 			<!-- AND uss_id = #{uss_id}	 -->	
 		</if>
+		<if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(stdd_yr)">
+			AND SUBSTR(CAL_ST_DT, 1, 4) = #{stdd_yr}
+			AND SUBSTR(CAL_ED_DT, 1, 4) = #{stdd_yr}
+		</if>
 		ORDER BY ORD ASC, cal_st_dt ASC
 	</select>
 	<!-- 일정등록 -->
