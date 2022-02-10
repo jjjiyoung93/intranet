@@ -1569,13 +1569,27 @@
 	
 	<!-- 2022.01.27 결재문서 등록 / 수정 시 휴가잔여일 조회 : BEGIN  -->
 	<select id="getVctLeftDay" parameterType="map" resultType="HashMap">
+		<!-- 결재문서 정보 + 반려 카운트  -->
+		WITH W_VCT_APRV_TB AS (
+	        SELECT
+	               A.*
+	             , NVL(B.CNT, 0) AS APRV_YN_3_CNT
+	          FROM STD_APRV_MNG A
+	          LEFT OUTER JOIN (
+	                            SELECT APRV_NO
+	                                 , COUNT(1) AS CNT
+	                              FROM STD_APRV_LINE
+	                              WHERE APRV_YN_CD = '3'
+	                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
+		   
+		 )
 		SELECT
 		       A.USS_ID /*사원 ID*/
 		     , B.VCT_GRNT_DAY /*휴가부여일수*/
 		     , NVL(C.VCT_USE_DAY, 0) AS VCT_USE_DAY /*휴가 사용일수*/
 		     , (B.VCT_GRNT_DAY -NVL(C.VCT_USE_DAY, 0)) AS VCT_LEFT_DAY /*휴가 잔여일수*/
 		  FROM (SELECT * FROM STD_USS_MNG WHERE USS_ID = #{rept_aprv_no}) A
-		  LEFT OUTER JOIN (SELECT * FROM VCT_DAY_MNG WHERE STDD_YR = TO_CHAR(SYSDATE, 'YYYY')) B ON (A.USS_ID = B.USS_ID)
+		  LEFT OUTER JOIN (SELECT * FROM VCT_DAY_MNG WHERE STDD_YR = #{stdd_yr}) B ON (A.USS_ID = B.USS_ID)
 		  LEFT OUTER JOIN (
 		                        SELECT
 		                               D.VCT_YR
@@ -1583,12 +1597,14 @@
 		                            ,  NVL(SUM(D.VCT_DAY_CNT), 0) AS VCT_USE_DAY
 		                          FROM VCT_INF_MNG D
 		                         INNER JOIN (SELECT *
-		                                       FROM STD_APRV_MNG 
+		                                       FROM W_VCT_APRV_TB 
 		                                      WHERE REPT_APRV_NO = #{rept_aprv_no} 
 		                                        AND APRV_TYPE_CD = 'CD0001011' 
 		                                        AND APRV_TYPE_DTIL_CD = 'CD0001011001' 
-		                                        AND ( CANCEL_YN != 'Y' OR CANCEL_YN IS NULL)) E ON (D.APRV_NO = E.APRV_NO)
-		                         WHERE D.VCT_YR = TO_CHAR(SYSDATE, 'YYYY')
+		                                        AND ( CANCEL_YN != 'Y' OR CANCEL_YN IS NULL)
+		                                        <!-- 2022.02.11 반려문서 카운트 제외 추가  -->
+		                                        AND APRV_YN_3_CNT = 0) E ON (D.APRV_NO = E.APRV_NO)
+		                         WHERE D.VCT_YR = #{stdd_yr}
 		                           AND D.USS_ID = #{rept_aprv_no} 
 		                           AND D.VCT_TYPE = 'CD0001011001'
 		                           AND D.USE_YN = 'Y'

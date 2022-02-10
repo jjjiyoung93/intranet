@@ -67,207 +67,14 @@
 							<div class="col-md-12">
 								<div class="col-md-6 mt10 text-right">
 									<span class="search-select-wrap" style="margin: 0px;">
-										<!-- <label style="font-size: 14px; padding: 0px;">구분코드</label> -->
-										<%-- <label style="font-size: 14px; padding: 0px;">업무구분</label>
-										<select id="searchCdList1" style=" font-size: 12px; width: 100px;" name="searchCdList1" class="form-control table-cell">
-												<option value="" >--전체--</option>
-											<c:forEach var="codeList" items="${codeList}">
-												<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
-											</c:forEach>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;확인</label> -->
-										<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;확인여부</label>
-										<select id="searchCdList2" style="width: 100px;" name="searchCdList2" class="form-control table-cell">
-												<option value="" >--전체--</option>
-												<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
-												<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">상태</label> -->
-										<label style="font-size: 14px; padding: 0px;">진행상태</label>
-										<select id="searchCdList3" style="width: 100px;" name="searchCdList3" class="form-control table-cell">
-												<option value="" >--전체--</option>
-												<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
-												<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '9' }">selected="selected"</c:if>>진행중</option>
-												<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
-												<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
-												<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">구분</label> -->
-										<label style="font-size: 14px; padding: 0px;">결재구분</label>
-										<select id="searchCdList6" style="width: 100px;" name="searchCdList6" class="form-control table-cell">
-												<option value="" >--전체--</option>
-												<option value="<%=VarConsts.APRV_GB_APRV %>" <c:if test="${params.searchCdList6 eq '0' }">selected="selected"</c:if>>결재</option>
-												<option value="<%=VarConsts.APRV_GB_REFE %>" <c:if test="${params.searchCdList6 eq '1' }">selected="selected"</c:if>>참조</option>
-												<option value="<%=VarConsts.APRV_GB_CAN %>" <c:if test="${params.searchCdList6 eq '2' }">selected="selected"</c:if>>취소</option>
-										</select> --%>
-									</span>
-								</div>
-								
-								<%-- <div class="col-md-6 mt10 text-right">
-									<span class="search-select-wrap" style="margin: 0px;">
-										<!-- <label style="font-size: 14px; padding: 0px;">소속1</label> -->
-										<label style="font-size: 14px; padding: 0px;">상위부서</label>
-										<select id="searchCdList4" style="width: 130px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control" onchange="javascript:fn_dp2List(this.value)">
-													<option value="" >--전체--</option>
-													<c:forEach var="dp" items="${dpList}">
-														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
-													</c:forEach>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">소속2</label>	 -->				
-										<label style="font-size: 14px; padding: 0px;">하위부서</label>					
-										<select id="searchCdList5" style="width: 150px; font-size: 12px; display:inline-block;" name="searchCdList5" class="form-control">
-													<option value="" >--전체--</option>
-													
-													<c:forEach var="dp" items="${dpList}">
-														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
-													</c:forEach>
-										</select>					
-										<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;보고자</label>
-										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" />
 										
 									</span>
-								</div> --%>
-<!-- 								<div class="col-lg-6 mt10 text-right" style="display:inline-block;"> -->
-<!-- 									<div class="search-select-wrap"> -->
-<!-- 										<label style="font-size: 14px;">보고일</label> -->
-<!-- 										<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;"> -->
-<!-- 												<div style="width: 130px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus"> -->
-<!-- 													<input id="st_dt"  name="st_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span> -->
-<!-- 													<div id="startpicker-container" style="margin-left: -1px;"></div> -->
-<!-- 												</div> -->
-<!-- 												~ -->
-<!-- 												<div style="width: 130px;" -->
-<!-- 													class="form-control tui-datepicker-input tui-datetime-input tui-has-focus"> -->
-<!-- 													<input id="ed_dt" name="ed_dt" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span> -->
-<!-- 													<div id="endpicker-container" style="margin-left: -1px;"></div> -->
-<!-- 												</div> -->
-<!-- 												<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-sm btn-default" onclick="fn_delDate()">지우기</button></div> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
+								</div>
 							</div>
-<!-- 						<div class="col-md-12 mt10 pull-left"> -->
-<!-- 							<div class="col-md-12"> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
+
 						<div class="col-md-12">
-<!-- 							<div class="col-lg-6 mt10 text-right"> -->
-<!-- 								<span class="search-select-wrap" style="margin: 0px;"> -->
-<!-- 									<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;보고자</label> -->
-<%-- 									<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" /> --%>
-<!-- 									<label style="font-size: 14px; padding: 0px;">결재자</label> -->
-<%-- 									<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField3" id="searchField3" value="${params.searchField3}" title="검색어 입력" /> --%>
-<!-- 									<label style="font-size: 14px; padding: 0px;">소속</label> -->
-<!-- 									<select id="searchCdList4" style="width: 100px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control"> -->
-<!-- 												<option value="" >--전체--</option> -->
-<%-- 												<c:forEach var="dp" items="${dpList}"> --%>
-<%-- 													<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option> --%>
-<%-- 												</c:forEach> --%>
-<!-- 									</select>					 -->
-<!-- 								</span> -->
-<!-- 							</div> -->
-							<!-- <div class="col-md-6 mt10 text-right" style="display:inline-block;">
-								<div class="search-select-wrap">
-									<label style="font-size: 14px;">보고일자</label>
-									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
-											<div style="width: 135px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-												<input id="st_dt"  name="stDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
-												<div id="startpicker-container" style="margin-left: -1px;"></div>
-											</div>
-											~
-											<div style="width: 135px;"
-												class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-												<input id="ed_dt"name="edDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
-												<div id="endpicker-container" style="margin-left: -1px;"></div>
-											</div>
-											<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
-									</div>
-								</div>
-							</div> -->
-							
-<!-- 							<div class="col-md-6 mt10 pull-right"> -->
-<!-- 								<div class="" style="max-width: 430px;"> -->
-<!-- 									<div class="col-md-3 un-style"> -->
-<!-- 										<span class="inline-element"> -->
-<!-- 											<select name="searchGubun" id="searchGubun" class="form-control" title="search" > -->
-<!-- 												<option value="01" > -->
-<!-- 												제목 -->
-<!-- 												</option> -->
-<!-- 												<option value="02" > -->
-<!-- 												내용 -->
-<!-- 												</option> -->
-<!-- 											</select> -->
-<!-- 										</span> -->
-<!-- 									</div> -->
-								
-<!-- 									<div class="col-md-9 un-style"> -->
-<!-- 										<div class="input-group" style="width: 95%;"> -->
-<!-- 										<input class="form-control" type="text" name="searchField" id="searchField" value="" title="검색어 입력" /> -->
-<!-- 											<span class="input-group-btn"> -->
-<!-- 												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button> -->
-<!-- 											</span> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-							
-							
-							
-							
-							<%-- <div class="col-md-6 mt10">
-								<div class="" style="max-width: 430px;">
-									<div class="col-lg-4 un-style">
-										<span class="inline-element">
-											<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-												제목
-												</option>
-												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if> >
-												내용
-												</option>
-											</select>
-										</span>
-									</div>
-								
-									<div class="col-lg-8 un-style">
-										<div class="input-group">
-										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-											<span class="input-group-btn">
-												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
-											</span>
-										</div>
-									</div>
-								</div>
-							</div> --%>
-							
-							
-							
-<!-- 							<div class="col-lg-6 mt10 text-right"> -->
-<!-- 								<div class="text-right search-select-wrap"> -->
-<!-- 									<div class="col-lg-2" style="display: inline-block; vertical-alignment: middle; width: 80px; padding: 0px;"> -->
-<!-- 												<select name="searchGubun" id="searchGubun" class="form-control" title="search" > -->
-<%-- 													<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>> --%>
-<!-- 													제목 -->
-<!-- 													</option> -->
-<%-- 													<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>> --%>
-<!-- 													내용 -->
-<!-- 													</option> -->
-<!-- 												</select>											 -->
-<!-- 									</div> -->
-								
-<!-- 									<div class="col-lg-4 text-right" style="display: inline-block; width: 320px;  padding: 0px;"> -->
-<!-- 										<div class="input-group"> -->
-<%-- 										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" /> --%>
-<!-- 											<span class="input-group-btn"> -->
-<!-- 												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button> -->
-<!-- 											</span> -->
-<!-- 										</div> -->
-<!-- 									</div> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
 						</div>
 					</div>
-					<!-- <div class="container"> -->
 						<div class="row">
 							<!--업무구분, 확인여부  -->
 							<div class="col-lg-6 col-md-12 col-sm-12 col-xs-6 mt10">
@@ -316,19 +123,15 @@
 												<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
 											</c:forEach>
 								</select>
-								
+								<!-- 소속2  -->
+								<!-- <label style="font-size: 14px; padding: 0px;">하위부서</label>	 -->
 								<select id="searchCdList5" style="width: 125px; font-size: 12px; display:inline-block;" name="searchCdList5" class="form-control">
 											<option value="" >--전체--</option>
 											
-											<%-- <c:forEach var="dp" items="${dpList}">
-												<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList5 }">selected="selected"</c:if> >${dp.CD_NM}</option>
-											</c:forEach> --%>
 								</select>
 								
 							</div>
-							<!-- 하위소속  -->
 							<div class="col-lg-5 col-lg-pull-1 col-md-6 col-sm-6 col-xs-6 mt10">
-								<!-- <label style="font-size: 14px; padding: 0px;">하위부서</label>	 -->
 								<!-- 보고자  -->
 								<label style="padding: 0px; width: 70px;">보고사원</label>
 								<input class="form-control" style="width: 125px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" />
@@ -380,189 +183,6 @@
 								</div>
 							
 						</div>
-						<div class="row">
-							<!-- 검색  -->
-							<%-- <div class="col-xs-12 mt10">
-									<div class="search-container pull-left">
-										<div class="col-xs-5 un-style">
-											<span class="inline-element">
-												<select name="searchGubun" id="searchGubun" class="form-control" style="display:inline;" title="search" >
-													<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-													제목
-													</option>
-													<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if> >
-													내용
-													</option>
-												</select>
-											</span>
-										</div>
-										<div class="col-xs-7 un-style">
-											<div class="input-group">
-												<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-												<span class="input-group-btn">
-													<button class=" fnSearch btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
-												</span>
-											</div>
-										</div>
-									</div>
-								</div> --%>
-							<%-- <div class="col-lg-6 col-md-12 col-sm-12 pull-right">
-								<div class="inline-form">
-									<div class="un-style">
-										<span class="inline-element">
-											<select name="searchGubun" id="searchGubun" class="form-control" style="width: 100px; display:inline;" title="search" >
-												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-												제목
-												</option>
-												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if> >
-												내용
-												</option>
-											</select>
-										</span>
-									</div>
-									
-									<div class="un-style">
-										<div class="input-group">
-										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-											<span class="input-group-btn">
-												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
-											</span>
-										</div>
-									</div>
-								</div>
-							</div> --%>
-						</div>
-						<div class="row"></div>
-						<div class="row"></div>
-					
-					<!-- </div> -->
-					
-					
-					
-					<!-- 업무구분 , 진행상태   -->
-					<%-- <div class="search-container2 row">
-						<div class="col-md-12">
-								<div class="col-md-12 form-inline">
-									<!-- <span class="search-select-wrap" style="margin: 0px;"> -->
-										<!-- <label style="font-size: 14px; padding: 0px;">구분코드</label> -->
-										<label style="padding: 0px;">업무구분</label>
-										<select id="searchCdList1" style=" font-size: 12px; width: 100px;" name="searchCdList1" class="form-control table-cell">
-												<option value="" >--전체--</option>
-											<c:forEach var="codeList" items="${codeList}">
-												<option value="${codeList.CD}" <c:if test="${codeList.CD eq params.searchCdList1 }">selected="selected"</c:if> >${codeList.CD_NM}</option>
-											</c:forEach>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;확인</label> -->
-										<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;확인여부</label>
-										<select id="searchCdList2" style="width: 100px;" name="searchCdList2" class="form-control table-cell">
-												<option value="" >--전체--</option>
-												<option value="Y" <c:if test="${params.searchCdList2 eq 'Y' }">selected="selected"</c:if>>확인</option>
-												<option value="N" <c:if test="${params.searchCdList2 eq 'N' }">selected="selected"</c:if> >미확인</option>
-										</select>
-										<label style="padding: 0px;">진행상태</label>
-										<select id="searchCdList3" style="width: 100px;" name="searchCdList3" class="form-control table-cell">
-												<option value="" >--전체--</option>
-												<option value="<%=VarConsts.APRV_COND_WAIT %>" <c:if test="${params.searchCdList3 eq '0' }">selected="selected"</c:if>>대기</option>
-												<option value="<%=VarConsts.APRV_COND_ONGO %>" <c:if test="${params.searchCdList3 eq '9' }">selected="selected"</c:if>>진행중</option>
-												<option value="<%=VarConsts.APRV_COND_APPR %>" <c:if test="${params.searchCdList3 eq '1' }">selected="selected"</c:if>>완료</option>
-												<option value="<%=VarConsts.APRV_COND_DEFE %>" <c:if test="${params.searchCdList3 eq '2' }">selected="selected"</c:if>>보류</option>
-												<option value="<%=VarConsts.APRV_COND_RETR %>" <c:if test="${params.searchCdList3 eq '3' }">selected="selected"</c:if>>반려</option>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">구분</label> -->
-										<label style="font-size: 14px; padding: 0px;">결재구분</label>
-										<select id="searchCdList6" style="width: 100px;" name="searchCdList6" class="form-control table-cell">
-												<option value="" >--전체--</option>
-												<option value="<%=VarConsts.APRV_GB_APRV %>" <c:if test="${params.searchCdList6 eq '0' }">selected="selected"</c:if>>결재</option>
-												<option value="<%=VarConsts.APRV_GB_REFE %>" <c:if test="${params.searchCdList6 eq '1' }">selected="selected"</c:if>>참조</option>
-												<option value="<%=VarConsts.APRV_GB_CAN %>" <c:if test="${params.searchCdList6 eq '2' }">selected="selected"</c:if>>취소</option>
-										</select>
-							<!-- 		</span> -->
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="col-md-12 mt10">
-									<span class="search-select-wrap" style="margin: 0px;">
-										<!-- <label style="font-size: 14px; padding: 0px;">소속1</label> -->
-										<label style="font-size: 14px; padding: 0px;">상위부서</label>
-										<select id="searchCdList4" style="width: 130px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control" onchange="javascript:fn_dp2List(this.value)">
-													<option value="" >--전체--</option>
-													<c:forEach var="dp" items="${dpList}">
-														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
-													</c:forEach>
-										</select>
-										<!-- <label style="font-size: 14px; padding: 0px;">소속2</label>	 -->				
-										<label style="font-size: 14px; padding: 0px;">하위부서</label>					
-										<select id="searchCdList5" style="width: 150px; font-size: 12px; display:inline-block;" name="searchCdList5" class="form-control">
-													<option value="" >--전체--</option>
-													
-													<c:forEach var="dp" items="${dpList}">
-														<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
-													</c:forEach>
-										</select>					
-										<label style="font-size: 14px; padding: 0px;">&nbsp;&nbsp;보고자</label>
-										<input class="form-control" style="width: 100px; display:inline-block;" type="text" name="searchField2" id="searchField2" value="${params.searchField2}" title="검색어 입력" />
-										
-									</span>
-								</div>
-								<div class="col-md-12 mt10 text-right">
-									<span class="search-select-wrap" style="margin: 0px;">
-										
-									</span>
-								</div>
-							
-							</div>
-					</div>
-					<!-- 소속 , 보고일자  -->
-					<div class="search-container2 row">
-						<div class="col-md-12">
-							<div class="col-md-12 mt10 text-right" style="margin: 0px;">
-								<div class="search-select-wrap">
-									<label style="font-size: 14px;">보고일</label>
-									<div class="search-select-wrap" style="display: inline-block; vertical-align: middle;">
-											<div style="width: 135px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-												<input id="st_dt"  name="stDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
-												<div id="startpicker-container" style="margin-left: -1px;"></div>
-											</div>
-											~
-											<div style="width: 135px;"
-												class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-												<input id="ed_dt"name="edDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
-												<div id="endpicker-container" style="margin-left: -1px;"></div>
-											</div>
-											<div style="display: inline-block;"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="col-md-12 mt10">
-								<div class="" style="max-width: 430px;">
-									<div class="col-md-4 un-style">
-										<span class="inline-element">
-											<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-												<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>
-												제목
-												</option>
-												<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if> >
-												내용
-												</option>
-											</select>
-										</span>
-									</div>
-								
-									<div class="col-md-8 un-style">
-										<div class="input-group">
-										<input class="form-control" type="text" name="searchField" id="searchField" value="${params.searchField}" title="검색어 입력" />
-											<span class="input-group-btn">
-												<button class="btn btn-info" type="button" onclick="goPage('1');"><i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span></button>
-											</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div> --%>
-					<!-- 보고자, 검색  -->
 					<div class="search-container2 row"></div>
 					</div>
 					<p class="clearfix board-top">
@@ -586,7 +206,7 @@
 								<col width="50" class="hidden-xs hidden-sm"/>
 								<col width="80"/>
 								<col width="80" class="hidden-xs hidden-sm"/>
-								<col width="50"/>
+								<%-- <col width="50"/> --%>
 								<col width="*"/>
 								<col width="180" class="hidden-xs hidden-sm"/>
 								<col width="100" class="hidden-xs hidden-sm"/>
@@ -597,7 +217,7 @@
 									<th class="hidden-xs hidden-sm">NO</th>
 									<th class="">보고자</th>
 									<th class="hidden-xs hidden-sm">구분</th>
-									<th class="">확인</th>
+								<!-- 	<th class="">확인</th> -->
 									<th class="">제 목</th>
 									<th class="hidden-xs hidden-sm">기간</th>
 									<th class="hidden-xs hidden-sm">보고일</th>
@@ -608,7 +228,7 @@
 					        	<c:choose>
 									<c:when test="${totalCnt < 1 }">
 										<tr>
-											<td colspan="8">
+											<td colspan="7">
 												검색된 내용이 없습니다.
 											</td>
 										</tr>
@@ -625,7 +245,7 @@
 												<td class="hidden-xs hidden-sm">
 													${list.APRV_TYPE_NM}
 												</td>
-												<td class="">
+										<%-- 		<td class="">
 											<c:choose>
 												<c:when test="${list.CONF_YN eq 'Y' }">
 													확인
@@ -634,7 +254,7 @@
 													미확인
 												</c:otherwise>
 											</c:choose>
-												</td>
+												</td> --%>
 												<td class="center">
 													<a href="javascript:fnView('${list.APRV_NO}', '${list.LINE_CHK }', '${list.CONF_YN }', '${list.CONF_Y_CNT }');">
 													<span class="ellip ellip-line">${list.TITLE}</span>

@@ -422,7 +422,7 @@ $(function() {
 		document.frm1.aprv_line_cnt.value = aprv_line.rows.length-1; 
 		var vali1 = getValidation1(); // 공통
 		var vali2 = getValidation2(vali1); // 개별
-		console.log(vali2);
+		//console.log(vali2);
 		if(vali1 && vali2){
 			if($("#mode").val() == "<%=VarConsts.MODE_U%>") {
 			} else {
@@ -564,7 +564,7 @@ $(function() {
 					foramt : 'yyyy-MM-dd'
 				});	
 			}	
-			
+			//휴가일경우
 			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
 				html += '<div class="select-box">';
 				html += '<select name="half_type_cd_st" id="half_type_cd_st" class="half_type_cd_st half_type_cd form-control vac-term">';
@@ -580,13 +580,6 @@ $(function() {
 					html += '<option class="half_type_cd_st_opt" id="half_type_cd_st_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
 					html2 += '<option class="half_type_cd_ed_opt" id="half_type_cd_ed_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
 					
-					/* html += '<div class="radio">';
-					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html += '</div>'; */
-					
-					/* html2 += '<div class="radio">';
-					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html2 += '</div>'; */
 				}
 				
 				html += '</select>';
@@ -596,8 +589,7 @@ $(function() {
 				
 				$("#startpicker-container .tui-rangepicker").append(html);
 				$("#endpicker-container .tui-rangepicker").append(html2);
-				
-				//////////////////////////////////////////////
+
 				
 				$("#startpicker-container table.tui-calendar-body-inner").addClass("startpicker-selectable");
 				$("#endpicker-container table.tui-calendar-body-inner").addClass("endpicker-selectable");
@@ -607,37 +599,6 @@ $(function() {
 				
 				fn_calcVacDay();
 			}
-			
-			
-			
-			
-			
-			<%-- if(cd1 == "<%=VarConsts.EAM_VACATION_CODE%>"){
-				for(var i in vacTermList){
-					var vacTerm = vacTermList[i];
-					html += '<div class="radio">';
-					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html += '</div>';
-					
-					html2 += '<div class="radio">';
-					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html2 += '</div>';
-				}
-				
-				html += '</div>';
-				html2 += '</div>';
-				
-				$("#startpicker-container .tui-rangepicker").append(html);
-				$("#endpicker-container .tui-rangepicker").append(html2);
-				
-				$("#half_type_cd_st_"+viewJson["HALF_TYPE_CD"]).prop("checked", true);
-				$("#half_type_cd_ed_"+viewJson["HALF_TYPE_CD_ED"]).prop("checked", true);
-				
-				fn_calcVacDay();
-			} --%>
-			//휴가일경우
-			
-			
 			
 			$("#term_ed").attr("disabled", false);
 		}
@@ -789,6 +750,7 @@ $(document).on('touchend', '.tui-calendar-date', function(e){
 /*2022.01.21 캘린더 버튼 이벤트 버블링 방지 : END*/
 
 
+//공휴일 정보 불로오기
 function fn_loadHolMng(trgt){
 	var prnt = "#"+trgt;
 	
@@ -803,7 +765,7 @@ function fn_loadHolMng(trgt){
 		async : false,
 		data : {"stdd_yr" : stddYr},
 		success: function(result){
-			var holList = result.jsonList;
+			holList = result.jsonList;
 			//console.log(holList);
 			if(holList != null){
 				for(var i = 0; i< holList.length ; i++){
@@ -821,13 +783,13 @@ function fn_loadHolMng(trgt){
 				}
 				
 			}else{
-				alert("휴일 정보가 등록되지 않았습니다. 휴일 정보를 먼저 등록해주세요.");
+				alert("공휴일 정보가 등록되지 않았습니다. 공휴일 정보를 먼저 등록해주세요.");
 			}
 			
 			
 		},error: function (request, status, error) {
-			//alert("삭제에 실패 했습니다.");
-			alert(request.responseText);
+			alert("공휴일 정보 불러오기를 실패했습니다.");
+			//alert(request.responseText);
 		} 
 	});
 	
@@ -921,13 +883,6 @@ function fn_getDocCode(cd1, cd2) {
 					html += '<option class="half_type_cd_st_opt" id="half_type_cd_st_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
 					html2 += '<option class="half_type_cd_ed_opt" id="half_type_cd_ed_'+vacTerm.CD+'" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'" nm="'+vacTerm.CD_NM+'">'+vacTerm.CD_NM+'</option>';
 					
-					/* html += '<div class="radio">';
-					html += '<label><input class="form-check-input col_md_2 half_type_cd_st half_type_cd" name="half_type_cd_st" id="half_type_cd_st_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html += '</div>'; */
-					
-					/* html2 += '<div class="radio">';
-					html2 += '<label><input class="form-check-input col_md_2 half_type_cd_ed half_type_cd" name="half_type_cd_ed" id="half_type_cd_ed_'+vacTerm.CD+'" type="radio" value="'+vacTerm.CD+'" cnt="'+vacTerm.CD_VAL+'">'+vacTerm.CD_NM+'</label>';
-					html2 += '</div>'; */
 				}
 				
 				html += '</select>';
@@ -940,6 +895,9 @@ function fn_getDocCode(cd1, cd2) {
 				
 				$("#startpicker-container table.tui-calendar-body-inner").addClass("startpicker-selectable");
 				$("#endpicker-container table.tui-calendar-body-inner").addClass("endpicker-selectable");
+				
+				$("#half_type_cd_st_CD0021001").prop('selected', true);
+				$("#half_type_cd_ed_CD0021001").prop('selected', true);
 			}
 			//가지급금 지급희망일자 datepicker
 			if($("#pay_dt").length > 0) {
