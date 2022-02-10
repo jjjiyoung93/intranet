@@ -71,39 +71,44 @@ jsonVacCdList = ${jsonVacTerm};
 
 function getValidation2(valid) {
 	if($("#cdList1").val() == "CD0001011") {
-		var vctLeftDay;
-		
-		/* 2022.01.27 휴가잔여일수 조회 추가 : BEGIN*/
-		$.ajax({
-			url : "${pageContext.request.contextPath}/aprv/aprv04Ajax.do",
-			type : "post",
-			dataType : 'json',
-			async : false,
-			data : {"rept_aprv_no" : $("#rept_aprv_no").val()},
-			success : function(json){
-				var vctMap = json.vctMap;
-				var leftDay = vctMap.VCT_LEFT_DAY;
-				vctLeftDay = leftDay;
-				//console.log("잔여일 : " + leftDay);
-			}, error: function (request, status, error) {
-				valid = false;
-				return false;
-			}
-		});
-		/* 2022.01.27 휴가잔여일수 조회 추가 : END*/
-		
+
 		if($("#term_st").val() == ""){
 			if(valid) {
-				alert("시작 날짜를 선택해 주세요.");
+				alert("시작일자를 선택해주세요.");
 				$("#term_st").focus();
 			}
 			$("#term_st").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
+		//시작날짜 주말, 공휴일 여부 체크
+		else{
+				holDtList = [];
+				for(var i = 0; i < holList.length; i++){
+					holDtList.push(holList[i].CAL_HOL_DT);
+				}
+				var termSt = $("#term_st").val();
+				termSt = termSt.replaceAll('-','');
+				var year = parseInt(termSt.substring(0,4));
+				var mon = parseInt(termSt.substring(4,6)) - 1;
+				var day = parseInt(termSt.substring(6, termSt.length));
+				
+				var stDt = new Date(year, mon, day, 0, 0, 0);
+				
+				var week = stDt.getDay();
+				
+				//주말 이거나 공휴일 이면 체크
+				if(week == 0 || week == 6 || holDtList.indexOf(termSt) != -1){
+					var msg = "시작일자가 주말 또는 공휴일인 경우 신청할 수 없습니다.";
+					alert(msg);
+					$("#term_st").focus();
+					$("#term_st").closest(".form-group").addClass("has-error");
+					valid = false;
+				}
+		}
 		
 		if($("#half_type_cd_st").val() == ""){
 			if(valid) {
-				alert("휴가 시간 구분(시작일자)을 선택해 주세요.");
+				alert("시작일자의 시간구분을 선택해주세요.");
 				$("#half_type_cd_st").focus();
 			}
 			$("#half_type_cd_st").closest(".form-group").addClass("has-error");
@@ -112,25 +117,104 @@ function getValidation2(valid) {
 		
 		if($("#term_ed").val() == ""){
 			if(valid) {
-				alert("종료 날짜를 선택해 주세요.");
+				alert("종료일자를 선택해주세요.");
 				$("#term_st").focus();
 			}
 			$("#term_st").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
+		//종료날짜 주말, 공휴일 여부 체크
+		else{
+			holDtList = [];
+			for(var i = 0; i < holList.length; i++){
+				holDtList.push(holList[i].CAL_HOL_DT);
+			}
+			var termEd = $("#term_ed").val();
+			termEd = termEd.replaceAll('-','');
+			var year = parseInt(termEd.substring(0,4));
+			var mon = (parseInt(termEd.substring(4,6)) - 1);
+			var day = parseInt(termEd.substring(6, termEd.length));
+			
+			var edDt = new Date(year, mon, day, 0, 0, 0);
+			
+			var week = edDt.getDay();
+			
+			//주말 이거나 공휴일 이면 체크
+			if(week == 0 || week == 6 || holDtList.indexOf(termEd) != -1){
+				var msg = "종료일자가 주말 또는 공휴일인 경우 신청할 수 없습니다.";
+				alert(msg);
+				$("#term_ed").focus();
+				$("#term_ed").closest(".form-group").addClass("has-error");
+				valid = false;
+			}
+		}
 		
 		if($("#half_type_cd_ed").val() == ""){
 			if(valid) {
-				alert("휴가 시간 구분(종료일자)을 선택해 주세요.");
+				alert("종료일자의 시간구분을 선택해주세요.");
 				$("#half_type_cd_ed").focus();
 			}
 			$("#half_type_cd_ed").closest(".form-group").addClass("has-error");
 			valid = false;
 		}
+		
+		//시작일, 종료일 동일 년도 확인
+		var stYr = $("#term_st").val();
+		stYr = stYr.substring(0,4);
+		
+		var edYr = $("#term_ed").val();
+		edYr = edYr.substring(0,4);
+		
+		if(stYr != edYr){
+			//console.log("시작일 종료일 년도 확인!!");
+			if(valid){
+				alert("시작일과 종료일의 년도가 상이한 경우 각각의 신청서로 상신 바랍니다.");
+				$("#half_type_cd_ed").focus();
+			}
+			$("#half_type_cd_ed").closest(".form-group").addClass("has-error");
+			valid = false;
+		}
+		
+		
+		//시작일, 종료일 동일 날짜 선택 시 동일 코드 확인
+		if($("#term_st").val() == $("#term_ed").val()){
+			if(valid){
+				if($("#half_type_cd_st").val() != $("#half_type_cd_ed").val()){
+					alert("휴가 1일 신청 시 시간구분코드(종일,반차,반반차)가 동일해야 신청 가능합니다.");
+					$("#half_type_cd_ed").focus();
+					$("#half_type_cd_ed").closest(".form-group").addClass("has-error");
+					valid = false;
+				}
+			}
+		}
+		
+		
 		/*2022.01.27 휴가 잔여일 비교 validation 추가 : BEGIN*/
 		// 작성년도 기준 신청일
 		
 		if(valid && $("#cdList2").val() == "CD0001011001"){
+			var vctLeftDay;
+			var stddYr = stYr;
+			
+			/* 2022.01.27 휴가잔여일수 조회 추가 : BEGIN*/
+			$.ajax({
+				url : "${pageContext.request.contextPath}/aprv/aprv04Ajax.do",
+				type : "post",
+				dataType : 'json',
+				async : false,
+				data : {"rept_aprv_no" : $("#rept_aprv_no").val(), "stdd_yr" : stddYr},
+				success : function(json){
+					var vctMap = json.vctMap;
+					var leftDay = vctMap.VCT_LEFT_DAY;
+					vctLeftDay = leftDay;
+					//console.log("잔여일 : " + leftDay);
+				}, error: function (request, status, error) {
+					valid = false;
+					return false;
+				}
+			});
+			/* 2022.01.27 휴가잔여일수 조회 추가 : END*/
+			
 			//휴가 신청 일수
 			var vctDayCnt = 0;
 			
