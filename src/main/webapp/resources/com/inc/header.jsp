@@ -215,6 +215,23 @@ function bizplay(st, ed) {
 			}
 		});	
 }
+
+function birthday(stddYr){
+	$.ajax({
+		type: 'POST',
+		url: '${pageContext.request.contextPath}/uss/umt/uss02Ajax.do',
+		dataType: 'json',
+		data : {"stdd_yr" : stddYr},
+		success: function(rtnData) {
+			//var calList = rtnData.calList;
+			//console.log(rtnData);
+		}, 
+		error:function(request,status,error){
+		    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});	
+	
+}
 </script>
 			
 	    	
