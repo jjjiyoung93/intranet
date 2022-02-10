@@ -20,7 +20,8 @@
 			  			AND A.RTR_YN = #{searchGubun3}
 			  		</when>
 			  		<otherwise>
-			  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+			  			<!-- AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' ) -->
+			  			AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= #{searchGubun2}) /*현재 재직중인 사원*/
 			  		</otherwise>
 			  	</choose>
 			</if>
@@ -75,7 +76,8 @@
 			  			AND A.RTR_YN = #{searchGubun3}
 			  		</when>
 			  		<otherwise>
-			  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+			  			<!-- AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' ) -->
+			  			AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= #{searchGubun2}) /*현재 재직중인 사원*/
 			  		</otherwise>
 			  	</choose>
 		  	</if>
@@ -144,7 +146,8 @@
 			  			AND A.RTR_YN = #{searchGubun3}
 			  		</when>
 			  		<otherwise>
-			  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+			  			<!-- AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' ) -->
+			  			AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= #{searchGubun2}) /*현재 재직중인 사원*/
 			  		</otherwise>
 			  	</choose>
 			</if>
@@ -212,7 +215,8 @@
 				  			AND A.RTR_YN = #{searchGubun3}
 				  		</when>
 				  		<otherwise>
-				  			AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' )
+				  			<!-- AND ( A.RTR_YN IS NULL OR A.RTR_YN != 'Y' ) -->
+				  			AND ( NVL(SUBSTR(A.RTR_DT, 1, 4), '9999') >= #{searchGubun2}) /*현재 재직중인 사원*/
 				  		</otherwise>
 				  	</choose>
 				  </if>
@@ -248,62 +252,7 @@
 		
 	<!-- 휴가 현황 목록 조회  -->
 	<select id="getVctViewList" parameterType="map" resultType="hashMap">
-		<!-- WITH W_VCT_DAY_CNT AS (
-			SELECT A.* 
-			  FROM VCT_INF_MNG A
-			  INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') B ON (A.APRV_NO = B.APRV_NO)
-		)
-		SELECT
-		       A.STDD_YR
-		     , A.USS_ID
-		     , (SELECT S.USS_NM FROM STD_USS_MNG S WHERE S.USS_ID = A.USS_ID) AS USS_UM
-		     , C.CD
-		     , ( SELECT S.CD_NM FROM STD_CD_MNG S WHERE S.CD = C.CD ) AS VCT_TYPE_NM
-		     , CASE WHEN C.CD = 'CD0001011001' THEN A.VCT_GRNT_DAY
-		            ELSE NULL
-		            END AS VCT_GRNT_DAY /*부여일수*/
-		     , NVL(B.VCT_TOT_USE_CNT, 0) AS VCT_TOT_USE_CNT /*사용일*/
-		     , CASE WHEN C.CD = 'CD0001011001' THEN (A.VCT_GRNT_DAY - B.VCT_TOT_USE_CNT)
-		            ELSE NULL
-		            END AS VCT_LEFT_DAY/*잔여일*/
-		     , CASE WHEN C.CD = 'CD0001011001' THEN ROUND((B.VCT_TOT_USE_CNT / A.VCT_GRNT_DAY * 100) , 2)
-		            ELSE NULL
-		            END AS VCT_USE_RATE /*활용률*/
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '01') AS JAN_CNT /*1월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '02') AS FEB_CNT /*2월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '03') AS MAR_CNT /*3월 사용일수 */
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 1) AS FIR_QRTR_CNT /*1분기 사용일수*/
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '04') AS APR_CNT/*4월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '05') AS MAY_CNT/*5월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '06') AS JUN_CNT/*6월 사용일수 */
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 2) AS SEC_QRTR_CNT /*2분기 사용일수*/
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '07') AS JUL_CNT/*7월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '08') AS AUg_CNT/*8월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '09') AS SEP_CNT/*9월 사용일수 */
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 3) AS THR_QRTR_CNT /*3분기 사용일수*/
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '10')AS OCT_CNT/*10월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '11') AS NOV_CNT/*11월 사용일수 */
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND SUBSTR(S.VCT_DT, 6, 2) = '12') AS DEC_CNT/*12월 사용일수 */
-		     
-		     , (SELECT NVL(SUM(S.VCT_DAY_CNT), 0) FROM W_VCT_DAY_CNT S WHERE S.VCT_YR = A.STDD_YR AND S.USS_ID = A.USS_ID AND S.VCT_TYPE = C.CD AND S.VCT_QRTR = 4) AS FRT_QRTR_CNT /*4분기 사용일수*/
-		  FROM ( SELECT * FROM VCT_DAY_MNG WHERE STDD_YR = #{stdd_yr} AND USS_ID = #{uss_id} ) A
-		  LEFT OUTER JOIN (SELECT
-		                          E.VCT_YR
-		                        , E.USS_ID
-		                        , E.VCT_TYPE
-		                        , SUM(E.VCT_DAY_CNT) AS VCT_TOT_USE_CNT
-		                     FROM VCT_INF_MNG E
-		                     INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') F ON (E.APRV_NO = F.APRV_NO)
-		                    GROUP BY E.VCT_YR, E.USS_ID, E.VCT_TYPE ) B ON (B.USS_ID = A.USS_ID AND B.VCT_YR = A.STDD_YR)
-		  RIGHT OUTER JOIN (SELECT CD FROM STD_CD_MNG WHERE UP_CD = 'CD0001011' ORDER BY CD_ORD) C ON (B.VCT_TYPE = C.CD)                
-		
-		  ORDER BY C.CD ASC  -->
+		<!-- 결재문서정보 + 반려 카운트  -->
 		  WITH W_VCT_APRV_TB AS (
 		        SELECT
 		               A.*
@@ -316,7 +265,9 @@
 		                              WHERE APRV_YN_CD = '3'
 		                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
 		   
-		 ),  W_VCT_DAY_CNT AS (
+		 )
+		 <!-- 결재문서 별 사용 휴가 일수 조회 (반려분서, 관리자 취소문서 제외)  -->
+		 ,  W_VCT_DAY_CNT AS (
 					SELECT A.* 
 					  FROM VCT_INF_MNG A
 					  INNER JOIN (SELECT APRV_NO 
@@ -325,7 +276,9 @@
 		                             OR CANCEL_YN != 'Y')
 		                             AND APRV_YN_3_CNT = 0) B ON (A.APRV_NO = B.APRV_NO)
 		              WHERE A.USE_YN = 'Y'     
-		), W_VCT_INF_TB AS (
+		)
+		<!-- 사용자별 휴가 부여일수, 사용ㅇ리수, 잔여일수, 활용률, 월별 사용일수 -->
+		, W_VCT_INF_TB AS (
 		        
 		        
 		SELECT
@@ -376,6 +329,7 @@
 		ORDER BY B.CD_ORD
 		
 		)
+		<!-- 사용자별 휴가 부여일수, 사용ㅇ리수, 잔여일수, 활용률, 월별 사용일수 + 소계 -->
 		 SELECT * 
 		   FROM W_VCT_INF_TB
 		   UNION ALL (SELECT
@@ -411,10 +365,13 @@
 	
 	<!-- 휴가현황집계 총 갯수  -->
 	<select id="getVctStatTotCount" parameterType="map" resultType="int">
+		<!-- 기준년도 파라미터  -->
 		WITH W_PARAMS AS(
 	       SELECT #{searchGubun2} AS STDD_YR
 	         FROM DUAL
-		),W_USS_LIST AS (
+		)
+		<!-- 사용자 목록  -->
+		,W_USS_LIST AS (
 		    SELECT
 		           B.STDD_YR
 		         , A.USS_ID
@@ -455,7 +412,23 @@
 							</when>
 						</choose>
 					</if>
-		),W_LAST_APRV AS (
+		), 
+		<!-- 결재문서 + 반려카운트 -->
+		W_VCT_APRV_TB AS (
+		        SELECT
+		               A.*
+		             , NVL(B.CNT, 0) AS APRV_YN_3_CNT
+		          FROM STD_APRV_MNG A
+		          LEFT OUTER JOIN (
+		                            SELECT APRV_NO
+		                                 , COUNT(1) AS CNT
+		                              FROM STD_APRV_LINE
+		                              WHERE APRV_YN_CD = '3'
+		                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
+		   
+		 )
+		 <!-- 기준년도 마지막 결재문서 번호  -->
+		,W_LAST_APRV AS (
 		        SELECT
 		               C.REPT_APRV_NO
 		             , MAX(TO_NUMBER(C.APRV_NO)) AS MAX_APRV_NO
@@ -463,7 +436,9 @@
 		         LEFT OUTER JOIN W_PARAMS D ON (1=1)
 		        WHERE TO_CHAR(C.CRTN_DT, 'YYYY') = D.STDD_YR
 		        GROUP BY C.REPT_APRV_NO
-		),W_USS_ADD_INFO AS(
+		)
+		<!-- 기준년도 마지막 결재문서 상세 정보  -->
+		,W_USS_ADD_INFO AS(
 		    SELECT
 		            E.APRV_NO
 		          , E.REPT_APRV_NO
@@ -476,24 +451,31 @@
 		    FROM STD_APRV_MNG E
 		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
 		   
-		),W_VCT_TYPE_LIST AS (
+		)
+		<!-- 휴가유형 목록  -->
+		,W_VCT_TYPE_LIST AS (
 		    SELECT 
 		           * 
 		      FROM STD_CD_MNG 
 		     WHERE UP_CD = 'CD0001011' 
 		     ORDER BY CD_ORD
-		), W_VCT_SUM_DAY AS (
+		)
+		<!-- 사용자별, 휴가유형별 휴가 사용일수 (반려문서, 관리자 취소 문서 제외)  -->
+		, W_VCT_SUM_DAY AS (
 		        SELECT 
 		               G.USS_ID
 		             , G.VCT_TYPE
 		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
 		           FROM VCT_INF_MNG G
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
-		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		           <!-- INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO) -->
+		           INNER JOIN (SELECT APRV_NO FROM W_VCT_APRV_TB WHERE (CANCEL_YN IS NULL OR CANCEL_YN != 'Y') AND APRV_YN_3_CNT = 0) I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
 		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE 
-		), W_VCT_USE_DAY_CNT AS (
+		)
+		<!-- 사용자 정보 + 휴가 정보 + 부여일수, 사용일수, 잔여일수, 활용률  -->
+		, W_VCT_USE_DAY_CNT AS (
 		
 		SELECT
 		           J.STDD_YR
@@ -518,7 +500,9 @@
 		  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
 		  ORDER BY J.USS_NM, K.CD_ORD
 		
-		), W_VCT_USS_INFO AS(
+		)
+		<!-- 사용자 정보 + 마지막 결재문서 상세정보 -->
+		, W_VCT_USS_INFO AS(
 		    SELECT
 		           L.STDD_YR
 		         , L.USS_ID
@@ -559,10 +543,13 @@
 	
 	<!-- 휴가현황집계 목록 조회  -->
 	<select id="getVctStatList" resultType="hashMap" parameterType="map">
+		<!-- 기준년도 파라미터  -->
 		WITH W_PARAMS AS(
 	       SELECT #{searchGubun2} AS STDD_YR
 	         FROM DUAL
-		),W_USS_LIST AS (
+		)
+		<!-- 사용자 목록  -->
+		,W_USS_LIST AS (
 		    SELECT
 		           B.STDD_YR
 		         , A.USS_ID
@@ -603,7 +590,24 @@
 							</when>
 						</choose>
 					</if>
-		),W_LAST_APRV AS (
+		),
+		<!-- 결재문서 정보 + 반려 카운트  -->
+		W_VCT_APRV_TB AS (
+		        SELECT
+		               A.*
+		             , NVL(B.CNT, 0) AS APRV_YN_3_CNT
+		          FROM STD_APRV_MNG A
+		          LEFT OUTER JOIN (
+		                            SELECT APRV_NO
+		                                 , COUNT(1) AS CNT
+		                              FROM STD_APRV_LINE
+		                              WHERE APRV_YN_CD = '3'
+		                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
+		   
+		 )
+		
+		<!-- 기준년도 마지막 결재문서 번호  -->
+		,W_LAST_APRV AS (
 		        SELECT
 		               C.REPT_APRV_NO
 		             , MAX(TO_NUMBER(C.APRV_NO)) AS MAX_APRV_NO
@@ -611,7 +615,9 @@
 		         LEFT OUTER JOIN W_PARAMS D ON (1=1)
 		        WHERE TO_CHAR(C.CRTN_DT, 'YYYY') = D.STDD_YR
 		        GROUP BY C.REPT_APRV_NO
-		),W_USS_ADD_INFO AS(
+		)
+		<!-- 기준년도 마지막 결재문서 상세정보  -->
+		,W_USS_ADD_INFO AS(
 		    SELECT
 		            E.APRV_NO
 		          , E.REPT_APRV_NO
@@ -624,24 +630,31 @@
 		    FROM STD_APRV_MNG E
 		    INNER JOIN W_LAST_APRV F ON (E.APRV_NO = F.MAX_APRV_NO )
 		    
-		),W_VCT_TYPE_LIST AS (
+		)
+		<!-- 휴가유형 목록  -->
+		,W_VCT_TYPE_LIST AS (
 		    SELECT 
 		           * 
 		      FROM STD_CD_MNG 
 		     WHERE UP_CD = 'CD0001011' 
 		     ORDER BY CD_ORD
-		), W_VCT_SUM_DAY AS (
+		)
+		<!-- 사용자별, 휴가별, 휴가사용일수 (반려문서, 관리자취소 문서 제외)  -->
+		, W_VCT_SUM_DAY AS (
 		        SELECT 
 		               G.USS_ID
 		             , G.VCT_TYPE
 		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
 		           FROM VCT_INF_MNG G
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
-		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		           <!-- INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO) -->
+		           INNER JOIN (SELECT APRV_NO FROM W_VCT_APRV_TB WHERE (CANCEL_YN IS NULL OR CANCEL_YN != 'Y') AND APRV_YN_3_CNT=0 ) I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
 		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE 
-		), W_VCT_USE_DAY_CNT AS (
+		)
+		<!-- 사용자 정보 + 휴가정보 + 휴가 부여일수, 휴가사용일수, 잔여일수, 활용률  -->
+		, W_VCT_USE_DAY_CNT AS (
 		
 		SELECT
 		           J.STDD_YR
@@ -666,7 +679,9 @@
 		  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
 		  ORDER BY J.USS_NM, K.CD_ORD
 		
-		), W_VCT_USS_INFO AS(
+		)
+		<!-- 사용자 정보 + 마지막 결재문서 상세정보  -->
+		, W_VCT_USS_INFO AS(
 		    SELECT
 		           L.STDD_YR
 		         , L.USS_ID
@@ -689,6 +704,8 @@
 		      FROM W_USS_LIST L
 		      LEFT OUTER JOIN W_USS_ADD_INFO M ON (M.REPT_APRV_NO = L.USS_ID)
 		)
+		
+			<!-- 사용자별, 휴가별 부여일수, 사용일수, 잔여일수, 활용률  -->
 			SELECT
 		           X.STDD_YR
 		         , X.USS_ID
@@ -732,10 +749,13 @@
 	
 	<!-- 휴가현황집계 평균 목록 조회  -->
 	<select id="getVctStatAvgList" resultType="hashMap" parameterType="map">
+		<!-- 기준년도 파라미터  -->
 		WITH W_PARAMS AS(
 	       SELECT #{searchGubun2} AS STDD_YR
 	         FROM DUAL
-		),W_USS_LIST AS (
+		)
+		<!--검색 조건에 해당하는 사원 목록  -->
+		,W_USS_LIST AS (
 		    SELECT
 		           B.STDD_YR
 		         , A.USS_ID
@@ -776,7 +796,23 @@
 							</when>
 						</choose>
 					</if>
-		),W_LAST_APRV AS (
+		),
+		<!--결재문서 정보 + 반려 카운트 -->
+		W_VCT_APRV_TB AS (
+		        SELECT
+		               A.*
+		             , NVL(B.CNT, 0) AS APRV_YN_3_CNT
+		          FROM STD_APRV_MNG A
+		          LEFT OUTER JOIN (
+		                            SELECT APRV_NO
+		                                 , COUNT(1) AS CNT
+		                              FROM STD_APRV_LINE
+		                              WHERE APRV_YN_CD = '3'
+		                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
+		   
+		 )
+		<!-- 기준년도의 마지막 결재 문서 번호  -->
+		,W_LAST_APRV AS (
 		        SELECT
 		               C.REPT_APRV_NO
 		             , MAX(TO_NUMBER(C.APRV_NO)) AS MAX_APRV_NO
@@ -784,7 +820,9 @@
 		         LEFT OUTER JOIN W_PARAMS D ON (1=1)
 		        WHERE TO_CHAR(C.CRTN_DT, 'YYYY') = D.STDD_YR
 		        GROUP BY C.REPT_APRV_NO
-		),W_USS_ADD_INFO AS(
+		)
+		<!--기준년도 마지막 결재 문서 상세 정보  -->
+		,W_USS_ADD_INFO AS(
 		    SELECT
 		            E.APRV_NO
 		          , E.REPT_APRV_NO
@@ -807,25 +845,32 @@
 			    </if>
 		      </where>
 		    
-		),W_VCT_TYPE_LIST AS (
+		)
+		<!-- 휴가유형 목록  -->
+		,W_VCT_TYPE_LIST AS (
 		    SELECT 
 		           * 
 		      FROM STD_CD_MNG 
 		     WHERE UP_CD = 'CD0001011' 
 		     ORDER BY CD_ORD
-		), W_VCT_SUM_DAY AS (
+		)
+		<!-- 사용자별 , 휴가유형별 휴가 사용일수  -->
+		, W_VCT_SUM_DAY AS (
 		        SELECT 
 		               G.USS_ID
 		             , G.VCT_TYPE
 		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
 		           FROM VCT_INF_MNG G
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
-		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		           <!-- INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO) -->
+		           INNER JOIN (SELECT APRV_NO FROM W_VCT_APRV_TB WHERE (CANCEL_YN IS NULL OR CANCEL_YN != 'Y') AND APRV_YN_3_CNT = 0) I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
 		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE
 		            
-		), W_VCT_SUM_DAY_QRTR AS (
+		)
+		<!-- 사용자별, 휴가유형별, 분기별, 휴가 사용일수  -->
+		, W_VCT_SUM_DAY_QRTR AS (
 		        SELECT 
 		               G.USS_ID
 		             , G.VCT_TYPE
@@ -833,43 +878,48 @@
 		             , SUM(G.VCT_DAY_CNT) AS VCT_USE_DAY
 		           FROM VCT_INF_MNG G
 		           LEFT OUTER JOIN W_PARAMS H ON (1=1)
-		           INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		           <!-- INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO) -->
+		           INNER JOIN (SELECT APRV_NO FROM W_VCT_APRV_TB WHERE (CANCEL_YN IS NULL OR CANCEL_YN != 'Y') AND APRV_YN_3_CNT = 0) I ON (G.APRV_NO = I.APRV_NO)
 		          WHERE G.VCT_YR = H.STDD_YR
 		            AND G.USE_YN = 'Y'
 		           GROUP BY G.USS_ID, G.VCT_TYPE , G.VCT_QRTR
 		)
+		<!-- 사원정보 + 휴가유형정보 + 휴가사용일수, 휴가잔여일수, 활용률  -->
 		, W_VCT_USE_DAY_CNT AS (
 		
-		SELECT
-		           J.STDD_YR
-		         , J.USS_ID
-		         , J.USS_NM
-		         , J.EMP_TYPE
-		         , J.EMP_TYPE_NM
-		         , J.RTR_YN
-		         , J.RTR_YN_NM
-		         , J.JOIN_DT
-		         , J.RTR_DT
-		         , J.WORK_YR_CNT
-		         , J.VCT_GRNT_DAY
-		         , K.CD AS VCT_TYPE
-		         , K.CD_NM AS VCT_TYPE_NM
-		         , K.CD_ORD
-		         , NVL(I.VCT_USE_DAY, 0) AS VCT_USE_DAY
-		         , J.VCT_GRNT_DAY - NVL(I.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
-		         , NVL(I.VCT_USE_DAY / J.VCT_GRNT_DAY * 100, 0) AS VCT_USE_RATE
-		  FROM W_USS_LIST J
-		  LEFT OUTER JOIN W_VCT_TYPE_LIST K ON (1=1)
-		  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
-		  ORDER BY J.USS_NM, K.CD_ORD
+			SELECT
+			           J.STDD_YR
+			         , J.USS_ID
+			         , J.USS_NM
+			         , J.EMP_TYPE
+			         , J.EMP_TYPE_NM
+			         , J.RTR_YN
+			         , J.RTR_YN_NM
+			         , J.JOIN_DT
+			         , J.RTR_DT
+			         , J.WORK_YR_CNT
+			         , J.VCT_GRNT_DAY
+			         , K.CD AS VCT_TYPE
+			         , K.CD_NM AS VCT_TYPE_NM
+			         , K.CD_ORD
+			         , NVL(I.VCT_USE_DAY, 0) AS VCT_USE_DAY
+			         , J.VCT_GRNT_DAY - NVL(I.VCT_USE_DAY, 0) AS VCT_LEFT_DAY
+			         , NVL(I.VCT_USE_DAY / J.VCT_GRNT_DAY * 100, 0) AS VCT_USE_RATE
+			  FROM W_USS_LIST J
+			  LEFT OUTER JOIN W_VCT_TYPE_LIST K ON (1=1)
+			  LEFT OUTER JOIN W_VCT_SUM_DAY I ON (I.USS_ID = J.USS_ID AND K.CD = I.VCT_TYPE)
+			  ORDER BY J.USS_NM, K.CD_ORD
 		
-		), W_QRTR AS (
+		)
+		<!-- 분기  -->
+		, W_QRTR AS (
             SELECT
                   LEVEL AS QRTR
               FROM DUAL
               CONNECT BY LEVEL <![CDATA[<=]]> 4
 
         )
+        <!-- 분기별 사원정보 + 휴가유형정보 + 휴가사용일수, 휴가잔여일수, 활용률  -->
 		, W_VCT_USE_DAY_CNT_QRTR AS (
 		
 		SELECT
@@ -898,7 +948,7 @@
 		  ORDER BY J.USS_NM, H.QRTR, K.CD_ORD
 		
 		)
-		
+		<!-- 휴가현황집계 평균 목록  -->
 		SELECT
              A.CD AS VCT_TYPE_CD /*휴가 코드*/
           ,  A.CD_NM AS VCT_TYPE_NM /*휴가 코드 명*/
@@ -926,16 +976,6 @@
 	   ORDER BY A.CD
 	
 	</select>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<!-- 휴가정보 등록  -->
 	<insert id="insertVctInf" parameterType="map">
 		INSERT INTO VCT_INF_MNG (
@@ -983,8 +1023,23 @@
 		 WHERE APRV_NO = #{aprv_no, jdbcType=VARCHAR}
 	</delete>
 	
-	<!-- 로그인한 사용자의 남은 잔여일 수 가져오기  -->
+	<!-- 로그인한 사용자의 남은 잔여일 수 가져오기 ()  -->
 	<select id="getUssVctInfo" parameterType="map" resultType="hashMap">
+		<!-- 결재문서 정보 + 반려 카운트  -->
+		WITH W_VCT_APRV_TB AS (
+	        SELECT
+	               A.*
+	             , NVL(B.CNT, 0) AS APRV_YN_3_CNT
+	          FROM STD_APRV_MNG A
+	          LEFT OUTER JOIN (
+	                            SELECT APRV_NO
+	                                 , COUNT(1) AS CNT
+	                              FROM STD_APRV_LINE
+	                              WHERE APRV_YN_CD = '3'
+	                              GROUP BY APRV_NO ) B ON (A.APRV_NO = B.APRV_NO)
+		   
+		 )
+		<!-- 접속 사용자 휴가부여일수, 연차사용일수, 잔여일수 (반려문서, 관리자문서 카운트 제외)  -->
 		SELECT
 		       A.USS_ID /*사원ID*/
 		     , A.USS_NM /*사원명*/
@@ -999,7 +1054,8 @@
 		                        , G.USS_ID
 		                        , SUM(G.VCT_DAY_CNT) AS VCT_DAY_CNT
 		                     FROM VCT_INF_MNG G
-		                     INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO)
+		                     <!-- INNER JOIN (SELECT APRV_NO FROM STD_APRV_MNG WHERE CANCEL_YN IS NULL OR CANCEL_YN != 'Y') I ON (G.APRV_NO = I.APRV_NO) -->
+		                     INNER JOIN (SELECT APRV_NO FROM W_VCT_APRV_TB WHERE (CANCEL_YN IS NULL OR CANCEL_YN != 'Y') AND APRV_YN_3_CNT=0) I ON (G.APRV_NO = I.APRV_NO)
 		                    WHERE G.VCT_YR = #{stdd_yr}
 		                      AND G.USS_ID = #{uss_id}
 		                      AND G.VCT_TYPE = 'CD0001011001'
