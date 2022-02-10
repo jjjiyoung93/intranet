@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import kr.letech.aprv.service.AprvMngService;
+import kr.letech.cal.service.CalMngService;
+import kr.letech.cal.service.impl.CalMngDAO;
 import kr.letech.cmm.annotation.IncludedInfo;
 import kr.letech.cmm.util.EgovProperties;
 import kr.letech.cmm.util.ObjToConvert;
@@ -42,6 +44,12 @@ public class UssMngController {
 	 */
 	@Resource(name = "codeMngService")
 	private CodeMngService codeMngService;
+	
+	/**
+	 *  CalMngDAO
+	 */
+	@Resource(name = "calMngService")
+	private CalMngService calMngService;
 	
 	@IncludedInfo(name = "사용자관리", order = 470, gid = 50)
 	@RequestMapping(value = "/uss/umt/uss00List.do")
@@ -290,5 +298,26 @@ public class UssMngController {
 		model.addAttribute("params", params);
 		
 		return "letech/uss/umt/uss00Popup";
+	}
+	
+	/**
+	 * 사용자 생일 캘린더 등록
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/umt/uss02Ajax.do")
+	public String insertUssBirth(HttpServletRequest request, ModelMap model) throws Exception {
+		
+		Map params = ReqUtils.getParameterMap(request);
+		model.addAttribute("params", params);
+		String viewName = "jsonView";
+		
+		ussMngService.insertUssBirthday(params);
+		
+		//calMngService.getCalList(params, model);
+
+		return viewName;
 	}
 }

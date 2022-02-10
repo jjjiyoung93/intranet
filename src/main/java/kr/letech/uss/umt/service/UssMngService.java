@@ -48,4 +48,11 @@ public interface UssMngService {
 	* @throws Exception
 	*/
 	public void insertAprvLine(Map params) throws Exception;
+
+	/**
+	 * 사용자 생일 캘린더 등록 
+	 * @param params
+	 * @throws Exception
+	 */
+	public void insertUssBirthday(Map params) throws Exception;
 }
