@@ -186,8 +186,12 @@ $(function() {
 	recFileList = ${recFileList};
 	projList = ${projList};
 	
+	var stddYr = viewJson.TERM_ST_YM;
+	stddYr = stddYr.substring(0, 4);
+	stddYrInt = parseInt(stddYr);
+	
 	$.ajax({
-		url: "${pageContext.request.contextPath}/doc/doc01Ajax.do?APRV_TYPE_CD="+viewJson.APRV_TYPE_CD+"&APRV_TYPE_DTIL_CD="+viewJson.APRV_TYPE_DTIL_CD,
+		url: "${pageContext.request.contextPath}/doc/doc01Ajax.do?APRV_TYPE_CD="+viewJson.APRV_TYPE_CD+"&APRV_TYPE_DTIL_CD="+viewJson.APRV_TYPE_DTIL_CD+"&STDD_YR="+stddYr,
 		type: "get",
 		async: false,
 		success: function(data) {
@@ -253,7 +257,7 @@ $(function() {
 		var day = "";
 		
 		/*2022.01.17 휴가 보고서 조회 시 기간 항목 출력 코드로 대체 : BEGIN */
-		if(viewJson.hasOwnProperty('APRV_TYPE_CD') && viewJson.APRV_TYPE_CD == "<%=VarConsts.EAM_VACATION_CODE%>"){
+		if(stddYr >= 2022 && viewJson.hasOwnProperty('APRV_TYPE_CD') && viewJson.APRV_TYPE_CD == "<%=VarConsts.EAM_VACATION_CODE%>"){
 			if(viewJson.hasOwnProperty('HALF_TYPE_CD') && viewJson.hasOwnProperty('HALF_TYPE_CD_ED')) {
 				term = viewJson.TERM_ST_YM + "(" + viewJson.HALF_TYPE_CD_ST_NM+ ") ~ " + viewJson.TERM_ED_YM + "(" + viewJson.HALF_TYPE_CD_ED_NM + ")";
 			}else{
@@ -318,7 +322,7 @@ $(function() {
 	
 	//지출결의서의 경우 문서 파일 참조 링크 세팅(bizPlay 서버 저장, url로 참조만 함)
 	if(recFileList != "") {
-		console.log(recFileList);
+		//console.log(recFileList);
 		var cnt = 0;
 		var html = '';
 		for(key in recFileList) {
@@ -438,13 +442,13 @@ function fn_renderRecView(recSrc) {
 
 	//승인일자
 	apvDt.text(rec.APV_DT_FORMAT);
-	console.log("tm : " + rec.APV_TM_FORMAT);
+	//console.log("tm : " + rec.APV_TM_FORMAT);
 	//승인시간
 	apvTm.text(rec.APV_TM_FORMAT);
 
 	//가맹점 종류
 	var mestTypeInfo = rec.MEST_TAXT_TYP_INFO;
-	console.log(mestTypeInfo);
+	//console.log(mestTypeInfo);
 	//20210812 비즈플레이 과세유형코드 변경 관련 명칭 변경
 	//관련 메일 참조 'RE: [엘이테크] 과세유형 명칭 변경에 따른 Bizplay API 변동사항에 관하여 문의드립니다.'
 	if('00' == mestTypeInfo){
