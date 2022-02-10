@@ -46,91 +46,6 @@
 							<div class="form-container">
 								<div class="clearfix search-box">
 									<input type="hidden" name="uss_id" id="uss_id" value=""/>
-									<%-- <div class="row">
-										<div class="col-sm-6 form-inline mt10">
-											<label>기준년도</label>
-											<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
-													<div class="tui-datepicker-input tui-datetime-input tui-has-focus table-cell" style="vertical-align: middle;">
-														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-controll" title="search">
-														<span class="tui-ico-date"></span>
-														<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-															<option value="" >전체</option>
-															<c:forEach var="empType" items="${empTypeList}">
-																<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
-															</c:forEach>
-														</select>
-													</div>
-													<div class="datepicker-cell" id="datepicker-year-ko"></div>
-											</div>
-										</div>
-										<div class ="col-sm-6 un-style form-inline mt10">
-												<label >재직구분</label>
-												<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
-												<select name="searchGubun3" id="searchGubun3" class="form-control" style="font-size: 12px; width : 125px; display:inline-block; margin-right: 10px;" title="search" >
-													<option value="" >전체</option>
-													<option value="N" <c:if test="${empty params.searchGubun3 || params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
-													<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
-												</select>
-												</div>
-										</div>
-										<div class ="col-md-6 un-style">
-											<!-- 기준년도(년도 선택), 재직구분  -->
-											<div class="col-md-6 un-style form-inline">
-												<div class="inline-element col-md-12" style="display:inline-block; vertical-align: middle; width: 125px;">
-													<label>기준년도</label>
-													<div class="tui-datepicker-input tui-datetime-input tui-has-focus table-cell" style="vertical-align: middle;">
-														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-controll" title="search">
-														<span class="tui-ico-date"></span>
-														<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-															<option value="" >전체</option>
-															<c:forEach var="empType" items="${empTypeList}">
-																<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
-															</c:forEach>
-														</select>
-													</div>
-													<div class="datepicker-cell" id="datepicker-year-ko"></div>
-												</div>
-											</div>
-											<div class ="col-md-6 un-style form-inline">
-												<span class="inline-element col-md-11 col-xs-12">
-													<label >재직구분</label>
-													<select name="searchGubun3" id="searchGubun3" class="form-control" style="font-size: 12px; width : 125px; display:inline-block; margin-right: 10px;" title="search" >
-														<option value="" >전체</option>
-														<option value="N" <c:if test="${empty params.searchGubun3 || params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
-														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
-													</select>
-												</span>
-											</div>
-										</div>
-										<div class ="col-lg-5 un-style form-inline mt10">
-											<div class="search-container pull-left">
-												<!-- ID/성명 검색  -->
-												<div class="form-inline">
-													<div class ="col-lg-3 un-style">
-														<span class="inline-element">
-														<!-- <label>ID/성명</label> -->
-															<select name="searchGubun" id="searchGubun" class="form-control" style="display: inline;" title="search" >
-																<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-																<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-															</select>
-														</span>
-													</div>
-													<div class="col-lg-8 un-style">
-														<div class="input-group">
-															<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-															<span class="input-group-btn">
-																<button type="button" class="fnSearch btn-info btn"  >
-																	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
-																</button>
-															</span>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div> --%>
-									<!-- 검색조건 retstyling  -->
-									<!-- <div class="container" > -->
 										<div class="row">
 											<!-- 기준년도  -->
 											<div class="col-lg-3 col-sm-6 form-inline mt10">
@@ -138,12 +53,6 @@
 												<div class="tui-datepicker-input tui-datetime-input tui-has-focus" style="vertical-align: middle; width: 90px;">
 													<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="" title="search">
 													<span class="tui-ico-date"></span>
-													<%-- <select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="empType" items="${empTypeList}">
-															<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun3 }">selected="selected"</c:if> >${empType.CD_NM}</option>
-														</c:forEach>
-													</select> --%>
 												</div>
 												<div class="datepicker-cell" id="datepicker-year-ko"></div>
 											</div>
@@ -181,34 +90,6 @@
 												</div>
 											</div>
 										</div>
-									<!-- </div> -->
-									<!-- 샘플  -->
-									<%-- <div class="clearfix search-box">
-										<div class="search-container">
-											<div class="col-xs-5 un-style">
-												<span class="inline-element">
-													<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
-														<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
-														<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
-													</select>
-												</span>
-											</div>
-											<div class="col-xs-7 un-style">
-												<div class="input-group">
-													<input type="hidden"/>
-													<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-													<span class="input-group-btn">
-														<button class="fnSearch btn btn-info" type="button">
-															<i class="glyphicon glyphicon-search"></i>
-															<span class="hidden-xs hidden-sm"> 검색</span>
-														</button>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div> --%>
-									
-									
 							</div>
 							<p class="clearfix board-top">
 								<select id="listCnt" name="listCnt" class="form-control" style="width: 100px; display: inline-block;" onchange="goPage('1');">

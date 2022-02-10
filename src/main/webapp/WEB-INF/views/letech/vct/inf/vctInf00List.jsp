@@ -17,6 +17,7 @@
 	<link href="${pageContext.request.contextPath}/resources/js/tui-date-picker/tui-date-picker.css" rel="stylesheet" >
 	
 	<link href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css" rel="stylesheet">
+	
 	<style type="text/css">
 		td{
 			text-align: center;
@@ -26,8 +27,6 @@
 			border-top : 4px solid #ddd;
 			font-weight: bold;
 		}
-		
-		.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
 		
 	</style>
 </head>
@@ -60,97 +59,6 @@
 							<div class="form-container">
 								<div class="clearfix search-box form-inline">
 									<input type="hidden" name="uss_id" id="uss_id" value=""/>
-									<%-- <div class="row">
-										<div class ="col-sm-6 un-style">
-											<!-- 기준년도(년도 선택), 재직구분  -->
-											<!-- <div class="col-sm-6 un-style"> -->
-												<div class="inline-element col-sm-11 col-sm-offset-2">
-													<label>기준년도</label>
-													<div class="tui-datepicker-input tui-datetime-input tui-has-focus form-control" style="width: 200px;">
-														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="" title="search">											
-														<span class="tui-ico-date"></span>
-													</div>
-													<div class="datepicker-cell" id="datepicker-year-ko"></div>
-												</div>
-										
-										</div>
-										<div class ="col-sm-6 un-style">
-											<!-- ID/성명 검색  -->
-											<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-												<div class="col-sm-12 col-sm-offset-2">
-													<div class ="col-sm-6 un-style">
-															<label>ID / 성명</label>
-															<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-																<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-																<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-															</select>
-													</div>
-													<div class="col-sm-3 col-sm-pull-3 un-style">
-														<div class="input-group">
-															<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-															<span class="input-group-btn">
-																<button type="button" class="fnSearch btn-info btn"  >
-																	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
-																</button>
-															</span>
-														</div>
-													</div>
-												</div>
-											</sec:authorize>
-										</div>
-									</div>
-									<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
-										<div class="row">
-											<div class ="col-sm-6 un-style">
-												<span class="inline-element col-sm-11 col-sm-offset-2">
-													<label >고용구분</label>
-													<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" style="width: 200px;" >
-														<option value="" >전체</option>
-														<c:forEach var="empType" items="${empTypeList}">
-															<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun4 }">selected="selected"</c:if> >${empType.CD_NM}</option>
-														</c:forEach>
-													</select>
-												</span>
-											</div>
-											<div class ="col-sm-6 un-style">
-												<span class="inline-element col-sm-11 col-sm-offset-2">
-													<label >재직구분</label>
-													<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" style="width: 200px;" >
-														<option value="" >전체</option>
-														<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
-														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
-													</select>
-												</span>
-											</div>
-											
-										</div>
-										<div class="row">
-											<div class ="col-sm-6 un-style">
-												<span class="inline-element col-sm-11 col-sm-offset-2">
-													<label>프로젝트</label>
-													<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" style="width: 200px;" >
-														<option value="" >전체</option>
-														<c:forEach var="proj" items="${projList}" varStatus="status">
-															<option value="${proj.CD}" <c:if test="${proj.CD eq params.searchGubun6 }">selected="selected"</c:if> >${proj.CD_NM}</option>
-														</c:forEach>
-													</select>
-													
-												</span>
-											</div>
-											<div class ="col-sm-6 un-style">
-												<span class="inline-element col-sm-11 col-sm-offset-2">
-													<label>직급권한</label>
-													<select name="searchGubun5" id="searchGubun5" class="form-control" title="search" style="width: 200px;">
-														<option value="" >전체</option>
-														<c:forEach var="authList" items="${authList}">
-															<option value="${authList.AUTHOR_CODE}" <c:if test="${authList.AUTHOR_CODE eq params.searchGubun5 }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
-														</c:forEach>
-													</select>
-												</span>
-											</div>
-										</div>
-									</sec:authorize> --%>
-									
 									<!-- 검색조건 restyling  -->
 									<div class="row">
 										<!-- 기준년도  -->
@@ -183,8 +91,6 @@
 														</span>
 													</div>
 											</div>
-											<!-- <div class="col-lg-8 col-xs-9 input-group" style="padding: 0px;">
-											</div> -->
 										</div>
 										</sec:authorize>									
 									</div>
@@ -233,32 +139,6 @@
 										</div>
 									</div>
 									</sec:authorize>
-									<!-- 검색 샘플  -->
-									<%-- <div class="clearfix search-box">
-										<div class="search-container">
-											<div class="col-xs-5 un-style">
-												<span class="abc">
-													<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
-														<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
-														<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
-													</select>
-												</span>
-											</div>
-											<div class="col-xs-7 un-style">
-												<div class="input-group">
-													<input type="hidden"/>
-													<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-													<span class="input-group-btn">
-														<button class="fnSearch btn btn-info" type="button">
-															<i class="glyphicon glyphicon-search"></i>
-															<span class="hidden-xs hidden-sm"> 검색</span>
-														</button>
-													</span>
-												</div>
-											</div>
-										</div>
-							</div>
-									 --%>
 							</div>
 							<sec:authorize access="hasAnyRole('ROLE_ADMIN')">
 							<p class="clearfix board-top">
@@ -270,62 +150,63 @@
 									
 									<strong class="list_count" >Total : ${totalCnt} 건</strong>
 							</p>
-						<div class="table-responsive tableFixHead" id="uss-list" style=" height: 200px; overflow: auto; border: 2px solid #ddd; padding-top: 0px;">
-						<table class="table table-bordered" id="vct-inf-table" style="border-collapse: collapse;" summary="사용자관리 목록">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="10%" />
-								<col width="8%" />
-								<col width="10%" />
-							</colgroup>
-							<thead>
-								<tr>
-									<th class="visible-md visible-lg" data-align="center" data-valign="middle" data-halign="center">번호</th>
-									<th data-align="center" data-valign="middle" data-halign="center">기준년도</th>
-									<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">성명</th>
-									<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">고용구분</th>
-									<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">프로젝트</th>
-									<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">직급</th>
-									<th data-sortable="true" class="visible-md visible-lg" data-align="center" data-valign="middle" data-halign="center">재직구분</th>
-									<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">입사일</th>
-									<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">근속년수(년)</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:choose>
-									<c:when test="${totalCnt < 1 }">
-										<tr>
-											<td colspan="9">검색된 내용이 없습니다.</td>
-										</tr>
-									</c:when>
-									<c:otherwise>
-										<c:forEach var="list" items="${resultList}" varStatus="status">
-											<tr data-id="${list.USS_ID}">
-												<th class="visible-md visible-lg text-center">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-												<td align="center">${list.STDD_YR} </td>
-												<td align="center">
-													<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}', '${list.USS_NM}');">
-														<span class="ellip ellip-line">${list.USS_NM}</span>
-													</a>
-												</td>
-												<td align="center">${list.EMP_TYPE_NM}</td>
-												<td align="center" title="${list.PROJ_NM}">${fn:substring(list.PROJ_NM, 0, 12)}<c:if test="${fn:length(list.PROJ_NM) >= 12}">…</c:if></td>
-												<td align="center">${list.AUTH_NM} </td>
-												<td align="center">${list.RTR_YN == 'Y'? '퇴직' : '재직'}</td>
-												<td align="center">${list.JOIN_DT}</td>
-												<td align="center">${list.WORK_YR_CNT }</td>
+						<div class="table-container" style="height:200px; overflow-y: scroll;">
+							<table class="table table-bordered" id="vct-inf-table" data-toggle="table" style="border-collapse: collapse;" summary="사용자관리 목록">
+								<colgroup>
+									<col width="5%" />
+									<col width="5%" />
+									<col width="10%" />
+									<col width="10%" />
+									<col width="10%" />
+									<col width="10%" />
+									<col width="10%" />
+									<col width="8%" />
+									<col width="10%" />
+								</colgroup>
+								<thead>
+									<tr>
+										<th class="visible-md visible-lg"  data-align="center" data-valign="middle" data-halign="center">번호</th>
+										<th data-align="center" data-valign="middle" data-halign="center">기준년도</th>
+										<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center" >성명</th>
+										<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">고용구분</th>
+										<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">프로젝트</th>
+										<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center">직급</th>
+										<th data-sortable="true" class="" data-align="center" data-valign="middle" data-halign="center" >재직구분</th>
+										<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center" >입사일</th>
+										<th data-sortable="true" data-align="center" data-valign="middle" data-halign="center" >근속년수(년)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:choose>
+										<c:when test="${totalCnt < 1 }">
+											<tr>
+												<td colspan="9">검색된 내용이 없습니다.</td>
 											</tr>
-										</c:forEach>
-									</c:otherwise>
-							</c:choose>
-						</tbody>
-					</table>
-					</div>
+										</c:when>
+										<c:otherwise>
+											<c:forEach var="list" items="${resultList}" varStatus="status">
+												<tr data-id="${list.USS_ID}">
+													<th class="visible-md visible-lg text-center">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
+													<td align="center">${list.STDD_YR} </td>
+													<td align="center">
+														<a href="javascript:fnView('${list.USS_ID}', '${list.STDD_YR}', '${list.USS_NM}');">
+															<span class="ellip ellip-line">${list.USS_NM}</span>
+														</a>
+													</td>
+													<td align="center">${list.EMP_TYPE_NM}</td>
+													<td align="center" title="${list.PROJ_NM}">${fn:substring(list.PROJ_NM, 0, 12)}<c:if test="${fn:length(list.PROJ_NM) >= 12}">…</c:if></td>
+													<td align="center">${list.AUTH_NM} </td>
+													<td align="center">${list.RTR_YN == 'Y'? '퇴직' : '재직'}</td>
+													<td align="center">${list.JOIN_DT}</td>
+													<td align="center">${list.WORK_YR_CNT }</td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+								</c:choose>
+							</tbody>
+						</table>
+						
+						</div>
 					</sec:authorize>
 					<div class="table-responsive" id="uss-vct">
 						
@@ -337,12 +218,6 @@
 						<!-- pase nav-->
 						<div class="text-center">
 						<br/>
-							<%-- <ul class="pagination pagination-sm">
-								${pageNavigator }
-							</ul> --%>
-							<!-- <span class="pull-right">
-								<button class="fnJoin btn btn-sm btn-default" >저 장</button>
-							</span> -->
 						</div>
 					</div>
 					<div>
@@ -522,8 +397,7 @@
 			var name = stddYr+'년도_'+ussNm+'_휴가현황';
 			//alert(stddYr);
 			$('#table-vct').tableExport({fileName: name, type: 'excel', excelstyles:['text-align', 'align']});
-			/* $("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
-			$("#frm1").submit(); */
+
 		});
 		
 		/* 검색 */

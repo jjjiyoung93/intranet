@@ -76,121 +76,6 @@
 							<div class="form-container">
 								<div class="clearfix search-box">
 									<input type="hidden" name="uss_id" id="uss_id" value=""/>
-									<%-- <div class="row">
-										<div class ="col-xs-6 un-style">
-											<!-- 기준년도(년도 선택), 재직구분  -->
-											<!-- <div class="col-xs-6 un-style"> -->
-												<div class="inline-element col-xs-11">
-													<label>기준년도</label>
-													<div class="tui-datepicker-input tui-datetime-input tui-has-focus">
-														<input type="text" id="datepicker-input-ko" name="searchGubun2" value="${params.searchGubun2}" aria-label="Date" class="form-control" title="search">											
-														<span class="tui-ico-date"></span>
-													</div>
-													<div class="datepicker-cell" id="datepicker-year-ko"></div>
-												</div>
-										
-										</div>
-										<div class ="col-xs-6 un-style">
-											<!-- ID/성명 검색  -->
-										
-												<div class="col-xs-12">
-													<label>ID/성명</label>
-													<div class ="col-xs-3 un-style">
-														<span class="inline-element">
-															<select name="searchGubun" id="searchGubun" class="form-control" title="search" >
-																<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>ID</option>
-																<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>성명</option>
-															</select>
-														</span>
-													</div>
-													<div class="col-xs-8 un-style">
-														<div class="input-group">
-															<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-															<span class="input-group-btn">
-																<button type="button" class="fnSearch btn-info btn"  >
-																	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
-																</button>
-															</span>
-														</div>
-													</div>
-												</div>
-										</div>
-									</div>
-										<div class="row">
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label>고용구분</label>
-													<select name="searchGubun4" id="searchGubun4" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="empType" items="${empTypeList}">
-															<option value="${empType.CD}" <c:if test="${empType.CD eq params.searchGubun4 }">selected="selected"</c:if> >${empType.CD_NM}</option>
-														</c:forEach>
-													</select>
-												</span>
-											</div>
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label >재직구분</label>
-													<select name="searchGubun3" id="searchGubun3" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<option value="N" <c:if test="${params.searchGubun3 == 'N'}">selected = "selected "</c:if>>재직</option>
-														<option value="Y" <c:if test="${params.searchGubun3 == 'Y'}">selected = "selected"</c:if>>퇴직</option>
-													</select>
-												</span>
-											</div>
-											
-										</div>
-										<div class="row">
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label>프로젝트</label>
-													<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="proj" items="${projList}" varStatus="status">
-															<option value="${proj.CD}" <c:if test="${proj.CD eq params.searchGubun6 }">selected="selected"</c:if> >${proj.CD_NM}</option>
-														</c:forEach>
-													</select>
-													
-												</span>
-											</div>
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label>권한</label>
-													<select name="searchGubun5" id="searchGubun5" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="authList" items="${authList}">
-															<option value="${authList.AUTHOR_CODE}" <c:if test="${authList.AUTHOR_CODE eq params.searchGubun5 }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
-														</c:forEach>
-													</select>
-												</span>
-											</div>
-										</div> --%>
-										<%-- <div class="row">
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label>휴가구분</label>
-													<select name="searchGubun7" id="searchGubun7" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="vctType" items="${vctTypeList}" varStatus="status">
-															<option value="${vctType.CD}" <c:if test="${vctType.CD eq params.searchGubun7 }">selected="selected"</c:if> >${vctType.CD_NM}</option>
-														</c:forEach>
-													</select>
-													
-												</span>
-											</div>
-											<div class ="col-xs-6 un-style">
-												<span class="inline-element col-xs-11">
-													<label>권한</label>
-													<select name="searchGubun5" id="searchGubun5" class="form-control" title="search" >
-														<option value="" >전체</option>
-														<c:forEach var="authList" items="${authList}">
-															<option value="${authList.AUTHOR_CODE}" <c:if test="${authList.AUTHOR_CODE eq params.searchGubun5 }">selected="selected"</c:if> >${authList.AUTHOR_NM}</option>
-														</c:forEach>
-													</select>
-												</span>
-											</div>
-										</div> --%>
-										
 										<!-- 검색조건 restyling  -->
 										<div class="row">
 											<!-- 기준년도  -->
@@ -275,30 +160,6 @@
 											</div>
 										
 										</div>
-										
-										<!-- 키워드 검색 샘플  -->
-										<%-- <div class="search-container">
-											<div class="col-xs-5 un-style">
-												<span class="inline-element">
-													<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
-														<option value="01" <c:if test="${params.searchGubun == '01'}">selected = "selected"</c:if>>제목</option>
-														<option value="02" <c:if test="${params.searchGubun == '02'}">selected = "selected"</c:if>>내용</option>
-													</select>
-												</span>
-											</div>
-											<div class="col-xs-7 un-style">
-												<div class="input-group">
-													<input type="hidden"/>
-													<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
-													<span class="input-group-btn">
-														<button class="fnSearch btn btn-info" type="button">
-															<i class="glyphicon glyphicon-search"></i>
-															<span class="hidden-xs hidden-sm"> 검색</span>
-														</button>
-													</span>
-												</div>
-											</div>
-										</div> --%>
 											
 							</div>
 							<p class="clearfix board-top">
@@ -374,10 +235,6 @@
 														<th class="tb-col-title" style="vertical-align: middle;">사용</th>
 														
 														</c:forEach>
-														<!-- <th>사용</th>
-														<th>사용</th>
-														<th>사용</th>
-														<th>사용</th> -->
 													</tr>
 												</thead>
 											<tbody>
@@ -444,21 +301,6 @@
 													<th class="tb-col-title">2분기</th>
 													<th class="tb-col-title">3분기</th>
 													<th class="tb-col-title">4분기</th>
-													<%-- <th class="visible-md visible-lg" rowspan="2">재직구분</th>
-													<th rowspan="2">입사일</th>
-													<th rowspan="2">퇴사일</th>
-													<th rowspan="2">근속년수(년)</th>
-													<c:forEach items="${vctTypeList}" var="vctType">
-														<c:choose>
-															<c:when test="${vctType.CD == 'CD0001011001'}">
-																<th rowspan="1" colspan="4"><c:out value="${vctType.CD_NM}"/></th>
-															</c:when>
-															<c:otherwise>
-																<th rowspan="1" colspan="1"><c:out value="${vctType.CD_NM}"/></th>
-															</c:otherwise>
-														</c:choose>
-													</c:forEach>
-													<th rowspan="2" colspan="1">전체</th> --%>
 												</tr>
 												
 											</thead>
@@ -521,101 +363,7 @@
 								</td>
 							</tr>
 						</table>
-						<%-- <table class="table table-bordered reactive" id="table-stat" summary="휴가집계">
-							<colgroup>
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-								<col width="5%" />
-							</colgroup>
-							<thead>
-								<tr>
-									<th class="visible-md visible-lg" rowspan="2">번호</th>
-									<th rowspan="2">기준년도</th>
-									<th rowspan="2">성명</th>
-									<th rowspan="2">고용구분</th>
-									<th rowspan="2">프로젝트</th>
-									<th rowspan="2">직급</th>
-									<th class="visible-md visible-lg" rowspan="2">재직구분</th>
-									<th rowspan="2">입사일</th>
-									<th rowspan="2">퇴사일</th>
-									<th rowspan="2">근속년수(년)</th>
-									<c:forEach items="${vctTypeList}" var="vctType">
-										<c:choose>
-											<c:when test="${vctType.CD == 'CD0001011001'}">
-												<th rowspan="1" colspan="4"><c:out value="${vctType.CD_NM}"/></th>
-											</c:when>
-											<c:otherwise>
-												<th rowspan="1" colspan="1"><c:out value="${vctType.CD_NM}"/></th>
-											</c:otherwise>
-										</c:choose>
-									</c:forEach>
-									<th rowspan="2" colspan="1">전체</th>
-								</tr>
-								<tr>
-									<th class="visible-md visible-lg">부여일수</th>
-									<th>사용일수</th>
-									<th>잔여일수</th>
-									<th>활용률</th>
-									<th>사용일수</th>
-									<th>사용일수</th>
-									<th class="visible-md visible-lg">사용일수</th>
-									<th>사용일수</th>
-									<th>사용일수</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:choose>
-									<c:when test="${totalCnt < 1 }">
-										<tr>
-											<td colspan="${13 + vctTypeList.size}">검색된 내용이 없습니다.</td>
-										</tr>
-									</c:when>
-									<c:otherwise>
-										<c:forEach var="list" items="${resultList}" varStatus="status">
-											<tr data-id="${list.USS_ID}">
-												<th class="visible-md visible-lg text-right">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-												<td align="center">${list.STDD_YR} </td>
-												<td>${list.USS_NM}</td>
-												<td>${list.EMP_TYPE_NM}</td>
-												<td>${list.PROJ_NM} </td>
-												<td>${list.REPT_AUTH_NM} </td>
-												<td align="center">${list.RTR_YN_NM}</td>
-												<td align="center">${list.JOIN_DT}</td>
-												<td align="center">${list.RTR_DT}</td>
-												<td align="right">${list.WORK_YR_CNT }년</td>
-												<td align="right">${list.YEON_GRNT_DAY }일</td>
-												<td align="right">${list.YEON_USE_CNT }일</td>
-												<td align="right">${list.YEON_LEFT_CNT}일</td>
-												<td align="right">${list.YEON_USE_RATE }%</td>
-												<td align="right">${list.DISS_USE_CNT }일</td>
-												<td align="right">${list.FAM_EVNT_USE_CNT }일</td>
-												<td align="right">${list.REPLC_USE_CNT }일</td>
-												<td align="right">${list.CMFT_USE_CNT }일</td>
-												<td align="right">${list.FAM_CARE_USE_CNT }일</td>
-												<td align="right">${list.VCT_TOT_CNT }일</td>
-											</tr>
-										</c:forEach>
-									</c:otherwise>
-							</c:choose>
-						</tbody>
-					</table> --%>
+					
 					</div>
 					<div class="table-responsive" id="uss-vct">
 						
@@ -624,12 +372,7 @@
 						<!-- pase nav-->
 						<div class="text-center">
 						<br/>
-							<%-- <ul class="pagination pagination-sm">
-								${pageNavigator }
-							</ul> --%>
-							<!-- <span class="pull-right">
-								<button class="fnJoin btn btn-sm btn-default" >저 장</button>
-							</span> -->
+						
 						</div>
 					</div>
 					<div>
@@ -637,15 +380,7 @@
 					</div>
 				</form>
 			</div>
-			<!-- 결재 정보 상세 팝업  -->
-			<%-- <form id="dtilFrm" name="dtilFrm" method="post" action="${pageContext.request.contextPath}/vct/vct00Popup.do" >
-				<input type="hidden" id="stddYr" name="stddYr" value="" />
-				<input type="hidden" id="ussId" name="ussId" value="" />
-				<input type="hidden" id="startMon" name="startMon" value="" />
-				<input type="hidden" id="endMon" name="endMon" value="" />
-				<input type="hidden" id="vctTypeCd" name="vctTypeCd" value="" />
-				<input type="hidden" id="aprvStatCd" name="aprvStatCd" value="" />
-			</form --%>
+
 			<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 	</div>
@@ -670,11 +405,9 @@
 			var stddYr = "${params.searchGubun2}";
 			$("#table-stat thead th.proj-header").css({'display' : 'block'});
 			$('#table-stat').tableExport({type: 'excel',fileName: stddYr+'년도_직원별휴가현황집계', exportHiddenColumns: ['proj']});
-			//$('#table-stat').tableExport({type: 'excel',fileName: stddYr+'년도_직원별휴가현황집계',exportHiddenCells: 'true', mso: {fileFormat : 'xlsx', rtl: true, styles : ['text-align']}});
 			$('#table-stat-avg').tableExport({type: 'excel',fileName: stddYr+'년도_유형별휴가통계',exportHiddenCells: 'true'});
 			$("#table-stat thead th.proj-header").css({"display" : "none"});
-			/* $("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
-			$("#frm1").submit(); */
+
 		});
 
 	
@@ -684,136 +417,6 @@
 			goPage(1);
 		});
 		
-		/* 상세보기 팝업 */
-		/* $( "#uss-vct" ).on('click', '#btnDtil', function() {
-			alert("상세보기팝업!!");
-			window.open("", "vct00Popup","width=720, height=750");
-			$("#dtilFrm").attr("target", "vct00Popup");
-			$("#dtilFrm").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");
-			$("#dtilFrm").submit();
-
-		}); */
-		
-		/* 휴가현황목록조회 */
-		/* function fnView(uss_id, stdd_yr){
-			var ussId = uss_id;
-			//alert(ussId);
-			var stddYr = stdd_yr;
-			var table = "";
-			table += '<span class="pull-right">';
-			table += '<button class="fnExcl btn btn-sm btn-default" >엑셀다운</button>';
-			table += '</span>';
-			$.ajax({
-				type: 'post',
-				data : {
-					uss_id : ussId,
-					stdd_yr : stddYr
-				},
-				url : "${pageContext.request.contextPath}/vct/vct00View.do",
-				dataType : 'json',
-				success : function (data){
-					var stddYr = data.params.stdd_yr;
-					var ussId = data.params.uss_id;
-					var resultList = data.resultList;
-					    table += '<table class="table table-bordered" summary="휴가현황 목록">'
-					    table += '<colgroup>'
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-						table += '<col width="5%" />';
-					    table += '</colgroup>'
-					    table += '<thead>';
-						table += '<tr>';
-						table += '	<th class="visible-md visible-lg">휴가구분</th>';
-						table += '	<th>휴가부여일수</th>';
-						table += '	<th>사용일수</th>';
-						table += '	<th>잔여일수</th>';
-						table += '	<th>활용률</th>';
-						table += '	<th>1월</th>';
-						table += '	<th>2월</th>';
-						table += '	<th>3월</th>';
-						table += '	<th>4월</th>';
-						table += '	<th>5월</th>';
-						table += '	<th>6월</th>';
-						table += '	<th>7월</th>';
-						table += '	<th>8월</th>';
-						table += '	<th>9월</th>';
-						table += '	<th>10월</th>';
-						table += '	<th>11월</th>';
-						table += '	<th>12월</th>';
-						table += '</tr>';
-					    table += '</thead>';
-					    table += '<tbody>';
-				
-						for (var i = 0; i < resultList.length ; i++){
-							var result = resultList[i];
-							table += '<tr data-id="'+result.USS_ID+'">';
-							table += '<th class="visible-md visible-lg text-center">'+result.VCT_TYPE_NM+'</th>';
-							if(result.VCT_GRNT_DAY == null){
-								table += '<td align="center">'+ '-'+'</td>';	
-							}else{
-								table += '<td align="right">'+ result.VCT_GRNT_DAY+'</td>';
-							}
-							table += '<td align="right">'+result.VCT_TOT_USE_CNT+'</td>';
-							if(result.VCT_LEFT_DAY == null){
-								table += '<td align="center">'+ '-'+'</td>';	
-							}else {
-								table += '<td align="right">'+result.VCT_LEFT_DAY+'</td>';
-							}
-							if(result.VCT_USE_RATE == null){
-								table += '<td align="center">'+ '-'+'</td>';	
-							}else {
-								table += '<td align="right">'+result.VCT_USE_RATE+'</td>';
-							}
-							table += '<td align="right">'+result.JAN_CNT+'</td>';
-							table += '<td align="right">'+result.FEB_CNT+'</td>';
-							table += '<td align="right">'+result.MAR_CNT+'</td>';
-							//table += '<td>'+result.FIR_QRTR_CNT+'</td>';
-							table += '<td align="right">'+result.APR_CNT+'</td>';
-							table += '<td align="right">'+result.MAY_CNT+'</td>';
-							table += '<td align="right">'+result.JUN_CNT+'</td>';
-							//table += '<td>'+result.SEC_QRTR_CNT+'</td>';
-							table += '<td align="right">'+result.JUL_CNT+'</td>';
-							table += '<td align="right">'+result.AUG_CNT+'</td>';
-							table += '<td align="right">'+result.SEP_CNT+'</td>';
-							//table += '<td>'+result.THR_QRTR_CNT+'</td>';
-							table += '<td align="right">'+result.OCT_CNT+'</td>';
-							table += '<td align="right">'+result.NOV_CNT+'</td>';
-							table += '<td align="right">'+result.DEC_CNT+'</td>';
-							//table += '<td>'+result.FRT_QRTR_CNT+'</td>';
-							
-							table += '</tr>';
-							
-						}
-							
-						table += '</tbody>';
-						table += '</table>';
-						table += '<span class="pull-right">';
-						table += '<buttn type="button" id="btnDtil" class="fnDtil btn btn-sm btn-default" >상세보기</button>';
-						table += '</span>';
-						
-						$("#stddYr").val(stddYr);
-						$("#ussId").val(ussId);
-						
-						$("#uss-vct").html(table);
-				},error: function (request, status, error) {
-			         alert(request.responseText);
-			    } 
-			});
-		} */
 		
 		function goPage(cPage){
 			$("#cPage").val(cPage);

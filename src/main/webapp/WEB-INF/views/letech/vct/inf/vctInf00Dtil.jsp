@@ -422,25 +422,8 @@
                                  </dd>
                               </dl>
                             </div>
-                            
-                           <!-- 지출결의서 보기 -->   
-<%--                         <c:if test="${not empty recList}">                --%>
-
-                           
                      </ul>
                      <p class="clearfix">
-                        <%-- <span class="pull-right">
-                        
-                        <!-- admin일 경우 반려된 결재 삭제 가능 추가  -->
-                        <c:if test="${(viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '0' && viewMap.CONF_TYPE eq 'N' ) || (params.uss_auth_cd eq 'ROLE_ADMIN' && viewMap.APRV_LINE_CD eq '3')}">
-                               <input class="btn btn-sm btn-info" type="button" id="btn-ok" value="수정" />
-                               <input class="btn btn-sm btn-default"  type="button" id="btn-delete" value="삭제" />
-                        </c:if>
-                        <c:if test="${viewMap.REPT_APRV_NO eq loginVO.id && viewMap.APRV_LINE_CD eq '3' }">
-                           <input class="btn btn-sm btn-warning" type="button" id="btn-ok" value="재결재" />
-                        </c:if>
-                        </span> --%>
-                           <!--  <input class="btn btn-sm btn-default"  type="button" id="btn-cancel" value="목록"/> -->
                      </p>
                   </div>
                </div>

@@ -86,7 +86,6 @@
 								<br>
 								<span class="pull-right">
 									<button type="button" class="btn btn-sm btn-default" onClick="addRow();" >추 가</button>
-									<!-- <button type="button" class="fnDel btn btn-sm btn-default" >삭 제</button> -->
 								</span>
 								<%-- <strong class="list_count" >Total : ${totalCnt} 건</strong> --%>
 							</p>
