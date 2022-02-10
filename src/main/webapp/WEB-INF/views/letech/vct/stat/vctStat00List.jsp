@@ -347,7 +347,7 @@
 														<th class="tb-col-title align-middle" rowspan="2" style="vertical-align: middle;">년도</th>
 														<th class="tb-col-title" rowspan="2" style="vertical-align: middle;" data-sortable="true">성명</th>
 														<th class="tb-col-title" rowspan="2" style="vertical-align: middle;" data-sortable="true">고용</th>
-														<th class="tb-col-title" rowspan="2" style="vertical-align: middle;" data-field="proj" data-tableexport-display="always" data-sortable="true" data-force-export="true">프로젝트</th>
+														<th class="tb-col-title proj-header" rowspan="2" style="vertical-align: middle; display:none;" data-tableexport-display="always">프로젝트</th>
 														<th class="tb-col-title" rowspan="2" style="vertical-align: middle;" data-sortable="true">직급</th>
 														<th class="tb-col-title" rowspan="2" style="vertical-align: middle;" data-sortable="true">재직</th>
 														<th class="tb-col-title" rowspan="2" style="vertical-align: middle;" data-sortable="true">입사일</th>
@@ -394,7 +394,7 @@
 																<td align="center" style="vertical-align: middle;">${list.STDD_YR} </td>
 																<td align="center" style="vertical-align: middle;">${list.USS_NM}</td>
 																<td class="" style="vertical-align: middle;" align="center">${list.EMP_TYPE_NM}</td>
-																<td class="" style="vertical-align: middle;" align="center" title="${list.PROJ_NM }" data-force-export="true" data-tableexport-display="always">${list.PROJ_NM }</td>
+																<td class="" style="vertical-align: middle; display:none;" align="center" title="${list.PROJ_NM }" data-tableexport-display="always">${list.PROJ_NM }</td>
 																<td class="" style="vertical-align: middle;" align="center">${list.REPT_AUTH_NM} </td>
 																<td class="" style="vertical-align: middle;" align="center">${list.RTR_YN_NM}</td>
 																<td class="" style="vertical-align: middle;" align="center">${list.JOIN_DT}</td>
@@ -655,10 +655,10 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/FileSaver/FileSaver.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/jsPDF/jspdf.umd.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/tableExport.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/pdfmake.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/libs/pdfmake/vfs_fonts.js"></script>
 	<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/tableExport/tableExport.min.js"></script>
 	<!-- <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script> -->
 	<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script> --%>
 	<script type="text/javascript">
@@ -668,9 +668,11 @@
 		$("#btnExcl").click(function() {
 			//alert("excl!!");
 			var stddYr = "${params.searchGubun2}";
+			$("#table-stat thead th.proj-header").css({'display' : 'block'});
 			$('#table-stat').tableExport({type: 'excel',fileName: stddYr+'년도_직원별휴가현황집계', exportHiddenColumns: ['proj']});
 			//$('#table-stat').tableExport({type: 'excel',fileName: stddYr+'년도_직원별휴가현황집계',exportHiddenCells: 'true', mso: {fileFormat : 'xlsx', rtl: true, styles : ['text-align']}});
 			$('#table-stat-avg').tableExport({type: 'excel',fileName: stddYr+'년도_유형별휴가통계',exportHiddenCells: 'true'});
+			$("#table-stat thead th.proj-header").css({"display" : "none"});
 			/* $("#frm1").attr("action", "${pageContext.request.contextPath}/sys/vct/vct00Tran.do");
 			$("#frm1").submit(); */
 		});
@@ -823,6 +825,7 @@
 		/*sub_menu 탭*/
 		$(function(){
 			 $('#table-stat').bootstrapTable();
+			 $("#table-stat thead th.proj-header").css({"display" : "none"});
 			//년도 캘린더 만들기 - 관리자일 경우 시작년도가 2015년 , 사용자일 경우 사용자의 입사년도
 			//스프링 시큐리티를 이용해서 c:set 을 이용하여 변수 생성하고 그 값으로 세팅
 			var calYearKo = new tui.DatePicker('#datepicker-year-ko',{
