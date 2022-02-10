@@ -134,7 +134,7 @@ $(document).ready(function(){
 				}
 				
 				
-				var vctInf = '<li><a href="${pageContext.request.contextPath}/vct/vctInf00List.do" class="text-center"><strong class=\"sky\" id="vctDayCnt">사용일  : '+vctUseDayCnt+' <br>부여일 : '+vctGrntDay+'</strong></a></li>';
+				var vctInf = '<li><a href="${pageContext.request.contextPath}/vct/vctInf00List.do?menu_id1=MN0031&menu_id2=MN0033" class="text-center"><strong class=\"sky\" id="vctDayCnt">사용일  : '+vctUseDayCnt+' <br>부여일 : '+vctGrntDay+'</strong></a></li>';
 				$("#vct_info").append(vctInf);
 				
 				
