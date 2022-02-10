@@ -69,11 +69,15 @@ public class DocServiceImpl implements DocService {
 	public String getReportCode(Map params) throws Exception {
 		String cd1 = (String) params.get("APRV_TYPE_CD");
 		String cd2 = (String) params.get("APRV_TYPE_DTIL_CD");
-		
+		String stddYr = (String)params.get("STDD_YR");
 		String reportCode = null;
-		
+		int stddYrNum = Integer.parseInt(stddYr); 
 		if("CD0001011".equals(cd1)) { // 휴가신청
-			reportCode = "letech/doc/report/report_frogh";
+			if(stddYrNum < 2022) {
+				reportCode = "letech/doc/report/report_frogh_old";
+			}else {
+				reportCode = "letech/doc/report/report_frogh";
+			}
 		} else if("CD0001013".equals(cd1)) { // 유연근무제신청
 			if("CD0001013001".equals(cd2)) { // 시차출퇴근제
 				reportCode = "letech/doc/report/report_flexWrkSyst";
