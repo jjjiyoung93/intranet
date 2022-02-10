@@ -107,7 +107,6 @@ public class CmmScheduler {
 	 * 매년 말 사용자의 내년 생일 등록 
 	 */
 	 @Scheduled(cron = "0 0 0 31 12 ?") 
-	/* @Scheduled(cron = "0 25 14 * * ?") */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void ussBirthday() {
 		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
@@ -209,8 +208,7 @@ public class CmmScheduler {
 	/**
 	 * 매년 첫 날 재직중인 사원 근속년수 수정 
 	 */
-	 @Scheduled(cron = "0 0 0 1 1 ?") 
-	/* @Scheduled(cron = "0 37 12 * * ?") */
+	@Scheduled(cron = "0 0 0 1 1 ?") 
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void ussWorkYrCnt()  {
 		Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
@@ -227,7 +225,6 @@ public class CmmScheduler {
 	  * 매년 12월 1일 다음 해 휴일 정보 저장
 	  */
 	 @Scheduled(cron = "0 0 0 1 12 ?") 
-	 /* @Scheduled(cron = "0 37 12 * * ?") */
 	 @Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	 public void insertHoliday()  {
 		 Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
