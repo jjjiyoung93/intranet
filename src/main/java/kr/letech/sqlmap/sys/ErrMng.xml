@@ -8,6 +8,7 @@
     	  FROM STD_ERROR_LOG
     	 WHERE 1=1
     	   AND PROCESS_STATE NOT IN 0
+    	   AND (ERROR_LEVEL = 'ERROR' OR ERROR_LEVEL = 'WARN')
 	</select>
 
 	<!-- 발생에러 조회  -->
