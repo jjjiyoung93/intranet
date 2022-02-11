@@ -444,6 +444,7 @@ $(document).ready(function(){
 //검색 버튼
 function goPage(cPage){
 	$("#cPage").val(cPage);
+	$("#frm1").attr("target", "vct00Popup");
 	$("#frm1").attr("action", "${pageContext.request.contextPath}/vct/vct00Popup.do");
 	$("#frm1").submit();
 }
