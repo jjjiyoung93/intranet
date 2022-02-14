@@ -239,12 +239,32 @@ function getValidation2(valid) {
 			//console.log("날짜 차이 : " + diffDate);
 			var date;
 			var year;
-			
+			holDateList = new Array();
+			for(var j=0; j< holDtList.length; j++){
+				var holDtStr = holDtList[j];
+				var holDtYr = holDtStr.substring(0,4)
+				var holDtMon = holDtStr.substring(4,6);
+				var holDtDay = holDtStr.substring(6, holDtStr.length);
+				var holDtString = holDtYr + "-" + holDtMon + "-" + holDtDay;
+				//console.log("holDtString : " + holDtString);
+				var holDate = new Date(holDtString);
+				holDateList.push(holDate);
+			}
+			//console.log("holDatelist : " + holDateList.length);
 			for(var i = 0; i <= diffDate; i++){
 				date = new Date(vctStDt);
 				
 				date.setDate(date.getDate() + i);
+				
 				year = date.getFullYear();
+				var monthStr = (date.getMonth() + 1) + "";
+				var month = monthStr.padStart(2, '0');
+				var dayStr = date.getDate() + "";
+				var day = dayStr.padStart(2, '0');
+				var week = date.getDay();
+				
+				var dateString = "" + year + month + day;
+				//console.log("dateString : " + dateString);
 				
 				if(thisYr == year){
 					if(date.getDate() == stDate.getDate()){
@@ -252,13 +272,18 @@ function getValidation2(valid) {
 					}else if(date.getDate() ==  edDate.getDate()){
 						vctDayCnt += parseFloat(vctEdGb);
 					}else{
-						vctDayCnt += 1;
+						//주말이 아니면서 공휴일도 아니면
+						if(week != 0 && week != 6 && holDtList.indexOf(dateString) == -1){
+							vctDayCnt += 1;
+						}
+						
 					}
 				}
 			}
 			//alert("신청일수 : "+vctDayCnt);
 			if(vctLeftDay != null){
 				var vctDayCntNum = vctDayCnt;
+				//console.log("신청일수 : " +vctDayCntNum);
 				var vctLeftDayNum = parseFloat(vctLeftDay);
 				
 				if(vctDayCntNum > vctLeftDayNum){
