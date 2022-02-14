@@ -169,7 +169,7 @@
 										<label class="title">근속년수</label>
 										<input name="work_yr_cnt" id="work_yr_cnt" type="number" min="0" value="${resultView.WORK_YR_CNT }" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
 									</li>
-									<c:if test="${params.mode eq VarConsts.MODE_U}">
+									<c:if test="${params.mode == 'UPDATE'}">
 										<li class="form-group col-md-6 form-inline" id="rtr_yn_select">
 											<label class="title">재직구분</label>
 											<select id="rtr_yn" name="rtr_yn" class="form-control" onchange="javascript:fn_showRtrDt(this.value)" >
@@ -182,7 +182,7 @@
 							</div>
 							<div class="row">
 								<ul class="col-md-12">
-								<c:if test="${params.mode eq VarConsts.MODE_U}">
+								<c:if test="${params.mode == 'UPDATE'}">
 									<li class="form-group col-md-6 form-inline">
 										<label class="title">퇴사일</label>
 										<input name="rtr_dt" id="rtr_dt" type="text" value="${resultView.RTR_DT }" class="form-control" disabled />
