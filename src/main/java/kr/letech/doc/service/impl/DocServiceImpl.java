@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import kr.letech.doc.service.DocService;
@@ -71,7 +72,10 @@ public class DocServiceImpl implements DocService {
 		String cd2 = (String) params.get("APRV_TYPE_DTIL_CD");
 		String stddYr = (String)params.get("STDD_YR");
 		String reportCode = null;
-		int stddYrNum = Integer.parseInt(stddYr); 
+		int stddYrNum = 0;
+		if(StringUtils.isNotEmpty(stddYr)) {
+			stddYrNum = Integer.parseInt(stddYr); 
+		}
 		if("CD0001011".equals(cd1)) { // 휴가신청
 			if(stddYrNum < 2022) {
 				reportCode = "letech/doc/report/report_frogh_old";

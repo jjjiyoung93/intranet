@@ -181,17 +181,28 @@ $(function() {
 	var docJson = ${docJson };	 // 컨트롤러에서 받아온 문서에 대한 json
 	viewJson = ${viewJson }; // 컨트롤러에서 받아온 결재에 대한 json
 	var fileJson = ${fileJson }; // 컨트롤러에서 받아온 첨부파일에 대한 json
-	
+	var url = "";
 	recList = ${recList};
 	recFileList = ${recFileList};
 	projList = ${projList};
 	
 	var stddYr = viewJson.TERM_ST_YM;
-	stddYr = stddYr.substring(0, 4);
-	stddYrInt = parseInt(stddYr);
 	
+	if(stddYr != null && stddYr != ""){
+		stddYr = stddYr.substring(0, 4);
+		stddYrInt = parseInt(stddYr);
+	}
+	
+	url = "${pageContext.request.contextPath}/doc/doc01Ajax.do?APRV_TYPE_CD="+viewJson.APRV_TYPE_CD+"&APRV_TYPE_DTIL_CD="+viewJson.APRV_TYPE_DTIL_CD;
+
+	if(viewJson.hasOwnProperty('APRV_TYPE_CD') && viewJson.APRV_TYPE_CD == "<%=VarConsts.EAM_VACATION_CODE%>"){
+		url = "${pageContext.request.contextPath}/doc/doc01Ajax.do?APRV_TYPE_CD="+viewJson.APRV_TYPE_CD+"&APRV_TYPE_DTIL_CD="+viewJson.APRV_TYPE_DTIL_CD+"&STDD_YR="+stddYr;
+	}	
+
+
+
 	$.ajax({
-		url: "${pageContext.request.contextPath}/doc/doc01Ajax.do?APRV_TYPE_CD="+viewJson.APRV_TYPE_CD+"&APRV_TYPE_DTIL_CD="+viewJson.APRV_TYPE_DTIL_CD+"&STDD_YR="+stddYr,
+		url: url,
 		type: "get",
 		async: false,
 		success: function(data) {
