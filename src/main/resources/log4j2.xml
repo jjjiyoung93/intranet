@@ -17,9 +17,9 @@
 		</RollingFile> -->
 		
 		<!-- 최초작성일 		2017. 1. 20		 최초작성자		김중원 -->
-		 <JDBC name="databaseAppender" tableName="LETECH.STD_ERROR_LOG">
+		 <JDBC name="databaseAppender" tableName="STD_ERROR_LOG">
 			<ConnectionFactory class="kr.letech.cmm.util.ConnectionFactory" method="getDataBaseConnection"/>
-			<Column name="ERROR_SEQ" literal="LETECH.ERROR_LOG_SEQ.NEXTVAL"/>
+			<Column name="ERROR_SEQ" literal="ERROR_LOG_SEQ.NEXTVAL"/>
 			<Column name="ERROR_LOGGER" pattern="%c" />
 			<Column name="ERROR_METHOD" pattern="%M" />
 			<Column name="ERROR_LOCATION" pattern="%l" />
@@ -50,7 +50,7 @@
 		<Logger name="jdbc.resultset" level="WARN" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
-		<Logger name="jdbc.resultsettable" level="OFF" additivity="false">
+		<Logger name="jdbc.resultsettable" level="INFO" additivity="false">
 			<AppenderRef ref="Console"/>
 		</Logger>
 		<Logger name="jdbc.audit" level="OFF" additivity="false">

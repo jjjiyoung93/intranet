@@ -66,4 +66,9 @@ public class CodeMngServiceImpl implements CodeMngService {
 		return codeMngDAO.getCodeCnt(params);
 	}
 
+	@Override
+	public List getAllCodeList() throws Exception {
+		return codeMngDAO.getAllCodeList();
+	}
+
 }

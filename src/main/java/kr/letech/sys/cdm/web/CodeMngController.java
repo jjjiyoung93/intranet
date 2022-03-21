@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.letech.cmm.annotation.IncludedInfo;
@@ -37,59 +38,114 @@ public class CodeMngController {
 	 * @return 페이지 정보
 	 * @throws Exception
 	 */
-	@IncludedInfo(name = "코드관리", order = 470, gid = 50)
+//	@IncludedInfo(name = "코드관리", order = 470, gid = 50)
+//	@RequestMapping(value = "/sys/cdm/list.do")
+//	public String getList(HttpServletRequest request, ModelMap model) throws Exception {
+//		
+//		Map params = ReqUtils.getParameterMap(request);
+//		
+//		//1depth
+//		String up_cd = (String)params.get("up_cd");
+//		//2depth
+//		String up_cd2 = (String)params.get("up_cd2");
+//		//3depth
+//		String up_cd3 = (String)params.get("up_cd3");
+//		
+//		//상위코드 목록
+//		List highList = codeMngService.getOneCodeList(params);
+//		
+//		List lowList  = new ArrayList();
+//		List lowList2 = new ArrayList();
+//		List lowList3 = new ArrayList();
+//		
+//		if("3dep".equals((String)params.get("m_cd"))){
+//			
+//			params.put("up_cd", up_cd);
+//			lowList = codeMngService.getCodeList(params);
+//			
+//			params.put("up_cd", up_cd2);
+//			lowList2 = codeMngService.getCodeList(params);
+//		
+//		}else if("4dep".equals((String)params.get("m_cd"))){
+//			params.put("up_cd", up_cd);
+//			lowList2 = codeMngService.getCodeList(params);
+//			
+//			params.put("up_cd", up_cd2);
+//			lowList = codeMngService.getCodeList(params);
+//			
+//			params.put("up_cd", up_cd3);
+//			lowList3 = codeMngService.getCodeList(params);
+//			
+//		}else{
+//			lowList = codeMngService.getCodeList(params);
+//		}
+//		//하위코드 목록
+//		
+//		model.addAttribute("highList", highList);
+//		model.addAttribute("lowList", lowList);
+//		model.addAttribute("lowList2", lowList2);
+//		model.addAttribute("lowList3", lowList3);
+//		model.addAttribute("params", params);
+//		
+//
+//		return "letech/sys/cdm/list";
+//	}
+	
+	/**
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 * @Method : getList
+	 * @Author : KIM JI YOUNG
+	 * @Date   : 2022.03.21
+	 */
 	@RequestMapping(value = "/sys/cdm/list.do")
 	public String getList(HttpServletRequest request, ModelMap model) throws Exception {
 		
-		Map params = ReqUtils.getParameterMap(request);
-		
-		//1depth
-		String up_cd = (String)params.get("up_cd");
-		//2depth
-		String up_cd2 = (String)params.get("up_cd2");
-		//3depth
-		String up_cd3 = (String)params.get("up_cd3");
-		
-		//상위코드 목록
-		List highList = codeMngService.getOneCodeList(params);
-		
-		List lowList  = new ArrayList();
-		List lowList2 = new ArrayList();
-		List lowList3 = new ArrayList();
-		
-		if("3dep".equals((String)params.get("m_cd"))){
-			
-			params.put("up_cd", up_cd);
-			lowList = codeMngService.getCodeList(params);
-			
-			params.put("up_cd", up_cd2);
-			lowList2 = codeMngService.getCodeList(params);
-		
-		}else if("4dep".equals((String)params.get("m_cd"))){
-			params.put("up_cd", up_cd);
-			lowList2 = codeMngService.getCodeList(params);
-			
-			params.put("up_cd", up_cd2);
-			lowList = codeMngService.getCodeList(params);
-			
-			params.put("up_cd", up_cd3);
-			lowList3 = codeMngService.getCodeList(params);
-			
-		}else{
-			lowList = codeMngService.getCodeList(params);
-		}
-		//하위코드 목록
-		
-		model.addAttribute("highList", highList);
-		model.addAttribute("lowList", lowList);
-		model.addAttribute("lowList2", lowList2);
-		model.addAttribute("lowList3", lowList3);
-		model.addAttribute("params", params);
-		
-
-		return "letech/sys/cdm/list";
+		return "letech/sys/cdm/cmd01List";
 	}
 	
+	/**
+	 * 코드 전체 조회
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 * @Method : getCdList
+	 * @Author : KIM JI YOUNG
+	 * @Date   : 2022.03.21
+	 */
+	@RequestMapping(value= "/sys/cdm/jstreeList.do")
+	public String getCdList(ModelMap model) throws Exception{
+		
+		List codeList = codeMngService.getAllCodeList();
+		model.addAttribute("codeList", codeList);
+		
+		return "jsonView";
+	}
+	
+	/**
+	 * 코드 상세보기 폼
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 * @Method : codeForm
+	 * @Author : KIM JI YOUNG
+	 * @Date   : 2022.03.21
+	 */
+	@RequestMapping(value="/sys/cdm/getCodeForm.do")
+	public String codeForm(HttpServletRequest request, ModelMap model) throws Exception{
+		
+		Map params = ReqUtils.getParameterMap(request);
+		
+		Map getCodeView = codeMngService.getCodeView(params);
+		model.addAttribute("getCodeView", getCodeView);
+		model.addAttribute("params", params);
+		
+		return "letech/sys/cdm/code01Form";
+	}
 	/**
 	 * 코드 등록폼
 	 * @param request

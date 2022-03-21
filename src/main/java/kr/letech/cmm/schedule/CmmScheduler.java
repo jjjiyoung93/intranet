@@ -1,5 +1,9 @@
 package kr.letech.cmm.schedule;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,13 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +33,10 @@ import kr.letech.cmm.util.EgovDateUtil;
 import kr.letech.cmm.util.EgovProperties;
 import kr.letech.uss.umt.service.impl.UssMngDAO;
 
+/**
+ * @author Letech
+ *
+ */
 @Component
 public class CmmScheduler {
 
@@ -221,10 +232,11 @@ public class CmmScheduler {
 		
 	}
 	 
+	
 	 /**
-	  * 매년 12월 1일 다음 해 휴일 정보 저장
-	  */
-	 @Scheduled(cron = "0 0 0 1 12 ?") 
+	 * 매년 12월 1일 다음 해 휴일 정보 저장
+	 */
+	@Scheduled(cron = "0 0 0 1 12 ?") 
 	 @Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	 public void insertHoliday()  {
 		 Map<String, Object> params = new HashMap<String, Object>(); // 넘겨줄 파라미터
@@ -243,13 +255,72 @@ public class CmmScheduler {
 		 try {
 			 holidayMngService.holMngUpdateBySys(params);
 		 } catch (Exception e) {
-			 e.printStackTrace();
+			 log.error("[HOLIDAY] 공휴일 데이터 적재 실패");
+//			 e.printStackTrace();
 		 }
 		 
 	 }
 	 
+	@Value("#{config['message']}")
+	private static String config_message;
+
+	private boolean isEnabled = false;
+
+	@Value("${Globals.UserName}")
+	private String username;
 	
+	@Value("${Scheduler.cron}")
+	private String cron;
 	
+	/**
+	 * test
+	 * @Method : test
+	 * @Author : KIM JI YOUNG
+	 * @Date   : 2022. 3. 17.
+	 */
 	
+	private String cron2 = "0/10 * * * * *";
 	
+	@Scheduled(cron = "${Scheduler.cron}")//5초마다 실행
+	public void test() {
+		
+		if(isEnabled) {
+			Calendar cal = Calendar.getInstance();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			log.info("스케줄 실행 : {}", df.format(cal.getTime()) + cron);
+		}
+		
+//		try {
+//			throw new Exception("예외 강제");
+//		} catch (Exception e) {
+//			System.err.println("에러메시지 : "+ e.getMessage());
+//			System.out.println("에러 : " + e.getCause());
+//			System.out.println("클래스네임" + e.getClass());
+//			System.out.println("exception종류" + e.getClass().getSimpleName());
+//			
+//		}
+	
+	}
+	
+//    private static ConfigurableEnvironment getEnvironment() throws Exception {
+//        StandardEnvironment env = new StandardEnvironment();
+//        MutablePropertySources propertySources = env.getPropertySources();
+//
+//        Map<String, Object> props = new HashMap<String, Object>();
+////        props.put("my.custom.cron1", "* * * * * *");
+//
+//        Connection conn = DriverManager.getConnection("...");
+//        PreparedStatement pstmt = conn.prepareStatement("select CRON frrom TB_CRON where id = ?");
+//        pstmt.setString(1, "...");
+//        ResultSet result = pstmt.executeQuery();
+//        while (result.next()) {
+//            props.put("Scheduler.cron", result.getString("CRON")); // DB에서 크론 설정값을 가져옴
+//        }
+//
+////        DefaultPropertiesPropertySource propertySource = new DefaultPropertiesPropertySource(props);
+////        propertySources.addLast(propertySource);
+//
+//        return env;
+//    }
 }

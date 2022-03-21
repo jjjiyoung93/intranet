@@ -86,6 +86,46 @@ public class UssMngController {
 		return "letech/uss/umt/uss00List";
 	}
 	
+	@RequestMapping(value = "/uss/umt/us00List.do")
+	public String getUsList(HttpServletRequest request, ModelMap model) throws Exception {
+
+		Map params = ReqUtils.getParameterMap(request);
+
+		// 목록 및 총건수, 페이징 
+		Map bbsObject = ussMngService.getUssPageingList(params);
+		
+		model.addAttribute("cPage", bbsObject.get("cPage"));					// 페이지수
+		model.addAttribute("totalCnt", bbsObject.get("totalCnt"));				// 총건수
+		model.addAttribute("intListCnt", bbsObject.get("intListCnt"));			// 시작페이지 수
+		model.addAttribute("resultList", bbsObject.get("resultList"));			// 목록정보
+		model.addAttribute("pageNavigator", bbsObject.get("pageNavigator"));	// 페이징
+		model.addAttribute("params", params);
+		
+		
+		/*검색조건 코드 목록 로드 - 2022.01.04 : BEGIN*/
+		//부서코드
+		params.put("up_cd", (String)VarConsts.EMP_TYPE_CODE);
+		List departList = ussMngService.getUssDepartList(params);
+		model.addAttribute("departList", departList);
+		
+		//직급(권한)코드
+		List authList = roleMngService.getAuthList(params);
+		model.addAttribute("authList", authList);
+		
+		//소속 리스트 가져오기
+		params.put("code", VarConsts.DP_CODE);
+		params.put("up_cd", VarConsts.DP_CODE);
+		List dpList = codeMngService.getCodeList(params);
+		model.addAttribute("dpList", dpList);
+		
+		//프로젝트 목록 조회
+		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
+		List projList = codeMngService.getCodeList(params);
+		model.addAttribute("projList", projList);
+		/*검색조건 코드 목록 로드 - 2022.01.04 : END*/
+				
+		return "letech/uss/uv/us00List";
+	}
 	/**
 	 * ID 중복체크
 	 * @param request

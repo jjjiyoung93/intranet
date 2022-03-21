@@ -59,7 +59,8 @@ public class ErrMngController {
 		model.addAttribute("resultList", pageInfo.get("resultList"));
 		model.addAttribute("pageNavigator", pageInfo.get("pageNavigator"));
 
-		return "letech/sys/err/err00List";
+//		return "letech/sys/err/err00List";
+		return "letech/sys/err/err02List";
 	}
 	
 	/**
@@ -84,7 +85,8 @@ public class ErrMngController {
 		model.addAttribute("resultView", resultView);
 		model.addAttribute("params", params);
 		
-		return "letech/sys/err/err00View";
+//		return "letech/sys/err/err00View";
+		return "letech/sys/err/err02View";
 	}
 	
 	/**

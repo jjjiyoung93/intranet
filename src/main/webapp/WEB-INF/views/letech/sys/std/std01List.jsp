@@ -108,7 +108,7 @@
 		<jsp:include page="/resources/com/inc/aside.jsp" />
 		</section>
 		</div>
-			<jsp:include page="/resources/com/inc/footer.jsp" />
+	<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>

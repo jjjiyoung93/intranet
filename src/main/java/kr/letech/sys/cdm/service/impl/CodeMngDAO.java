@@ -50,4 +50,9 @@ public class CodeMngDAO extends AbstractDAO {
 		return (Map)getObject("codeMng.getCodeCnt", params);
 	}
 
+	public List getAllCodeList() throws Exception{
+		return getList("codeMng.getAllCodeList");
+	}
+	
+
 }

@@ -74,6 +74,12 @@ if(Sessinfo != null){
 								<ul id="aside_aprv3" class="collapse">
 								</ul>
 							</li>
+							
+							<li>
+								<a class="dropdown-item" href="/letech/index.do">에러(<font id="aside_aprvCnt3"></font>)
+								</a>
+							</li>
+							
 						</ul>
 					</li>
 					
@@ -183,6 +189,9 @@ $(document).ready(function(){
 
 			for(var i=0; i<aprvListCnt3; i++){
 				$("#aside_aprv3").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList3[i]['CD']+"\">"+"- "+aprvList3[i]['CD_NM']+"("+aprvList3[i]['TYPE_CNT']+")</a></li>");
+			}
+			for(var i=0; i<aprvListCnt3; i++){
+				$("#aside_aprv4").append("<li><a href=\"${pageContext.request.contextPath }/aprv/aprv00List.do?menu_id1=MN0013&menu_id2=MN0014&searchCdList1="+aprvList3[i]['CD']+"\">"+"- "+aprvList3[i]['CD_NM']+"("+aprvList3[i]['TYPE_CNT']+")</a></li>");
 			}
 			/* 결재 정보 목록 END */
 			

@@ -80,4 +80,12 @@ public interface CodeMngService {
 	 */
 	Map getCodeCnt(Map params) throws Exception;
 
+	/**
+	 * 전체 코드 조회
+	 * @Method : getAllCodeList
+	 * @Author : KIM JI YOUNG
+	 * @Date   : 2022.03.21
+	 */
+	List getAllCodeList() throws Exception;
+
 }

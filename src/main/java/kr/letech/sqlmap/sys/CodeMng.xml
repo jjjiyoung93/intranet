@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="codeMng">	
 	
+	<!-- 코드 전체 조회 -->
+	<select id="getAllCodeList" resultType="HashMap">
+		SELECT *
+  		  FROM STD_CD_MNG
+  		 WHERE use_yn = 'Y'
+	</select>
+	
 	<!-- 상위 공통코드 목록 로딩시  -->
 	<select id="getOneCodeList" resultType="HashMap" parameterType="map" >
 		SELECT
