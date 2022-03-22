@@ -43,7 +43,10 @@
 		<div id="page-wrapper">
 			<div class="row">	
 				<div class="col-lg-10">
-					<form name="frm1" id="frm1" method="get" action="${pageContext.request.contextPath}/sys/sch/sch00List.do" >
+					<form name="form1" id="form1" method="post" action="${pageContext.request.contextPath}/sys/sch/sch00List.do" >
+						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
+						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
+						<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}" />
 						<!-- 타이틀 및 페이지 네비 -->
 						<h2 class="page-title clearfix">
 							${titleNaviMap.MN_NM }
@@ -240,10 +243,10 @@
 									<div class="table-responsive col-lg-9 text-right">
 										<span>
 											<c:if test="${params.flag eq 2}">
-												<input type="button" id="btn-list" name="btn-list" class="btn btn-sm btn-default " value="목록" onclick="javascript:self.location='sch00List.do'"/>
+												<input type="button" id="btn-list" name="btn-list" class="btn btn-sm btn-default " value="목록" />
 											</c:if>
 											<c:if test="${params.flag eq 3}">
-												<input type="button" id="btn-list" name="btn-list" class="btn btn-sm btn-default " value="취소" onclick="history.go(-1)"/>
+												<input type="button" id="btn-cancel" name="btn-list" class="btn btn-sm btn-default " value="취소" />
 											</c:if>
 											<input type="button" id="btn-modify" name="btn-modify" onclick="btnModify()" class="btn btn-sm btn-info" value="수정"/>
 											<input type="button" id="btn-del" name="btn-del" onclick="btnOk()" class="btn btn-sm btn-info" value="삭제"/><!-- 비활성화 -->
@@ -264,13 +267,14 @@
 		</div><!-- div page-wrapper 끝 -->
 		<jsp:include page="/resources/com/inc/footer.jsp" />
 	</div><!-- div wrapper 끝 -->
-	
+
+<jsp:include page="/resources/com/inc/javascript.jsp" />
 <script type="text/javascript">
 
 $(function(){
 	
-/* toast date */
-var datepicker = new tui.DatePicker('#startpicker-container', {
+	/* toast date */
+	var datepicker = new tui.DatePicker('#startpicker-container', {
 						date 	: new Date(),
 						input 	: {
 							element : '#reg_dt',
@@ -278,6 +282,22 @@ var datepicker = new tui.DatePicker('#startpicker-container', {
 						}
 					});
 })
+
+/* 목록 */
+$("#btn-list").click(function(){
+	goList();
+});
+
+/* 취소 */
+$("#btn-cancel").click(function(){
+	goList();
+});
+
+/* 목록이동 */
+function goList(){
+	 $("#form1").attr("action", "${pageContext.request.contextPath}/sys/sch/sch00List.do");
+	 $("#form1").submit();
+}
 
 /* 저장 */
 function btnOk() {

@@ -19,6 +19,9 @@
 			<section class="row">
 				<div class="col-lg-10">
 					<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/sch/sch00List.do">
+						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
+						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
+						<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}" />
 						<!-- 타이틀 및 페이지 네비 -->
 						<h2 class="page-title clearfix">
 							${titleNaviMap.MN_NM }

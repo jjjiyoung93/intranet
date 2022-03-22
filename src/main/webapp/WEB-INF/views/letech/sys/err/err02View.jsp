@@ -77,7 +77,7 @@
 										</dl>
 										<dl class="clearfix ">
 											<dt class="col-md-2 col-xs-2">에러유형</dt>
-											<dd class="col-md-10 col-xs-10">
+											<dd class="col-md-10 col-xs-10" style="overflow:hidden; word-wrap:break-word;">
 												${resultView.ERROR_MESSAGE }
 											</dd>
 										</dl>

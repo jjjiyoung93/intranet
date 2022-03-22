@@ -44,9 +44,9 @@ public class SchMngController {
 	 */
 	@RequestMapping(value="/sys/sch/sch00List.do")
 	public String getSch00List(HttpServletRequest request, ModelMap model) throws Exception{
-//		Map params = ReqUtils.getParameterMap(request);
+		Map params = ReqUtils.getParameterMap(request);
 		
-//		model.addAttribute("params", params);
+		model.addAttribute("params", params);
 //		model.addAttribute("pageInfo", pageInfo);
 //		model.addAttribute("cPage", pageInfo.get("cPage"));
 //		model.addAttribute("totalCnt", pageInfo.get("totalCnt"));

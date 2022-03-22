@@ -56,18 +56,31 @@
                               <div class ="col-md-6 un-style form-inline mt10">
                                  <span class="inline-element col-md-8 col-md-offset-2">
                                     <label>소속부서</label>&nbsp;
-                                    <select name="searchGubun4" id="searchGubun4" class="form-control" title="search" style="font-size: 12px; width: 125px;display:inline-block; margin-right: 10px;" >
-                                       <option value="" >전체</option>
-                                       <c:forEach var="departList" items="${departList}">
-                                          <option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option>
-                                       </c:forEach>
-                                    </select>
-                                    <select name="searchGubun4" id="searchGubun4" class="form-control" title="search" style="font-size: 12px; width: 125px; display:inline-block;" >
-                                       <option value="" >전체</option>
-                                       <c:forEach var="departList" items="${departList}">
-                                          <option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option>
-                                       </c:forEach>
-                                    </select>
+                                    <select id="searchCdList4" style="width: 125px; font-size: 12px; display:inline-block;" name="searchCdList4" class="form-control" onchange="javascript:fn_dp2List(this.value)">
+											<option value="" >--전체--</option>
+											<c:forEach var="dp" items="${dpList}">
+												<option value="${dp.CD}" <c:if test="${dp.CD eq params.searchCdList4 }">selected="selected"</c:if> >${dp.CD_NM}</option>
+											</c:forEach>
+								</select>
+								<!-- 소속2  -->
+								<!-- <label style="font-size: 14px; padding: 0px;">하위부서</label>	 -->
+								<select id="searchCdList5" style="width: 125px; font-size: 12px; display:inline-block;" name="searchCdList5" class="form-control">
+											<option value="" >--전체--</option>
+											
+								</select>
+								
+<!--                                     <select name="searchGubun4" id="searchGubun4" class="form-control" title="search" style="font-size: 12px; width: 125px;display:inline-block; margin-right: 10px;" > -->
+<!--                                        <option value="" >전체</option> -->
+<%--                                        <c:forEach var="departList" items="${departList}"> --%>
+<%--                                           <option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option> --%>
+<%--                                        </c:forEach> --%>
+<!--                                     </select> -->
+<!--                                     <select name="searchGubun4" id="searchGubun4" class="form-control" title="search" style="font-size: 12px; width: 125px; display:inline-block;" > -->
+<!--                                        <option value="" >전체</option> -->
+<%--                                        <c:forEach var="departList" items="${departList}"> --%>
+<%--                                           <option value="${departList.DP_CD}" <c:if test="${departList.DP_CD eq params.searchGubun4 }">selected="selected"</c:if> >${departList.DP_NM}</option> --%>
+<%--                                        </c:forEach> --%>
+<!--                                     </select> -->
                                  </span>
                               </div>
                               
@@ -152,45 +165,60 @@
    </div>
        <jsp:include page="/resources/com/inc/footer.jsp" />
    </div>
-   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script>
-   <script type="text/javascript">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+	
+	$(function(){
+		var dpCd = "<c:out value='${params.searchCdList4}'/>";
+		
+		fn_dp2List(dpCd);
+	});
 
-      /* 등록 */
-         
-      $( ".fnJoin" ).click(function() {
-         $("#frm1").attr("action", "${pageContext.request.contextPath}/uss/umt/uss00Form.do");
-         $("#frm1").submit();
-      });
-      /* 검색 */
-      $( ".fnSearch" ).click(function() {
-         goPage(1);
-      });
-      /* 상세조회 */
-      function fnView(uss_id){
-         $("#uss_id").val(uss_id);
-         $("#frm1").attr("action", "${pageContext.request.contextPath}/uss/umt/uss00View.do");
-         $("#frm1").submit();
-      }
-      
-      function goPage(cPage){
-         $("#cPage").val(cPage);
-         $("#frm1").attr("action", "${pageContext.request.contextPath}/uss/umt/uss00List.do");
-         $("#frm1").submit();
-      }
-      
-   
-      /*sub_menu 탭*/
-      $(function(){
-         $("article.sub_contents:not("+$("ul.tab_gnb li a.sub_nav_on").attr("href")+")").hide()
-         $("ul.tab_gnb li a").click(function(){
-            $("ul.tab_gnb li a").removeClass("sub_nav_on");
-            $(this).addClass("sub_nav_on");
-            $("article.sub_contents").hide();
-            $($(this).attr("href")).show();
-            return false;
-         });
-      });
+	function fn_dp2List(val){
+		var dp2Cd = '${params.searchCdList5}';
+		
+		var dpCd = val;
+		
+		$.ajax({
+			type: 'post',
+			data : {
+				upCd : dpCd 
+			},
+			url : "${pageContext.request.contextPath}/aprv/getCdList.do",
+			dataType : 'json',
+			success : function (data){
+				var params = data.params;
+				var cdList = data.cdList;
+				var html = '';
+				$(".cdList").remove();
+				for(var i in cdList){
+					var cd = cdList[i];
+					html += '<option class="cdList" value="'+cd.CD+'" id="'+cd.CD+'">'+cd.CD_NM+'</option>';
+				}
+				$("#searchCdList5").append(html);
+				$("#"+dp2Cd).prop('selected', true);
+			},error: function (request, status, error) {
+		         alert(request.responseText);
+		    } 
+		});
+	}
+   /* 검색 */
+   $( ".fnSearch" ).click(function() {
+      goPage(1);
+   });
 
-   </script>
+   /*sub_menu 탭*/
+   $(function(){
+      $("article.sub_contents:not("+$("ul.tab_gnb li a.sub_nav_on").attr("href")+")").hide()
+      $("ul.tab_gnb li a").click(function(){
+         $("ul.tab_gnb li a").removeClass("sub_nav_on");
+         $(this).addClass("sub_nav_on");
+         $("article.sub_contents").hide();
+         $($(this).attr("href")).show();
+         return false;
+      });
+   });
+
+</script>
 </body>
 </html>

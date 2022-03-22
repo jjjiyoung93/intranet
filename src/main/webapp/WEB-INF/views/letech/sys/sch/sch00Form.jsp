@@ -38,12 +38,15 @@
 	<div id="wrapper">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<jsp:include page="/resources/com/inc/header.jsp" />
-			<jsp:include page="/WEB-INF/views/letech/com/layout/menu.jsp" />
+			<%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
 		</nav>
 		<div id="page-wrapper">
 			<div class="row">	
 				<div class="col-lg-10">
-					<form name="frm1" id="frm1" method="get" action="${pageContext.request.contextPath}/sys/sch/sch00List.do" >
+					<form name="form1" id="form1" method="post" action="<%=request.getContextPath()%>/sys/sch/sch00List.do" >
+						<input type="hidden" id="menu_id1" name="menu_id1" value="${params.menu_id1}" />
+						<input type="hidden" id="menu_id2" name="menu_id2" value="${params.menu_id2}" />
+						<input type="hidden" id="menu_id3" name="menu_id3" value="${params.menu_id3}" />
 						<!-- 타이틀 및 페이지 네비 -->
 						<h2 class="page-title clearfix">
 							${titleNaviMap.MN_NM }
@@ -134,12 +137,12 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td align="center"><input class="form-control" type="text" id="sec" name="sec"/></td>
-													<td align="center"><input class="form-control" type="text" id="min" name="min"/></td>
-													<td align="center"><input class="form-control" type="text" id="hour" name="hour"/></td>
-													<td align="center"><input class="form-control" type="text" id="day" name="day"/></td>
-													<td align="center"><input class="form-control" type="text" id="mon" name="mon"/></td>
-													<td align="center"><input class="form-control" type="text" id="year" name="year"/></td>
+													<td align="center"><input class="form-control" type="text" id="sec" name="sec"  placeholder="0~59, - * /"/></td>
+													<td align="center"><input class="form-control" type="text" id="min" name="min"  placeholder="0~59, - * /" /></td>
+													<td align="center"><input class="form-control" type="text" id="hour" name="hour"placeholder="0~23, - * /" /></td>
+													<td align="center"><input class="form-control" type="text" id="day" name="day"  placeholder="1~31, - * ? / L W" /></td>
+													<td align="center"><input class="form-control" type="text" id="mon" name="mon"  placeholder="" /></td>
+													<td align="center"><input class="form-control" type="text" id="year" name="year"placeholder="" /></td>
 												</tr>
 											</tbody>
 										</table>
@@ -152,7 +155,7 @@
 									<div class="table-responsive col-lg-9 text-right">
 										<span>
 											<input type="button" id="btn-ok" name="btn-ok" onclick="btnOk()" class="btn btn-sm btn-info" value="등록"/>
-											<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" onclick="javascript:self.location='sch00List.do'"/>
+											<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소"/>
 										</span>
 									</div>
 								</div>
@@ -177,6 +180,7 @@ $(function(){
 	
 	/* toast date */
 	var datepicker = new tui.DatePicker('#startpicker-container', {
+							language: 'ko',		//한글 지원
 							date 	: new Date(),
 							input 	: {
 								element : '#reg_dt',
@@ -191,6 +195,12 @@ function btnOk() {
 //	$("#frm1").submit();
 	location.href = "sch00List.do";
 }
+
+/* 취소 */
+$("#btn-cancel").click(function(){
+	$("#form1").attr("action", "${pageContext.request.contextPath}/sys/sch/sch00List.do");
+	$("#form1").submit();
+});
 
 </script>
 </body>
