@@ -89,20 +89,38 @@
 								</span>
 								<strong class="list_count" >Total : ${totalCnt} 건</strong>
 							</p>
-						<div class="">
+						<div class="table-responsive">
 							<table class="table table-bordered reactive">
-								<colgroup>
-									<col width="50" class="hidden-xs hidden-sm"/>
-									<col width="*"/>
-									<col width="80" class="hidden-xs hidden-sm"/>
-									<col width="110"/>
-									<col width="60" class="hidden-xs hidden-sm"/>
-								</colgroup>
+								<!-- 
+									22.03.21 김민석 서식자료실 작성자 미출력 추가 
+								-->
+								<c:if test="${bbsInfo.BBS_ID  ne 'BB0005'}">
+									<colgroup>
+										<col width="50" class="hidden-xs hidden-sm"/>
+										<col width="*"/>
+										<col width="80" class="hidden-xs hidden-sm"/>
+										<col width="110"/>
+										<col width="60" class="hidden-xs hidden-sm"/>
+									</colgroup>
+								</c:if>
+								<c:if test="${bbsInfo.BBS_ID  eq 'BB0005'}">
+									<colgroup>
+										<col width="50" class="hidden-xs hidden-sm"/>
+										<col width="*"/>
+										<col width="110"/>
+										<col width="60" class="hidden-xs hidden-sm"/>
+									</colgroup>
+								</c:if>
 								<thead>
 									<tr role="row">
 										<th class="hidden-xs hidden-sm">번호</th>
 										<th class="">제목</th>
-										<th class="hidden-xs hidden-sm">작성자</th>
+										<!-- 
+											22.03.21 김민석 서식자료실 작성자 미출력 추가 
+										-->
+										<c:if test="${bbsInfo.BBS_ID  ne 'BB0005'}">
+											<th class="hidden-xs hidden-sm">작성자</th>
+										</c:if>
 										<th class="">작성일</th>
 										<th class="hidden-xs hidden-sm">조회수</th>
 									</tr>
@@ -118,13 +136,18 @@
 											<c:forEach var="list" items="${resultList}" varStatus="status">
 												<tr class="gradeA odd" role="row">
 													<td class="text-center hidden-xs hidden-sm">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</td>
-													<td class=""><c:forEach begin="1"
-															end="${list.LEVEL_CNT }" step="1">
+													<td class="">
+														<c:forEach begin="1" end="${list.LEVEL_CNT }" step="1">
 															<span class="re_re"></span>
 														</c:forEach> 
 															<a class="" href="#" onclick="fnView('${list.BBS_SEQ}');"><span class="ellip ellip-line">${list.TITLE}</span></a>
 													</td>
-													<td class="text-center hidden-xs hidden-sm">${list.REG_NM}</td>
+													<!-- 
+														22.03.21 김민석 서식자료실 작성자 미출력 추가 
+													-->
+													<c:if test="${bbsInfo.BBS_ID  ne 'BB0005'}">
+														<td class="text-center hidden-xs hidden-sm">${list.REG_NM}</td>
+													</c:if>
 													<td class="text-center">${list.REG_DT}</td>
 													<td class="text-center hidden-xs hidden-sm">${list.HIT}</td>
 												</tr>

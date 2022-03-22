@@ -239,6 +239,19 @@
 			return false;
 		}
 		
+		
+		/*2022.03.16
+		  서식 자료실 첨부파일 유무 확인
+		*/
+		let bbsId = '${bbsInfo.BBS_ID}';
+		if(bbsId== 'BB0005'){
+			if($('#file0')[0].files.length === 0){
+				alert("파일을 첨부해 주세요");
+				$('#file0').click();
+				return false;
+			}
+		}
+		
 		return true;
 	}
 	

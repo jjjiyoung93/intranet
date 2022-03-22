@@ -422,7 +422,6 @@ $(function() {
 		document.frm1.aprv_line_cnt.value = aprv_line.rows.length-1; 
 		var vali1 = getValidation1(); // 공통
 		var vali2 = getValidation2(vali1); // 개별
-		//console.log(vali2);
 		if(vali1 && vali2){
 			if($("#mode").val() == "<%=VarConsts.MODE_U%>") {
 			} else {
@@ -809,7 +808,6 @@ function fn_getDocCode(cd1, cd2) {
 		success: function(json){
 			// cd1, cd2에 해당하는 문서 양식을 화면에 찍어줌
 			$("#docForm").empty();
-			//console.log("화명:"+json);
 			$("#docForm").append(json);
 			if(cd1 == "<%=VarConsts.EAM_VACATION_CODE %>"){
 				html = "<div id='vacTermSt'>";

@@ -179,6 +179,22 @@ public class VarConsts {
 	 * 타입 = String<br>
 	 * 값 = 'CD0012'<br>
 	 */
+	
+	/** 
+	 * 종류 = 출장정산항목코드_법인<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0010'<br>
+	 */
+	public static final String BZTRP_DIV_CODE_CPR2 = "CD0025";
+	
+	/** 
+	 * 종류 = 출장정산항목코드_법인<br>
+	 * 타입 = String<br>
+	 * 값 = 'CD0010'<br>
+	 */
+	public static final String BZTRP_DIV_CODE_GNRL2 = "CD0026";
+	
+	
 	public static final String TRVCT_GROUP = "CD0012";
 	/** 
 	 * 종류 = 가지급금구분코드<br>

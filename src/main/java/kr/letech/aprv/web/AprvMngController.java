@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -511,6 +512,7 @@ public class AprvMngController {
 		params.put("up_cd", VarConsts.PLC_CODE); // 결재상위코드
 		List plcCodeList = codeMngService.getCodeList(params);
 		model.addAttribute("plcCodeList", plcCodeList);
+		
 		// 출장구분코드
 		if("CD0001009001".equals(params.get("cdList2"))) { // 법인 
 			params.put("up_cd", VarConsts.BZTRP_DIV_CODE_CPR); // 결재상위코드
@@ -519,12 +521,45 @@ public class AprvMngController {
 		}
 		List bztrpDivCodeList = codeMngService.getCodeList(params);
 		model.addAttribute("bztrpDivCodeList", bztrpDivCodeList);
+		
 		// 출장비
 		List trcsList = aprvMngService.getTrcsList();
 		model.addAttribute("trcsList", trcsList);
+		
 		// 여비
 		List trvctInfo = aprvMngService.getTrvctInfo(params);
 		model.addAttribute("trvctInfo", trvctInfo);
+		
+		return "jsonView";
+	}
+	
+	@RequestMapping(value = "aprv/aprv05Ajax.do")
+	public String getBztrpCodeList2(HttpServletRequest request, Model model) throws Exception{
+		Map params = ReqUtils.getParameterMap(request);
+		model.addAttribute("params", params);
+		
+		HttpSession session = request.getSession();
+		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+		params.put("auth_cd", loginVO.getAuthCd());
+		
+		// 출장구분코드
+		List bztrpDivCodeList = null;
+		params.put("up_cd", VarConsts.BZTRP_DIV_CODE_CPR2); // 법인 결재상위코드
+		bztrpDivCodeList = codeMngService.getCodeList(params);
+		model.addAttribute("cprCodeList",bztrpDivCodeList);
+		
+		params.put("up_cd", VarConsts.BZTRP_DIV_CODE_GNRL2); // 법인 결재상위코드
+		bztrpDivCodeList = codeMngService.getCodeList(params);
+		model.addAttribute("gnrlCodeList",bztrpDivCodeList);
+		
+		// 출장비
+		List trcsList = aprvMngService.getTrcsList();
+		model.addAttribute("trcsList", trcsList);
+		
+		// 여비
+		List trvctInfo = aprvMngService.getTrvctInfo(params);
+		model.addAttribute("trvctInfo", trvctInfo);
+		
 		
 		return "jsonView";
 	}
