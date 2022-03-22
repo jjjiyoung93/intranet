@@ -40,35 +40,35 @@
                   <div class="row">
                      <div class ="col-md-6 un-style form-inline mt10">
                         <span class="inline-element col-md-8 col-md-offset-2"  >
-                           <label>코&nbsp;&nbsp;&nbsp;드</label>&nbsp;
-                           <input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
+                           <label>코&nbsp;&nbsp;&nbsp;&nbsp;드</label>&nbsp;
+                           <input type="text" name="searchField" id="ser_cd" value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
                         </span>
+                     </div>
+                     <div class ="col-md-6 un-style form-inline mt10">
+	                     <span class="inline-element col-md-8 col-md-offset-2">
+		                     <label >코드명</label>&nbsp;
+		                     <input type="text" name="searchField" id="ser_cd_nm"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
+	                     </span>
                      </div>
                   </div>
                   <div class="row">
-                     <div class ="col-md-6 un-style form-inline mt10">
-                        <span class="inline-element col-md-8 col-md-offset-2">
-                           <label >코드명</label>&nbsp;
-                           <input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
-                        </span>
-                     </div>
                   </div>
                   <div class="row">
                      <div class ="col-md-6 un-style form-inline mt10">
                         <span class="inline-element col-md-8 col-md-offset-2">
                            <label>코드값</label>&nbsp;
-                           <input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
+                           <input type="text" name="searchField" id="ser_cd_val"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
                         </span>
                      </div>
                      <div class ="col-md-6 un-style mt10">
                         <div class="col-md-12">
                            <div class ="un-style col-md-12 form-inline" style="float:right;">
                               <span class="inline-element" style="float:right;">
-                                 <button type="button" class="fnSearch btn-info btn"  >
+                                 <button type="button" class="fnSearch btn-info btn" id="clear" onclick="btn_clear()">
                                     <span class="hidden-xs hidden-sm"> 초기화</span>
                                  </button>
-                                 <button type="button" class="fnSearch btn-info btn"  >
-                                    <span class="hidden-xs hidden-sm"> 검색</span>
+                                 <button type="button" class="fnSearch btn-info btn" id="search" >
+                                 	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
                                  </button>
                               </span>
                            </div>
@@ -76,9 +76,10 @@
                      </div>
                   </div>
                </div><!-- 검색 div 끝 -->
+               
                <p class="clearfix">
                   <span class="pull-right">
-                     <input type="button" class="button-a btn btn-sm btn-info" onclick="codeInsert();" value="등록">
+                     <input type="button" class="button-a btn btn-sm btn-default" onclick="codeInsert();" value="등록">
                   </span>
                </p>
                <div class="row">
@@ -106,41 +107,27 @@
                            </tr>
                         </thead>
                         <tbody class="ag_left">
-<%--                               <c:choose> --%>
-<%--                               <c:when test="${highList eq null }"> --%>
-<!--                               <tr> -->
-<!--                                  <th> -->
-<!--                                     등록된 코드가 없습니다. -->
-<!--                                  </th> -->
-<!--                               </tr> -->
-<%--                               </c:when> --%>
-<%--                                  <c:otherwise> --%>
-<%--                                  <c:forEach var="highList" items="${highList }"> --%>
-                              <tr >
+                              <tr>
                                  <td align="center">
                                  	<a href="javascript:codeView('CD0001')">CD0001</a>
                                  </td><!-- 코드 -->
                                  <td align="center">결재구분코드</td><!-- 코드명 -->
                                  <td align="center">100</td><!-- 코드값 -->
                               </tr>
-<%--                                  </c:forEach>                --%>
-<%--                                  </c:otherwise> --%>
-<%--                                  </c:choose> --%>
                         </tbody>
                      </table>
                   </div>   <!-- 하위메뉴 끝 -->
             </div><!-- container 끝 -->
             <p class="clearfix">
                <span class="pull-right">
-                  <input type="button" class="button-a btn btn-sm btn-info" onclick="codeInsert();" value="등록">
+                  <input type="button" class="button-a btn btn-sm btn-default" onclick="codeInsert();" value="등록">
                </span>
             </p>
             <!-- page nav -->
-   
       </div>
    </form>
-</div>
-<jsp:include page="/resources/com/inc/aside.jsp" />
+   </div>
+	<jsp:include page="/resources/com/inc/aside.jsp" />
    </section>
 </div>
 <jsp:include page="/resources/com/inc/footer.jsp" />
@@ -160,21 +147,99 @@ function getTree() {
 		url  	 : '<%=request.getContextPath() %>/sys/cdm/jstreeList.do',
 		dataType : 'json',
 		success  : function(json){
+			console.log(json);
 			var list = new Array();
 			//데이터 받아옴
 			var data = json.codeList;
+			var text;
 			$.each(data, function(i, v){
-				list[i] = {id : v.CD, parent : v.UP_CD, text : v.CD_NM}
+				text = v.CD_NM + '(' + v.CD + ')';
+				list[i] = {id : v.CD, parent : v.UP_CD, text : text}
 			});
 			console.log('list',list);
-			//트리 생성
+			//트리 생성	
 			$('#tree').jstree({
 				core : {
 					//데이터 연결
 					data : list
+				},
+				plugins : ["search"], //검색
+			}); //트리 생성 끝
+
+			//검색
+			var to = false;
+			
+			$('#ser_cd_nm').keyup(function(){
+				if(to) {
+					clearTimeout(to);
 				}
-			}) //트리 생성 끝
+				to = setTimeout(function(){
+					var v = $('#ser_cd_nm').val();
+					$('#tree').jstree(true).search(v);
+					}, 250);
+			});
+			
+			$('#ser_cd').keyup(function(){
+				if(to) {
+					clearTimeout(to);
+				}
+				to = setTimeout(function(){
+					var v = $('#ser_cd').val();
+					$('#tree').jstree(true).search(v);
+				}, 250);
+			});
+			
+//			$('#search').click(function(){
+//				if(to) {
+//					clearTimeout(to);
+//				}
+//				to = setTimeout(function(){
+//					if($('#ser_cd_nm').val != '' && $('#ser_cd').val == '') {
+//						var v = $('#ser_cd_nm').val();
+//						$('#tree').jstree(true).search(v);
+//					}
+//					if($('#ser_cd').val != '' && $('#ser_cd_nm').val == '') {
+//						var v1 = $('#ser_cd').val();
+//						$('#tree').jstree(true).search(v1);
+//					}
+//					if($('#ser_cd_nm').val != '' && $('#ser_cd').val != '') {
+//						var v = $('#ser_cd_nm').val() + '('+ $('#ser_cd').val() +')';
+//						$('#tree').jstree(true).search(v).search(v);
+//					}
+//				}, 250);
+//			})
+			
+			$('#search').click(function(){
+				if(to) {
+					clearTimeout(to);
+				}
+				to = setTimeout(function(){
+					var v = $('#ser_cd_nm').val();
+					var v1 = $('#ser_cd').val();
+					$('#tree').jstree(true).search(v);
+				}, 250);
+			})
+			
+			//초기화
+			$('#clear').click(function(){
+				$("#ser_cd").val('');
+				$("#ser_cd_nm").val('');
+				$("#ser_cd_val").val('');
+				
+				if(to) {
+					clearTimeout(to);
+				}
+				to = setTimeout(function(){
+					var v = $('#ser_cd_nm').val();
+					$('#tree').jstree(true).search(v);
+//					$tree.jstree(true).refresh();
+				}, 250);
+				
+			})
+			
+			
 		} //success 끝
+
 	}); //ajax 끝
 }
 
@@ -188,88 +253,6 @@ function codeInsert() {
 	window.open('getCodeForm.do?flag=1&cd=','target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=400,left=750,top=250');
 }
 
-//코드폼 레이어 닫기(x)버튼 클릭시
-jQuery(function() {   
-   jQuery( ".close" ).click(
-         function() {
-         jQuery( ".pop_bg" ).fadeOut('slow');
-         jQuery( "#iframe" ).attr("src","");
-         }
-   );
-});
-
-//코드폼 레이어 취소버튼 클릭시
-function closeModal(){
-   fnList();
-   jQuery( ".pop_bg" ).fadeOut('slow');      
-};
-
-
-function fnGoJoin(){
-   alert("이동");
-   document.form1.submit();
-}
-
-
-
-
-/*********************************************************************************
-* function명   : fnInsert(코드)
-* function기능 : 코드 추가
-**********************************************************************************/
-//function fnInsert(){
-//   //jQuery( ".pop_bg" ).fadeIn('slow');
-//   //jQuery( "#iframe" ).attr("src","<%=request.getContextPath() %>/sys/cdm/form.do?flag=1&cd=");
-//   
-//   window.open('form.do?flag=1&cd=','target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=300,left=0,top=0');
-//   
-//}
-
-
-/*********************************************************************************
-* function명   : fnLowInsert(코드)
-* function기능 : 하위코드 추가
-**********************************************************************************/
-function fnLowInsert(cd){
-   //jQuery( ".pop_bg" ).fadeIn('slow');
-   //jQuery( "#iframe" ).attr("src","<%=request.getContextPath() %>/mng/sysMng/cmmCdMng/cmmCdMng00U.do?flag=2&cd="+cd);
-   window.open('form.do?flag=2&cd='+cd,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=300,left=0,top=0');
-}
-
-/*********************************************************************************
-* function명   : fnModify(코드)
-* function기능 : 코드 수정 
-**********************************************************************************/
-function fnModify(cd){
-   
-   /* $(document).ready(function() {
-      self.scrollTo(0,0);
-   }); */
-   //jQuery( ".pop_bg" ).fadeIn('slow');
-   //jQuery( "#iframe" ).attr("src","<%=request.getContextPath() %>/mng/sysMng/cmmCdMng/cmmCdMng00U.do?flag=3&cd="+cd);
-   window.open('form.do?flag=3&cd='+cd,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=300,left=0,top=0');
-}
-
-/*********************************************************************************
-* function명   : fnDelete(코드)
-* function기능 : 코드 삭제 
-**********************************************************************************/
-function fnDelete(mode,cd,flag){
-   document.form1.cd.value = cd;
-   document.form1.mode.value = mode;
-   document.form1.flag.value = flag;
-   if(flag == '1'){
-      if(confirm('하위코드도 모두 삭제됩니다. 삭제하시겠습니까?')){
-         document.form1.action = "<%=request.getContextPath() %>/sys/cdm/tran.do";
-         document.form1.submit();
-      }
-   }else{      
-      if(confirm('삭제하시겠습니까?')){
-         document.form1.action = "<%=request.getContextPath() %>/sys/cdm/tran.do";
-         document.form1.submit();
-      }
-   }
-}
 </script>
 </body>
 </html>

@@ -39,18 +39,16 @@
                                     <input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" style="inline-block; width : 265px;" title="검색어 입력" />
                                  </span>
                               </div>
-                           </div>
-                           <div class="row">
                               <div class ="col-md-6 un-style form-inline mt10">
-                                 <span class="inline-element col-md-8 col-md-offset-2">
-                                    <label >프로젝트</label>&nbsp;
-                                    <select name="searchGubun6" id="searchGubun6" class="form-control" title="search" style="width : 265px;" >
-                                       <option value="" >전체</option>
-                                       <c:forEach var="proj" items="${projList}" varStatus="status">
-                                          <option value="${proj.CD}" <c:if test="${proj.CD eq params.searchGubun6 }">selected="selected"</c:if> >${proj.CD_NM}</option>
-                                       </c:forEach>
-                                    </select>
-                                 </span>
+	                              <span class="inline-element col-md-8 col-md-offset-2">
+	                              <label >프로젝트</label>&nbsp;
+	                              <select name="searchGubun6" id="searchGubun6" class="form-control" title="search" style="width : 265px;" >
+	                              <option value="" >전체</option>
+	                              <c:forEach var="proj" items="${projList}" varStatus="status">
+	                              <option value="${proj.CD}" <c:if test="${proj.CD eq params.searchGubun6 }">selected="selected"</c:if> >${proj.CD_NM}</option>
+	                              </c:forEach>
+	                              </select>
+	                              </span>
                               </div>
                            </div>
                            
@@ -78,7 +76,7 @@
                                     <div class ="un-style col-md-12 form-inline">
                                        <span class="inline-element"  style="float : right;">
                                           <button type="button" class="fnSearch btn-info btn"  >
-                                             <span class="hidden-xs hidden-sm"> 검색</span>
+                                          	<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
                                           </button>
                                        </span>
                                     </div>

@@ -7,6 +7,7 @@
 		SELECT *
   		  FROM STD_CD_MNG
   		 WHERE use_yn = 'Y'
+  		 ORDER BY cd, levl
 	</select>
 	
 	<!-- 상위 공통코드 목록 로딩시  -->

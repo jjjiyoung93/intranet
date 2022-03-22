@@ -120,6 +120,8 @@ public class CodeMngController {
 	public String getCdList(ModelMap model) throws Exception{
 		
 		List codeList = codeMngService.getAllCodeList();
+		
+		System.out.println("????"+codeList);
 		model.addAttribute("codeList", codeList);
 		
 		return "jsonView";

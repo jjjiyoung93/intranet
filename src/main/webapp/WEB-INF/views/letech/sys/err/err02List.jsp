@@ -72,17 +72,14 @@
 								</select>
 								</span>
 							</div>
-						</div>
-						
-						<div class="row">
 							<div class ="col-md-6 un-style form-inline mt10">
 								<span class="inline-element col-md-8 col-md-offset-2">
 								<label >에러유형</label>&nbsp;
 								<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" style="width : 265px;" >
-									<option value="" >전체</option>
-	//								<c:forEach var="proj" items="${projList}" varStatus="status">
-//									<option value="에러유형">에러유형</option>
-	//								</c:forEach>
+								<option value="" >전체</option>
+								//								<c:forEach var="proj" items="${projList}" varStatus="status">
+	//									<option value="에러유형">에러유형</option>
+								//								</c:forEach>
 								</select>
 								</span>
 							</div>
@@ -90,19 +87,21 @@
                
 						<!-- 보고일자  -->
 						<div class="row">
-							<div class="col-md-6 un-style form-inline mt10" style="padding-left : 108px;">
-								<label style="padding: 0px; width: 70px;">보고일자</label>&nbsp;
-								<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
-									<div style="width: 125px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-										<input id="st_dt"  name="stDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
-										<div id="startpicker-container" style="margin-left: -1px;"></div>
+							<div class="col-md-6 un-style form-inline mt10">
+								<div class="inline-element col-md-8 col-md-offset-2">
+									<label>보고일자</label>&nbsp;
+									<div class="search-select-wrap" style="display:inline-block; vertical-align: middle;">
+										<div style="width: 125px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+											<input id="st_dt"  name="stDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+											<div id="startpicker-container" style="margin-left: -1px;"></div>
+										</div>
+											 ~
+										<div style="width: 125px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
+											<input id="ed_dt"name="edDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
+											<div id="endpicker-container" style="margin-left: -1px;"></div>
+										</div>
+										<div style="display: inline-block;" class="ml10"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
 									</div>
-										 ~
-									<div style="width: 125px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
-										<input id="ed_dt"name="edDtSrch" type="text" aria-label="Date" autocomplete="off"> <span class="tui-ico-date"></span>
-										<div id="endpicker-container" style="margin-left: -1px;"></div>
-									</div>
-									<div style="display: inline-block;" class="ml10"><button type="button" id="delDate" class="btn btn-md btn-default" onclick="fn_delDate()">지우기</button></div>
 								</div>
 							</div>
 							
@@ -110,11 +109,11 @@
 								<div class="col-md-12">
 									<div class ="un-style col-md-12 form-inline" style="float:right;">
 										<span class="inline-element" style="float:right;">
-											<button type="button" class="fnSearch btn-info btn"  >
+											<button type="button" class="fnSearch btn-info btn" id="clear">
 												<span class="hidden-xs hidden-sm"> 초기화</span>
 											</button>
 											<button type="button" class="fnSearch btn-info btn"  >
-												<span class="hidden-xs hidden-sm"> 검색</span>
+												<i class="glyphicon glyphicon-search"></i><span class="hidden-xs hidden-sm"> 검색</span>
 											</button>
 										</span>
 									</div>
@@ -194,39 +193,79 @@
       <jsp:include page="/resources/com/inc/footer.jsp" />
    </div>
 
-   <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
-   <script type="text/javascript">
+<script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
 
-      /*********************************************************************************
-      * function명   : fnTabMove
-      * function기능 : 탭이동
-      **********************************************************************************/
-      function fnTabMove(href,pm1){
-         document.form1.action = "<%=request.getContextPath() %>/"+href;
-         document.form1.menu_id3.value = pm1;
-         document.form1.submit();
-      }
-      
-      /*********************************************************************************
-      * function명   : fnView
-      * function기능 : 에러 상세조회
-      **********************************************************************************/
-      function fnView(error_seq, process_state){
-         $("#error_seq").val(error_seq);
-         $("#process_state").val(process_state);
-         $("#form1").attr("action", "${pageContext.request.contextPath}/sys/err/err00View.do");
-         $("#form1").submit();
-      }
-      
-      /*********************************************************************************
-      * function명   : goPage
-      * function기능 : 페이지이동
-      **********************************************************************************/
-      function goPage(cPage){
-         $("#cPage").val(cPage);
-         $("#form1").attr("action", "${pageContext.request.contextPath}/sys/err/err00List.do");
-         $("#form1").submit();
-      }
-   </script>
+var picker = tui.DatePicker.createRangePicker({
+	language: 'ko',
+	startpicker: {
+		input: '#st_dt',
+		container: '#startpicker-container'
+	},
+	endpicker: {
+		input: '#ed_dt',
+		container: '#endpicker-container'
+	},
+	type: 'date',
+	format: 'yyyy-MM-dd'
+});
+   
+var stDt = "<c:out value='${params.stDtSrch}'/>";
+var edDt = "<c:out value='${params.edDtSrch}'/>";
+if(stDt != null && stDt != ''){
+   	var stDtStr = stDt.split("-");
+	var stYear = stDtStr[0];
+	var stMon = stDtStr[1] - 1;
+	var stDay = stDtStr[2];
+	var stDate = new Date(stYear ,stMon ,stDay);
+	picker.setStartDate(stDate);
+   	
+}
+
+   if(edDt != null && edDt != ''){
+	   	var edDtStr = edDt.split("-");
+	   	var edYear = edDtStr[0];
+	   	var edMon = edDtStr[1] - 1;
+	   	var edDay = edDtStr[2];
+	   	var edDate = new Date(edYear, edMon, edDay);
+	   	picker.setEndDate(edDate);	
+   }
+
+   function fn_delDate(){
+	   	picker.setStartDate(null);
+	   	picker.setEndDate(null);
+   }
+   
+  /*********************************************************************************
+  * function명   : fnTabMove
+  * function기능 : 탭이동
+  **********************************************************************************/
+  function fnTabMove(href,pm1){
+     document.form1.action = "<%=request.getContextPath() %>/"+href;
+     document.form1.menu_id3.value = pm1;
+     document.form1.submit();
+  }
+  
+  /*********************************************************************************
+  * function명   : fnView
+  * function기능 : 에러 상세조회
+  **********************************************************************************/
+  function fnView(error_seq, process_state){
+     $("#error_seq").val(error_seq);
+	 $("#process_state").val(process_state);
+	 $("#form1").attr("action", "${pageContext.request.contextPath}/sys/err/err00View.do");
+	 $("#form1").submit();
+  }
+  
+  /*********************************************************************************
+  * function명   : goPage
+  * function기능 : 페이지이동
+  **********************************************************************************/
+  function goPage(cPage){
+     $("#cPage").val(cPage);
+	 $("#form1").attr("action", "${pageContext.request.contextPath}/sys/err/err00List.do");
+	 $("#form1").submit();
+  }
+</script>
 </body>
 </html>

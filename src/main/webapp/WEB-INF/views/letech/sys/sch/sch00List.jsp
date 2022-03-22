@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page contentType="text/html; charset=utf-8" language="java" errorPage=""%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -25,11 +26,37 @@
 								HOME > ${titleNaviMap.NAVI_NM }
 							</span>
 						</h2>
+						
 						<!-- page -->
 						<div class="form-container">
+							<!-- search -->
+							<div class="clearfix search-box">
+								<div class="search-container">
+									<div class="col-xs-3 un-style">
+										<span class="inline-element">
+											<select class="form-control" name="searchGubun" id="searchGubun" class="" title="search" >
+												<option selected = "selected">배치명</option>
+											</select>
+										</span>
+									</div>
+									<div class="col-xs-9 un-style">
+										<div class="input-group">
+											<input type="hidden"/>
+											<input type="text" name="searchField" id="searchField"  value="${params.searchField}" class="form-control" title="검색어 입력" />
+											<span class="input-group-btn">
+												<button class="fnSearch btn btn-info" type="button">
+													<i class="glyphicon glyphicon-search"></i>
+													<span class="hidden-xs hidden-sm"> 검색</span>
+												</button>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div><!-- search 끝 -->
+							
 							<p class="clearfix">
 								<span class="pull-right">
-									<a href="#" class="btn btn-sm btn-info" onclick="fnInsert();">등록</a>
+									<a href="#" class="btn btn-sm btn-default" onclick="fnInsert();">등록</a>
 								</span>
 							</p>
 
@@ -67,9 +94,15 @@
 								</table>
 							</div><!-- table 끝 -->
 							
+							<div class="text-center">
+								<ul class="pagination pagination-sm">
+										${pageNavigator}
+								</ul>
+							</div>
+							
 							<p class="clearfix">
 								<span class="pull-right">
-									<a href="#" class="btn btn-sm btn-info" onclick="fnInsert();">등록</a>
+									<a href="#" class="btn btn-sm btn-default" onclick="fnInsert();">등록</a>
 								</span>
 							</p>
 						</div> <!-- form-container 끝 -->
@@ -92,7 +125,7 @@
 
 	/* 상세조회 */
 	function fnView() {
-		$("#form1").attr("action", "${pageContext.request.contextPath}/sys/sch/sch00View.do");
+		$("#form1").attr("action", "${pageContext.request.contextPath}/sys/sch/sch00View.do?flag=2");
 		$("#form1").submit();
 	}
 	
