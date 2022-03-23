@@ -94,4 +94,11 @@ public class SchMngController {
 		
 		return "letech/sys/sch/sch00Form";
 	}
-}
+	
+	@RequestMapping(value="/sys/sch/getSch01Form.do")
+	public String getSch01Form(HttpServletRequest request, ModelMap model) throws Exception{
+		return "letech/sys/sch/getSch01Form";
+		
+	}
+
+} 

@@ -34,6 +34,7 @@
 	.tmp-pay-tb-header{font-size: 12px;}
 	.req-sign-tb{color: red; font-size: 15px;}
 	span{display : block;}
+	td{border-collapse : collapse; border-spacing: 0;}
 </style>
 <body>
 	<div id="wrapper">
@@ -58,10 +59,23 @@
 						
 						<div class="form-container">
 							<div class="board-write row">
+								<!-- 이력조회 -->
+								<div class="col-lg-12 form-group">
+									<div class="col-lg-2 col-sm-1 text-right">
+									</div>
+									<div class="col-lg-9 text-right">
+										<c:if test="${params.flag eq 2}">
+											<button type="button" class="btn btn-info">수동실행</button>
+											<button type="button" class="btn btn-info">활성화 / 비활성화</button>
+											<button type="button" class="btn btn-default" onclick="showList()">이력조회</button>
+										</c:if>
+									</div>
+								</div><hr>
+								
 								<!-- 배치명 -->
 								<div class="col-lg-12 form-group">
 									<div class="col-lg-2 col-sm-2 text-right">
-										<label class="control-label">배치명</label>
+										<label class="control-label">비즈플레이</label>
 									</div>
 									<div class="col-lg-9">
 										<c:if test="${params.flag eq 2}">
@@ -80,7 +94,7 @@
 									</div>
 									<div class="col-lg-9">
 										<c:if test="${params.flag eq 2}">
-											<div>배치프로그램</div>
+											<div>kr.letech.cmm.schedule.CmmScheduler.bizplayAPI</div>
 										</c:if>
 										<c:if test="${params.flag eq 3}">
 											<input class="form-control" type="text" id="program" name="program"/>
@@ -95,7 +109,7 @@
 									</div>
 									<div class="col-lg-9">
 										<c:if test="${params.flag eq 2}">
-											<div>상세설명</div>
+											<div>BizPlay 결재 프로그램 연동</div>
 										</c:if>
 										<c:if test="${params.flag eq 3}">
 											<textarea class="form-control" name="dtil_cont" id="dtil_cont"></textarea>
@@ -110,7 +124,7 @@
 									</div>
 									<div class="col-lg-9">
 										<c:if test="${params.flag eq 2}">
-											<div>2021-03-22</div>
+											<div>2020.12.01</div>
 										</c:if>
 										<c:if test="${params.flag eq 3}">
 											<div style="width: 165px;" class="form-control tui-datepicker-input tui-datetime-input tui-has-focus">
@@ -121,13 +135,12 @@
 									</div>
 								</div> <!-- 등록일 끝 -->
 								
-								<!-- 배치주기 -->
 								<div class="col-lg-12 form-group">
 									<div class="col-lg-2 col-sm-2 text-right">
-									<label class="control-label">배치주기</label>
+										<label class="control-label">배치주기</label>
 									</div>
-									<div class="col-lg-9">
-										<!-- 테이블 -->
+									<div class="table-responsive col-lg-9">
+									<!-- 테이블 -->
 										<table class="table table-bordered">
 											<caption>배치주기등록</caption>
 											<colgroup>
@@ -137,6 +150,57 @@
 												<col width="16.6%" />
 												<col width="16.6%" />
 												<col width="16.6%" />
+											</colgroup>
+											<thead class="table-secondary">
+												<tr class="table-secondary">
+													<th>초</th>
+													<th>분</th>
+													<th>시</th>
+													<th>일</th>
+													<th>월</th>
+													<th>년</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:if test="${params.flag eq 2}">
+													<tr>
+														<td align="center">0</td>
+														<td align="center">0</td>
+														<td align="center">07,21</td>
+														<td align="center">*</td>
+														<td align="center">*</td>
+														<td align="center">*</td>
+													</tr>
+												</c:if>
+												<c:if test="${params.flag eq 3}">
+													<tr>
+														<td align="center"><input class="form-control" type="text" id="sec" name="sec"/></td>
+														<td align="center"><input class="form-control" type="text" id="min" name="min"/></td>
+														<td align="center"><input class="form-control" type="text" id="hour" name="hour"/></td>
+														<td align="center"><input class="form-control" type="text" id="day" name="day"/></td>
+														<td align="center"><input class="form-control" type="text" id="mon" name="mon"/></td>
+														<td align="center"><input class="form-control" type="text" id="year" name="year"/></td>
+													</tr>
+												</c:if>
+											</tbody>
+										</table>
+										<input type="button" id="detil" name="detil" class="btn btn-default " value="배치주기 상세설명 ▼"/>&nbsp;&nbsp; * 버튼 클릭 시 상세설명 확인 가능
+									</div><!-- table 끝 -->
+								</div> <!-- 배치주기 끝 -->
+							
+								<!-- 주기작성법 설명-->
+								<div class="col-lg-12 form-group">
+									<div class="col-lg-2 col-sm-2 text-right">
+									</div>
+									<div class="col-lg-9" id="cron" style="background-color : #F9F9F9; display : none;">
+									<span style="text:12px;"><b>[표현식 등록방법]</b></span>
+									<!-- 테이블 -->
+										<table class="table table-bordered">
+											<caption>배치주기등록</caption>
+											<colgroup>
+												<col width="33.3%" />
+												<col width="*" />
+												<col width="33.3%" />
 											</colgroup>
 											<thead class="table-secondary">
 												<tr class="table-secondary">
@@ -183,128 +247,99 @@
 												</tr>
 											</tbody>
 										</table>
-										<br>
-										<span style="text:12px;"><b>*표현식 - 특수문자</b></span>
-										<span>* : 모든 값(매분, 매초...)</span>
-										<span>? : 특정 값이 없음</span>
-										<span>- : 범위(예.[시] 10-12 => 10시, 11시, 12시 동작)</span>
-										<span>/ : 시작시간 / 단위(예. 0/5 => 0분부터 매 5분)</span>
-										<span>L : 일에서 사용하면 마지막 일, 요일에서는 마지막 요일(토요일)</span>
-										<span>W : 가장 가까운 평일 (예. 15W는 15일에서 가장 가까운 평일 (월 ~ 금))</span>
-										<span># : 몇째주의 무슨 요일을 표현 (예. 3#2 : 2번째주 수요일)</span>
-										<span style="text:12px;"><b>*표현식 - 예시</b></span>
-										<span>0 0/5 * * * ? => 5분마다</span>
-										<span>0 0 12 * * ? => 매일 낮 12시</span>
-										<span>0 15 10 * * ? * => 매일 오전 10시 15분</span>
+										<div>
+											<span style="text:12px;"><b>*표현식 - 특수문자</b></span>
+											<span>* : 모든 값(매분, 매초...)</span>
+											<span>? : 특정 값이 없음</span>
+											<span>- : 범위(<b>예.</b>[시] 10-12 => 10시, 11시, 12시 동작)</span>
+											<span>/ : 시작시간 / 단위(<b>예.</b> 0/5 => 0분부터 매 5분)</span>
+											<span>L : 일에서 사용하면 마지막 일, 요일에서는 마지막 요일(토요일)</span>
+											<span>W : 가장 가까운 평일 (<b>예.</b> 15W는 15일에서 가장 가까운 평일 (월 ~ 금))</span>
+											<span># : 몇째주의 무슨 요일을 표현 (<b>예.</b> 3#2 : 2번째주 수요일)</span><br>
+											<span style="text:12px;"><b>*표현식 - 예시</b></span>
+											<span>0 0/5 * * * ? => 5분마다</span>
+											<span>0 0 12 * * ? => 매일 낮 12시</span>
+											<span>0 15 10 * * ? * => 매일 오전 10시 15분</span>
+										</div>
 									</div>
 								</div>
-								<div class="col-lg-12 form-group">
-									<div class="col-lg-2 col-sm-2 text-right">
-									</div>
-									<div class="table-responsive col-lg-9">
-									<!-- 테이블 -->
-										<table class="table table-bordered">
-											<caption>배치주기등록</caption>
-											<colgroup>
-												<col width="16.6%" />
-												<col width="*" />
-												<col width="16.6%" />
-												<col width="16.6%" />
-												<col width="16.6%" />
-												<col width="16.6%" />
-											</colgroup>
-											<thead class="table-secondary">
-												<tr class="table-secondary">
-													<th>초</th>
-													<th>분</th>
-													<th>시</th>
-													<th>일</th>
-													<th>월</th>
-													<th>년</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:if test="${params.flag eq 2}">
-													<tr>
-														<td align="center">*</td>
-														<td align="center">*</td>
-														<td align="center">*</td>
-														<td align="center">*</td>
-														<td align="center">*</td>
-														<td align="center">*</td>
-													</tr>
-												</c:if>
-												<c:if test="${params.flag eq 3}">
-													<tr>
-														<td align="center"><input class="form-control" type="text" id="sec" name="sec"/></td>
-														<td align="center"><input class="form-control" type="text" id="min" name="min"/></td>
-														<td align="center"><input class="form-control" type="text" id="hour" name="hour"/></td>
-														<td align="center"><input class="form-control" type="text" id="day" name="day"/></td>
-														<td align="center"><input class="form-control" type="text" id="mon" name="mon"/></td>
-														<td align="center"><input class="form-control" type="text" id="year" name="year"/></td>
-													</tr>
-												</c:if>
-											</tbody>
-										</table>
-									</div><!-- table 끝 -->
-								</div> <!-- 배치주기 끝 -->
-				
-								<!--
-								<div class="col-lg-12 form-group">
-									<div class="col-lg-3 col-sm-1 text-right">
-										<button type="button" class="btn btn-info">수동실행</button>
-										<button type="button" class="btn btn-info">활성화 / 비활성화</button>
-									</div>
-								</div>
-								-->
+
 								
-								<!-- 이력조회 -->
-								<div class="col-lg-12 form-group">
-									<div class="col-lg-2 col-sm-1 text-right">
-										<label class="control-label">이력조회</label>
-									</div>
-									<div class="col-lg-9 text-right">
-										<button type="button" class="btn btn-info">수동실행</button>
-										<button type="button" class="btn btn-info">활성화 / 비활성화</button>
-									</div>
-								</div>
-								
-								<!-- 이력조회 테이블 -->
-								<div class="col-lg-12 form-group">
-									<div class="col-lg-2 col-sm-2 text-right">
-									</div>
-									<div class="table-responsive col-lg-9">
-									<!-- 테이블 -->
-										<table class="table table-bordered">
-											<caption>그룹별급수 정보관리</caption>
-											<colgroup>
-												<col width="10%" />
-												<col width="*" />
-												<col width="20%" />
-												<col width="20%" />
-												<col width="20%" />
-											</colgroup>
-											<thead>
-												<tr>
-													<th>순번</th>
-													<th>실행일</th>
-													<th>결과</th>
-													<th>대상건 수</th>
-													<th>처리건 수</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td align="center">1</td>
-													<td align="center">2020.10.21</td>
-													<td align="center">성공</td>
-													<td align="center">100</td>
-													<td align="center">100</td>
-												</tr>
-											</tbody>
-										</table>
-									</div><!-- table 끝 -->
-								</div><!-- 이력조회 끝 -->
+								<c:if test="${params.flag eq 2}">
+
+									<!-- 이력조회 테이블 -->
+									<div class="col-lg-12 form-group">
+										<div class="col-lg-2 col-sm-2 text-right">
+											<label class="control-label">이력조회</label>
+										</div>
+										<div class="table-responsive col-lg-9">
+											<!-- 테이블 -->
+											<table class="table table-bordered" style="border-collapse: collapse; border-spacing: 0">
+												<caption>그룹별급수 정보관리</caption>
+												<colgroup>
+													<col width="10%" />
+													<col width="*" />
+													<col width="20%" />
+													<col width="20%" />
+													<col width="20%" />
+												</colgroup>
+												<thead>
+													<tr>
+														<th>순번</th>
+														<th>실행일</th>
+														<th>결과</th>
+														<th>대상건 수</th>
+														<th>처리건 수</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td align="center">5</td>
+														<td align="center">2020.10.21</td>
+														<td align="center">성공</td>
+														<td align="right">100</td>
+														<td align="right">100</td>
+													</tr>
+													<tr>
+													<td align="center">4</td>
+														<td align="center">2020.10.21</td>
+														<td align="center">성공</td>
+														<td align="right">150</td>
+														<td align="right">150</td>
+													</tr>
+													<tr>
+														<td align="center">3</td>
+														<td align="center">2020.10.21</td>
+														<td align="center">성공</td>
+														<td align="right">120</td>
+														<td align="right">120</td>
+													</tr>
+													<tr>
+														<td align="center">2</td>
+														<td align="center">2020.10.21</td>
+														<td align="center">성공</td>
+														<td align="right">130</td>
+														<td align="right">130</td>
+													</tr>
+													<tr>
+														<td align="center">1</td>
+														<td align="center">2020.10.21</td>
+														<td align="center">성공</td>
+														<td align="right">100</td>
+														<td align="right">100</td>
+													</tr>
+												</tbody>
+											</table>
+										</div><!-- table 끝 -->
+									</div><!-- 이력조회 끝 -->
+									<div class="text-center">
+				                     <br>
+				                        <!-- page nav -->
+				                           <ul class="pagination pagination-sm">
+				                              <li class="active"><a href="#">1</a></li>
+				                           </ul>
+				                    </div>
+								</c:if>
 								<!-- 
 								<div class="text-center">
 									<ul class="pagination pagination-sm">
@@ -313,14 +348,6 @@
 								</div>
 								-->
 								
-								
-								<div class="text-center">
-			                     <br>
-			                        <!-- page nav -->
-			                           <ul class="pagination pagination-sm">
-			                              <li class="active"><a href="#">1</a></li><li><a href="#" onclick="goPage(&quot;2&quot;);">2</a></li><li><a href="#" onclick="goPage(&quot;3&quot;);">3</a></li><li><a href="#" onclick="goPage(&quot;4&quot;);">4</a></li><li><a href="#" onclick="goPage(&quot;5&quot;);">5</a></li><li><a href="#" onclick="goPage(&quot;6&quot;);">6</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);">7</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);" class="glyphicon glyphicon-forward paging"></a></li>
-			                           </ul>
-			                    </div>
 			                     
 								<div class="col-lg-12 form-group">
 									<div class="col-lg-2 col-sm-2 text-left">
@@ -331,10 +358,17 @@
 												<input type="button" id="btn-list" name="btn-list" class="btn btn-sm btn-default " value="목록" />
 											</c:if>
 											<c:if test="${params.flag eq 3}">
-												<input type="button" id="btn-cancel" name="btn-list" class="btn btn-sm btn-default " value="취소" />
+												<input type="button" id="btn-cancel" name="btn-cancel" class="btn btn-sm btn-default " value="취소" />
 											</c:if>
-											<input type="button" id="btn-modify" name="btn-modify" onclick="btnModify()" class="btn btn-sm btn-info" value="수정"/>
-											<input type="button" id="btn-del" name="btn-del" onclick="btnOk()" class="btn btn-sm btn-info" value="삭제"/><!-- 비활성화 -->
+											<c:if test="${params.flag eq 2}">
+												<input type="button" id="btn-modify" name="btn-modify" onclick="btnModify()" class="btn btn-sm btn-info" value="수정"/>
+											</c:if>
+											<c:if test="${params.flag eq 3}">
+												<input type="button" id="btn-modify" name="btn-ok" onclick="btnOk()" class="btn btn-sm btn-info" value="저장"/>
+											</c:if>
+											<c:if test="${params.flag eq 2}">
+												<input type="button" id="btn-del" name="btn-del" onclick="btnDel()" class="btn btn-sm btn-info" value="삭제"/><!-- 비활성화 -->
+											</c:if>
 										</span>
 									</div>
 								</div>
@@ -375,7 +409,7 @@ $("#btn-list").click(function(){
 
 /* 취소 */
 $("#btn-cancel").click(function(){
-	goList();
+	history.go(-1);
 });
 
 /* 목록이동 */
@@ -386,14 +420,30 @@ function goList(){
 
 /* 저장 */
 function btnOk() {
-	alert('등록');
-//	$("#frm1").submit();
-	location.href = "sch00List.do";
+	if(confirm("배치를 저장하시겠습니까?")) {
+		location.href = "sch00List.do";
+	}
 }
 
 /* 수정 */
 function btnModify() {
-	location.href = "sch00View.do?flag=3";
+	$("#form1").attr("action", "${pageContext.request.contextPath}/sys/sch/sch00View.do?flag=3");
+	$("#form1").submit();
+//	location.href = "sch00View.do?flag=3";
+}
+
+/* 상세보기 토글 */
+$("#detil").click(function(){
+	if($("#cron").css("display") == "none") {
+		$("#cron").show();
+	}else {
+		$("#cron").hide();
+	}
+});
+
+/* 상세조회 */
+function showList() {
+	window.open('getSch01Form.do','target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=800,height=550,left=750,top=250');
 }
 
 </script>

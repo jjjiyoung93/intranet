@@ -63,22 +63,46 @@
 						<div class="row">
 							<div class ="col-md-6 un-style form-inline mt10">
 								<span class="inline-element col-md-8 col-md-offset-2">
-								<label >에러위치</label>&nbsp;
-								<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" style="width : 265px;" >
-									<option value="" >전체</option>
-	//								<c:forEach var="proj" items="${projList}" varStatus="status">
-//									<option value="에러위치">에러위치</option>
-	//								</c:forEach>
+								<label >발생위치</label>&nbsp;
+								<select name="searchGubun6" id="err_loc" class="form-control" title="search" style="width : 265px;" >
+									<option value="all"   selected="selected"  >전체</option>
+									<option value="에러위치">시스템관리</option>
+									<option value="사용자관리">사용자관리</option>
+									<option value="일정관리">일정관리</option>
+									<option value="결재관리">결재관리</option>
+									<option value="결재관리 > 업무보고">결재관리 > 업무보고</option>
+									<option value="결재관리 > 유연근무제신청">결재관리 > 유연근무제신청</option>
+									<option value="결재관리 > 휴직신청">결재관리 > 휴직신청</option>
+									<option value="결재관리 > 지출결의">결재관리 > 지출결의</option>
+									<option value="결재관리 > 품의">결재관리 > 품의</option>
+									<option value="결재관리 > 출장">결재관리 > 출장</option>
+									<option value="결재관리 > 가지급금">결재관리 > 가지급금</option>
+									<option value="결재관리 > 휴가신청">결재관리 > 휴가신청</option>
+									<option value="결재관리 > 도서">결재관리 > 도서</option>
+									<option value="결재관리 > 교육훈련신청">결재관리 > 교육훈련신청</option>
+									<option value="결재관리 > 기타">결재관리 > 기타</option>
+									<option value="게시판">게시판</option>
+									<option value="휴가관리">휴가관리</option>
+									<option value="팝업관리">팝업관리</option>
+									<option value="유류비관리">유류비관리</option>
+									<option value="직원조회">직원조회</option>
+//								<c:forEach var="proj" items="${projList}" varStatus="status">
+//								</c:forEach>
 								</select>
 								</span>
 							</div>
 							<div class ="col-md-6 un-style form-inline mt10">
 								<span class="inline-element col-md-8 col-md-offset-2">
 								<label >에러유형</label>&nbsp;
-								<select name="searchGubun6" id="searchGubun6" class="form-control" title="search" style="width : 265px;" >
-								<option value="" >전체</option>
-								//								<c:forEach var="proj" items="${projList}" varStatus="status">
-	//									<option value="에러유형">에러유형</option>
+								<select name="searchGubun6" id="err_type" class="form-control" title="search" style="width : 265px;" >
+									<option value="all"   selected="selected" >전체</option>
+									<option value="IOException" >IOException</option>
+									<option value="SQLException" >SQLException</option>
+									<option value="DataAccessException" >DataAccessException</option>
+									<option value="ClassNotFoundException" >ClassNotFoundException</option>
+									<option value="MalformedURLException" >MalformedURLException</option>
+//								<c:forEach var="proj" items="${projList}" varStatus="status">
+//									<option value="에러유형">에러유형</option>
 								//								</c:forEach>
 								</select>
 								</span>
@@ -146,44 +170,55 @@
                            <thead>
                               <tr>
                                  <th>번호</th>
+                                 <th>발생위치</th>
                                  <th>에러유형</th>
-                                 <th>에러위치</th>
                                  <th>발생일자</th>
                               </tr>                        
                            </thead>
                            <tbody>
-                              <c:choose>
-                                 <c:when test="${pageInfo eq null }">
-                                    <tr>
-                                       <th colspan="7">
-                                          등록된 에러가 없습니다.
-                                       </th>
-                                    </tr>
-                                 </c:when>
-                                 <c:otherwise>
-                                    <c:forEach var="highList" items="${pageInfo.highList }" varStatus="status">
-                                       <tr>
-                                          <th style="vertical-align: middle;"  class="visible-md visible-lg text-center">${totalCnt - status.index - ((cPage-1) * (intListCnt))}</th>
-                                          <td style="vertical-align: middle;">
-                                             <a href="#" onclick="fnView('${highList.ERROR_SEQ}', '${highList.PROCESS_STATE}');">${highList.ERROR_LOGGER }</a> 
-                                          </td>
-                                          <td style="vertical-align: middle;" align="center">${highList.ERROR_LEVEL }</td>
-                                          <td style="vertical-align: middle;" align="center">${highList.ERROR_DATE }</td>
-                                       </tr>
-                                    </c:forEach>               
-                                 </c:otherwise>
-                              </c:choose>
+                               <tr>
+                                  <th style="vertical-align: middle;"  class="visible-md visible-lg text-center">4</th>
+                                  <td style="vertical-align: middle;">
+                                     <a href="#" onclick="fnView()">게시판</a> 
+                                  </td>
+                                  <td style="vertical-align: middle;">IOException</td>
+                                  <td style="vertical-align: middle;" align="center">2022-03-03 10:17:39.0</td>
+                               </tr>
+                               <tr>
+	                               <th style="vertical-align: middle;"  class="visible-md visible-lg text-center">3</th>
+	                               <td style="vertical-align: middle;">
+	                               	<a href="#" onclick="fnView();">결재관리 > 지출결의</a> 
+	                               </td>
+	                               <td style="vertical-align: middle;">IOException</td>
+	                               <td style="vertical-align: middle;" align="center">2022-03-03 10:17:39.0</td>
+                               </tr>
+                               <tr>
+	                               <th style="vertical-align: middle;"  class="visible-md visible-lg text-center">2</th>
+	                               <td style="vertical-align: middle;">
+	                               	<a href="#" onclick="fnView()">일정관리</a> 
+	                               </td>
+	                               <td style="vertical-align: middle;">SQLException</td>
+	                               <td style="vertical-align: middle;" align="center">2022-03-03 10:17:39.0</td>
+                               </tr>
+                               <tr>
+	                               <th style="vertical-align: middle;"  class="visible-md visible-lg text-center">1</th>
+	                               <td style="vertical-align: middle;">
+	                               	<a href="#" onclick="fnView()">시스템관리</a> 
+	                               </td>
+	                               <td style="vertical-align: middle;">SQLException</td>
+	                               <td style="vertical-align: middle;" align="center">2022-03-03 10:17:39.0</td>
+                               </tr>
                            </tbody>
                         </table>
                         
                      </div>
-                     <div class="text-center">
-                     <br/>
+					<div class="text-center">
+                     <br>
                         <!-- page nav -->
                            <ul class="pagination pagination-sm">
-                              ${pageNavigator }
+                              <li class="active"><a href="#">1</a></li>
                            </ul>
-                     </div>
+                    </div>
                   </div>
                </div>
             </form>
@@ -235,6 +270,19 @@ if(stDt != null && stDt != ''){
 	   	picker.setStartDate(null);
 	   	picker.setEndDate(null);
    }
+   
+   
+   function fnView() {
+	   $("#form1").attr("action", "${pageContext.request.contextPath}/sys/err/err00View.do");
+	   $("#form1").submit();
+   }
+   
+   $('#clear').click(function(){
+	   $('#err_loc').val('전체');
+	   $('#err_type').val('전체');
+	   picker.setStartDate(null);
+	   picker.setEndDate(null);
+   });
    
   /*********************************************************************************
   * function명   : fnTabMove

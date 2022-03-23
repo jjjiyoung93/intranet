@@ -33,6 +33,7 @@
 	.req-sign{color: red; font-size: 18px;}
 	.tmp-pay-tb-header{font-size: 12px;}
 	.req-sign-tb{color: red; font-size: 15px;}
+	span{display : block;}
 </style>
 <body>
 	<div id="wrapper">
@@ -101,17 +102,10 @@
 									</div>
 								</div> <!-- 등록일 끝 -->
 								
-								<!-- 배치주기 -->
+								
 								<div class="col-lg-12 form-group">
 									<div class="col-lg-2 col-sm-2 text-right">
-									<label class="control-label">배치주기</label>
-									</div>
-									<div class="col-lg-9">
-										<p>배치주기 설명</p>
-									</div>
-								</div>
-								<div class="col-lg-12 form-group">
-									<div class="col-lg-2 col-sm-2 text-right">
+										<label class="control-label">배치주기</label>
 									</div>
 									<div class="table-responsive col-lg-9">
 									<!-- 테이블 -->
@@ -137,17 +131,94 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td align="center"><input class="form-control" type="text" id="sec" name="sec"  placeholder="0~59, - * /"/></td>
-													<td align="center"><input class="form-control" type="text" id="min" name="min"  placeholder="0~59, - * /" /></td>
-													<td align="center"><input class="form-control" type="text" id="hour" name="hour"placeholder="0~23, - * /" /></td>
-													<td align="center"><input class="form-control" type="text" id="day" name="day"  placeholder="1~31, - * ? / L W" /></td>
-													<td align="center"><input class="form-control" type="text" id="mon" name="mon"  placeholder="" /></td>
-													<td align="center"><input class="form-control" type="text" id="year" name="year"placeholder="" /></td>
+													<td align="center"><input class="form-control" type="text" id="sec" name="sec" /></td>
+													<td align="center"><input class="form-control" type="text" id="min" name="min"  /></td>
+													<td align="center"><input class="form-control" type="text" id="hour" name="hour"/></td>
+													<td align="center"><input class="form-control" type="text" id="day" name="day"  /></td>
+													<td align="center"><input class="form-control" type="text" id="mon" name="mon"   /></td>
+													<td align="center"><input class="form-control" type="text" id="year" name="year" /></td>
 												</tr>
 											</tbody>
 										</table>
+										<input type="button" id="detil" name="detil" class="btn btn-default " value="배치주기 상세설명 ▼"/>&nbsp;&nbsp; * 버튼 클릭 시 상세설명 확인 가능
 									</div><!-- table 끝 -->
-								</div> <!-- 배치주기 끝 -->
+								</div> 
+								<div class="col-lg-12 form-group">
+									<div class="col-lg-2 col-sm-2 text-right">
+									</div>
+									<div class="col-lg-9" id="cron" style="background-color : #F9F9F9; display : none;">
+										<span style="text:12px;"><b>[표현식 등록방법]</b></span>
+										<!-- 테이블 -->
+										<table class="table table-bordered">
+											<caption>배치주기등록</caption>
+											<colgroup>
+												<col width="33.3%" />
+												<col width="*" />
+												<col width="33.3%" />
+											</colgroup>
+											<thead class="table-secondary">
+												<tr class="table-secondary">
+													<th>필드명</th>
+													<th>값의 허용 범위</th>
+													<th>허용된 특수 문자</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">초 (Seconds)</td>
+													<td align="center">0 ~ 59</td>
+													<td align="center">, - * /</td>
+												</tr>
+												<tr>
+													<td align="center">분 (Minutes)</td>
+													<td align="center">0 ~ 59</td>
+													<td align="center">, - * /</td>
+												</tr>
+												<tr>
+													<td align="center">시 (Hours)</td>
+													<td align="center">0 ~ 23</td>
+													<td align="center">, - * /</td>
+												</tr>
+												<tr>
+													<td align="center">일 (Day)</td>
+													<td align="center">1 ~ 31</td>
+													<td align="center">, - * ? / L W</td>
+												</tr>
+												<tr>
+													<td align="center">월 (Month)</td>
+													<td align="center">1 ~ 12 or JAN ~ DEC</td>
+													<td align="center">, - * /</td>
+												</tr>
+												<tr>
+													<td align="center">요일 (Week)</td>
+													<td align="center">0 ~ 6 or SUN ~ SAT</td>
+													<td align="center">, - * ? / L #</td>
+												</tr>
+												<tr>
+												<td align="center">연도 (Year)</td>
+												<td align="center">empty or 1970 ~ 2099</td>
+												<td align="center">, - * /</td>
+												</tr>
+											</tbody>
+										</table>
+										<div>
+											<span style="text:12px;"><b>*표현식 - 특수문자</b></span>
+											<span>* : 모든 값(매분, 매초...)</span>
+											<span>? : 특정 값이 없음</span>
+											<span>- : 범위(<b>예.</b>[시] 10-12 => 10시, 11시, 12시 동작)</span>
+											<span>/ : 시작시간 / 단위(<b>예.</b> 0/5 => 0분부터 매 5분)</span>
+											<span>L : 일에서 사용하면 마지막 일, 요일에서는 마지막 요일(토요일)</span>
+											<span>W : 가장 가까운 평일 (<b>예.</b> 15W는 15일에서 가장 가까운 평일 (월 ~ 금))</span>
+											<span># : 몇째주의 무슨 요일을 표현 (<b>예.</b> 3#2 : 2번째주 수요일)</span><br>
+											<span style="text:12px;"><b>*표현식 - 예시</b></span>
+											<span>0 0/5 * * * ? => 5분마다</span>
+											<span>0 0 12 * * ? => 매일 낮 12시</span>
+											<span>0 15 10 * * ? * => 매일 오전 10시 15분</span>
+										</div>
+									</div>
+								</div><!-- 배치주기 끝 -->
+								
+								
 								
 								<div class="col-lg-12 form-group">
 									<div class="col-lg-2 col-sm-2 text-right">
@@ -191,15 +262,25 @@ $(function(){
 
 /* 저장 */
 function btnOk() {
-	alert('등록');
+	if(confirm("배치를 등록하시겠습니까?")) {
+		location.href = "sch00List.do";
+	}
 //	$("#frm1").submit();
-	location.href = "sch00List.do";
 }
 
 /* 취소 */
 $("#btn-cancel").click(function(){
 	$("#form1").attr("action", "${pageContext.request.contextPath}/sys/sch/sch00List.do");
 	$("#form1").submit();
+});
+
+/* 상세보기 토글 */
+$("#detil").click(function(){
+	if($("#cron").css("display") == "none") {
+		$("#cron").show();
+	}else {
+		$("#cron").hide();
+	}
 });
 
 </script>

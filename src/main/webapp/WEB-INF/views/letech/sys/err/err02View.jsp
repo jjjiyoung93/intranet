@@ -60,41 +60,50 @@
 										<dl class="clearfix first-line ">
 											<dt class="col-md-2 col-xs-2">로거</dt>
 											<dd class="col-md-10 col-xs-10">
-												${resultView.ERROR_LOGGER }
+												kr.letech.cmm.util.EgovProperties
 											</dd>
 										</dl>
 										<dl class="clearfix ">
 											<dt class="col-md-2 col-xs-2">메소드</dt>
 											<dd class="col-md-10 col-xs-10">
-												${resultView.ERROR_METHOD }
+												insertBizplayData
 											</dd>
 										</dl>
 										<dl class="clearfix ">
 											<dt class="col-md-2 col-xs-2">발생일</dt>
 											<dd class="col-md-10 col-xs-10">
-												${resultView.ERROR_DATE }
+												2022-03-03 10:17:39.0
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">발생위치</dt>
+											<dd class="col-md-10 col-xs-10">
+												일정관리
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">에러위치</dt>
+											<dd class="col-md-10 col-xs-10">
+												kr.letech.aprv.service.impl.AprvMngServiceImpl.insertBizplayData(AprvMngServiceImpl.java:1138)
 											</dd>
 										</dl>
 										<dl class="clearfix ">
 											<dt class="col-md-2 col-xs-2">에러유형</dt>
+											<dd class="col-md-10 col-xs-10">
+												SQLException
+											</dd>
+										</dl>
+										<dl class="clearfix ">
+											<dt class="col-md-2 col-xs-2">메시지</dt>
 											<dd class="col-md-10 col-xs-10" style="overflow:hidden; word-wrap:break-word;">
-												${resultView.ERROR_MESSAGE }
+												[BIZPLAY] API 호출 실패 =>https://webankapi.appplay.co.kr/gateway.do?JSONData=%7B%22API_ID%22:%220411A%22,%22API_KEY%22:%22b10b7fb2-dccc-1657-bde8-b580cbc48355%22,%22ORG_CD%22:%226298800134%22,%22REQ_DATA%22:%7B%22BIZ_NO%22:%226298800134%22,%22CARD_NO%22:%22%22,%22START_DATE%22:%221%22,%22START_TIME%22:%22%22,%22END_DATE%22:%221%22,%22END_TIME%22:%22%22,%22RCV_STS%22:%22%22,%22REQ_CNT%22:%22%22,%22NEXT_KEY%22:%22%22,%22REQ_ATTIMG_YN%22:%22Y%22%7D%7D
 											</dd>
 										</dl>
 										<dl class="clearfix ">
 											<dt class="col-md-2 col-xs-2">내용</dt>
-											<c:choose>
-								            	<c:when test="${params.mode eq 'edit'}">
-								            		<dd class="col-md-10 col-xs-10">
-														<textarea rows="3" cols="50" id="process_content" class="form-control" name="process_content">${resultView.PROCESS_CONTENT }</textarea>
-										            </dd>
-								            	</c:when>
-								            	<c:otherwise>
-								            		<dd class="col-md-10 col-xs-10">
-								            			<pre>${resultView.PROCESS_CONTENT }</pre>
-								            		</dd>
-								            	</c:otherwise>
-								            </c:choose>
+							            		<dd class="col-md-10 col-xs-10">
+							            			<pre></pre>
+							            		</dd>
 										</dl>
 									</li>
 								</ul>

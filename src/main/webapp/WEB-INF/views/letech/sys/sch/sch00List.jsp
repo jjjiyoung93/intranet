@@ -85,13 +85,40 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td align="center">비즈플레이</td>
-											<td align="center">
-												<a href="javascript:fnView();">비즈플레이</a>
+											<td><a href="javascript:fnView();">비즈플레이</a></td>
+											<td>
+												kr.letech.cmm.schedule.CmmScheduler.bizplayAPI										
 											</td>
 											<td align="center">2020.12.01</td>
 											<td align="center">20222.03.02</td>
-											<td align="center">* * * * * *</td>
+											<td>0 0 07,21 * * *</td>
+										</tr>
+										<tr>
+											<td><a href="javascript:fnView();">생일등록</a></td>
+											<td>
+											kr.letech.cmm.schedule.CmmScheduler.ussBirthday									
+											</td>
+											<td align="center">2020.12.01</td>
+											<td align="center">20222.03.02</td>
+											<td>0 0 0 31 12 ?</td>
+										</tr>
+										<tr>
+											<td><a href="javascript:fnView();">근속년수</a></td>
+											<td>
+											kr.letech.cmm.schedule.CmmScheduler.ussWorkYrCnt										
+											</td>
+											<td align="center">2020.12.01</td>
+											<td align="center">20222.03.02</td>
+											<td>0 0 0 1 1 ?</td>
+										</tr>
+										<tr>
+											<td><a href="javascript:fnView();">공휴일</a></td>
+											<td>
+											kr.letech.cmm.schedule.CmmScheduler.insertHoliday										
+											</td>
+											<td align="center">2020.12.01</td>
+											<td align="center">20222.03.02</td>
+											<td>0 0 0 1 12 ?</td>
 										</tr>
 									</tbody>
 								</table>
@@ -110,9 +137,9 @@
 		                     <br>
 		                        <!-- page nav -->
 		                           <ul class="pagination pagination-sm">
-		                              <li class="active"><a href="#">1</a></li><li><a href="#" onclick="goPage(&quot;2&quot;);">2</a></li><li><a href="#" onclick="goPage(&quot;3&quot;);">3</a></li><li><a href="#" onclick="goPage(&quot;4&quot;);">4</a></li><li><a href="#" onclick="goPage(&quot;5&quot;);">5</a></li><li><a href="#" onclick="goPage(&quot;6&quot;);">6</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);">7</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);" class="glyphicon glyphicon-forward paging"></a></li>
+		                              <li class="active"><a href="#">1</a></li>
 		                           </ul>
-		                     </div>
+		                    </div>
 							
 							
 							<p class="clearfix">
