@@ -399,4 +399,9 @@
 		</reports> </reportSet> </reportSets> </plugin> </plugins> </reporting> PMD 
 		리포트 생성 플러그인 End -->
 
+	<!-- PMD 리포트 생성 플러그인 Start <reporting> <plugins> <plugin> <artifactId>maven-pmd-plugin</artifactId> 
+		<version>3.6</version> <reportSets> <reportSet> <reports> <report>pmd</report> 
+		</reports> </reportSet> </reportSets> </plugin> </plugins> </reporting> PMD 
+		리포트 생성 플러그인 End -->
+
 </project>

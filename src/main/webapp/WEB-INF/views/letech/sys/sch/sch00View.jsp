@@ -147,55 +147,55 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td align="center">*</td>
-													<td align="center">*</td>
-													<td align="center">*</td>
+													<td align="center">초 (Seconds)</td>
+													<td align="center">0 ~ 59</td>
+													<td align="center">, - * /</td>
 												</tr>
 												<tr>
-												<td align="center">*</td>
-												<td align="center">*</td>
-												<td align="center">*</td>
+													<td align="center">분 (Minutes)</td>
+													<td align="center">0 ~ 59</td>
+													<td align="center">, - * /</td>
 												</tr>
 												<tr>
-												<td align="center">*</td>
-												<td align="center">*</td>
-												<td align="center">*</td>
+													<td align="center">시 (Hours)</td>
+													<td align="center">0 ~ 23</td>
+													<td align="center">, - * /</td>
 												</tr>
 												<tr>
-												<td align="center">*</td>
-												<td align="center">*</td>
-												<td align="center">*</td>
+													<td align="center">일 (Day)</td>
+													<td align="center">1 ~ 31</td>
+													<td align="center">, - * ? / L W</td>
 												</tr>
 												<tr>
-												<td align="center">*</td>
-												<td align="center">*</td>
-												<td align="center">*</td>
+													<td align="center">월 (Month)</td>
+													<td align="center">1 ~ 12 or JAN ~ DEC</td>
+													<td align="center">, - * /</td>
 												</tr>
 												<tr>
-												<td align="center">*</td>
-												<td align="center">*</td>
-												<td align="center">*</td>
+													<td align="center">요일 (Week)</td>
+													<td align="center">0 ~ 6 or SUN ~ SAT</td>
+													<td align="center">, - * ? / L #</td>
 												</tr>
 												<tr>
-												<td align="center">*</td>
-												<td align="center">*</td>
-												<td align="center">*</td>
+												<td align="center">연도 (Year)</td>
+												<td align="center">empty or 1970 ~ 2099</td>
+												<td align="center">, - * /</td>
 												</tr>
 											</tbody>
 										</table>
-									</div><!-- table 끝 -->
-										<span style="text:12px;"><b>*표현식</b></span>
-										<span>[초], [분] : 0~59, - * /</span>
-										<span>[시] : 0~23, - * /</span>
-										<span>[일] : 1~31, - *  ? / L W</span>
-										<span>[월] : 1~12 or JAN~DEC, - * /</span>
-										<span>[요일] : 0(일요일)~6(토요일) or SUN~SAT, - * ? / L #</span>
-										<span>[년] : 1970 ~ 2099, - * /</span>
-										<span><b>*특수문자 의미</b></span>
-										<span>* 모든 수를 의미(매분, 매초...)</span>
-										<span>? 해당 항목을 사용하지 않음</span>
-										<span>- 기간 설정([시] 10-12 => 10시, 11시, 12시 동작)</span>
-										<span>/ 시작시간과 반복 </span>
+										<br>
+										<span style="text:12px;"><b>*표현식 - 특수문자</b></span>
+										<span>* : 모든 값(매분, 매초...)</span>
+										<span>? : 특정 값이 없음</span>
+										<span>- : 범위(예.[시] 10-12 => 10시, 11시, 12시 동작)</span>
+										<span>/ : 시작시간 / 단위(예. 0/5 => 0분부터 매 5분)</span>
+										<span>L : 일에서 사용하면 마지막 일, 요일에서는 마지막 요일(토요일)</span>
+										<span>W : 가장 가까운 평일 (예. 15W는 15일에서 가장 가까운 평일 (월 ~ 금))</span>
+										<span># : 몇째주의 무슨 요일을 표현 (예. 3#2 : 2번째주 수요일)</span>
+										<span style="text:12px;"><b>*표현식 - 예시</b></span>
+										<span>0 0/5 * * * ? => 5분마다</span>
+										<span>0 0 12 * * ? => 매일 낮 12시</span>
+										<span>0 15 10 * * ? * => 매일 오전 10시 15분</span>
 									</div>
 								</div>
 								<div class="col-lg-12 form-group">

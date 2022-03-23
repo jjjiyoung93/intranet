@@ -71,9 +71,7 @@ public class DocController {
 		List fileList = aprvMngService.aprvFileList(params);
 		
 		// 지출결의서 정보 가져오기
-		
 	    Map recMap = (Map) aprvMngService.getAprvRecList(params);
-		
 		
 		
 		// viewMap(결재정보 데이터), docMap(보고서 데이터), fileList(첨부파일 리스트)는 jsp에서 json형태로 사용하기 위해 파싱하여 Model에 저장

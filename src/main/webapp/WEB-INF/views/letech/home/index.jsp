@@ -178,6 +178,47 @@ function fnView(cal_seq){
 	$("#frm1").submit();
 }
 
+
+/*
+ * 2022.03.16
+ 메인 페이지 팝업 출력
+ */
+function fnPrntIndexPopup(width, height){
+	$.ajax({
+		url : '${pageContext.request.contextPath}/popup/popupList.do?from=index'
+		,method : 'get'
+		,contentType : 'application/json; charset=utf-8'
+		,success : function(popupList){
+			for(let i = 0; i < poupList.length; i++){
+				let url = '${pageContext.request.contextPath}/popup/popupPrnt.do?popupId='+popupList[i].popupId;
+				let name = popupList[i].popupTitle;
+				let option = 'width= '+width+',height='+height
+				let cookieValue = getCookie(popupList[i].pupupId);
+				
+			    if(!cookieValue){
+					window.open(url, name, option);			
+			    }
+			    
+			}
+		}
+	})	
+}
+
+function getCookie(cookieName){
+	let cookieValue=null;
+	
+    if(document.cookie){
+        var array=document.cookie.split((escape(cookieName)+'='));
+        if(array.length >= 2){
+            var arraySub=array[1].split(';');
+            cookieValue=unescape(arraySub[0]);
+        }
+    }
+	
+    return cookieValue;
+	
+}
+
 </script>
 
 <script type="text/javascript">
