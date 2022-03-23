@@ -86,6 +86,8 @@ public interface CodeMngService {
 	 * @Author : KIM JI YOUNG
 	 * @Date   : 2022.03.21
 	 */
-	List getAllCodeList() throws Exception;
+	Map getAllCodeList(Map params) throws Exception;
+
+
 
 }

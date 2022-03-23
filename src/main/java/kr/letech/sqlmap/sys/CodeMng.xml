@@ -3,11 +3,51 @@
 <mapper namespace="codeMng">	
 	
 	<!-- 코드 전체 조회 -->
-	<select id="getAllCodeList" resultType="HashMap">
+<!-- 	<select id="getAllCodeList" resultType="HashMap"> -->
+<!-- 		SELECT * -->
+<!--   		  FROM STD_CD_MNG -->
+<!--   		 WHERE 1 = 1 -->
+<!--   		   AND use_yn = 'Y' -->
+<!--   		 ORDER BY cd, levl -->
+<!-- 	</select> -->
+
+	<select id="getAllCodeList" resultType="HashMap" parameterType="map">
 		SELECT *
   		  FROM STD_CD_MNG
-  		 WHERE use_yn = 'Y'
-  		 ORDER BY cd, levl
+		   <where>
+	          	  1=1
+	          AND use_yn = 'Y'
+		     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun1)">
+		     	AND cd = #{searchGubun1}	
+			 </if>
+			 <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun2)">
+			 	AND cd_nm = #{searchGubun2}	
+			 </if>
+			 <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)">
+			 	AND cd_val = #{searchGubun3}	
+			 </if>
+	      </where> 
+		ORDER BY CD, LEVL
+	</select>
+	
+	<!-- 코드 검색 조건 적용 후 조회 -->
+	<select id="getSearList" resultType="HashMap" parameterType="map">
+		SELECT *
+		  FROM STD_CD_MNG
+		   <where>
+	          	  1=1
+	          AND use_yn = 'Y'
+		     <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun1)">
+		     	AND cd = #{searchGubun1}	
+			 </if>
+			 <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun2)">
+			 	AND cd_nm = #{searchGubun2}	
+			 </if>
+			 <if test="@kr.letech.cmm.util.DBSupport@isNotEmpty(searchGubun3)">
+			 	AND cd_val = #{searchGubun3}	
+			 </if>
+	      </where> 
+		ORDER BY CD, LEVL
 	</select>
 	
 	<!-- 상위 공통코드 목록 로딩시  -->

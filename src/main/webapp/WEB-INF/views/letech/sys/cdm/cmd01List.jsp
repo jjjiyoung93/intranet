@@ -41,13 +41,13 @@
                      <div class ="col-md-6 un-style form-inline mt10">
                         <span class="inline-element col-md-8 col-md-offset-2"  >
                            <label>코&nbsp;&nbsp;&nbsp;&nbsp;드</label>&nbsp;
-                           <input type="text" name="searchField" id="ser_cd" value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
+                           <input type="text" name="searchField" id="sear_cd" value="${params.searchGubun1}" class="form-control" style="inline-block;" title="검색어 입력" />
                         </span>
                      </div>
                      <div class ="col-md-6 un-style form-inline mt10">
 	                     <span class="inline-element col-md-8 col-md-offset-2">
 		                     <label >코드명</label>&nbsp;
-		                     <input type="text" name="searchField" id="ser_cd_nm"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
+		                     <input type="text" name="searchField" id="sear_cd_nm"  value="${params.searchGubun2}" class="form-control" style="inline-block;" title="검색어 입력" />
 	                     </span>
                      </div>
                   </div>
@@ -57,7 +57,7 @@
                      <div class ="col-md-6 un-style form-inline mt10">
                         <span class="inline-element col-md-8 col-md-offset-2">
                            <label>코드값</label>&nbsp;
-                           <input type="text" name="searchField" id="ser_cd_val"  value="${params.searchField}" class="form-control" style="inline-block;" title="검색어 입력" />
+                           <input type="text" name="searchField" id="sear_cd_val"  value="${params.searchGubun3}" class="form-control" style="inline-block;" title="검색어 입력" />
                         </span>
                      </div>
                      <div class ="col-md-6 un-style mt10">
@@ -86,6 +86,7 @@
                   <div class="col-md-5">
                      <div class=" panel panel-default">
                         <h3 class="panel-title panel-heading clearfix">메뉴구조</h3>
+                        <!-- jstree -->
                         <div class="panel-body" id="tree">
                         </div><!-- pannel body 끝 -->
                      </div>
@@ -142,21 +143,36 @@ $(function(){
 })
 
 function getTree() {
+	
+	var cd = $('#sear_cd').val();
+	var cd_nm = $('#sear_cd_nm').val();
+	var cd_val = $('#sear_cd_val').val();
+	console.log('cd', cd, 'cd_nm', cd_nm, 'cd_val', cd_val);
+	
 	$.ajax({
 		type	 : 'get',
-		url  	 : '<%=request.getContextPath() %>/sys/cdm/jstreeList.do',
+		url  	 : '<%=request.getContextPath() %>/sys/cdm/jstreeAjax.do',
+		data	 : {cd : cd , cd_nm : cd_nm, cd_val : cd_val},
 		dataType : 'json',
 		success  : function(json){
-			console.log(json);
 			var list = new Array();
 			//데이터 받아옴
-			var data = json.codeList;
+			var data = json.resultList;
+			
+			let cd_val = [];
 			var text;
 			$.each(data, function(i, v){
+				
+				if(v.CD_VAL == undefined) {
+					cd_val[i] = '';
+				}else {
+					cd_val[i] = v.CD_VAL;
+				}
+				
 				text = v.CD_NM + '(' + v.CD + ')';
 				list[i] = {id : v.CD, parent : v.UP_CD, text : text}
 			});
-			console.log('list',list);
+			
 			//트리 생성	
 			$('#tree').jstree({
 				core : {
@@ -166,45 +182,47 @@ function getTree() {
 				plugins : ["search"], //검색
 			}); //트리 생성 끝
 
+
 			//검색
 			var to = false;
 			
-			$('#ser_cd_nm').keyup(function(){
-				if(to) {
-					clearTimeout(to);
-				}
-				to = setTimeout(function(){
-					var v = $('#ser_cd_nm').val();
-					$('#tree').jstree(true).search(v);
-					}, 250);
-			});
-			
-			$('#ser_cd').keyup(function(){
-				if(to) {
-					clearTimeout(to);
-				}
-				to = setTimeout(function(){
-					var v = $('#ser_cd').val();
-					$('#tree').jstree(true).search(v);
-				}, 250);
-			});
-			
-//			$('#search').click(function(){
+			//keyup시 검색
+//			$('#sear_cd_nm').keyup(function(){
 //				if(to) {
 //					clearTimeout(to);
 //				}
 //				to = setTimeout(function(){
-//					if($('#ser_cd_nm').val != '' && $('#ser_cd').val == '') {
-//						var v = $('#ser_cd_nm').val();
+//					var v = $('#sear_cd_nm').val();
+//					$('#tree').jstree(true).search(v);
+//					}, 250);
+//			});
+//			
+//			$('#sear_cd').keyup(function(){
+//				if(to) {
+//					clearTimeout(to);
+//				}
+//				to = setTimeout(function(){
+//					var v = $('#sear_cd').val();
+//					$('#tree').jstree(true).search(v);
+//				}, 250);
+//			});
+			
+			//검색 버튼 클릭 시 검색
+//			$('#search').click(function(){
+//				console.log('d');
+//				if(to) {
+//					clearTimeout(to);
+//				}
+//				console.log($('#sear_cd_nm').val());
+//				console.log($('#sear_cd').val());
+//				to = setTimeout(function(){
+//					if($('#sear_cd').val() != '') {
+//						var v = $('#sear_cd').val();
 //						$('#tree').jstree(true).search(v);
 //					}
-//					if($('#ser_cd').val != '' && $('#ser_cd_nm').val == '') {
-//						var v1 = $('#ser_cd').val();
+//					if($('#sear_cd_nm').val() != '') {
+//						var v1 = $('#sear_cd_nm').val();
 //						$('#tree').jstree(true).search(v1);
-//					}
-//					if($('#ser_cd_nm').val != '' && $('#ser_cd').val != '') {
-//						var v = $('#ser_cd_nm').val() + '('+ $('#ser_cd').val() +')';
-//						$('#tree').jstree(true).search(v).search(v);
 //					}
 //				}, 250);
 //			})
@@ -214,23 +232,23 @@ function getTree() {
 					clearTimeout(to);
 				}
 				to = setTimeout(function(){
-					var v = $('#ser_cd_nm').val();
-					var v1 = $('#ser_cd').val();
+					var v = $('#sear_cd_nm').val();
+					var v1 = $('#sear_cd').val();
 					$('#tree').jstree(true).search(v);
 				}, 250);
 			})
 			
 			//초기화
 			$('#clear').click(function(){
-				$("#ser_cd").val('');
-				$("#ser_cd_nm").val('');
-				$("#ser_cd_val").val('');
+				$("#sear_cd").val('');
+				$("#sear_cd_nm").val('');
+				$("#sear_cd_val").val('');
 				
 				if(to) {
 					clearTimeout(to);
 				}
 				to = setTimeout(function(){
-					var v = $('#ser_cd_nm').val();
+					var v = $('#sear_cd_nm').val();
 					$('#tree').jstree(true).search(v);
 //					$tree.jstree(true).refresh();
 				}, 250);
@@ -242,6 +260,17 @@ function getTree() {
 
 	}); //ajax 끝
 }
+
+
+
+//$('#search').click(function(){
+//	getTree();
+//});
+
+//function goPage(){
+//	$("#form1").attr("action", "${pageContext.request.contextPath}/sys/cdm/list.do");
+//	$("#form1").submit();
+//}
 
 /* 상세조회 */
 function codeView(cd) {

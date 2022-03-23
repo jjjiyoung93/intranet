@@ -97,11 +97,23 @@
 								</table>
 							</div><!-- table 끝 -->
 							
+							<!-- 
 							<div class="text-center">
 								<ul class="pagination pagination-sm">
 										${pageNavigator}
 								</ul>
 							</div>
+							-->
+							
+							
+							<div class="text-center">
+		                     <br>
+		                        <!-- page nav -->
+		                           <ul class="pagination pagination-sm">
+		                              <li class="active"><a href="#">1</a></li><li><a href="#" onclick="goPage(&quot;2&quot;);">2</a></li><li><a href="#" onclick="goPage(&quot;3&quot;);">3</a></li><li><a href="#" onclick="goPage(&quot;4&quot;);">4</a></li><li><a href="#" onclick="goPage(&quot;5&quot;);">5</a></li><li><a href="#" onclick="goPage(&quot;6&quot;);">6</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);">7</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);" class="glyphicon glyphicon-forward paging"></a></li>
+		                           </ul>
+		                     </div>
+							
 							
 							<p class="clearfix">
 								<span class="pull-right">

@@ -33,6 +33,7 @@
 	.req-sign{color: red; font-size: 18px;}
 	.tmp-pay-tb-header{font-size: 12px;}
 	.req-sign-tb{color: red; font-size: 15px;}
+	span{display : block;}
 </style>
 <body>
 	<div id="wrapper">
@@ -126,7 +127,75 @@
 									<label class="control-label">배치주기</label>
 									</div>
 									<div class="col-lg-9">
-										<p>배치주기 설명</p>
+										<!-- 테이블 -->
+										<table class="table table-bordered">
+											<caption>배치주기등록</caption>
+											<colgroup>
+												<col width="16.6%" />
+												<col width="*" />
+												<col width="16.6%" />
+												<col width="16.6%" />
+												<col width="16.6%" />
+												<col width="16.6%" />
+											</colgroup>
+											<thead class="table-secondary">
+												<tr class="table-secondary">
+													<th>필드명</th>
+													<th>값의 허용 범위</th>
+													<th>허용된 특수 문자</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td align="center">*</td>
+													<td align="center">*</td>
+													<td align="center">*</td>
+												</tr>
+												<tr>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												</tr>
+												<tr>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												</tr>
+												<tr>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												</tr>
+												<tr>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												</tr>
+												<tr>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												</tr>
+												<tr>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												<td align="center">*</td>
+												</tr>
+											</tbody>
+										</table>
+									</div><!-- table 끝 -->
+										<span style="text:12px;"><b>*표현식</b></span>
+										<span>[초], [분] : 0~59, - * /</span>
+										<span>[시] : 0~23, - * /</span>
+										<span>[일] : 1~31, - *  ? / L W</span>
+										<span>[월] : 1~12 or JAN~DEC, - * /</span>
+										<span>[요일] : 0(일요일)~6(토요일) or SUN~SAT, - * ? / L #</span>
+										<span>[년] : 1970 ~ 2099, - * /</span>
+										<span><b>*특수문자 의미</b></span>
+										<span>* 모든 수를 의미(매분, 매초...)</span>
+										<span>? 해당 항목을 사용하지 않음</span>
+										<span>- 기간 설정([시] 10-12 => 10시, 11시, 12시 동작)</span>
+										<span>/ 시작시간과 반복 </span>
 									</div>
 								</div>
 								<div class="col-lg-12 form-group">
@@ -211,7 +280,7 @@
 											<colgroup>
 												<col width="10%" />
 												<col width="*" />
-												<col width="15%" />
+												<col width="20%" />
 												<col width="20%" />
 												<col width="20%" />
 											</colgroup>
@@ -227,16 +296,32 @@
 											<tbody>
 												<tr>
 													<td align="center">1</td>
-													<td align="center">비즈플레이</td>
-													<td align="center">2020.12.01</td>
-													<td align="center">20222.03.02</td>
-													<td align="center">* * * * * *</td>
+													<td align="center">2020.10.21</td>
+													<td align="center">성공</td>
+													<td align="center">100</td>
+													<td align="center">100</td>
 												</tr>
 											</tbody>
 										</table>
 									</div><!-- table 끝 -->
 								</div><!-- 이력조회 끝 -->
+								<!-- 
+								<div class="text-center">
+									<ul class="pagination pagination-sm">
+											${pageNavigator}
+									</ul>
+								</div>
+								-->
 								
+								
+								<div class="text-center">
+			                     <br>
+			                        <!-- page nav -->
+			                           <ul class="pagination pagination-sm">
+			                              <li class="active"><a href="#">1</a></li><li><a href="#" onclick="goPage(&quot;2&quot;);">2</a></li><li><a href="#" onclick="goPage(&quot;3&quot;);">3</a></li><li><a href="#" onclick="goPage(&quot;4&quot;);">4</a></li><li><a href="#" onclick="goPage(&quot;5&quot;);">5</a></li><li><a href="#" onclick="goPage(&quot;6&quot;);">6</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);">7</a></li><li><a href="#" onclick="goPage(&quot;7&quot;);" class="glyphicon glyphicon-forward paging"></a></li>
+			                           </ul>
+			                    </div>
+			                     
 								<div class="col-lg-12 form-group">
 									<div class="col-lg-2 col-sm-2 text-left">
 									</div>

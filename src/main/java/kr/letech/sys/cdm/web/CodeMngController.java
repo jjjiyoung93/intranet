@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -103,6 +104,8 @@ public class CodeMngController {
 	@RequestMapping(value = "/sys/cdm/list.do")
 	public String getList(HttpServletRequest request, ModelMap model) throws Exception {
 		
+		Map params = ReqUtils.getParameterMap(request);
+		
 		return "letech/sys/cdm/cmd01List";
 	}
 	
@@ -116,16 +119,22 @@ public class CodeMngController {
 	 * @Author : KIM JI YOUNG
 	 * @Date   : 2022.03.21
 	 */
-	@RequestMapping(value= "/sys/cdm/jstreeList.do")
-	public String getCdList(ModelMap model) throws Exception{
+	@RequestMapping(value= "/sys/cdm/jstreeAjax.do")
+	public String getCdList(HttpServletRequest request, ModelMap model) throws Exception{
 		
-		List codeList = codeMngService.getAllCodeList();
+		Map params = ReqUtils.getParameterMap(request);
+
+		Map codeObject = codeMngService.getAllCodeList(params);
 		
-		System.out.println("????"+codeList);
-		model.addAttribute("codeList", codeList);
+		model.addAttribute("resultList", codeObject.get("resultList"));			// 목록정보
+		model.addAttribute("params", params);
+
+//		System.out.println("????"+codeList);
+//		model.addAttribute("codeList", codeList);
 		
 		return "jsonView";
 	}
+	
 	
 	/**
 	 * 코드 상세보기 폼

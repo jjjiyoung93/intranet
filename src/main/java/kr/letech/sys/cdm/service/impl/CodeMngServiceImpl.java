@@ -1,5 +1,6 @@
 package kr.letech.sys.cdm.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -7,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import kr.letech.cmm.util.ReqUtils;
 import kr.letech.sample.pkg.service.impl.SampleDAO;
 import kr.letech.sys.cdm.service.CodeMngService;
 
@@ -67,8 +69,20 @@ public class CodeMngServiceImpl implements CodeMngService {
 	}
 
 	@Override
-	public List getAllCodeList() throws Exception {
-		return codeMngDAO.getAllCodeList();
+	public Map getAllCodeList(Map params) throws Exception {
+		
+		String searchGubun1 = ReqUtils.getEmptyResult2((String)params.get("searchGubun1"), "");
+		String searchGubun2 = ReqUtils.getEmptyResult2((String)params.get("searchGubun2"), "");
+		String searchGubun3 = ReqUtils.getEmptyResult2((String)params.get("searchGubun3"), "");
+		
+		List list = codeMngDAO.getAllCodeList(params);
+		
+		Map objectMap = new HashMap();
+		
+		objectMap.put("resultList", list);
+		
+		return objectMap;
 	}
+
 
 }
