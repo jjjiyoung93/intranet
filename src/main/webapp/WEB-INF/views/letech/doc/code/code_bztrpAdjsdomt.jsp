@@ -154,13 +154,13 @@
 				<tr class="tr_bztrp_item_sum"></tr>
 				<tr class="">
 					<td colspan="5" class="text-center">소계</td>
-					<td colspan=""></td>
-					<td colspan="3"></td>
+					<td colspan="">(총 km 자동산출)</td>
+					<td colspan="3">(총 금액 자동산출)</td>
 				</tr>
 			</tbody>
 		</table>
-		<p>* 유가평균(원) : 무연-1670, 경유-1480, LPG-1000 / 연비(Km/ℓ) :무연-13, 경유-14, LPG-9 X 감가상각(30%): 1.3   (0000.00.00부터 6개월간 적용)<p>					
-		
+		<p>* 유가평균(원) : 무연-1670, 경유-1480, LPG-1000 / 연비(Km/ℓ) :무연-13, 경유-14, LPG-9 X 감가상각(30%): 1.3 (0000.00.00부터 6개월간 적용)
+		<p>
 	</div>
 </div>
 
@@ -172,6 +172,7 @@
 			<colgroup>
 				<col width="15%" />
 				<col width="*%" />
+				<col width="*%" />
 				<col width="15%" />
 				<col width="10%" />
 				<col width="7%" />
@@ -182,7 +183,7 @@
 						항목
 						<span class="req-sign">*</span>
 					</th>
-					<th>
+					<th colspan="2">
 						내역
 						<span class="req-sign">*</span>
 					</th>
@@ -202,7 +203,7 @@
 				<tr class="tr_bztrp_item_sum"></tr>
 				<tr class="">
 					<td colspan="3" class="text-center">소계</td>
-					<td colspan="2"></td>
+					<td colspan="3">(총 금액 자동산출)</td>
 				</tr>
 			</tbody>
 		</table>
@@ -261,6 +262,10 @@
 	</div>
 </div>
 <!-- 비고 END -->
+
+<form id="frm1" method="post">
+	<input type="hidden" value="" id="mode" name="mode">
+</form>
 
 <script>
 var bztrpDivCodeList ;
@@ -425,33 +430,47 @@ function fn_changeBztrpItem(itemDiv) {
 		}else if(itemVar == 'CD0026005'){ //기타
 			html = `
 				<td>
-				<select class="form-control">
-					<option>--선택--</option>
-					<option>음료</option>
-					<option>간식</option>
-					<option>etc</option>
-				</select>
-				</td>
-				<td colspan="4">
-					<input type="text" value="" class="form-control">
+					<select class="form-control">
+						<option>--선택--</option>
+						<option>음료</option>
+						<option>간식</option>
+						<option>etc</option>
+					</select>
 				</td>
 			`
-			let tds = $(selTr).find('td');
-			
-			for(let i = 1; i < (tds.length - 4); i++){
-				$(tds[i]).remove();
-// 				if(i == 1){
-// 					$(tds[i]).replaceWith().append(html);
-// 				}
-			}
-			
+			$(cntn).replaceWith(html);
+
+			html = `
+				<td colspan="4">
+					<input type="text" value="" class="form-control" id="etcInput">
+				</td>
+			`
+			$(cntn).append(html);			
 		}
 		
 	}else if (parentVar == 'CD0025'){ // 법인카드 사용내역 항목
-		if(itemVar == 'CD0025005'){
+		if(itemVar == 'CD0025006'){
+			html = `
+					<td>
+						<select class="form-control">			
+							<option>--전체--</option>
+							<option>음료</option>
+							<option>간식</option>
+							<option>etc</option>
+						</select>
+					</td>
+					<td>
+						<input class="form-control" type="text">
+					</td>
+			`
+			$(cntn).replaceWith(html);
 			
-		} else{
-						
+		} else {
+			html = `
+					<input type="text" class="form-control">
+			`
+			$(cntn).find('input', 'select').remove();
+			$(cntn).append(html);
 		}
 	}
 
@@ -537,6 +556,7 @@ function fn_addBztrpItem(parentVar) {
 		html += '</tr>';
 		
 	}else if(parentVar == 'CD0025'){ //법인내역
+		
 		html = '';
 		html += '<tr id="tr_bztrp_item_' + bztrpCount + '" class="tr_bztrp_items">';
 		html += '	<td class="form-group">';
@@ -547,12 +567,13 @@ function fn_addBztrpItem(parentVar) {
 		};
 		html += '		</select>';
 		html += '</td>';
-		html += '	<td class="form-group"><input id="bztrp_item_ctnt_' + bztrpCount + '" name="bztrp_item_ctnt_' + bztrpCount + '" type="text" class="form-control bztrp_item_ctnts"></td>';
+		html += '	<td colspan="2" class="form-group"><input id="bztrp_item_ctnt_' + bztrpCount + '" name="bztrp_item_ctnt_' + bztrpCount + '" type="text" class="form-control bztrp_item_ctnts"></td>';
 		html += '	<td class="form-group"><input id="bztrp_item_amt_' + bztrpCount + '" name="bztrp_item_amt_' + bztrpCount + '" type="text" class="form-control bztrp_item_amts text-right convNum"></td>';
 		html += '	<td class="form-group"><input id="bztrp_item_rmrk_' + bztrpCount + '" name="bztrp_item_rmrk_' + bztrpCount + '" type="text" class="form-control bztrp_item_rmrks"></td>';
 		html += '	<td class="text-center"><span class="btn btn-xs btn-default" onClick="fn_deleteBztrpItem(this)"><i class="glyphicon glyphicon-minus-sign"></i> 삭제</span></td>';
 		html += '</tr>';
 	}
+	
 	$('#'+parentVar + ' .tr_bztrp_item_sum').before(html);
 }
 
@@ -743,4 +764,32 @@ function getValidation2(valid) {
 
 	return valid;
 }
+
+/*
+ * 2022.03.23 김민석
+ * 출발지 및 도착지 검색
+ */
+ $('#CD0026').on('click', '.fnSearch', function(){
+	 let popupWidth = 600
+	 let popupHeight = 300
+	
+	let popupX = (screen.availWidth - popupWidth) / 2;
+	 
+	if( window.screenLeft < 0){
+		popupX += window.screen.width*-1;
+	}else if ( window.screenLeft > window.screen.width ){
+		popupX += window.screen.width;
+	}
+	
+	let popupY = (screen.availHeight - popupHeight) / 2 - 10;
+	
+	let option = 'top='+popupY+', left='+popupX+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
+	window.open("", 'searchArea', option);
+	 
+	$('#mode').val("TEST");
+	$("#frm1").attr("target", 'searchArea');
+	$("#frm1").attr("action", "${pageContext.request.contextPath}/aprv/popup00View.do");
+	$("#frm1").submit();
+ })
 </script>
+<!-- Trigger the modal with a button -->

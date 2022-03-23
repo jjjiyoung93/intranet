@@ -95,7 +95,10 @@ public class DocServiceImpl implements DocService {
 				reportCode = "letech/doc/report/report_bztrpAdjsCpr";
 			} else if("CD0001009002".equals(cd2)) { // 출장정산(국내_일반)
 				reportCode = "letech/doc/report/report_bztrpAdjsGnrl";
+			} else if("CD0001009004".equals(cd2)) { //출장정산(국내)
+				reportCode = "letech/doc/report/report_bztrpAdjsdomt";
 			}
+			
 		} else if("CD0001015".equals(cd1)) { // 도서구매신청
 			reportCode = "letech/doc/report/report_bksBuyAplf";
 		} else if("CD0001016".equals(cd1)) { // 교육훈련신청

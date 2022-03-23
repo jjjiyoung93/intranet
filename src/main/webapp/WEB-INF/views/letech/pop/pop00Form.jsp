@@ -314,7 +314,7 @@ request.setCharacterEncoding("UTF-8");
 			// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
 			let popupY= (window.screen.height / 2) - (popupHeight / 2);
 			
-			let option = 'top='+popupX+', left='+popupY+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
+			let option = 'top='+popupY+', left='+popupX+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
 			window.open("${pageContext.request.contextPath}"+url, name , option);
 		}
 	</script>

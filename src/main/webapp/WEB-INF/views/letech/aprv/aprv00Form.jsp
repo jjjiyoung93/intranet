@@ -33,6 +33,9 @@
 	.req-sign{color: red; font-size: 18px;}
 	.tmp-pay-tb-header{font-size: 12px;}
 	.req-sign-tb{color: red; font-size: 15px;}
+	.modal {
+        text-align: center;
+}
 </style>
 <body>
 	<div id="wrapper">

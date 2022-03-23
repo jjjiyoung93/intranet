@@ -54,7 +54,7 @@ li.content {
 				</div>
 			</div>
 		</section>
-		<div id="footer">
+		<div id="footer" style="text-align: right;">
 			<label> <input type="checkbox"> <c:if test="${params.hidePopup eq 'oneDay'}">
 									오늘 하루 보지않기
 								</c:if> <c:if test="${params.hidePopup eq 'allDay' }">

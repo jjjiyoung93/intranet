@@ -80,7 +80,7 @@
 								<span class="pull-right">
 									<input type="button" class="fnJoin btn btn-sm btn-default" value="등록">
 								</span>
-								<strong class="list_count">Total : 82 건</strong>
+								<strong class="list_count">Total : 1 건</strong>
 							</p>
 							<div class="table-responsive">
 								<table class="table table-bordered">
@@ -273,15 +273,20 @@
 
 		/* 등록 */
 		$(".fnJoin").click(function() {
-			let popupWidth = 700
+			let popupWidth = 800
 			let popupHeight = 800
 
-			// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
-			let popupX = (window.screen.width / 2) - (popupWidth / 2);
-			// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
-			let popupY= (window.screen.height / 2) - (popupHeight / 2);
+			let popupX = (screen.availWidth - popupWidth) / 2;
+			 
+			if( window.screenLeft < 0){
+				popupX += window.screen.width*-1;
+			}else if ( window.screenLeft > window.screen.width ){
+				popupX += window.screen.width;
+			}
 			
-			let option = 'top='+popupX+', left='+popupY+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
+			let popupY = (screen.availHeight - popupHeight) / 2 - 10;
+			
+			let option = 'top='+popupY+', left='+popupX+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
 			window.open("${pageContext.request.contextPath}/flco/flco00Form.do", '유류비 기준 정보 등록', option);
 		});
 		
@@ -292,21 +297,20 @@
 		
 		/* 상세조회 */
 		function fnView(fl_seq) {
-			let popupWidth = 700
+			let popupWidth = 800
 			let popupHeight = 800
 
-			// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼주었음
-			let popupX = (window.screen.width / 2) - (popupWidth / 2);
-			// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼주었음
-			let popupY= (window.screen.height / 2) - (popupHeight / 2);
+			let popupX = (screen.availWidth - popupWidth) / 2;
+			 
+			if( window.screenLeft < 0){
+				popupX += window.screen.width*-1;
+			}else if ( window.screenLeft > window.screen.width ){
+				popupX += window.screen.width;
+			}
 			
-			let option = 'top='+popupX+', left='+popupY+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
+			let popupY = (screen.availHeight - popupHeight) / 2 - 10;
+			let option = 'top='+popupY+', left='+popupX+', width='+popupWidth+', height='+popupHeight+', status=no, scrollbars=no,menubar=no, toolbar=no, resizable=no'
 			window.open("${pageContext.request.contextPath}/flco/flco00View.do", '유류비 기준 정보 상세', option);
-			
-			
-// 			$("#bbs_seq").val(bbs_seq);
-// 			$("#frm1").attr("action","${pageContext.request.contextPath}/bbs/bbs00View.do");
-// 			$("#frm1").submit();
 		}
 
 		function goPage(cPage) {

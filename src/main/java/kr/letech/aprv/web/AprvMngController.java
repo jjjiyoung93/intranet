@@ -41,42 +41,44 @@ import kr.letech.uss.umt.service.impl.UssMngDAO;
 import kr.letech.vct.service.impl.VctMngDAO;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import oracle.sql.ARRAY;
 
 @Controller
 public class AprvMngController {
 
 	private static final Logger log = LoggerFactory.getLogger(EgovProperties.class);
-	
+
 	/** calMngService */
 	@Resource(name = "aprvMngService")
 	private AprvMngService aprvMngService;
-	
+
 	/**
 	 * 코드 데이터를 조회위한 서비스
 	 */
 	@Resource(name = "codeMngService")
 	private CodeMngService codeMngService;
-	
+
 	/** 파일 업로드 */
-    @Resource(name = "EgovFileMngUtil")
-    private EgovFileMngUtil fileUtil;
-    
-    /* 메일 발송을 위한 서비스 */
-	@Resource(name="mailAprvService")
+	@Resource(name = "EgovFileMngUtil")
+	private EgovFileMngUtil fileUtil;
+
+	/* 메일 발송을 위한 서비스 */
+	@Resource(name = "mailAprvService")
 	private MailAprvService mailAprvService;
-	
+
 	/** ussMngDAO */
-	@Resource(name="ussMngDAO")
+	@Resource(name = "ussMngDAO")
 	private UssMngDAO ussMngDAO;
-	
-	@Resource(name="docService")
+
+	@Resource(name = "docService")
 	private DocService docService;
-	
+
 	@Resource(name = "vctMngDAO")
 	private VctMngDAO vctMngDAO;
 
 	/**
 	 * 결재관리 화면
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -92,52 +94,53 @@ public class AprvMngController {
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("uss_id", loginVO.getId());
-		
+
 		Map ussView = ussMngDAO.getUssView(params);
 		params.put("uss_auth_cd", ussView.get("USS_AUTH_CD"));
-		
+
 		// 상태 검색 코드 추가
 		String searchCdList3 = null;
 		if (params.get("searchCdList3") != null) {
 			searchCdList3 = String.valueOf(params.get("searchCdList3"));
 			params.put("searchCdList3", searchCdList3);
 		}
-		
+
 		// admin일 경우 default로 반려 리스트 출력
-		if(ussView.get("USS_AUTH_CD").equals("ROLE_ADMIN") && searchCdList3 == null) {
+		if (ussView.get("USS_AUTH_CD").equals("ROLE_ADMIN") && searchCdList3 == null) {
 			params.put("searchCdList3", "3");
 		}
 
-		// 목록 및 총건수, 페이징 
+		// 목록 및 총건수, 페이징
 		Map bbsObject = aprvMngService.getAprvPageingList(params);
-		
-		model.addAttribute("cPage", bbsObject.get("cPage"));					// 페이지수
-		model.addAttribute("totalCnt", bbsObject.get("totalCnt"));				// 총건수
-		model.addAttribute("intListCnt", bbsObject.get("intListCnt"));			// 시작페이지 수
-		model.addAttribute("resultList", bbsObject.get("resultList"));			// 목록정보
-		model.addAttribute("pageNavigator", bbsObject.get("pageNavigator"));	// 페이징
+
+		model.addAttribute("cPage", bbsObject.get("cPage")); // 페이지수
+		model.addAttribute("totalCnt", bbsObject.get("totalCnt")); // 총건수
+		model.addAttribute("intListCnt", bbsObject.get("intListCnt")); // 시작페이지 수
+		model.addAttribute("resultList", bbsObject.get("resultList")); // 목록정보
+		model.addAttribute("pageNavigator", bbsObject.get("pageNavigator")); // 페이징
 		model.addAttribute("params", params);
-		
-		/*코드리스트 조회를 위한 상위코드입력*/
+
+		/* 코드리스트 조회를 위한 상위코드입력 */
 		params.put("up_cd", VarConsts.EAM_MASTER_CODE);
 		List codeList = codeMngService.getCodeList(params);
 		model.addAttribute("codeList", codeList);
-		
-		//소속 리스트 가져오기
+
+		// 소속 리스트 가져오기
 		params.put("code", VarConsts.DP_CODE);
 		params.put("up_cd", VarConsts.DP_CODE);
 		List dpList = codeMngService.getCodeList(params);
 		model.addAttribute("dpList", dpList);
-		
+
 		// 현재 날짜 구하기
 		DateUtil dt = new DateUtil();
 		model.addAttribute("now_date", dt.nowDate());
-		
+
 		return "letech/aprv/aprv00List";
 	}
-	
+
 	/**
 	 * 결재 정보 조회
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -151,7 +154,7 @@ public class AprvMngController {
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("uss_id", loginVO.getId());
-		
+
 		// 권한 넣기
 		Map ussView = ussMngDAO.getUssView(params);
 		params.put("uss_auth_cd", ussView.get("USS_AUTH_CD"));
@@ -159,19 +162,17 @@ public class AprvMngController {
 		model.addAttribute("params", params);
 
 		params.put("aprv_emp_no", loginVO.getId());
-		
-		
-		/*2022. 01.19 관리자 취소 : BEGIN*/
+
+		/* 2022. 01.19 관리자 취소 : BEGIN */
 		String authCd = (String) ussView.get("USS_AUTH_CD");
-		if(StringUtils.equals(authCd, VarConsts.AUTH_CD_ADMIN)) {
+		if (StringUtils.equals(authCd, VarConsts.AUTH_CD_ADMIN)) {
 			String mode = (String) params.get("mode");
-			if(StringUtils.equals(mode, VarConsts.MODE_C)) {
+			if (StringUtils.equals(mode, VarConsts.MODE_C)) {
 				aprvMngService.updateAprvCancelAdmin(params);
 			}
 		}
-		/*2022. 01.19 관리자 취소 : END */
-		
-		
+		/* 2022. 01.19 관리자 취소 : END */
+
 		/* 상세 정보 조회 */
 		Map viewMap = aprvMngService.getAprvView(params);
 		/* 결재 라인 정보 조회 */
@@ -180,33 +181,33 @@ public class AprvMngController {
 		List fileList = aprvMngService.aprvFileList(params);
 		/* 지출결의서 조회 */
 		Map recMap = (Map) aprvMngService.getAprvRecList(params);
-		
+
 		model.addAttribute("viewMap", viewMap);
 		model.addAttribute("lineList", lineList);
 		model.addAttribute("fileList", fileList);
 		model.addAttribute("recList", recMap.get("recList"));
 		model.addAttribute("recFileList", recMap.get("recFileList"));
-		
 
-		/*코드리스트 조회를 위한 상위코드입력*/
+		/* 코드리스트 조회를 위한 상위코드입력 */
 		params.put("up_cd", VarConsts.EAM_MASTER_CODE);
 		List codeList = codeMngService.getCodeList(params);
 		model.addAttribute("codeList", codeList);
-		
+
 		params.put("up_cd", VarConsts.EAM_PROJECT_CODE);
 		List projList = codeMngService.getCodeList(params);
 		model.addAttribute("projList", projList);
-		
-		/*상세 코드리스트 조회를 위한 상위코드입력*/
+
+		/* 상세 코드리스트 조회를 위한 상위코드입력 */
 		params.put("up_cd", viewMap.get("APRV_TYPE_CD"));
 		List codeList2 = codeMngService.getCodeList(params);
 		model.addAttribute("codeList2", codeList2);
-		
+
 		return "letech/aprv/aprv00View";
 	}
-	
+
 	/**
 	 * 결재 등록 및 수정 화면
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -214,33 +215,33 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "/aprv/aprv00Form.do")
 	public String insertFrom(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
 		model.addAttribute("params", params);
-		
-		/*코드리스트 조회를 위한 상위코드입력*/
+
+		/* 코드리스트 조회를 위한 상위코드입력 */
 		params.put("up_cd", VarConsts.EAM_MASTER_CODE); // 결재상위코드
 		List codeList = codeMngService.getCodeList(params);
 		model.addAttribute("codeList", codeList);
-		
+
 		params.put("up_cd", VarConsts.EAM_PROJECT_CODE); // 프로젝트코드
-		//진행중인 프로젝트 검색 조건
+		// 진행중인 프로젝트 검색 조건
 		params.put("y_only", "Y");
 		List projList = codeMngService.getCodeList(params);
 		model.addAttribute("projList", projList);
-		
+
 		// 로그인한 사용자의 결재라인을 가져옴
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("EMP_NO", loginVO.getId());
 		List lineInfoList = aprvMngService.aprvLineInfoList(params);
 		model.addAttribute("lineInfoList", lineInfoList);
-		
+
 		// js 컴파일 에러 방지를 위해 update가 아닌 insert에는 빈값을 전송
 		model.addAttribute("docJson", "{}");
 		model.addAttribute("viewJson", "{}");
 		model.addAttribute("jsonVacTerm", "{}");
-		
+
 		Map viewMap = null;
 		if (params.get("mode") != null && params.get("mode").equals(VarConsts.MODE_U)) {
 
@@ -250,30 +251,30 @@ public class AprvMngController {
 			List lineList = aprvMngService.aprvLineList(params);
 			/* 결재 첨부파일정보 조회 */
 			List fileList = aprvMngService.aprvFileList(params);
-			
-			String aprvTypeCd = (String)viewMap.get("APRV_TYPE_CD");
-			
-			if(StringUtils.isNotEmpty(aprvTypeCd) && StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
+
+			String aprvTypeCd = (String) viewMap.get("APRV_TYPE_CD");
+
+			if (StringUtils.isNotEmpty(aprvTypeCd) && StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
 				params.put("up_cd", VarConsts.VAC_TYPE_CODE);
 				List vacTermList = codeMngService.getCodeList(params);
 				JSONArray jsonVacTerm = JSONArray.fromObject(vacTermList);
 				model.addAttribute("jsonVacTerm", jsonVacTerm);
 			}
-			
-			//가지급금 목적 코드 로드
+
+			// 가지급금 목적 코드 로드
 			params.put("up_cd", VarConsts.TMP_PAY_PRPS);
 			List tmpPrpsList = codeMngService.getCodeList(params);
 			model.addAttribute("tmpPrpsList", tmpPrpsList);
-				
+
 			model.addAttribute("viewMap", viewMap);
 			model.addAttribute("lineList", lineList);
 			model.addAttribute("fileList", fileList);
-			
-			/*상세 코드리스트 조회를 위한 상위코드입력*/
+
+			/* 상세 코드리스트 조회를 위한 상위코드입력 */
 			params.put("up_cd", viewMap.get("APRV_TYPE_CD"));
 			List codeList2 = codeMngService.getCodeList(params);
 			model.addAttribute("codeList2", codeList2);
-			
+
 			/* 문서 데이터 조회 */
 			Map docMap = docService.getDocData(viewMap);
 			JSONObject docJson = JSONObject.fromObject(docMap);
@@ -281,12 +282,13 @@ public class AprvMngController {
 			model.addAttribute("docJson", docJson);
 			model.addAttribute("viewJson", viewJson);
 		}
-				
+
 		return "letech/aprv/aprv00Form";
 	}
-	
+
 	/**
 	 * 삭제 기능
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -294,100 +296,101 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "/aprv/aprv01Tran.do")
 	public String deleteTran(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 //		MultipartHttpServletRequest multipartRequest =  (MultipartHttpServletRequest)request;
 //		Map params = ReqUtils.getParameterMap3(multipartRequest);
 
 		Map params = ReqUtils.getParameterMap(request);
-		
+
 //		String mode = VarConsts.MODE_I;
 //		if (params.get("mode") != null) {
 //			mode = String.valueOf(params.get("mode"));
 //		}
-		
+
 		String viewName = "jsonView";
-		aprvMngService.aprvDelete(params);	// 결재정보 삭제
-		
-		//메일 발송 내용 등록
-		//mailAprvService.aprvMailSendInsert(params);
-		
+		aprvMngService.aprvDelete(params); // 결재정보 삭제
+
+		// 메일 발송 내용 등록
+		// mailAprvService.aprvMailSendInsert(params);
+
 		return viewName;
 	}
-	
+
 	/**
 	 * 등록 수정 삭제 기능 (Multipart, 파일 업로드시)
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/aprv/aprv00Tran.do")
-	public String basicTran(final MultipartHttpServletRequest multiRequest, ModelMap model, HttpServletRequest request
-			,TmpPayItemListVO tmpPayItemList) throws Exception {
-		
+	public String basicTran(final MultipartHttpServletRequest multiRequest, ModelMap model, HttpServletRequest request,
+			TmpPayItemListVO tmpPayItemList) throws Exception {
+
 		Map params = ReqUtils.getParameterMap3(multiRequest);
-		/*2022.01.18 휴가 등록 수정 시 파라미터 설정 : BEGIN*/
-		String aprvTypeCd = (String)params.get("cdList1");
-		if(StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
-			String halfTypeCdSt = (String)params.get("half_type_cd_st");
-			if(StringUtils.isNotEmpty(halfTypeCdSt)) {
+		/* 2022.01.18 휴가 등록 수정 시 파라미터 설정 : BEGIN */
+		String aprvTypeCd = (String) params.get("cdList1");
+		if (StringUtils.equals(aprvTypeCd, VarConsts.EAM_VACATION_CODE)) {
+			String halfTypeCdSt = (String) params.get("half_type_cd_st");
+			if (StringUtils.isNotEmpty(halfTypeCdSt)) {
 				params.put("half_type_cd", halfTypeCdSt);
 			}
 		}
-		
-		/*2022.01.18 휴가 등록 수정 시 파라미터 설정 : END*/
-		if(tmpPayItemList != null && !tmpPayItemList.getTmpPayItemList().isEmpty()) {
+
+		/* 2022.01.18 휴가 등록 수정 시 파라미터 설정 : END */
+		if (tmpPayItemList != null && !tmpPayItemList.getTmpPayItemList().isEmpty()) {
 			params.put("tmpPayItemList", tmpPayItemList.getTmpPayItemList());
 		}
 		model.addAttribute("params", params);
-		
+
 		// 사용자 정보 넣기
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("aprv_nm", loginVO.getName());
 		params.put("auth_cd", loginVO.getAuthCd());
 		params.put("login_uss_id", loginVO.getId());
-		
+
 		String mode = VarConsts.MODE_I;
 		if (params.get("mode") != null) {
 			mode = String.valueOf(params.get("mode"));
 		}
 		String errorMsg = "N";
-		try{
+		try {
 
 			/* 첨부파일 정보 */
 			List<Map<String, Object>> fileList = null;
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
-		    if (!files.isEmpty()) {
-		    	fileList = fileUtil.parseFileInf(files, "APRV_", 0, "aprv");
-		    }
-		    
-			if(mode.equals(VarConsts.MODE_I)){
-				int procResult = aprvMngService.aprvInsert(params, fileList);	// 결재정보 등록
-				
-				if (procResult > 0 ) {
-					aprvMngService.aprvInsert2(params);	// push 등록
-				}
-			}else if(mode.equals(VarConsts.MODE_U)){
-				aprvMngService.aprvUpdate(params, fileList);	// 결재정보 수정
+			if (!files.isEmpty()) {
+				fileList = fileUtil.parseFileInf(files, "APRV_", 0, "aprv");
 			}
-		}catch (Exception e){
+
+			if (mode.equals(VarConsts.MODE_I)) {
+				int procResult = aprvMngService.aprvInsert(params, fileList); // 결재정보 등록
+
+				if (procResult > 0) {
+					aprvMngService.aprvInsert2(params); // push 등록
+				}
+			} else if (mode.equals(VarConsts.MODE_U)) {
+				aprvMngService.aprvUpdate(params, fileList); // 결재정보 수정
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			errorMsg = "Y";
 		}
-		
+
 		model.addAttribute("errorMsg", errorMsg);
 		model.addAttribute("mode", mode);
-		
-		//메일 발송 내용 등록
-		//mailAprvService.aprvMailSendInsert(params);
-		
+
+		// 메일 발송 내용 등록
+		// mailAprvService.aprvMailSendInsert(params);
+
 		return "letech/aprv/aprv00Tran";
 	}
-	
 
 	/**
 	 * 결재 승인(완료, 보류, 반려)
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -397,29 +400,30 @@ public class AprvMngController {
 	public String aprvOkTran(HttpServletRequest request, ModelMap model) throws Exception {
 
 		Map params = ReqUtils.getParameterMap(request);
-		
+
 		String sAprvNo = String.valueOf(params.get("aprv_no"));
 		String sAprvEmpNo = String.valueOf(params.get("aprv_emp_no"));
-		
+
 		String viewName = "jsonView";
 		try {
-			aprvMngService.aprvLineUpdate(params);	// 결재승인(완료, 보류, 반려)
+			aprvMngService.aprvLineUpdate(params); // 결재승인(완료, 보류, 반려)
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-		
+
 		params.put("aprv_no", sAprvNo);
 		params.put("aprv_emp_no", sAprvEmpNo);
-		
-		//메일 발송 내용 등록
-		//mailAprvService.aprvMailSendInsert(params);
-		
+
+		// 메일 발송 내용 등록
+		// mailAprvService.aprvMailSendInsert(params);
+
 		return viewName;
 	}
 
 	/**
 	 * 첨부파일 삭제
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -427,18 +431,19 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "/aprv/aprv01Ajax.do")
 	public String delFileAjax(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
-		
+
 		String viewName = "jsonView";
-		
+
 		aprvMngService.aprvFileDelete(params);
-		
+
 		return viewName;
 	}
 
 	/**
 	 * 결재기능 진행정보 조회
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -446,25 +451,25 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "/aprv/aprv02Ajax.do")
 	public String aprvListInfo(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
-		
+
 		String viewName = "jsonView";
-		
+
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 
 		params.put("aprv_up_cd", VarConsts.EAM_MASTER_CODE);
 		params.put("uss_id", loginVO.getId());
-		
+
 		Date today = new Date();
-		
+
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		String todayStr = formatter.format(today);
-		
+
 		String year = todayStr.substring(0, 4);
-	
+
 		params.put("stdd_yr", year);
 		Map ussVctInfo = vctMngDAO.getUssVctInfo(params);
 		model.addAttribute("ussVctInfo", ussVctInfo);
@@ -480,19 +485,20 @@ public class AprvMngController {
 		params.put("aprv_yn_cd", "3");
 		List aprvList3 = aprvMngService.layerAprvInfo(params);
 		int aprvCount3 = aprvMngService.layerAprvInfoCount(params);
-		
+
 		model.addAttribute("aprvList0", aprvList0);
 		model.addAttribute("aprvList2", aprvList2);
 		model.addAttribute("aprvList3", aprvList3);
 		model.addAttribute("aprvCount0", aprvCount0);
 		model.addAttribute("aprvCount2", aprvCount2);
 		model.addAttribute("aprvCount3", aprvCount3);
-		
+
 		return viewName;
 	}
-	
+
 	/**
 	 * 지역코드, 출장구분코드, 여비 불러오기
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -500,83 +506,82 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "aprv/aprv03Ajax.do")
 	public String getBztrpCodeList(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
 		model.addAttribute("params", params);
-		
+
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("auth_cd", loginVO.getAuthCd());
-		
+
 		// 지역코드
 		params.put("up_cd", VarConsts.PLC_CODE); // 결재상위코드
 		List plcCodeList = codeMngService.getCodeList(params);
 		model.addAttribute("plcCodeList", plcCodeList);
-		
+
 		// 출장구분코드
-		if("CD0001009001".equals(params.get("cdList2"))) { // 법인 
+		if ("CD0001009001".equals(params.get("cdList2"))) { // 법인
 			params.put("up_cd", VarConsts.BZTRP_DIV_CODE_CPR); // 결재상위코드
-		} else if("CD0001009002".equals(params.get("cdList2"))) { // 일반
+		} else if ("CD0001009002".equals(params.get("cdList2"))) { // 일반
 			params.put("up_cd", VarConsts.BZTRP_DIV_CODE_GNRL); // 결재상위코드
 		}
 		List bztrpDivCodeList = codeMngService.getCodeList(params);
 		model.addAttribute("bztrpDivCodeList", bztrpDivCodeList);
-		
+
 		// 출장비
 		List trcsList = aprvMngService.getTrcsList();
 		model.addAttribute("trcsList", trcsList);
-		
+
 		// 여비
 		List trvctInfo = aprvMngService.getTrvctInfo(params);
 		model.addAttribute("trvctInfo", trvctInfo);
-		
+
 		return "jsonView";
 	}
-	
+
 	@RequestMapping(value = "aprv/aprv05Ajax.do")
-	public String getBztrpCodeList2(HttpServletRequest request, Model model) throws Exception{
+	public String getBztrpCodeList2(HttpServletRequest request, Model model) throws Exception {
 		Map params = ReqUtils.getParameterMap(request);
 		model.addAttribute("params", params);
-		
+
 		HttpSession session = request.getSession();
 		LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
 		params.put("auth_cd", loginVO.getAuthCd());
-		
+
 		// 출장구분코드
 		List bztrpDivCodeList = null;
 		params.put("up_cd", VarConsts.BZTRP_DIV_CODE_CPR2); // 법인 결재상위코드
 		bztrpDivCodeList = codeMngService.getCodeList(params);
-		model.addAttribute("cprCodeList",bztrpDivCodeList);
-		
+		model.addAttribute("cprCodeList", bztrpDivCodeList);
+
 		params.put("up_cd", VarConsts.BZTRP_DIV_CODE_GNRL2); // 법인 결재상위코드
 		bztrpDivCodeList = codeMngService.getCodeList(params);
-		model.addAttribute("gnrlCodeList",bztrpDivCodeList);
-		
+		model.addAttribute("gnrlCodeList", bztrpDivCodeList);
+
 		// 출장비
 		List trcsList = aprvMngService.getTrcsList();
 		model.addAttribute("trcsList", trcsList);
-		
+
 		// 여비
 		List trvctInfo = aprvMngService.getTrvctInfo(params);
 		model.addAttribute("trvctInfo", trvctInfo);
-		
-		
+
 		return "jsonView";
 	}
-	
+
 	/**
-	* BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가
-	* 작성자 : JO MIN SOO
-	* @param request
-	* @param model
-	* @return
-	* @throws Exception
-	*/
+	 * BIZPLAY API를 호출하여 받아온 데이터를 적재하고 결재완료된 건을 인트라넷에 추가 작성자 : JO MIN SOO
+	 * 
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/aprv/loadBizplay.do")
 	public String loadBizplay(HttpServletRequest request, ModelMap model) {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
-		
+
 		String viewName = "jsonView";
 
 		// BIZPLAY 데이터 호출하여 DB에 저장
@@ -587,7 +592,7 @@ public class AprvMngController {
 			log.error("[BIZPLAY] 비즈플레이 데이터 적재 실패 : {}", e.getCause(), e);
 			return viewName;
 		}
-		
+
 		// 저장된 BIZPLAY 데이터를 이용하여 결재 데이터 생성
 		try {
 			aprvMngService.insertBizplayAprv(params);
@@ -596,12 +601,13 @@ public class AprvMngController {
 			log.error("[BIZPLAY] 결재 데이터 생성 실패 : {}", e.getCause(), e);
 			return viewName;
 		}
-		
+
 		return viewName;
 	}
-	
+
 	/**
 	 * 상위코드를 입력받아 하위코드를 json으로 응답
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -609,24 +615,25 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "/aprv/getCdList.do")
 	public String getCodeList(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
-		
+
 		String viewName = "jsonView";
-		
+
 		params.put("up_cd", params.get("upCd"));
-		
+
 		List cdList = codeMngService.getCodeList(params);
 		model.addAttribute("cdList", cdList);
-		
+
 		model.addAttribute("params", params);
 
 		return viewName;
-		
+
 	}
-	
+
 	/**
 	 * 휴가 잔여일 수 조회
+	 * 
 	 * @param request
 	 * @param model
 	 * @return
@@ -634,14 +641,28 @@ public class AprvMngController {
 	 */
 	@RequestMapping(value = "aprv/aprv04Ajax.do")
 	public String getVctLeftDay(HttpServletRequest request, ModelMap model) throws Exception {
-		
+
 		Map params = ReqUtils.getParameterMap(request);
 		model.addAttribute("params", params);
-		
-		Map vctMap =  aprvMngService.getVctLeftDay(params);
-		
+
+		Map vctMap = aprvMngService.getVctLeftDay(params);
+
 		model.addAttribute("vctMap", vctMap);
-		
+
 		return "jsonView";
+	}
+
+	/**
+	 * 출장 행정지역 검색 팝업 화면
+	 * @param request
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "aprv/popup00View.do")
+	public String popup00view (HttpServletRequest request, Model model) throws Exception{
+		Map params = ReqUtils.getParameterMap(request);
+		
+		return "letech/aprv/aprv00Pop";
 	}
 }
