@@ -39,7 +39,7 @@
 				<li class="form-group">
 					<label class=" ">코&nbsp;&nbsp;&nbsp;드</label>
 					<c:if test="${params.flag eq '2'}">
-						<input class="form-control" name="cd" id="cd" type="text" value="${getCodeView.CD}" readonly>
+						<input class="form-control" name="cd" id="cd" type="text" value="CD0001001" readonly>
 					</c:if>
 					<c:if test="${params.flag eq '1'}">
 						<input class="form-control" name="cd" id="cd" type="text" readonly>
@@ -48,7 +48,7 @@
 				<li class="form-group">
 				<label class=" ">코드명</label> 
 				<c:if test="${params.flag eq '2'}">
-					<input class="form-control" name="cd_nm" id="cd_nm" type="text" value="${getCodeView.CD_NM}" readonly>
+					<input class="form-control" name="cd_nm" id="cd_nm" type="text" value="업무보고" readonly>
 				</c:if>
 				<c:if test="${params.flag eq '1'}">
 					<input class="form-control" name="cd_nm" id="cd_nm" type="text">
@@ -57,7 +57,7 @@
 				<li class="form-group">
 					<label class="">코드값</label>
 					<c:if test="${params.flag eq '2'}">
-						<input class="form-control" name="cd_val" id="cd_val" type="text" value="${getCodeView.CD_VAL}" readonly>
+						<input class="form-control" name="cd_val" id="cd_val" type="text" value="100" readonly>
 					</c:if>
 					<c:if test="${params.flag eq '1'}">
 						<input class="form-control" name="cd_val" id="cd_val" type="text">

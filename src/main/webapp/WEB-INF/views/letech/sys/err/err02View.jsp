@@ -82,15 +82,15 @@
 											</dd>
 										</dl>
 										<dl class="clearfix ">
-											<dt class="col-md-2 col-xs-2">에러위치</dt>
+											<dt class="col-md-2 col-xs-2">에러유형</dt>
 											<dd class="col-md-10 col-xs-10">
-												kr.letech.aprv.service.impl.AprvMngServiceImpl.insertBizplayData(AprvMngServiceImpl.java:1138)
+											SQLException
 											</dd>
 										</dl>
 										<dl class="clearfix ">
-											<dt class="col-md-2 col-xs-2">에러유형</dt>
+											<dt class="col-md-2 col-xs-2">에러위치</dt>
 											<dd class="col-md-10 col-xs-10">
-												SQLException
+												kr.letech.aprv.service.impl.AprvMngServiceImpl.insertBizplayData(AprvMngServiceImpl.java:1138)
 											</dd>
 										</dl>
 										<dl class="clearfix ">

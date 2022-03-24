@@ -8,9 +8,11 @@
 <title>Letech Intranet</title>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/css/common.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree-bootstrap-theme@1.0.1/dist/themes/proton/style.min.css" />
 </head>
 <body>
 <div id="warpper">
+
    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
       <jsp:include page="/resources/com/inc/header.jsp" />
       <%@ include file="/WEB-INF/views/letech/com/layout/menu.jsp" %>
@@ -28,11 +30,13 @@
             <input type="hidden" name="m_cd" id="m_cd" value=""  /> 
             <input type="hidden" name="up_cd2" id="up_cd2" value=""  /> 
             <input type="hidden" name="up_cd3" id="up_cd3" value=""  /> 
+            
             <!-- 타이틀 및 페이지 네비 -->
             <h2 class="page-title clearfix">
                ${titleNaviMap.MN_NM }
                <span class="pull-right site-map">HOME > ${titleNaviMap.NAVI_NM }</span>
             </h2>
+            
             <div class="form-container">
             <!-- page -->
                <div class="clearfix search-box form-inline">
@@ -50,8 +54,6 @@
 		                     <input type="text" name="searchField" id="sear_cd_nm"  value="${params.searchGubun2}" class="form-control" style="inline-block;" title="검색어 입력" />
 	                     </span>
                      </div>
-                  </div>
-                  <div class="row">
                   </div>
                   <div class="row">
                      <div class ="col-md-6 un-style form-inline mt10">
@@ -79,67 +81,45 @@
                
                <p class="clearfix">
                   <span class="pull-right">
-                     <input type="button" class="button-a btn btn-sm btn-default" onclick="codeInsert();" value="등록">
+                     <input type="button" class="button-a btn btn-sm btn-default" onclick="codeInsert();" value="코드등록">
                   </span>
                </p>
                <div class="row">
                   <div class="col-md-5">
                      <div class=" panel panel-default">
-                        <h3 class="panel-title panel-heading clearfix">메뉴구조</h3>
+                        <h3 class="panel-title panel-heading clearfix">코드구조</h3>
                         <!-- jstree -->
                         <div class="panel-body" id="tree">
                         </div><!-- pannel body 끝 -->
                      </div>
                   </div><!-- 코드구조 끝 -->
                   
-                  <div class="col-md-7 tree_menu_box">
-                  <!-- 테이블 -->
-                     <table class="table table-bordered">
-                        <colgroup>
-                           <col width="30%"  />
-                           <col width="30%"  />
-                           <col width="*"  />
-                        </colgroup>
-                        <thead class="table-light ag_left">            
-                           <tr>
-                              <th>코드</th>
-                              <th>코드명</th>
-                              <th>코드값</th>
-                           </tr>
-                        </thead>
-                        <tbody class="ag_left">
-                              <tr>
-                                 <td align="center">
-                                 	<a href="javascript:codeView('CD0001')">CD0001</a>
-                                 </td><!-- 코드 -->
-                                 <td align="center">결재구분코드</td><!-- 코드명 -->
-                                 <td align="center">100</td><!-- 코드값 -->
-                              </tr>
-                        </tbody>
-                     </table>
+                  <!-- 하위메뉴 -->
+                  <div class="col-md-7 tree_menu_box" id="menu_box">
+	                  <!-- 테이블 -->
                   </div>   <!-- 하위메뉴 끝 -->
-            </div><!-- container 끝 -->
-            <p class="clearfix">
-               <span class="pull-right">
-                  <input type="button" class="button-a btn btn-sm btn-default" onclick="codeInsert();" value="등록">
-               </span>
-            </p>
+              </div>
+			  <p class="clearfix">
+				 <span class="pull-right">
+				  	<input type="button" class="button-a btn btn-sm btn-default" onclick="codeInsert();" value="코드등록">
+				 </span>
+			  </p>
             <!-- page nav -->
-      </div>
-   </form>
+            </div><!-- container 끝 -->
+        </form>
    </div>
 	<jsp:include page="/resources/com/inc/aside.jsp" />
    </section>
 </div>
 <jsp:include page="/resources/com/inc/footer.jsp" />
 </div>
-
 <script type="text/javascript" src="<%=request.getContextPath()%>/resources/js/jquery-1.9.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script type="text/javascript">
 
 $(function(){
 	getTree();
+	get00Table();
 })
 
 function getTree() {
@@ -175,13 +155,16 @@ function getTree() {
 			
 			//트리 생성	
 			$('#tree').jstree({
-				core : {
+				'plugins' : [ "search" ], //검색, 테마
+				'core' : {
 					//데이터 연결
-					data : list
-				},
-				plugins : ["search"], //검색
+					'data'		: list,
+					'themes'	: {
+						name : "proton",
+						responsive : true
+					}
+				}
 			}); //트리 생성 끝
-
 
 			//검색
 			var to = false;
@@ -235,8 +218,12 @@ function getTree() {
 					var v = $('#sear_cd_nm').val();
 					var v1 = $('#sear_cd').val();
 					$('#tree').jstree(true).search(v);
+					
+					console.log('???',$('#tree').jstree(true).search(v));
 				}, 250);
-			})
+				
+				console.log('?', $('#tree').jstree('get_selected', true));
+			});
 			
 			//초기화
 			$('#clear').click(function(){
@@ -244,25 +231,133 @@ function getTree() {
 				$("#sear_cd_nm").val('');
 				$("#sear_cd_val").val('');
 				
-				if(to) {
-					clearTimeout(to);
-				}
-				to = setTimeout(function(){
-					var v = $('#sear_cd_nm').val();
-					$('#tree').jstree(true).search(v);
-//					$tree.jstree(true).refresh();
-				}, 250);
+				$('#tree').jstree("close_all");
+				get00Table();
 				
-			})
-			
+			});
 			
 		} //success 끝
 
 	}); //ajax 끝
 }
 
+$('#tree').bind("click.jstree", function(event, data){
+	console.log("Binde Result : ", event.type);
+});
 
+$('#tree').bind("select_node.jstree", function(event, data){
+	var id = data.instance.get_node(data.selected).id; 
+	console.log(id);
+	get01Table();
+});
 
+//초기 하위메뉴 테이블
+function get00Table() {
+	
+	$('#menu_box').empty();
+
+	var html = '';
+		
+		html += '<table class="table table-bordered">'
+		html += '<colgroup>'
+		html += '<col width="30%"  />'
+		html += '<col width="30%"  />'
+		html += '<col width="*"  />'
+		html += '</colgroup>'
+		html += '<thead class="table-light ag_left">'    
+		html += '<tr>'
+		html += '<th>코드</th>'
+		html += '<th>코드명</th>'
+		html += '<th>코드값</th>'
+		html += '</tr>'
+		html += '</thead>'
+		html += '<tbody class="ag_left">'
+		html += '<tr>'
+		html += '<td colspan="3" align="center">코드를 클릭하세요.</td>'
+		html += '</tr>'
+		html += '</tbody>'
+		html += '</table>'
+		
+		$('#menu_box').append(html);
+	
+}
+
+//코드 클릭 시 하위메뉴 테이블
+function get01Table() {
+	
+	$('#menu_box').empty();
+	
+	var html = '';
+
+		html += '<table class="table table-bordered">'
+		html += '<colgroup>'
+		html += '<col width="30%"  />'
+		html += '<col width="30%"  />'
+		html += '<col width="*"  />'
+		html += '</colgroup>'
+		html += '<thead class="table-light ag_left"> '           
+		html += '<tr>'
+		html += '<th>코드</th>'
+		html += '<th>코드명</th>'
+		html += '<th>코드값</th>'
+		html += '</tr>'
+		html += '</thead>'
+		html += '<tbody class="ag_left">'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001001</a>'
+		html += '</td>'
+		html += '<td>업무보고</td>'
+		html += '<td>100</td>'
+		html += '</tr>'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001007</a>'
+		html += '</td><!-- 코드 -->'
+		html += '<td>지출결의</td><!-- 코드명 -->'
+		html += '<td></td><!-- 코드값 -->'
+		html += '</tr>'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001008</a>'
+		html += '</td><!-- 코드 -->'
+		html += '<td>품위</td><!-- 코드명 -->'
+		html += '<td></td><!-- 코드값 -->'
+		html += '</tr>'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001009</a>'
+		html += '</td><!-- 코드 -->'
+		html += '<td>출장</td><!-- 코드명 -->'
+		html += '<td></td><!-- 코드값 -->'
+		html += '</tr>'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001011</a>'
+		html += '</td><!-- 코드 -->'
+		html += '<td>휴가신청</td><!-- 코드명 -->'
+		html += '<td></td><!-- 코드값 -->'
+		html += '</tr>'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001012</a>'
+		html += '</td><!-- 코드 -->'
+		html += '<td>휴직신청</td><!-- 코드명 -->'
+		html += '<td></td><!-- 코드값 -->'
+		html += '</tr>'
+		html += '<tr>'
+		html += '<td align="center">'
+		html += '<a href="javascript:codeView()">CD0001013</a>'
+		html += '</td><!-- 코드 -->'
+		html += '<td>유연근무제신청</td><!-- 코드명 -->'
+		html += '<td></td><!-- 코드값 -->'
+		html += '</tr>'
+		
+		html += '</tbody>'
+		html += '</table>'
+
+		$('#menu_box').append(html);
+}
 //$('#search').click(function(){
 //	getTree();
 //});
@@ -273,8 +368,8 @@ function getTree() {
 //}
 
 /* 상세조회 */
-function codeView(cd) {
-	window.open('getCodeForm.do?flag=2&cd='+cd,'target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=400,left=750,top=250');
+function codeView() {
+	window.open('getCodeForm.do?flag=2&cd=CD0001','target_name','scrollbars=yes,toolbar=yes,resizable=yes,width=500,height=400,left=750,top=250');
 }
 
 /* 등록조회 */
